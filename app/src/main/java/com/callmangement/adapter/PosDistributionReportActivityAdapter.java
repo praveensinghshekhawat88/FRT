@@ -38,7 +38,7 @@ public class PosDistributionReportActivityAdapter extends RecyclerView.Adapter<P
             holder.binding.tvDealerName.setText(list.get(position).getDealerName());
             holder.binding.tvDistrict.setText(list.get(position).getDistrictName());
 
-            if (list.get(position).getIsFormUploaded().equalsIgnoreCase("true")) {
+            if (list.get(position).isFormUploaded().equalsIgnoreCase("true")) {
                 holder.binding.tvFormUploadedStatus.setText(context.getResources().getString(R.string.uploaded));
                 holder.binding.tvFormUploadedStatus.setTextColor(context.getResources().getColor(R.color.colorGreenDark));
             } else {
@@ -46,7 +46,7 @@ public class PosDistributionReportActivityAdapter extends RecyclerView.Adapter<P
                 holder.binding.tvFormUploadedStatus.setTextColor(context.getResources().getColor(R.color.colorRedDark));
             }
 
-            if (list.get(position).getIsPhotoUploaded().equalsIgnoreCase("true")) {
+            if (list.get(position).isPhotoUploaded().equalsIgnoreCase("true")) {
                 holder.binding.tvPhotoUploadedStatus.setText(context.getResources().getString(R.string.uploaded));
                 holder.binding.tvPhotoUploadedStatus.setTextColor(context.getResources().getColor(R.color.colorGreenDark));
             } else {

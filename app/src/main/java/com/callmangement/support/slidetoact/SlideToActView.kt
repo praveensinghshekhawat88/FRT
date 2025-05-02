@@ -1174,7 +1174,7 @@ class SlideToActView
          * Event handler for the slide complete event.
          * Use this handler to react to slide event
          */
-        interface OnSlideCompleteListener {
+        fun interface OnSlideCompleteListener {
             /**
              * Called when user performed the slide
              * @param view The SlideToActView who created the event

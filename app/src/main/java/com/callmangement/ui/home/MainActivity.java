@@ -988,7 +988,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
     }
 
     private void isLoading() {
-        viewModel.getIsLoading().observe(this, aBoolean -> {
+        viewModel.isLoading().observe(this, aBoolean -> {
             if (aBoolean) {
                 showProgress(getResources().getString(R.string.please_wait));
             } else {

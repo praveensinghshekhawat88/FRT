@@ -277,7 +277,7 @@ public class SEAvailableStockManagerActivity extends CustomActivity implements V
     }
 
     private void isLoading() {
-        viewModel.getIsLoading().observe(this, aBoolean -> {
+        viewModel.isLoading().observe(this, aBoolean -> {
             if (aBoolean) {
                 showProgress(getResources().getString(R.string.please_wait));
             } else {

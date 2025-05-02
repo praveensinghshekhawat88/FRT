@@ -138,22 +138,22 @@ public class DistributedStatusReportPdfActivity extends PDFCreatorActivity {
             tableRowView1.addToRow(pdfTextViewFPSCode);
 
             PDFTextView pdfTextViewTicketNo = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-            pdfTextViewTicketNo.setText(""+posDistributionDetail.getTicketNo());
+            pdfTextViewTicketNo.setText(""+ posDistributionDetail.ticketNo);
             tableRowView1.addToRow(pdfTextViewTicketNo);
 
             PDFTextView pdfTextViewDistDate = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-            pdfTextViewDistDate.setText(""+posDistributionDetail.getTranDateStr());
+            pdfTextViewDistDate.setText(""+ posDistributionDetail.tranDateStr);
             tableRowView1.addToRow(pdfTextViewDistDate);
 
             String statusPhotoStr = "No";
-            if (posDistributionDetail.getIsPhotoUploaded().equalsIgnoreCase("true"))
+            if (posDistributionDetail.isPhotoUploaded().equalsIgnoreCase("true"))
                 statusPhotoStr = "Yes";
             PDFTextView pdfTextViewPhotoUpload = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
             pdfTextViewPhotoUpload.setText(""+statusPhotoStr);
             tableRowView1.addToRow(pdfTextViewPhotoUpload);
 
             String statusFormStr = "No";
-            if (posDistributionDetail.getIsFormUploaded().equalsIgnoreCase("true"))
+            if (posDistributionDetail.isFormUploaded().equalsIgnoreCase("true"))
                 statusFormStr = "Yes";
             PDFTextView pdfTextViewFormUpload = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
             pdfTextViewFormUpload.setText(""+statusFormStr);
@@ -171,22 +171,22 @@ public class DistributedStatusReportPdfActivity extends PDFCreatorActivity {
                 tableRowView1.addToRow(pdfTextViewFPSCode);
 
                 pdfTextViewTicketNo = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                pdfTextViewTicketNo.setText(""+posDistributionDetail.getTicketNo());
+                pdfTextViewTicketNo.setText(""+ posDistributionDetail.ticketNo);
                 tableRowView1.addToRow(pdfTextViewTicketNo);
 
                 pdfTextViewDistDate = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                pdfTextViewDistDate.setText(""+posDistributionDetail.getTranDateStr());
+                pdfTextViewDistDate.setText(""+ posDistributionDetail.tranDateStr);
                 tableRowView1.addToRow(pdfTextViewDistDate);
 
                 statusPhotoStr = "No";
-                if (posDistributionDetail.getIsPhotoUploaded().equalsIgnoreCase("true"))
+                if (posDistributionDetail.isPhotoUploaded().equalsIgnoreCase("true"))
                     statusPhotoStr = "Yes";
                 pdfTextViewPhotoUpload = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
                 pdfTextViewPhotoUpload.setText(""+statusPhotoStr);
                 tableRowView1.addToRow(pdfTextViewPhotoUpload);
 
                 statusFormStr = "No";
-                if (posDistributionDetail.getIsFormUploaded().equalsIgnoreCase("true"))
+                if (posDistributionDetail.isFormUploaded().equalsIgnoreCase("true"))
                     statusFormStr = "Yes";
                 pdfTextViewFormUpload = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
                 pdfTextViewFormUpload.setText(""+statusFormStr);
