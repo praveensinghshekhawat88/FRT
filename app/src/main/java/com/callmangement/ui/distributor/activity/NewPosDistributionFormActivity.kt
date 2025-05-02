@@ -1,506 +1,517 @@
-package com.callmangement.ui.distributor.activity;
+package com.callmangement.ui.distributor.activity
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.net.wifi.WifiManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.text.format.Formatter;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.ViewModelProviders;
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.DialogInterface
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.net.wifi.WifiManager
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
+import android.text.format.Formatter
+import android.view.Gravity
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.CompoundButton
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProviders
+import com.callmangement.R
+import com.callmangement.custom.CustomActivity
+import com.callmangement.databinding.ActivityNewPosDistributionFormBinding
+import com.callmangement.imagepicker.model.Config
+import com.callmangement.imagepicker.model.Image
+import com.callmangement.imagepicker.ui.imagepicker.ImagePicker
+import com.callmangement.model.district.ModelDistrict
+import com.callmangement.model.district.ModelDistrictList
+import com.callmangement.model.pos_distribution_form.ModelEquipmentModel
+import com.callmangement.model.pos_distribution_form.ModelNewMachineDetailByFPSResponse
+import com.callmangement.model.pos_distribution_form.ModelNewMachineMake
+import com.callmangement.model.pos_distribution_form.ModelOldMachineDetailByFPSResponse
+import com.callmangement.model.pos_distribution_form.ModelOldMachineMake
+import com.callmangement.network.APIService
+import com.callmangement.network.MultipartRequester.fromString
+import com.callmangement.network.RetrofitInstance.retrofitInstance
+import com.callmangement.support.ImageUtilsForRotate.ensurePortrait
+import com.callmangement.support.dexter.Dexter
+import com.callmangement.support.dexter.MultiplePermissionsReport
+import com.callmangement.support.dexter.PermissionToken
+import com.callmangement.support.dexter.listener.PermissionRequest
+import com.callmangement.support.dexter.listener.multi.MultiplePermissionsListener
+import com.callmangement.ui.complaint.ComplaintViewModel
+import com.callmangement.utils.CompressImage.Companion.compress
+import com.callmangement.utils.Constants
+import com.callmangement.utils.Constants.isNetworkAvailable
+import com.callmangement.utils.DateTimeUtils.currentDate
+import com.callmangement.utils.PrefManager
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody.Part.Companion.createFormData
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
+import java.io.IOException
+import java.nio.charset.StandardCharsets
+import java.util.Objects
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.MultipartRequester;
-import com.callmangement.Network.RetrofitInstance;
-import com.callmangement.R;
-import com.callmangement.custom.CustomActivity;
-import com.callmangement.databinding.ActivityNewPosDistributionFormBinding;
-import com.callmangement.imagepicker.model.Config;
-import com.callmangement.imagepicker.model.Image;
-import com.callmangement.imagepicker.ui.imagepicker.ImagePicker;
-import com.callmangement.model.district.ModelDistrictList;
-import com.callmangement.model.pos_distribution_form.ModelEquipmentModel;
-import com.callmangement.model.pos_distribution_form.ModelNewMachineDetailByFPSResponse;
-import com.callmangement.model.pos_distribution_form.ModelNewMachineMake;
-import com.callmangement.model.pos_distribution_form.ModelOldMachineDetailByFPSResponse;
-import com.callmangement.model.pos_distribution_form.ModelOldMachineMake;
-import com.callmangement.support.ImageUtilsForRotate;
-import com.callmangement.ui.complaint.ComplaintViewModel;
-import com.callmangement.utils.CompressImage;
-import com.callmangement.utils.Constants;
-import com.callmangement.utils.DateTimeUtils;
-import com.callmangement.utils.PrefManager;
-import com.callmangement.support.dexter.Dexter;
-import com.callmangement.support.dexter.MultiplePermissionsReport;
-import com.callmangement.support.dexter.PermissionToken;
-import com.callmangement.support.dexter.listener.PermissionRequest;
-import com.callmangement.support.dexter.listener.multi.MultiplePermissionsListener;
+class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
+    private var binding: ActivityNewPosDistributionFormBinding? = null
+    private var photoStoragePath = ""
+    private var permissionGranted = false
+    val REQUEST_PICK_PHOTO: Int = 1113
+    private val listEquipmentModel: MutableList<ModelEquipmentModel> = ArrayList()
+    private val listOldMachineMake: MutableList<ModelOldMachineMake> = ArrayList()
+    private val listNewMachineMake: MutableList<ModelNewMachineMake> = ArrayList()
+    private var viewModel: ComplaintViewModel? = null
+    private val checkDistrict = 0
+    private var districtNameEng: String? = ""
+    private var districtId: String? = "0"
+    private val tranId = "0"
+    private var prefManager: PrefManager? = null
+    private var district_List: List<ModelDistrictList?>? = ArrayList()
+    private val flagGetOldMachineDetail = false
+    private var whetherOldMachineProvidedForReplacement = "1"
+    private var equipmentModelName = ""
+    private var equipmentModelId: String? = "1"
+    private var oldMachineMakeId: String? = "1"
+    private var newMachineMakeId: String? = ""
+    private var oldMachineCondition = ""
+    private var completeWithSatisfactorily = "1"
 
-import org.json.JSONObject;
+    private var oldMachineSrNo: String? = ""
+    private var fingerPrintSrNo: String? = ""
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+    var builder: AlertDialog.Builder? = null
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class NewPosDistributionFormActivity extends CustomActivity implements View.OnClickListener {
-    private ActivityNewPosDistributionFormBinding binding;
-    private String photoStoragePath = "";
-    private boolean permissionGranted;
-    public final int REQUEST_PICK_PHOTO = 1113;
-    private final List<ModelEquipmentModel> listEquipmentModel = new ArrayList<>();
-    private final List<ModelOldMachineMake> listOldMachineMake = new ArrayList<>();
-    private final List<ModelNewMachineMake> listNewMachineMake = new ArrayList<>();
-    private ComplaintViewModel viewModel;
-    private final int checkDistrict = 0;
-    private String districtNameEng = "";
-    private String districtId = "0";
-    private final String tranId = "0";
-    private PrefManager prefManager;
-    private List<ModelDistrictList> district_List = new ArrayList<>();
-    private final boolean flagGetOldMachineDetail = false;
-    private String whetherOldMachineProvidedForReplacement = "1";
-    private String equipmentModelName = "";
-    private String equipmentModelId = "1";
-    private String oldMachineMakeId = "1";
-    private String newMachineMakeId = "";
-    private String oldMachineCondition = "";
-    private String completeWithSatisfactorily = "1";
-
-    private String oldMachineSrNo = "";
-    private String fingerPrintSrNo = "";
-
-    AlertDialog.Builder builder = null;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityNewPosDistributionFormBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        binding.actionBar.ivBack.setVisibility(View.VISIBLE);
-        binding.actionBar.ivThreeDot.setVisibility(View.GONE);
-        binding.actionBar.layoutLanguage.setVisibility(View.GONE);
-        binding.actionBar.buttonPDF.setVisibility(View.GONE);
-        binding.actionBar.textToolbarTitle.setText(getResources().getString(R.string.pos_distribution_form));
-        prefManager = new PrefManager(mContext);
-        viewModel = ViewModelProviders.of(this).get(ComplaintViewModel.class);
-        initView();
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityNewPosDistributionFormBinding.inflate(
+            layoutInflater
+        )
+        setContentView(binding!!.root)
+        binding!!.actionBar.ivBack.visibility = View.VISIBLE
+        binding!!.actionBar.ivThreeDot.visibility = View.GONE
+        binding!!.actionBar.layoutLanguage.visibility = View.GONE
+        binding!!.actionBar.buttonPDF.visibility = View.GONE
+        binding!!.actionBar.textToolbarTitle.text =
+            resources.getString(R.string.pos_distribution_form)
+        prefManager = PrefManager(mContext!!)
+        viewModel = ViewModelProviders.of(this).get(
+            ComplaintViewModel::class.java
+        )
+        initView()
     }
 
-    private void initView() {
-        districtNameEng = "--" + getResources().getString(R.string.district) + "--";
-        binding.inputDealerName.setEnabled(false);
-        binding.inputMobileNumber.setEnabled(false);
-        binding.inputBlockName.setEnabled(false);
-        binding.inputNewMachineSrNo.setEnabled(false);
-        binding.inputNewFingerprintSrNo.setEnabled(false);
-        binding.inputIMEIIMEI2.setEnabled(false);
-        binding.inputAccessoriesProvided.setEnabled(false);
-        binding.inputDate.setText(DateTimeUtils.getCurrentDate());
-        setUpOnClickListener();
-        checkPermission();
-        districtList();
-        setEquipmentModelSpinner();
-        setOldMachineMakeSpinner();
-        setNewMachineMakeSpinner();
+    private fun initView() {
+        districtNameEng = "--" + resources.getString(R.string.district) + "--"
+        binding!!.inputDealerName.isEnabled = false
+        binding!!.inputMobileNumber.isEnabled = false
+        binding!!.inputBlockName.isEnabled = false
+        binding!!.inputNewMachineSrNo.isEnabled = false
+        binding!!.inputNewFingerprintSrNo.isEnabled = false
+        binding!!.inputIMEIIMEI2.isEnabled = false
+        binding!!.inputAccessoriesProvided.isEnabled = false
+        binding!!.inputDate.setText(currentDate)
+        setUpOnClickListener()
+        checkPermission()
+        districtList()
+        setEquipmentModelSpinner()
+        setOldMachineMakeSpinner()
+        setNewMachineMakeSpinner()
     }
 
-    private void setUpOnClickListener() {
-        binding.spinnerDistrict.setEnabled(false);
-        binding.inputFpsCode.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+    private fun setUpOnClickListener() {
+        binding!!.spinnerDistrict.isEnabled = false
+        binding!!.inputFpsCode.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
             }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
             }
 
-            @Override
-            public void afterTextChanged(Editable charSequence) {
-                if (charSequence.toString().length() > 0) {
-                    new Handler().postDelayed(() -> getOldMachineDetailsByFPSAPI(charSequence.toString()), 2500);
+            override fun afterTextChanged(charSequence: Editable) {
+                if (charSequence.toString().length > 0) {
+                    Handler().postDelayed(
+                        { getOldMachineDetailsByFPSAPI(charSequence.toString()) },
+                        2500
+                    )
                 } else {
-                    Objects.requireNonNull(binding.inputDealerName.getText()).clear();
-                    Objects.requireNonNull(binding.inputMobileNumber.getText()).clear();
-                    Objects.requireNonNull(binding.inputBlockName.getText()).clear();
-                    Objects.requireNonNull(binding.inputOldMachineSrNo.getText()).clear();
-                    Objects.requireNonNull(binding.inputFingerprintSrNo.getText()).clear();
+                    Objects.requireNonNull(binding!!.inputDealerName.text)!!.clear()
+                    Objects.requireNonNull(binding!!.inputMobileNumber.text)!!.clear()
+                    Objects.requireNonNull(binding!!.inputBlockName.text)!!.clear()
+                    Objects.requireNonNull(binding!!.inputOldMachineSrNo.text)!!.clear()
+                    Objects.requireNonNull(binding!!.inputFingerprintSrNo.text)!!.clear()
                 }
             }
-        });
+        })
 
-        binding.inputNewMachineOrderNo.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+        binding!!.inputNewMachineOrderNo.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
             }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
             }
 
-            @Override
-            public void afterTextChanged(Editable charSequence) {
-                if (charSequence.toString().length() > 0) {
-                    new Handler().postDelayed(() -> getNewMachineDetailsByOrdNoAPI(charSequence.toString()), 2000);
+            override fun afterTextChanged(charSequence: Editable) {
+                if (charSequence.toString().length > 0) {
+                    Handler().postDelayed(
+                        { getNewMachineDetailsByOrdNoAPI(charSequence.toString()) },
+                        2000
+                    )
                 } else {
-                    Objects.requireNonNull(binding.inputNewMachineSrNo.getText()).clear();
-                    Objects.requireNonNull(binding.inputNewFingerprintSrNo.getText()).clear();
-                    Objects.requireNonNull(binding.inputIMEIIMEI2.getText()).clear();
-                    Objects.requireNonNull(binding.inputAccessoriesProvided.getText()).clear();
+                    Objects.requireNonNull(binding!!.inputNewMachineSrNo.text)!!.clear()
+                    Objects.requireNonNull(binding!!.inputNewFingerprintSrNo.text)!!.clear()
+                    Objects.requireNonNull(binding!!.inputIMEIIMEI2.text)!!.clear()
+                    Objects.requireNonNull(binding!!.inputAccessoriesProvided.text)!!.clear()
                 }
             }
-        });
+        })
 
-        binding.inputOldMachineSrNo.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+        binding!!.inputOldMachineSrNo.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
             }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.toString().length() > 0) {
-                    if (charSequence.toString().equals(oldMachineSrNo))
-                        binding.inputFingerprintSrNo.setText(fingerPrintSrNo);
-                    else binding.inputFingerprintSrNo.setText("");
-                } else binding.inputFingerprintSrNo.setText("");
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+                if (charSequence.toString().length > 0) {
+                    if (charSequence.toString() == oldMachineSrNo) binding!!.inputFingerprintSrNo.setText(
+                        fingerPrintSrNo
+                    )
+                    else binding!!.inputFingerprintSrNo.setText("")
+                } else binding!!.inputFingerprintSrNo.setText("")
             }
 
-            @Override
-            public void afterTextChanged(Editable charSequence) {
-
+            override fun afterTextChanged(charSequence: Editable) {
             }
-        });
+        })
 
-        binding.spinnerDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                districtNameEng = district_List.get(i).districtNameEng;
-                districtId = district_List.get(i).getDistrictId();
-                /*if (!districtId.equals("0") && Objects.requireNonNull(binding.inputFpsCode.getText()).toString().trim().length() > 0)
+        binding!!.spinnerDistrict.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View,
+                    i: Int,
+                    l: Long
+                ) {
+                    districtNameEng = district_List!![i]!!.districtNameEng
+                    districtId = district_List!![i]!!.districtId
+                    /*if (!districtId.equals("0") && Objects.requireNonNull(binding.inputFpsCode.getText()).toString().trim().length() > 0)
                     getOldMachineDetailsByFPSAPI(binding.inputFpsCode.getText().toString());*/
+                }
+
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {
+                }
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+        binding!!.spinnerEquipmentModel.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View,
+                    i: Int,
+                    l: Long
+                ) {
+                    equipmentModelName = listEquipmentModel[i].getName()
+                    equipmentModelId = listEquipmentModel[i].id
+                }
 
-            }
-        });
-
-        binding.spinnerEquipmentModel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                equipmentModelName = listEquipmentModel.get(i).getName();
-                equipmentModelId = listEquipmentModel.get(i).getId();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        binding.spinnerOldMachineMake.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                oldMachineMakeId = listOldMachineMake.get(i).getId();
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {
+                }
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+        binding!!.spinnerOldMachineMake.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View,
+                    i: Int,
+                    l: Long
+                ) {
+                    oldMachineMakeId = listOldMachineMake[i].id
+                }
 
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {
+                }
             }
-        });
-        binding.spinnerNewMachineMake.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                newMachineMakeId = listNewMachineMake.get(i).getId();
+        binding!!.spinnerNewMachineMake.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View,
+                    i: Int,
+                    l: Long
+                ) {
+                    newMachineMakeId = listNewMachineMake[i].id
+                }
+
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {
+                }
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
 
-            }
-        });
-
-
-        binding.chkYes.setOnCheckedChangeListener((compoundButton, checked) -> {
+        binding!!.chkYes.setOnCheckedChangeListener { compoundButton: CompoundButton?, checked: Boolean ->
             if (checked) {
-                whetherOldMachineProvidedForReplacement = "1";
-                binding.chkNo.setChecked(false);
+                whetherOldMachineProvidedForReplacement = "1"
+                binding!!.chkNo.isChecked = false
             } else {
-                whetherOldMachineProvidedForReplacement = "0";
+                whetherOldMachineProvidedForReplacement = "0"
             }
-        });
+        }
 
-        binding.chkNo.setOnCheckedChangeListener((compoundButton, checked) -> {
+        binding!!.chkNo.setOnCheckedChangeListener { compoundButton: CompoundButton?, checked: Boolean ->
             if (checked) {
-                whetherOldMachineProvidedForReplacement = "0";
-                binding.chkYes.setChecked(false);
+                whetherOldMachineProvidedForReplacement = "0"
+                binding!!.chkYes.isChecked = false
             } else {
-                whetherOldMachineProvidedForReplacement = "1";
-                binding.chkYes.setChecked(true);
+                whetherOldMachineProvidedForReplacement = "1"
+                binding!!.chkYes.isChecked = true
             }
-        });
+        }
 
 
-        binding.chkCompleteWithSatisfactorily.setOnCheckedChangeListener((compoundButton, checked) -> {
-            if (checked) {
-                completeWithSatisfactorily = "1";
+        binding!!.chkCompleteWithSatisfactorily.setOnCheckedChangeListener { compoundButton: CompoundButton?, checked: Boolean ->
+            completeWithSatisfactorily = if (checked) {
+                "1"
             } else {
-                completeWithSatisfactorily = "0";
+                "0"
             }
-        });
+        }
 
-        binding.chkRunning.setOnCheckedChangeListener((compoundButton, checked) -> {
+        binding!!.chkRunning.setOnCheckedChangeListener { compoundButton: CompoundButton?, checked: Boolean ->
             if (checked) {
-                oldMachineCondition = "Running";
-                binding.chkDead.setChecked(false);
+                oldMachineCondition = "Running"
+                binding!!.chkDead.isChecked = false
             } /*else {
                 oldMachineCondition = "";
             }*/
-        });
+        }
 
-        binding.chkDead.setOnCheckedChangeListener((compoundButton, checked) -> {
+        binding!!.chkDead.setOnCheckedChangeListener { compoundButton: CompoundButton?, checked: Boolean ->
             if (checked) {
-                oldMachineCondition = "Dead";
-                binding.chkRunning.setChecked(false);
+                oldMachineCondition = "Dead"
+                binding!!.chkRunning.isChecked = false
             } /*else {
                 oldMachineCondition = "";
             }*/
-        });
+        }
 
-        binding.buttonSubmit.setOnClickListener(this);
-        binding.ivPhoto.setOnClickListener(this);
-        binding.actionBar.ivBack.setOnClickListener(this);
+        binding!!.buttonSubmit.setOnClickListener(this)
+        binding!!.ivPhoto.setOnClickListener(this)
+        binding!!.actionBar.ivBack.setOnClickListener(this)
     }
 
-    private void setEquipmentModelSpinner() {
-        ModelEquipmentModel model = new ModelEquipmentModel();
-        model.setId("1");
-        model.setName("Mobiocean TPS 900 (Android 10 OS)");
-        listEquipmentModel.add(model);
-        ArrayAdapter<ModelEquipmentModel> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, listEquipmentModel);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerEquipmentModel.setAdapter(dataAdapter);
-        binding.spinnerEquipmentModel.setSelection(0);
+    private fun setEquipmentModelSpinner() {
+        val model = ModelEquipmentModel()
+        model.id = "1"
+        model.setName("Mobiocean TPS 900 (Android 10 OS)")
+        listEquipmentModel.add(model)
+        val dataAdapter =
+            ArrayAdapter(mContext!!, android.R.layout.simple_spinner_item, listEquipmentModel)
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding!!.spinnerEquipmentModel.adapter = dataAdapter
+        binding!!.spinnerEquipmentModel.setSelection(0)
     }
 
-    private void setOldMachineMakeSpinner() {
-        ModelOldMachineMake model1 = new ModelOldMachineMake();
-        model1.setId("1");
-        model1.setName("VISIONTEK");
-        listOldMachineMake.add(model1);
-        ModelOldMachineMake model2 = new ModelOldMachineMake();
-        model2.setId("2");
-        model2.setName("ANALOGICS");
-        listOldMachineMake.add(model2);
-        ArrayAdapter<ModelOldMachineMake> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, listOldMachineMake);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerOldMachineMake.setAdapter(dataAdapter);
-        binding.spinnerOldMachineMake.setSelection(0);
+    private fun setOldMachineMakeSpinner() {
+        val model1 = ModelOldMachineMake()
+        model1.id = "1"
+        model1.setName("VISIONTEK")
+        listOldMachineMake.add(model1)
+        val model2 = ModelOldMachineMake()
+        model2.id = "2"
+        model2.setName("ANALOGICS")
+        listOldMachineMake.add(model2)
+        val dataAdapter =
+            ArrayAdapter(mContext!!, android.R.layout.simple_spinner_item, listOldMachineMake)
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding!!.spinnerOldMachineMake.adapter = dataAdapter
+        binding!!.spinnerOldMachineMake.setSelection(0)
     }
 
-    private void setNewMachineMakeSpinner() {
-        ModelNewMachineMake model1 = new ModelNewMachineMake();
-        model1.setId("3");
-        model1.setName("MOBIOCEAN");
-        listNewMachineMake.add(model1);
-        ArrayAdapter<ModelNewMachineMake> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, listNewMachineMake);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerNewMachineMake.setAdapter(dataAdapter);
-        binding.spinnerNewMachineMake.setSelection(0);
+    private fun setNewMachineMakeSpinner() {
+        val model1 = ModelNewMachineMake()
+        model1.id = "3"
+        model1.setName("MOBIOCEAN")
+        listNewMachineMake.add(model1)
+        val dataAdapter =
+            ArrayAdapter(mContext!!, android.R.layout.simple_spinner_item, listNewMachineMake)
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding!!.spinnerNewMachineMake.adapter = dataAdapter
+        binding!!.spinnerNewMachineMake.setSelection(0)
     }
 
-    private void checkPermission() {
+    private fun checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Dexter.withContext(this)
-                    .withPermissions(
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.READ_MEDIA_IMAGES,
-                            Manifest.permission.READ_MEDIA_VIDEO,
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.ACCESS_WIFI_STATE
-                    ).withListener(new MultiplePermissionsListener() {
-                        @Override
-                        public void onPermissionsChecked(MultiplePermissionsReport report) {
-                            if (report.areAllPermissionsGranted()) {
-                                permissionGranted = true;
-                            }
+                .withPermissions(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.READ_MEDIA_IMAGES,
+                    Manifest.permission.READ_MEDIA_VIDEO,
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.ACCESS_WIFI_STATE
+                ).withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                        if (report.areAllPermissionsGranted()) {
+                            permissionGranted = true
                         }
+                    }
 
-                        @Override
-                        public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                            token.continuePermissionRequest();
-                        }
-                    }).check();
+                    override fun onPermissionRationaleShouldBeShown(
+                        permissions: List<PermissionRequest>,
+                        token: PermissionToken
+                    ) {
+                        token.continuePermissionRequest()
+                    }
+                }).check()
         } else {
-
-
             Dexter.withContext(this)
-                    .withPermissions(
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.ACCESS_WIFI_STATE
-                    ).withListener(new MultiplePermissionsListener() {
-                        @Override
-                        public void onPermissionsChecked(MultiplePermissionsReport report) {
-                            if (report.areAllPermissionsGranted()) {
-                                permissionGranted = true;
-                            }
+                .withPermissions(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.ACCESS_WIFI_STATE
+                ).withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                        if (report.areAllPermissionsGranted()) {
+                            permissionGranted = true
                         }
+                    }
 
-                        @Override
-                        public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                            token.continuePermissionRequest();
-                        }
-                    }).check();
+                    override fun onPermissionRationaleShouldBeShown(
+                        permissions: List<PermissionRequest>,
+                        token: PermissionToken
+                    ) {
+                        token.continuePermissionRequest()
+                    }
+                }).check()
         }
     }
 
-    private void districtList() {
-        if (Constants.isNetworkAvailable(mContext)) {
-            isLoading();
-            viewModel.getDistrict().observe(this, modelDistrict -> {
-                isLoading();
-                if (modelDistrict.status.equals("200")) {
-                    district_List = modelDistrict.district_List;
-                    if (district_List != null && district_List.size() > 0) {
+    private fun districtList() {
+        if (isNetworkAvailable(mContext!!)) {
+            isLoading
+            viewModel!!.district!!.observe(this) { modelDistrict: ModelDistrict? ->
+                isLoading
+                if (modelDistrict!!.status == "200") {
+                    district_List = modelDistrict.district_List
+                    if (district_List != null && district_List!!.size > 0) {
                         /*Collections.reverse(district_List);
                         ModelDistrictList_w l = new ModelDistrictList_w();
                         l.setDistrictId(String.valueOf(-1));
                         l.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
                         district_List.add(l);
                         Collections.reverse(district_List);*/
-                        ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, district_List);
-                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.spinnerDistrict.setAdapter(dataAdapter);
+                        val dataAdapter = ArrayAdapter(
+                            mContext!!, android.R.layout.simple_spinner_item, district_List!!
+                        )
+                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        binding!!.spinnerDistrict.adapter = dataAdapter
                     }
-
                 }
-            });
-        } else {
-            makeToast(getResources().getString(R.string.no_internet_connection));
-        }
-    }
-
-    private void isLoading() {
-        viewModel.getIsLoading().observe(this, aBoolean -> {
-            if (aBoolean) {
-                showProgress(getResources().getString(R.string.please_wait));
-            } else {
-                hideProgress();
             }
-        });
-    }
-
-    private void selectPhoto() {
-        try {
-            final CharSequence[] items = {getResources().getString(R.string.imagepicker_str_take_photo), getResources().getString(R.string.imagepicker_str_cancel)};
-            TextView title = new TextView(mContext);
-            title.setText(getResources().getString(R.string.capture_photo));
-            title.setBackgroundColor(getResources().getColor(R.color.colorActionBar));
-            title.setPadding(15, 25, 15, 25);
-            title.setGravity(Gravity.CENTER);
-            title.setTextColor(Color.WHITE);
-            title.setTextSize(22);
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setCustomTitle(title);
-            builder.setItems(items, (dialog, item) -> {
-                if (items[item].equals(getResources().getString(R.string.imagepicker_str_take_photo))) {
-                    ImagePicker.with(mContext)
-                            .setToolbarColor("#212121")
-                            .setStatusBarColor("#000000")
-                            .setToolbarTextColor("#FFFFFF")
-                            .setToolbarIconColor("#FFFFFF")
-                            .setProgressBarColor("#4CAF50")
-                            .setBackgroundColor("#212121")
-                            .setCameraOnly(true)
-                            .setMultipleMode(true)
-                            .setFolderMode(true)
-                            .setShowCamera(true)
-                            .setFolderTitle("Albums")
-                            .setImageTitle("Galleries")
-                            .setDoneTitle("Done")
-                            .setMaxSize(1)
-                            .setSavePath(Constants.saveImagePath)
-                            .setSelectedImages(new ArrayList<>())
-                            .start(REQUEST_PICK_PHOTO);
-
-                } else if (items[item].equals(getResources().getString(R.string.imagepicker_str_cancel))) {
-                    dialog.dismiss();
-                }
-            });
-            builder.show();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            makeToast(resources.getString(R.string.no_internet_connection))
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_PICK_PHOTO && resultCode == RESULT_OK && data != null) {
-            ArrayList<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
-            if (images != null && images.size() > 0) {
-                Image image = images.get(0);
-                photoStoragePath = image.getPath();
-                if (photoStoragePath.contains("file:/")) {
-                    photoStoragePath = photoStoragePath.replace("file:/", "");
+    private val isLoading: Unit
+        get() {
+            viewModel!!.isLoading!!.observe(this) { aBoolean: Boolean? ->
+                if (aBoolean!!) {
+                    showProgress(resources.getString(R.string.please_wait))
+                } else {
+                    hideProgress()
                 }
-                photoStoragePath = CompressImage.compress(photoStoragePath, this);
-                File imgFile = new File(photoStoragePath);
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            }
+        }
+
+    private fun selectPhoto() {
+        try {
+            val items = arrayOf<CharSequence>(
+                resources.getString(R.string.imagepicker_str_take_photo),
+                resources.getString(R.string.imagepicker_str_cancel)
+            )
+            val title = TextView(mContext)
+            title.text = resources.getString(R.string.capture_photo)
+            title.setBackgroundColor(resources.getColor(R.color.colorActionBar))
+            title.setPadding(15, 25, 15, 25)
+            title.gravity = Gravity.CENTER
+            title.setTextColor(Color.WHITE)
+            title.textSize = 22f
+
+            val builder = AlertDialog.Builder(
+                mContext!!
+            )
+            builder.setCustomTitle(title)
+            builder.setItems(items) { dialog: DialogInterface, item: Int ->
+                if (items[item] == resources.getString(R.string.imagepicker_str_take_photo)) {
+                    ImagePicker.with(mContext)
+                        .setToolbarColor("#212121")
+                        .setStatusBarColor("#000000")
+                        .setToolbarTextColor("#FFFFFF")
+                        .setToolbarIconColor("#FFFFFF")
+                        .setProgressBarColor("#4CAF50")
+                        .setBackgroundColor("#212121")
+                        .setCameraOnly(true)
+                        .setMultipleMode(true)
+                        .setFolderMode(true)
+                        .setShowCamera(true)
+                        .setFolderTitle("Albums")
+                        .setImageTitle("Galleries")
+                        .setDoneTitle("Done")
+                        .setMaxSize(1)
+                        .setSavePath(Constants.saveImagePath)
+                        .setSelectedImages(ArrayList())
+                        .start(REQUEST_PICK_PHOTO)
+                } else if (items[item] == resources.getString(R.string.imagepicker_str_cancel)) {
+                    dialog.dismiss()
+                }
+            }
+            builder.show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_PICK_PHOTO && resultCode == RESULT_OK && data != null) {
+            val images = data.getParcelableArrayListExtra<Image>(Config.EXTRA_IMAGES)
+            if (images != null && images.size > 0) {
+                val image = images[0]
+                photoStoragePath = image.path
+                if (photoStoragePath.contains("file:/")) {
+                    photoStoragePath = photoStoragePath.replace("file:/", "")
+                }
+                photoStoragePath = compress(photoStoragePath, this)
+                val imgFile = File(photoStoragePath)
+                val myBitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
 
                 try {
-                    binding.ivPhoto.setImageBitmap(ImageUtilsForRotate.ensurePortrait(photoStoragePath));
-                } catch (IOException e) {
-                    binding.ivPhoto.setImageBitmap(myBitmap);
-                    e.printStackTrace();
-                }catch (NullPointerException e){
-                    e.printStackTrace();
+                    binding!!.ivPhoto.setImageBitmap(ensurePortrait(photoStoragePath))
+                } catch (e: IOException) {
+                    binding!!.ivPhoto.setImageBitmap(myBitmap)
+                    e.printStackTrace()
+                } catch (e: NullPointerException) {
+                    e.printStackTrace()
                 }
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private void getOldMachineDetailsByFPSAPI(String fpsCode) {
-        if (Constants.isNetworkAvailable(mContext)) {
+    private fun getOldMachineDetailsByFPSAPI(fpsCode: String) {
+        if (isNetworkAvailable(mContext!!)) {
             /*if (districtId.equals("0")) {
                 if (!flagGetOldMachineDetail) {
                     Toast.makeText(mContext, getResources().getString(R.string.please_select_district), Toast.LENGTH_SHORT).show();
@@ -508,320 +519,395 @@ public class NewPosDistributionFormActivity extends CustomActivity implements Vi
                 }
                 return;
             }*/
-            APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<ResponseBody> call = service.GetOldMachineDetailsByFPSAPI(districtId, prefManager.getUSER_Id(), fpsCode);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                    if (response.isSuccessful()) {
+            val service = retrofitInstance!!.create(
+                APIService::class.java
+            )
+            val call =
+                service.GetOldMachineDetailsByFPSAPI(districtId, prefManager!!.uSER_Id, fpsCode)
+            call!!.enqueue(object : Callback<ResponseBody?> {
+                override fun onResponse(
+                    call: Call<ResponseBody?>,
+                    response: Response<ResponseBody?>
+                ) {
+                    if (response.isSuccessful) {
                         try {
                             if (response.code() == 200) {
                                 if (response.body() != null) {
-                                    String responseStr = response.body().string();
-                                //    Log.e("response", responseStr);
-                                    JSONObject jsonObject = new JSONObject((responseStr));
-                                    String status = jsonObject.optString("status");
-                                    ModelOldMachineDetailByFPSResponse modelResponse = (ModelOldMachineDetailByFPSResponse) getObject(responseStr, ModelOldMachineDetailByFPSResponse.class);
-                                    if (status.equals("200")) {
+                                    val responseStr = response.body()!!.string()
+                                    //    Log.e("response", responseStr);
+                                    val jsonObject = JSONObject((responseStr))
+                                    val status = jsonObject.optString("status")
+                                    val modelResponse = getObject(
+                                        responseStr,
+                                        ModelOldMachineDetailByFPSResponse::class.java
+                                    ) as ModelOldMachineDetailByFPSResponse
+                                    if (status == "200") {
                                         if (modelResponse != null) {
-                                            binding.inputDealerName.setEnabled(false);
-                                            binding.inputMobileNumber.setEnabled(false);
-                                            binding.inputBlockName.setEnabled(false);
-//                                            binding.inputOldMachineSrNo.setEnabled(false);
-                                            binding.inputFingerprintSrNo.setEnabled(false);
-                                            binding.inputTicketNumber.setEnabled(false);
+                                            binding!!.inputDealerName.isEnabled = false
+                                            binding!!.inputMobileNumber.isEnabled = false
+                                            binding!!.inputBlockName.isEnabled = false
+                                            //                                            binding.inputOldMachineSrNo.setEnabled(false);
+                                            binding!!.inputFingerprintSrNo.isEnabled = false
+                                            binding!!.inputTicketNumber.isEnabled = false
 
-                                            oldMachineSrNo = modelResponse.oldMachineData.getOldMachineSerialNo();
-                                            fingerPrintSrNo = modelResponse.oldMachineData.getOldMachineBiometricSeriallNo();
+                                            oldMachineSrNo =
+                                                modelResponse.oldMachineData!!.oldMachineSerialNo
+                                            fingerPrintSrNo =
+                                                modelResponse.oldMachineData!!.oldMachineBiometricSeriallNo
 
-                                            binding.inputDealerName.setText(modelResponse.oldMachineData.getDealerName());
-                                            binding.inputMobileNumber.setText(modelResponse.oldMachineData.getMobileNo());
-                                            binding.inputBlockName.setText(modelResponse.oldMachineData.getBlockName());
-                                            binding.inputOldMachineSrNo.setText(oldMachineSrNo);
-                                            binding.inputFingerprintSrNo.setText(fingerPrintSrNo);
-                                            binding.inputTicketNumber.setText(modelResponse.oldMachineData.getTicketNo());
+                                            binding!!.inputDealerName.setText(modelResponse.oldMachineData!!.dealerName)
+                                            binding!!.inputMobileNumber.setText(modelResponse.oldMachineData!!.mobileNo)
+                                            binding!!.inputBlockName.setText(modelResponse.oldMachineData!!.blockName)
+                                            binding!!.inputOldMachineSrNo.setText(oldMachineSrNo)
+                                            binding!!.inputFingerprintSrNo.setText(fingerPrintSrNo)
+                                            binding!!.inputTicketNumber.setText(modelResponse.oldMachineData!!.ticketNo)
 
-                                            districtId = modelResponse.oldMachineData.getDistrictId().toString();
-                                            binding.spinnerDistrict.setSelection(getSelectedDistrictSpinnerIndex(modelResponse.oldMachineData.getDistrictId().toString()));
+                                            districtId =
+                                                modelResponse.oldMachineData!!.districtId.toString()
+                                            binding!!.spinnerDistrict.setSelection(
+                                                getSelectedDistrictSpinnerIndex(
+                                                    modelResponse.oldMachineData!!.districtId.toString()
+                                                )
+                                            )
                                         }
                                     } else {
-                                        dialogMessage(modelResponse.getMessage());
-                                        binding.inputDealerName.setText("");
-                                        binding.inputMobileNumber.setText("");
-                                        binding.inputBlockName.setText("");
-                                        binding.inputOldMachineSrNo.setText("");
-                                        binding.inputFingerprintSrNo.setText("");
-                                        binding.inputTicketNumber.setText("");
-                                        binding.spinnerDistrict.setSelection(-1);
+                                        dialogMessage(modelResponse.message)
+                                        binding!!.inputDealerName.setText("")
+                                        binding!!.inputMobileNumber.setText("")
+                                        binding!!.inputBlockName.setText("")
+                                        binding!!.inputOldMachineSrNo.setText("")
+                                        binding!!.inputFingerprintSrNo.setText("")
+                                        binding!!.inputTicketNumber.setText("")
+                                        binding!!.spinnerDistrict.setSelection(-1)
                                     }
                                 }
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
                     } else {
 //                        makeToast(getResources().getString(R.string.error));
                     }
                 }
 
-                @Override
-                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                    makeToast(getResources().getString(R.string.error_message));
+                override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                    makeToast(resources.getString(R.string.error_message))
                 }
-            });
+            })
         } else {
-            makeToast(getResources().getString(R.string.no_internet_connection));
+            makeToast(resources.getString(R.string.no_internet_connection))
         }
     }
 
-    private int getSelectedDistrictSpinnerIndex(String districtId) {
-        int index = 0;
+    private fun getSelectedDistrictSpinnerIndex(districtId: String): Int {
+        var index = 0
         try {
-            if (district_List != null && district_List.size() > 0) {
-                for (int i = 0; i < district_List.size(); i++) {
-                    if (districtId.equals(district_List.get(i).getDistrictId())) {
-                        index = i;
-                        break;
+            if (district_List != null && district_List!!.size > 0) {
+                for (i in district_List!!.indices) {
+                    if (districtId == district_List!![i]!!.districtId) {
+                        index = i
+                        break
                     }
                 }
             }
-            return index;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return index;
+            return index
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return index
         }
     }
 
-    private void getNewMachineDetailsByOrdNoAPI(String newMachineOrderNo) {
-        if (Constants.isNetworkAvailable(mContext)) {
-            APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<ResponseBody> call = service.GetNewMachineDetailsByOrdNoAPI(/*"0"*/districtId, prefManager.getUSER_Id(), newMachineOrderNo);
-            call.enqueue(new Callback<ResponseBody>() {
+    private fun getNewMachineDetailsByOrdNoAPI(newMachineOrderNo: String) {
+        if (isNetworkAvailable(mContext!!)) {
+            val service = retrofitInstance!!.create(
+                APIService::class.java
+            )
+            val call = service.GetNewMachineDetailsByOrdNoAPI( /*"0"*/districtId,
+                prefManager!!.uSER_Id,
+                newMachineOrderNo
+            )
+            call!!.enqueue(object : Callback<ResponseBody?> {
                 @SuppressLint("SetTextI18n")
-                @Override
-                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                    if (response.isSuccessful()) {
+                override fun onResponse(
+                    call: Call<ResponseBody?>,
+                    response: Response<ResponseBody?>
+                ) {
+                    if (response.isSuccessful) {
                         try {
                             if (response.code() == 200) {
                                 if (response.body() != null) {
-                                    String responseStr = response.body().string();
-                                //    Log.e("response", responseStr);
-                                    JSONObject jsonObject = new JSONObject((responseStr));
-                                    String status = jsonObject.optString("status");
-                                    ModelNewMachineDetailByFPSResponse modelResponse = (ModelNewMachineDetailByFPSResponse) getObject(responseStr, ModelNewMachineDetailByFPSResponse.class);
-                                    if (status.equals("200")) {
+                                    val responseStr = response.body()!!.string()
+                                    //    Log.e("response", responseStr);
+                                    val jsonObject = JSONObject((responseStr))
+                                    val status = jsonObject.optString("status")
+                                    val modelResponse = getObject(
+                                        responseStr,
+                                        ModelNewMachineDetailByFPSResponse::class.java
+                                    ) as ModelNewMachineDetailByFPSResponse
+                                    if (status == "200") {
                                         if (modelResponse != null) {
-                                            binding.inputNewMachineSrNo.setEnabled(false);
-                                            binding.inputNewFingerprintSrNo.setEnabled(false);
-                                            binding.inputIMEIIMEI2.setEnabled(false);
-                                            binding.inputAccessoriesProvided.setEnabled(false);
+                                            binding!!.inputNewMachineSrNo.isEnabled = false
+                                            binding!!.inputNewFingerprintSrNo.isEnabled = false
+                                            binding!!.inputIMEIIMEI2.isEnabled = false
+                                            binding!!.inputAccessoriesProvided.isEnabled = false
 
-                                            binding.inputNewMachineSrNo.setText(modelResponse.newMachineData.newMachineSerialNo);
-                                            binding.inputNewFingerprintSrNo.setText(modelResponse.newMachineData.newMachineBiometricSeriallNo);
-                                            binding.inputIMEIIMEI2.setText(modelResponse.newMachineData.newMachineIMEI1 + " - " + modelResponse.newMachineData.newMachineIMEI2);
-                                            binding.inputAccessoriesProvided.setText(modelResponse.newMachineData.getAccessoriesProvided());
+                                            binding!!.inputNewMachineSrNo.setText(modelResponse.newMachineData!!.newMachineSerialNo)
+                                            binding!!.inputNewFingerprintSrNo.setText(modelResponse.newMachineData!!.newMachineBiometricSeriallNo)
+                                            binding!!.inputIMEIIMEI2.setText(modelResponse.newMachineData!!.newMachineIMEI1 + " - " + modelResponse.newMachineData!!.newMachineIMEI2)
+                                            binding!!.inputAccessoriesProvided.setText(modelResponse.newMachineData!!.accessoriesProvided)
                                         }
                                     } else {
-                                        dialogMessage(modelResponse.message);
-                                        binding.inputNewMachineSrNo.setText("");
-                                        binding.inputNewFingerprintSrNo.setText("");
-                                        binding.inputIMEIIMEI2.setText("");
-                                        binding.inputAccessoriesProvided.setText("");
+                                        dialogMessage(modelResponse.message)
+                                        binding!!.inputNewMachineSrNo.setText("")
+                                        binding!!.inputNewFingerprintSrNo.setText("")
+                                        binding!!.inputIMEIIMEI2.setText("")
+                                        binding!!.inputAccessoriesProvided.setText("")
                                     }
                                 }
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
                     } else {
 //                        makeToast(getResources().getString(R.string.error));
                     }
                 }
 
-                @Override
-                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                    makeToast(getResources().getString(R.string.error_message));
+                override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                    makeToast(resources.getString(R.string.error_message))
                 }
-            });
+            })
         } else {
-            makeToast(getResources().getString(R.string.no_internet_connection));
+            makeToast(resources.getString(R.string.no_internet_connection))
         }
     }
 
-    private void submit() {
-        if (Constants.isNetworkAvailable(mContext)) {
-            String tranDate = Objects.requireNonNull(binding.inputDate.getText()).toString().trim();
-            String fpsCode = Objects.requireNonNull(binding.inputFpsCode.getText()).toString().trim();
-            String newMachineOrderNo = Objects.requireNonNull(binding.inputNewMachineOrderNo.getText()).toString().trim();
-            String dealerName = Objects.requireNonNull(binding.inputDealerName.getText()).toString().trim();
-            String mobileNumber = Objects.requireNonNull(binding.inputMobileNumber.getText()).toString().trim();
-            String ticketNumber = Objects.requireNonNull(binding.inputTicketNumber.getText()).toString().trim();
-            String blockName = Objects.requireNonNull(binding.inputBlockName.getText()).toString().trim();
-            String oldMachineSrNo = Objects.requireNonNull(binding.inputOldMachineSrNo.getText()).toString().trim();
-            String oldFingerprintSrNo = Objects.requireNonNull(binding.inputFingerprintSrNo.getText()).toString().trim();
-            String newMachineSrNo = Objects.requireNonNull(binding.inputNewMachineSrNo.getText()).toString().trim();
-            String newFingerprintSrNo = Objects.requireNonNull(binding.inputNewFingerprintSrNo.getText()).toString().trim();
-            String imei1_imei2 = Objects.requireNonNull(binding.inputIMEIIMEI2.getText()).toString().trim();
-            String accessoriesProvided = Objects.requireNonNull(binding.inputAccessoriesProvided.getText()).toString().trim();
-            String remark = "Receive in new condition with all accessories and satisfactory training given.";
+    private fun submit() {
+        if (isNetworkAvailable(mContext!!)) {
+            val tranDate =
+                Objects.requireNonNull(binding!!.inputDate.text).toString().trim { it <= ' ' }
+            val fpsCode =
+                Objects.requireNonNull(binding!!.inputFpsCode.text).toString().trim { it <= ' ' }
+            val newMachineOrderNo = Objects.requireNonNull(
+                binding!!.inputNewMachineOrderNo.text
+            ).toString().trim { it <= ' ' }
+            val dealerName =
+                Objects.requireNonNull(binding!!.inputDealerName.text).toString().trim { it <= ' ' }
+            val mobileNumber = Objects.requireNonNull(binding!!.inputMobileNumber.text).toString()
+                .trim { it <= ' ' }
+            val ticketNumber = Objects.requireNonNull(binding!!.inputTicketNumber.text).toString()
+                .trim { it <= ' ' }
+            val blockName =
+                Objects.requireNonNull(binding!!.inputBlockName.text).toString().trim { it <= ' ' }
+            val oldMachineSrNo =
+                Objects.requireNonNull(binding!!.inputOldMachineSrNo.text).toString()
+                    .trim { it <= ' ' }
+            val oldFingerprintSrNo = Objects.requireNonNull(
+                binding!!.inputFingerprintSrNo.text
+            ).toString().trim { it <= ' ' }
+            val newMachineSrNo =
+                Objects.requireNonNull(binding!!.inputNewMachineSrNo.text).toString()
+                    .trim { it <= ' ' }
+            val newFingerprintSrNo = Objects.requireNonNull(
+                binding!!.inputNewFingerprintSrNo.text
+            ).toString().trim { it <= ' ' }
+            val imei1_imei2 =
+                Objects.requireNonNull(binding!!.inputIMEIIMEI2.text).toString().trim { it <= ' ' }
+            val accessoriesProvided = Objects.requireNonNull(
+                binding!!.inputAccessoriesProvided.text
+            ).toString().trim { it <= ' ' }
+            val remark =
+                "Receive in new condition with all accessories and satisfactory training given."
 
             if (fpsCode.isEmpty()) {
-                makeToast(getResources().getString(R.string.please_input_fps_code));
+                makeToast(resources.getString(R.string.please_input_fps_code))
             } else if (newMachineOrderNo.isEmpty()) {
-                makeToast(getResources().getString(R.string.please_input_new_machine_order_number));
+                makeToast(resources.getString(R.string.please_input_new_machine_order_number))
             } else if (oldMachineCondition.isEmpty()) {
-                makeToast(getResources().getString(R.string.please_select_old_machine_condition));
-            } else if (photoStoragePath.equals("")) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setMessage(getResources().getString(R.string.submit_form_confirmation_message_without_image))
-                        .setCancelable(false)
-                        .setPositiveButton(getResources().getString(R.string.yes), (dialog, ids) -> {
-                            callSaveFormApi(newMachineOrderNo, fpsCode, ticketNumber, tranDate, oldFingerprintSrNo, dealerName, mobileNumber, blockName);
-                            dialog.cancel();
-                        })
-                        .setNegativeButton(getResources().getString(R.string.no), (dialog, ids) -> dialog.cancel());
-                AlertDialog alert = builder.create();
-                alert.setTitle(getResources().getString(R.string.alert));
-                alert.show();
+                makeToast(resources.getString(R.string.please_select_old_machine_condition))
+            } else if (photoStoragePath == "") {
+                val builder = AlertDialog.Builder(
+                    mContext!!
+                )
+                builder.setMessage(resources.getString(R.string.submit_form_confirmation_message_without_image))
+                    .setCancelable(false)
+                    .setPositiveButton(resources.getString(R.string.yes)) { dialog: DialogInterface, ids: Int ->
+                        callSaveFormApi(
+                            newMachineOrderNo,
+                            fpsCode,
+                            ticketNumber,
+                            tranDate,
+                            oldFingerprintSrNo,
+                            dealerName,
+                            mobileNumber,
+                            blockName
+                        )
+                        dialog.cancel()
+                    }
+                    .setNegativeButton(resources.getString(R.string.no)) { dialog: DialogInterface, ids: Int -> dialog.cancel() }
+                val alert = builder.create()
+                alert.setTitle(resources.getString(R.string.alert))
+                alert.show()
             } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setMessage(getResources().getString(R.string.submit_form_confirmation_message))
-                        .setCancelable(false)
-                        .setPositiveButton(getResources().getString(R.string.yes), (dialog, ids) -> {
-                            callSaveFormApi(newMachineOrderNo, fpsCode, ticketNumber, tranDate, oldFingerprintSrNo, dealerName, mobileNumber, blockName);
-                            dialog.cancel();
-                        })
-                        .setNegativeButton(getResources().getString(R.string.no), (dialog, ids) -> dialog.cancel());
-                AlertDialog alert = builder.create();
-                alert.setTitle(getResources().getString(R.string.alert));
-                alert.show();
+                val builder = AlertDialog.Builder(
+                    mContext!!
+                )
+                builder.setMessage(resources.getString(R.string.submit_form_confirmation_message))
+                    .setCancelable(false)
+                    .setPositiveButton(resources.getString(R.string.yes)) { dialog: DialogInterface, ids: Int ->
+                        callSaveFormApi(
+                            newMachineOrderNo,
+                            fpsCode,
+                            ticketNumber,
+                            tranDate,
+                            oldFingerprintSrNo,
+                            dealerName,
+                            mobileNumber,
+                            blockName
+                        )
+                        dialog.cancel()
+                    }
+                    .setNegativeButton(resources.getString(R.string.no)) { dialog: DialogInterface, ids: Int -> dialog.cancel() }
+                val alert = builder.create()
+                alert.setTitle(resources.getString(R.string.alert))
+                alert.show()
             }
         } else {
-            makeToast(getResources().getString(R.string.no_internet_connection));
+            makeToast(resources.getString(R.string.no_internet_connection))
         }
     }
 
-    private void callSaveFormApi(String newMachineOrderNo, String fpsCode, String ticketNumber, String tranDate, String oldFingerprintSrNo, String dealerName, String mobileNumber, String blockName) {
-        showProgress();
-        APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
+    private fun callSaveFormApi(
+        newMachineOrderNo: String,
+        fpsCode: String,
+        ticketNumber: String,
+        tranDate: String,
+        oldFingerprintSrNo: String,
+        dealerName: String,
+        mobileNumber: String,
+        blockName: String
+    ) {
+        showProgress()
+        val service = retrofitInstance!!.create(APIService::class.java)
 
-        RequestBody attachment;
-        String fileName = "";
-        if (!photoStoragePath.equals("")) {
-            fileName = new File(photoStoragePath).getName();
-            attachment = RequestBody.create(MediaType.parse("multipart/form-data"), new File(photoStoragePath));
+        val attachment: RequestBody
+        var fileName: String? = ""
+        if (photoStoragePath != "") {
+            fileName = File(photoStoragePath).name
+            attachment =
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), File(photoStoragePath))
         } else {
-            fileName = "";
-            attachment = RequestBody.create(MediaType.parse("text/plain"), "");
+            fileName = ""
+            attachment = RequestBody.create("text/plain".toMediaTypeOrNull(), "")
         }
 
-        Call<ResponseBody> call = service.saveNewPosDistributionAPI(
-                MultipartRequester.fromString(prefManager.getUSER_Id()),
-                MultipartRequester.fromString(tranId),
-                MultipartRequester.fromString(districtId),
-                MultipartRequester.fromString(equipmentModelId),
-                MultipartRequester.fromString(oldMachineMakeId),
-                MultipartRequester.fromString(newMachineMakeId),
-                MultipartRequester.fromString(newMachineOrderNo),
-                MultipartRequester.fromString(fpsCode),
-                MultipartRequester.fromString(ticketNumber),
-                MultipartRequester.fromString(tranDate),
-                MultipartRequester.fromString(oldMachineSrNo),
-                MultipartRequester.fromString(oldFingerprintSrNo),
-                MultipartRequester.fromString(oldMachineCondition),
-                MultipartRequester.fromString(""),
-                MultipartRequester.fromString(""),
-                MultipartRequester.fromString(convertStringToUTF8(dealerName)),
-                MultipartRequester.fromString(mobileNumber),
-                MultipartRequester.fromString(convertStringToUTF8(blockName)),
-                MultipartRequester.fromString(getNetworkIp()),
-                MultipartRequester.fromString(whetherOldMachineProvidedForReplacement),
-                MultipartRequester.fromString(completeWithSatisfactorily),
-                MultipartBody.Part.createFormData("dealerImage", fileName, attachment));
-        call.enqueue(new Callback<ResponseBody>() {
+        val call = service.saveNewPosDistributionAPI(
+            fromString(prefManager!!.uSER_Id),
+            fromString(tranId),
+            fromString(districtId),
+            fromString(equipmentModelId),
+            fromString(oldMachineMakeId),
+            fromString(newMachineMakeId),
+            fromString(newMachineOrderNo),
+            fromString(fpsCode),
+            fromString(ticketNumber),
+            fromString(tranDate),
+            fromString(oldMachineSrNo),
+            fromString(oldFingerprintSrNo),
+            fromString(oldMachineCondition),
+            fromString(""),
+            fromString(""),
+            fromString(convertStringToUTF8(dealerName)),
+            fromString(mobileNumber),
+            fromString(convertStringToUTF8(blockName)),
+            fromString(networkIp),
+            fromString(whetherOldMachineProvidedForReplacement),
+            fromString(completeWithSatisfactorily),
+            createFormData("dealerImage", fileName, attachment)
+        )
+        call!!.enqueue(object : Callback<ResponseBody?> {
             @SuppressLint("SetTextI18n")
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                hideProgress();
-                if (response.isSuccessful()) {
+            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                hideProgress()
+                if (response.isSuccessful) {
                     try {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                String responseStr = response.body().string();
-                             //   Log.e("response", responseStr);
-                                JSONObject jsonObject = new JSONObject((responseStr));
-                                String status = jsonObject.optString("status");
-                                ModelNewMachineDetailByFPSResponse modelResponse = (ModelNewMachineDetailByFPSResponse) getObject(responseStr, ModelNewMachineDetailByFPSResponse.class);
-                                if (status.equals("200")) {
+                                val responseStr = response.body()!!.string()
+                                //   Log.e("response", responseStr);
+                                val jsonObject = JSONObject((responseStr))
+                                val status = jsonObject.optString("status")
+                                val modelResponse = getObject(
+                                    responseStr,
+                                    ModelNewMachineDetailByFPSResponse::class.java
+                                ) as ModelNewMachineDetailByFPSResponse
+                                if (status == "200") {
                                     if (modelResponse != null) {
 //                                        makeToast(modelResponse.getMessage());
-                                        onBackPressed();
+                                        onBackPressed()
                                     }
                                 } else {
-                                    makeToast(modelResponse.message);
+                                    makeToast(modelResponse.message)
                                 }
                             }
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                 } else {
-                    makeToast(getResources().getString(R.string.error));
+                    makeToast(resources.getString(R.string.error))
                 }
             }
 
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                hideProgress();
-                makeToast(getResources().getString(R.string.error_message));
+            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                hideProgress()
+                makeToast(resources.getString(R.string.error_message))
             }
-        });
+        })
     }
 
-    private String getNetworkIp() {
-        WifiManager wm = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        return Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
-    }
+    private val networkIp: String
+        get() {
+            val wm = applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
+            return Formatter.formatIpAddress(wm.connectionInfo.ipAddress)
+        }
 
-    private void dialogMessage(String message) {
+    private fun dialogMessage(message: String?) {
         if (builder == null) {
-            builder = new AlertDialog.Builder(mContext);
-            builder.setMessage(message)
-                    .setCancelable(false)
-                    .setPositiveButton(getResources().getString(R.string.ok), (dialog, ids) -> {
-                        builder = null;
-                        dialog.cancel();
-                    });
-                    /*.setNegativeButton(getResources().getString(R.string.cancel), (dialog, ids) -> {
+            builder = AlertDialog.Builder(mContext!!)
+            builder!!.setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(resources.getString(R.string.ok)) { dialog: DialogInterface, ids: Int ->
+                    builder = null
+                    dialog.cancel()
+                }
+            /*.setNegativeButton(getResources().getString(R.string.cancel), (dialog, ids) -> {
                         builder = null;
                         dialog.cancel();
                     });*/
-            AlertDialog alert = builder.create();
-            alert.setTitle(getResources().getString(R.string.alert));
-            alert.show();
+            val alert = builder!!.create()
+            alert.setTitle(resources.getString(R.string.alert))
+            alert.show()
         }
     }
 
-    private String convertStringToUTF8(String s) {
-        String out;
-        out = new String(s.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
-        return out;
+    private fun convertStringToUTF8(s: String): String {
+        val out = String(s.toByteArray(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1)
+        return out
     }
 
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
+    override fun onClick(view: View) {
+        val id = view.id
         if (id == R.id.buttonSubmit) {
-            submit();
+            submit()
         } else if (id == R.id.ivPhoto) {
             if (permissionGranted) {
-                selectPhoto();
+                selectPhoto()
             } else {
-                makeToast(getResources().getString(R.string.please_allow_all_permission));
+                makeToast(resources.getString(R.string.please_allow_all_permission))
             }
         } else if (id == R.id.iv_back) {
-            onBackPressed();
+            onBackPressed()
         }
     }
-
 }

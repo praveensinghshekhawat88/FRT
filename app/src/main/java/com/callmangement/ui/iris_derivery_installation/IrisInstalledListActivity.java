@@ -25,16 +25,13 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityIrisInstalledListBinding;
-import com.callmangement.ui.closed_guard_delivery.adapter.ClosedGuardDeliveryListAdapter;
-import com.callmangement.ui.closed_guard_delivery.model.ClosedGuardDeliveryListResponse;
 import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrictList_w;
 import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrict_w;
 import com.callmangement.ui.iris_derivery_installation.Model.IrisDeliveryListResponse;

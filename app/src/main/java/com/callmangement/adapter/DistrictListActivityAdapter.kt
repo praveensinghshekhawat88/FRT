@@ -28,8 +28,8 @@ class DistrictListActivityAdapter(private val context: Context) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val model = district_List!![position]
-        if (prefManager.useR_Change_Language != "") {
-            if (prefManager.useR_Change_Language == "en") holder.binding.textDistrictName.text =
+        if (prefManager.uSER_Change_Language != "") {
+            if (prefManager.uSER_Change_Language == "en") holder.binding.textDistrictName.text =
                 model.districtNameEng
             else holder.binding.textDistrictName.text = model.districtNameHi
         }

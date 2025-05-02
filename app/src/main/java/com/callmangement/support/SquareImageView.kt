@@ -1,66 +1,61 @@
-package com.callmangement.support;
+package com.callmangement.support
 
-import android.content.Context;
-import android.util.AttributeSet;
-
-import androidx.appcompat.widget.AppCompatImageView;
+import android.content.Context
+import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatImageView
 
 /**
  * Created by Theophrast
  */
+class SquareImageView : AppCompatImageView {
+    var hwRatio: Float = 1f
+        private set
 
-public class SquareImageView extends AppCompatImageView {
-
-    private float hwRatio = 1f;
-    private static final String key_hwRatio = "hwRatio";
-
-    public SquareImageView(Context context) {
-        super(context);
-        setAttributes(context, null);
+    constructor(context: Context) : super(context) {
+        setAttributes(context, null)
     }
 
-    public SquareImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        setAttributes(context, attrs);
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        setAttributes(context, attrs)
     }
 
-    public SquareImageView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        setAttributes(context, attrs);
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(
+        context,
+        attrs,
+        defStyle
+    ) {
+        setAttributes(context, attrs)
     }
 
-    private void setAttributes(Context context, AttributeSet attrs) {
-        if (attrs == null) return;
-        String packageName = "http://schemas.android.com/apk/res-auto";
-        hwRatio = attrs.getAttributeFloatValue(packageName, key_hwRatio, 1f);
+    private fun setAttributes(context: Context, attrs: AttributeSet?) {
+        if (attrs == null) return
+        val packageName = "http://schemas.android.com/apk/res-auto"
+        hwRatio = attrs.getAttributeFloatValue(packageName, key_hwRatio, 1f)
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
-        int width = getMeasuredWidth();
-        int height = getMeasuredHeight();
+        val width = measuredWidth
+        val height = measuredHeight
 
-        int calculatedHeight = calculateHeightByRatio(width);
+        val calculatedHeight = calculateHeightByRatio(width)
 
         if (calculatedHeight != height) {
-            setMeasuredDimension(width, calculatedHeight);
+            setMeasuredDimension(width, calculatedHeight)
         }
-
     }
 
-    private int calculateHeightByRatio(int side) {
-        return (int) (hwRatio * (float) side);
+    private fun calculateHeightByRatio(side: Int): Int {
+        return (hwRatio * side.toFloat()).toInt()
     }
 
-    public float getHwRatio() {
-        return hwRatio;
+    fun setXyRatio(xyRatio: Float) {
+        this.hwRatio = xyRatio
+        this.invalidate()
     }
 
-    public void setXyRatio(float xyRatio) {
-        this.hwRatio = xyRatio;
-        this.invalidate();
+    companion object {
+        private const val key_hwRatio = "hwRatio"
     }
-
 }

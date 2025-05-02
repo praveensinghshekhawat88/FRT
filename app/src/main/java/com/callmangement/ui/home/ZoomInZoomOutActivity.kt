@@ -1,143 +1,113 @@
-package com.callmangement.ui.home;
+package com.callmangement.ui.home
 
-import android.annotation.SuppressLint;
-import android.graphics.Matrix;
-import android.graphics.PointF;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
-import android.widget.ImageView;
+import android.annotation.SuppressLint
+import android.graphics.Matrix
+import android.graphics.PointF
+import android.os.Bundle
+import android.view.MotionEvent
+import android.view.View
+import android.view.View.OnTouchListener
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.callmangement.R
+import com.callmangement.custom.CustomActivity
+import kotlin.math.sqrt
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.callmangement.R;
-import com.callmangement.custom.CustomActivity;
-import com.callmangement.utils.Constants;
-
-public class ZoomInZoomOutActivity extends CustomActivity implements OnTouchListener, View.OnClickListener {
-    private static final String TAG = "Touch";
-    @SuppressWarnings("unused")
-    private static final float MIN_ZOOM = 1f,MAX_ZOOM = 1f;
-
+class ZoomInZoomOutActivity : CustomActivity(), OnTouchListener, View.OnClickListener {
     // These matrices will be used to scale points of the image
-    Matrix matrix = new Matrix();
-    Matrix savedMatrix = new Matrix();
+    var matrix: Matrix = Matrix()
+    var savedMatrix: Matrix = Matrix()
 
-    // The 3 states (events) which the user is trying to perform
-    static final int NONE = 0;
-    static final int DRAG = 1;
-    static final int ZOOM = 2;
-    int mode = NONE;
+    var mode: Int = NONE
 
     // these PointF objects are used to record the point(s) the user is touching
-    PointF start = new PointF();
-    PointF mid = new PointF();
-    float oldDist = 1f;
+    var start: PointF = PointF()
+    var mid: PointF = PointF()
+    var oldDist: Float = 1f
 
-    /** Called when the activity is first created. */
+    /** Called when the activity is first created.  */
     @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_zoom_in_zoom_out);
-        ImageView view = findViewById(R.id.imageView);
-        ImageView iv_back = findViewById(R.id.iv_back);
+    public override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_zoom_in_zoom_out)
+        val view = findViewById<ImageView>(R.id.imageView)
+        val iv_back = findViewById<ImageView>(R.id.iv_back)
 
-        String imagePath = getIntent().getStringExtra("image");
-        if (imagePath != null
-                && !imagePath.isEmpty()
-                && !imagePath.equalsIgnoreCase("null")) {
-            Glide.with(mContext)
-                    .load(imagePath)
-                    .placeholder(R.drawable.image_not_fount)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(view);
+        val imagePath = intent.getStringExtra("image")
+        if (imagePath != null && !imagePath.isEmpty()
+            && !imagePath.equals("null", ignoreCase = true)
+        ) {
+            Glide.with(mContext!!)
+                .load(imagePath)
+                .placeholder(R.drawable.image_not_fount)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(view)
         }
 
 
 
-        view.setOnTouchListener(this);
+        view.setOnTouchListener(this)
 
-        iv_back.setOnClickListener(this);
+        iv_back.setOnClickListener(this)
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public boolean onTouch(View v, MotionEvent event)
-    {
-        ImageView view = (ImageView) v;
-        view.setScaleType(ImageView.ScaleType.MATRIX);
-        float scale;
+    override fun onTouch(v: View, event: MotionEvent): Boolean {
+        val view = v as ImageView
+        view.scaleType = ImageView.ScaleType.MATRIX
+        val scale: Float
 
-        dumpEvent(event);
-        // Handle touch events here...
+        dumpEvent(event)
 
-        switch (event.getAction() & MotionEvent.ACTION_MASK)
-        {
-            case MotionEvent.ACTION_DOWN:   // first finger down only
-                matrix.set(view.getImageMatrix());
-                savedMatrix.set(matrix);
-                start.set(event.getX(), event.getY());
-             //   Log.d(TAG, "mode=DRAG"); // write to LogCat
-                mode = DRAG;
-                break;
+        when (event.action and MotionEvent.ACTION_MASK) {
+            MotionEvent.ACTION_DOWN -> {
+                matrix.set(view.imageMatrix)
+                savedMatrix.set(matrix)
+                start[event.x] = event.y
+                //   Log.d(TAG, "mode=DRAG"); // write to LogCat
+                mode = DRAG
+            }
 
-            case MotionEvent.ACTION_UP: // first finger lifted
-
-            case MotionEvent.ACTION_POINTER_UP: // second finger lifted
-
-                mode = NONE;
-              //  Log.d(TAG, "mode=NONE");
-                break;
-
-            case MotionEvent.ACTION_POINTER_DOWN: // first and second finger down
-
-                oldDist = spacing(event);
-            //    Log.d(TAG, "oldDist=" + oldDist);
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_POINTER_UP -> mode = NONE
+            MotionEvent.ACTION_POINTER_DOWN -> {
+                oldDist = spacing(event)
+                //    Log.d(TAG, "oldDist=" + oldDist);
                 if (oldDist > 5f) {
-                    savedMatrix.set(matrix);
-                    midPoint(mid, event);
-                    mode = ZOOM;
-                  //  Log.d(TAG, "mode=ZOOM");
+                    savedMatrix.set(matrix)
+                    midPoint(mid, event)
+                    mode = ZOOM
+                    //  Log.d(TAG, "mode=ZOOM");
                 }
-                break;
+            }
 
-            case MotionEvent.ACTION_MOVE:
-
-                if (mode == DRAG)
-                {
-                    matrix.set(savedMatrix);
-                    matrix.postTranslate(event.getX() - start.x, event.getY() - start.y); // create the transformation in the matrix  of points
+            MotionEvent.ACTION_MOVE -> if (mode == DRAG) {
+                matrix.set(savedMatrix)
+                matrix.postTranslate(
+                    event.x - start.x,
+                    event.y - start.y
+                ) // create the transformation in the matrix  of points
+            } else if (mode == ZOOM) {
+                // pinch zooming
+                val newDist = spacing(event)
+                //   Log.d(TAG, "newDist=" + newDist);
+                if (newDist > 5f) {
+                    matrix.set(savedMatrix)
+                    scale = newDist / oldDist // setting the scaling of the
+                    // matrix...if scale > 1 means
+                    // zoom in...if scale < 1 means
+                    // zoom out
+                    matrix.postScale(scale, scale, mid.x, mid.y)
                 }
-                else if (mode == ZOOM)
-                {
-                    // pinch zooming
-                    float newDist = spacing(event);
-                 //   Log.d(TAG, "newDist=" + newDist);
-                    if (newDist > 5f)
-                    {
-                        matrix.set(savedMatrix);
-                        scale = newDist / oldDist; // setting the scaling of the
-                        // matrix...if scale > 1 means
-                        // zoom in...if scale < 1 means
-                        // zoom out
-                        matrix.postScale(scale, scale, mid.x, mid.y);
-                    }
-                }
-                break;
+            }
         }
+        view.imageMatrix = matrix // display the transformation on screen
 
-        view.setImageMatrix(matrix); // display the transformation on screen
-
-        return true; // indicate event was handled
+        return true // indicate event was handled
     }
 
     /*
@@ -146,12 +116,10 @@ public class ZoomInZoomOutActivity extends CustomActivity implements OnTouchList
      * checks the spacing between the two fingers on touch
      * ----------------------------------------------------
      */
-
-    private float spacing(MotionEvent event)
-    {
-        float x = event.getX(0) - event.getX(1);
-        float y = event.getY(0) - event.getY(1);
-        return (float) Math.sqrt(x * x + y * y);
+    private fun spacing(event: MotionEvent): Float {
+        val x = event.getX(0) - event.getX(1)
+        val y = event.getY(0) - event.getY(1)
+        return sqrt((x * x + y * y).toDouble()).toFloat()
     }
 
     /*
@@ -160,49 +128,68 @@ public class ZoomInZoomOutActivity extends CustomActivity implements OnTouchList
      * Description: calculates the midpoint between the two fingers
      * ------------------------------------------------------------
      */
-
-    private void midPoint(PointF point, MotionEvent event)
-    {
-        float x = event.getX(0) + event.getX(1);
-        float y = event.getY(0) + event.getY(1);
-        point.set(x / 2, y / 2);
+    private fun midPoint(point: PointF, event: MotionEvent) {
+        val x = event.getX(0) + event.getX(1)
+        val y = event.getY(0) + event.getY(1)
+        point[x / 2] = y / 2
     }
 
-    /** Show an event in the LogCat view, for debugging */
-    private void dumpEvent(MotionEvent event)
-    {
-        String[] names = { "DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE","POINTER_DOWN", "POINTER_UP", "7?", "8?", "9?" };
-        StringBuilder sb = new StringBuilder();
-        int action = event.getAction();
-        int actionCode = action & MotionEvent.ACTION_MASK;
-        sb.append("event ACTION_").append(names[actionCode]);
+    /** Show an event in the LogCat view, for debugging  */
+    private fun dumpEvent(event: MotionEvent) {
+        val names = arrayOf(
+            "DOWN",
+            "UP",
+            "MOVE",
+            "CANCEL",
+            "OUTSIDE",
+            "POINTER_DOWN",
+            "POINTER_UP",
+            "7?",
+            "8?",
+            "9?"
+        )
+        val sb = StringBuilder()
+        val action = event.action
+        val actionCode = action and MotionEvent.ACTION_MASK
+        sb.append("event ACTION_").append(names[actionCode])
 
-        if (actionCode == MotionEvent.ACTION_POINTER_DOWN || actionCode == MotionEvent.ACTION_POINTER_UP)
-        {
-            sb.append("(pid ").append(action >> MotionEvent.ACTION_POINTER_ID_SHIFT);
-            sb.append(")");
+        if (actionCode == MotionEvent.ACTION_POINTER_DOWN || actionCode == MotionEvent.ACTION_POINTER_UP) {
+            sb.append("(pid ").append(action shr MotionEvent.ACTION_POINTER_ID_SHIFT)
+            sb.append(")")
         }
 
-        sb.append("[");
-        for (int i = 0; i < event.getPointerCount(); i++)
-        {
-            sb.append("#").append(i);
-            sb.append("(pid ").append(event.getPointerId(i));
-            sb.append(")=").append((int) event.getX(i));
-            sb.append(",").append((int) event.getY(i));
-            if (i + 1 < event.getPointerCount())
-                sb.append(";");
+        sb.append("[")
+        for (i in 0 until event.pointerCount) {
+            sb.append("#").append(i)
+            sb.append("(pid ").append(event.getPointerId(i))
+            sb.append(")=").append(event.getX(i).toInt())
+            sb.append(",").append(event.getY(i).toInt())
+            if (i + 1 < event.pointerCount) sb.append(";")
         }
 
-        sb.append("]");
-    //    Log.d("Touch Events ---------", " "+sb.toString());
+        sb.append("]")
+        //    Log.d("Touch Events ---------", " "+sb.toString());
     }
 
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        if (id == R.id.iv_back){
-            onBackPressed();
+    override fun onClick(view: View) {
+        val id = view.id
+        if (id == R.id.iv_back) {
+            onBackPressed()
         }
+    }
+
+    companion object {
+        private const val TAG = "Touch"
+
+        @Suppress("unused")
+        private val MIN_ZOOM = 1f
+
+        @Suppress("unused")
+        private val MAX_ZOOM = 1f
+
+        // The 3 states (events) which the user is trying to perform
+        const val NONE: Int = 0
+        const val DRAG: Int = 1
+        const val ZOOM: Int = 2
     }
 }

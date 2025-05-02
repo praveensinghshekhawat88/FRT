@@ -1,277 +1,301 @@
-package com.callmangement.ui.training_schedule;
+package com.callmangement.ui.training_schedule
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
+import android.view.View
+import android.view.Window
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.DatePicker
+import android.widget.EditText
+import android.widget.Spinner
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.callmangement.R
+import com.callmangement.adapter.TrainingScheduleListForSEActivityAdapter
+import com.callmangement.custom.CustomActivity
+import com.callmangement.databinding.ActivityTrainingScheduleListForSeBinding
+import com.callmangement.model.tehsil.ModelTehsil
+import com.callmangement.model.tehsil.ModelTehsilList
+import com.callmangement.model.training_schedule.ModelTrainingSchedule
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance.retrofitInstance
+import com.callmangement.utils.EqualSpacingItemDecoration
+import com.callmangement.utils.PrefManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Collections
+import java.util.Locale
+import java.util.Objects
 
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
-import com.callmangement.R;
-import com.callmangement.adapter.TrainingScheduleListForSEActivityAdapter;
-import com.callmangement.custom.CustomActivity;
-import com.callmangement.databinding.ActivityTrainingScheduleListForSeBinding;
-import com.callmangement.model.district.ModelDistrictList;
-import com.callmangement.model.tehsil.ModelTehsil;
-import com.callmangement.model.tehsil.ModelTehsilList;
-import com.callmangement.model.training_schedule.ModelTrainingScheduleList;
-import com.callmangement.utils.EqualSpacingItemDecoration;
-import com.callmangement.utils.PrefManager;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class TrainingScheduleListForSEActivity extends CustomActivity implements View.OnClickListener {
-    private ActivityTrainingScheduleListForSeBinding binding;
-    private TrainingScheduleListForSEActivityAdapter adapter;
-    private TrainingScheduleViewModel viewModel;
-    private PrefManager prefManager;
-    private int checkTehsil = 0;
-    private String tehsilNameEng = "";
-    private String tehsilId = "0";
-    private List<ModelTehsilList> tehsil_list = new ArrayList<>();
-    private final Calendar myCalendarToDate = Calendar.getInstance();
-    private final Calendar myCalendarFromDate = Calendar.getInstance();
-    private Spinner spinnerTehsil;
-    private EditText inputStartDate;
-    private EditText inputEndDate;
-    private String startDate = "";
-    private String endDate = "";
-    private String trainingNumber = "";
+class TrainingScheduleListForSEActivity : CustomActivity(), View.OnClickListener {
+    private var binding: ActivityTrainingScheduleListForSeBinding? = null
+    private var adapter: TrainingScheduleListForSEActivityAdapter? = null
+    private var viewModel: TrainingScheduleViewModel? = null
+    private var prefManager: PrefManager? = null
+    private var checkTehsil = 0
+    private var tehsilNameEng = ""
+    private var tehsilId: String? = "0"
+    private var tehsil_list: MutableList<ModelTehsilList?>? = ArrayList()
+    private val myCalendarToDate: Calendar = Calendar.getInstance()
+    private val myCalendarFromDate: Calendar = Calendar.getInstance()
+    private var spinnerTehsil: Spinner? = null
+    private var inputStartDate: EditText? = null
+    private var inputEndDate: EditText? = null
+    private var startDate = ""
+    private var endDate = ""
+    private var trainingNumber = ""
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_training_schedule_list_for_se);
-        initView();
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding =
+            DataBindingUtil.setContentView(this, R.layout.activity_training_schedule_list_for_se)
+        initView()
     }
 
-    private void initView() {
-        onClickListener();
-        setUpData();
+    private fun initView() {
+        onClickListener()
+        setUpData()
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getTraining();
+    override fun onResume() {
+        super.onResume()
+        training
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void setUpData(){
-        prefManager = new PrefManager(mContext);
-        viewModel = ViewModelProviders.of(this).get(TrainingScheduleViewModel.class);
+    private fun setUpData() {
+        prefManager = PrefManager(this)
+        viewModel = ViewModelProviders.of(this).get(
+            TrainingScheduleViewModel::class.java
+        )
 
-        binding.actionBar.ivBack.setVisibility(View.VISIBLE);
-        binding.actionBar.buttonFilter.setVisibility(View.VISIBLE);
-        binding.actionBar.ivThreeDot.setVisibility(View.GONE);
-        binding.actionBar.layoutLanguage.setVisibility(View.GONE);
-        binding.actionBar.textToolbarTitle.setText(getResources().getString(R.string.training_schedule));
+        binding!!.actionBar.ivBack.visibility = View.VISIBLE
+        binding!!.actionBar.buttonFilter.visibility = View.VISIBLE
+        binding!!.actionBar.ivThreeDot.visibility = View.GONE
+        binding!!.actionBar.layoutLanguage.visibility = View.GONE
+        binding!!.actionBar.textToolbarTitle.text = resources.getString(R.string.training_schedule)
 
-        adapter = new TrainingScheduleListForSEActivityAdapter(mContext);
-        adapter.notifyDataSetChanged();
-        binding.rvTrainingSchedule.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        binding.rvTrainingSchedule.addItemDecoration(new EqualSpacingItemDecoration(30, EqualSpacingItemDecoration.VERTICAL));
-        binding.rvTrainingSchedule.setAdapter(adapter);
-
+        adapter = TrainingScheduleListForSEActivityAdapter(this)
+        adapter!!.notifyDataSetChanged()
+        binding!!.rvTrainingSchedule.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding!!.rvTrainingSchedule.addItemDecoration(
+            EqualSpacingItemDecoration(
+                30,
+                EqualSpacingItemDecoration.VERTICAL
+            )
+        )
+        binding!!.rvTrainingSchedule.adapter = adapter
     }
 
-    private void onClickListener(){
-        binding.actionBar.ivBack.setOnClickListener(this);
-        binding.actionBar.buttonFilter.setOnClickListener(this);
+    private fun onClickListener() {
+        binding!!.actionBar.ivBack.setOnClickListener(this)
+        binding!!.actionBar.buttonFilter.setOnClickListener(this)
     }
 
-    private void getTraining(){
-        isLoading();
-        viewModel.getTraining(prefManager.getUSER_Id(), prefManager.getUSER_DistrictId(),tehsilId,trainingNumber,startDate,endDate).observe(this, modelTrainingSchedule -> {
-            isLoading();
-            if (modelTrainingSchedule.list.size() > 0){
-                binding.textNoTrainingSchedule.setVisibility(View.GONE);
-                binding.rvTrainingSchedule.setVisibility(View.VISIBLE);
-                adapter.setData(modelTrainingSchedule.list);
-            } else {
-                binding.textNoTrainingSchedule.setVisibility(View.VISIBLE);
-                binding.rvTrainingSchedule.setVisibility(View.GONE);
+    private val training: Unit
+        get() {
+            isLoading
+            viewModel!!.getTraining(
+                prefManager!!.uSER_Id,
+                prefManager!!.uSER_DistrictId,
+                tehsilId,
+                trainingNumber,
+                startDate,
+                endDate
+            ).observe(
+                this
+            ) { modelTrainingSchedule: ModelTrainingSchedule ->
+                isLoading
+                if (modelTrainingSchedule.list.size > 0) {
+                    binding!!.textNoTrainingSchedule.visibility = View.GONE
+                    binding!!.rvTrainingSchedule.visibility = View.VISIBLE
+                    adapter!!.setData(modelTrainingSchedule.list)
+                } else {
+                    binding!!.textNoTrainingSchedule.visibility = View.VISIBLE
+                    binding!!.rvTrainingSchedule.visibility = View.GONE
+                }
             }
-        });
-    }
+        }
 
-    private void isLoading() {
-        viewModel.getIsLoading().observe(this, aBoolean -> {
-            if (aBoolean) {
-                showProgress(getResources().getString(R.string.please_wait));
-            } else {
-                hideProgress();
+    private val isLoading: Unit
+        get() {
+            viewModel!!.isLoading.observe(this) { aBoolean: Boolean ->
+                if (aBoolean) {
+                    showProgress(resources.getString(R.string.please_wait))
+                } else {
+                    hideProgress()
+                }
             }
-        });
-    }
+        }
 
-    private void tehsilList(){
-        showProgress();
-        APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-        Call<ModelTehsil> call = service.apiGetTehsilByDistict(prefManager.getUSER_DistrictId());
-        call.enqueue(new Callback<ModelTehsil>() {
-            @Override
-            public void onResponse(@NonNull Call<ModelTehsil> call, @NonNull Response<ModelTehsil> response) {
-                hideProgress();
-                if (response.code() == 200){
-                    if (response.isSuccessful()){
-                        ModelTehsil modelTehsil = response.body();
-                        if (Objects.requireNonNull(modelTehsil).status.equals("200")) {
-                            tehsil_list = modelTehsil.getTehsil_List();
-                            if (tehsil_list != null && tehsil_list.size() > 0) {
-                                Collections.reverse(tehsil_list);
-                                ModelTehsilList l = new ModelTehsilList();
-                                l.setTehsilId(String.valueOf(-1));
-                                l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
-                                tehsil_list.add(l);
-                                Collections.reverse(tehsil_list);
-                                ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, tehsil_list);
-                                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                spinnerTehsil.setAdapter(dataAdapter);
+    private fun tehsilList() {
+        showProgress()
+        val service = retrofitInstance!!.create(APIService::class.java)
+        val call = service.apiGetTehsilByDistict(
+            prefManager!!.uSER_DistrictId
+        )
+        call!!.enqueue(object : Callback<ModelTehsil?> {
+            override fun onResponse(call: Call<ModelTehsil?>, response: Response<ModelTehsil?>) {
+                hideProgress()
+                if (response.code() == 200) {
+                    if (response.isSuccessful) {
+                        val modelTehsil = response.body()
+                        if (Objects.requireNonNull<ModelTehsil?>(modelTehsil).status == "200") {
+                            tehsil_list = modelTehsil!!.tehsil_List
+                            if (tehsil_list != null && tehsil_list!!.isNotEmpty()) {
+                                Collections.reverse(tehsil_list)
+                                val l = ModelTehsilList()
+                                l.tehsilId = (-1).toString()
+                                l.tehsilNameEng = "--" + resources.getString(R.string.tehsil) + "--"
+                                tehsil_list!!.add(l)
+                                Collections.reverse(tehsil_list)
+                                val dataAdapter = ArrayAdapter(
+                                    mContext!!, android.R.layout.simple_spinner_item, tehsil_list!!
+                                )
+                                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                                spinnerTehsil!!.adapter = dataAdapter
                             }
                         } else {
-                            makeToast(modelTehsil.message);
+                            makeToast(modelTehsil!!.message)
                         }
                     } else {
-                        makeToast(getResources().getString(R.string.error));
+                        makeToast(resources.getString(R.string.error))
                     }
                 } else {
-                    makeToast(getResources().getString(R.string.error));
+                    makeToast(resources.getString(R.string.error))
                 }
             }
-            @Override
-            public void onFailure(@NonNull Call<ModelTehsil> call, @NonNull Throwable t) {
-                hideProgress();
-                makeToast(getResources().getString(R.string.error_message));
+
+            override fun onFailure(call: Call<ModelTehsil?>, t: Throwable) {
+                hideProgress()
+                makeToast(resources.getString(R.string.error_message))
             }
-        });
+        })
     }
 
-    private void filterDialog() {
+    private fun filterDialog() {
         try {
-            final Dialog dialog = new Dialog(mContext);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.dialog_filter_se);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setCanceledOnTouchOutside(true);
+            val dialog = Dialog(mContext!!)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.dialog_filter_se)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setCanceledOnTouchOutside(true)
 
-            spinnerTehsil = dialog.findViewById(R.id.spinnerTehsil);
-            inputStartDate = dialog.findViewById(R.id.inputStartDate);
-            inputEndDate = dialog.findViewById(R.id.inputEndDate);
-            EditText inputTrainingNumber = dialog.findViewById(R.id.inputTrainingNumber);
-            Button buttonTrainingFilter = dialog.findViewById(R.id.buttonTrainingFilter);
+            spinnerTehsil = dialog.findViewById(R.id.spinnerTehsil)
+            inputStartDate = dialog.findViewById(R.id.inputStartDate)
+            inputEndDate = dialog.findViewById(R.id.inputEndDate)
+            val inputTrainingNumber = dialog.findViewById<EditText>(R.id.inputTrainingNumber)
+            val buttonTrainingFilter = dialog.findViewById<Button>(R.id.buttonTrainingFilter)
 
-            tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
+            tehsilNameEng = "--" + resources.getString(R.string.tehsil) + "--"
 
-            tehsilList();
+            tehsilList()
 
-            spinnerTehsil.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    if(++checkTehsil > 1) {
-                        tehsilNameEng = tehsil_list.get(i).tehsilNameEng;
-                        tehsilId = tehsil_list.get(i).getTehsilId();
+            spinnerTehsil!!.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View,
+                    i: Int,
+                    l: Long
+                ) {
+                    if (++checkTehsil > 1) {
+                        tehsilNameEng = tehsil_list!![i]!!.tehsilNameEng!!
+                        tehsilId = tehsil_list!![i]!!.tehsilId
                     }
                 }
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {
                 }
-            });
+            })
 
             /*from date*/
-            DatePickerDialog.OnDateSetListener dateFromDate = (view, year, monthOfYear, dayOfMonth) -> {
-                myCalendarFromDate.set(Calendar.YEAR, year);
-                myCalendarFromDate.set(Calendar.MONTH, monthOfYear);
-                myCalendarFromDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabelFromDate();
-            };
-            inputStartDate.setOnClickListener(view -> {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, dateFromDate, myCalendarFromDate
-                        .get(Calendar.YEAR), myCalendarFromDate.get(Calendar.MONTH),
-                        myCalendarFromDate.get(Calendar.DAY_OF_MONTH));
+            val dateFromDate =
+                OnDateSetListener { view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                    myCalendarFromDate[Calendar.YEAR] = year
+                    myCalendarFromDate[Calendar.MONTH] = monthOfYear
+                    myCalendarFromDate[Calendar.DAY_OF_MONTH] = dayOfMonth
+                    updateLabelFromDate()
+                }
+            inputStartDate!!.setOnClickListener(View.OnClickListener { view: View? ->
+                val datePickerDialog = DatePickerDialog(
+                    mContext!!,
+                    dateFromDate,
+                    myCalendarFromDate[Calendar.YEAR],
+                    myCalendarFromDate[Calendar.MONTH],
+                    myCalendarFromDate[Calendar.DAY_OF_MONTH]
+                )
                 //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
-                datePickerDialog.show();
-            });
+                datePickerDialog.show()
+            })
+
             /*from date*/
 
             /*to date*/
-            DatePickerDialog.OnDateSetListener dateToDate = (view, year, monthOfYear, dayOfMonth) -> {
-                myCalendarToDate.set(Calendar.YEAR, year);
-                myCalendarToDate.set(Calendar.MONTH, monthOfYear);
-                myCalendarToDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabelToDate();
-            };
-            inputEndDate.setOnClickListener(view -> {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, dateToDate, myCalendarToDate
-                        .get(Calendar.YEAR), myCalendarToDate.get(Calendar.MONTH),
-                        myCalendarToDate.get(Calendar.DAY_OF_MONTH));
+            val dateToDate =
+                OnDateSetListener { view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                    myCalendarToDate[Calendar.YEAR] = year
+                    myCalendarToDate[Calendar.MONTH] = monthOfYear
+                    myCalendarToDate[Calendar.DAY_OF_MONTH] = dayOfMonth
+                    updateLabelToDate()
+                }
+            inputEndDate!!.setOnClickListener(View.OnClickListener { view: View? ->
+                val datePickerDialog = DatePickerDialog(
+                    mContext!!,
+                    dateToDate,
+                    myCalendarToDate[Calendar.YEAR],
+                    myCalendarToDate[Calendar.MONTH],
+                    myCalendarToDate[Calendar.DAY_OF_MONTH]
+                )
                 //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
-                datePickerDialog.show();
-            });
+                datePickerDialog.show()
+            })
+
             /*to date*/
+            buttonTrainingFilter.setOnClickListener { view: View? ->
+                startDate = inputStartDate!!.getText().toString().trim { it <= ' ' }
+                endDate = inputEndDate!!.getText().toString().trim { it <= ' ' }
+                trainingNumber = inputTrainingNumber.text.toString().trim { it <= ' ' }
+                training
+                dialog.dismiss()
+            }
 
-            buttonTrainingFilter.setOnClickListener(view -> {
-                startDate = inputStartDate.getText().toString().trim();
-                endDate = inputEndDate.getText().toString().trim();
-                trainingNumber = inputTrainingNumber.getText().toString().trim();
-                getTraining();
-                dialog.dismiss();
-            });
-
-            dialog.show();
-        } catch (Exception e) {
-            e.printStackTrace();
+            dialog.show()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private void updateLabelFromDate() {
-        String myFormat = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        inputStartDate.setText(sdf.format(myCalendarFromDate.getTime()));
-        inputEndDate.getText().clear();
+    private fun updateLabelFromDate() {
+        val myFormat = "yyyy-MM-dd"
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        inputStartDate!!.setText(sdf.format(myCalendarFromDate.time))
+        inputEndDate!!.text.clear()
     }
 
     @SuppressLint("SetTextI18n")
-    private void updateLabelToDate() {
-        String myFormat = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        inputEndDate.setText(sdf.format(myCalendarToDate.getTime()));
+    private fun updateLabelToDate() {
+        val myFormat = "yyyy-MM-dd"
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        inputEndDate!!.setText(sdf.format(myCalendarToDate.time))
     }
 
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        if (id == R.id.iv_back)
-            onBackPressed();
-        else if (id == R.id.buttonFilter)
-            filterDialog();
+    override fun onClick(view: View) {
+        val id = view.id
+        if (id == R.id.iv_back) onBackPressed()
+        else if (id == R.id.buttonFilter) filterDialog()
     }
-
 }

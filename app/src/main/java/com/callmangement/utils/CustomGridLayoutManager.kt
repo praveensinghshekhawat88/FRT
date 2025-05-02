@@ -1,23 +1,17 @@
-package com.callmangement.utils;
+package com.callmangement.utils
 
-import android.content.Context;
+import android.content.Context
+import androidx.recyclerview.widget.LinearLayoutManager
 
-import androidx.recyclerview.widget.LinearLayoutManager;
+class CustomGridLayoutManager(context: Context?) : LinearLayoutManager(context) {
+    private var isScrollEnabled = true
 
-public class CustomGridLayoutManager extends LinearLayoutManager {
-    private boolean isScrollEnabled = true;
-
-    public CustomGridLayoutManager(Context context) {
-        super(context);
+    fun setScrollEnabled(flag: Boolean) {
+        this.isScrollEnabled = flag
     }
 
-    public void setScrollEnabled(boolean flag) {
-        this.isScrollEnabled = flag;
-    }
-
-    @Override
-    public boolean canScrollVertically() {
+    override fun canScrollVertically(): Boolean {
         //Similarly you can customize "canScrollHorizontally()" for managing horizontal scroll
-        return isScrollEnabled && super.canScrollVertically();
+        return isScrollEnabled && super.canScrollVertically()
     }
 }

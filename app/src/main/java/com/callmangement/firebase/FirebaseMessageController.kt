@@ -8,9 +8,9 @@ object FirebaseMessageController : FirebaseBaseController() {
     fun parseParam(params: Map<String?, String?>): Boolean {
         val title = params["title"]
         val message = params["message"]
-        val intent = MainActivity.newIntent(MyApp.getContext(), title)
+        val intent = MainActivity.newIntent(MyApp.context, title)
         FirebaseBaseController.Companion.showNotification(
-            MyApp.getContext(),
+            MyApp.context,
             FirebaseBaseController.Companion.toNewTask(intent),
             title,
             message

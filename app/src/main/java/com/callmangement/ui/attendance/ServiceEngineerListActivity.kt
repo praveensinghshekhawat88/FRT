@@ -1,30 +1,30 @@
-package com.callmangement.ui.attendance;
+package com.callmangement.ui.attendance
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
-import android.os.Bundle;
-import com.callmangement.R;
-import com.callmangement.custom.CustomActivity;
-import com.callmangement.databinding.ActivityServiceEngineerListBinding;
-import com.callmangement.ui.complaint.ComplaintViewModel;
+import android.os.Bundle
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import com.callmangement.R
+import com.callmangement.custom.CustomActivity
+import com.callmangement.databinding.ActivityServiceEngineerListBinding
+import com.callmangement.ui.complaint.ComplaintViewModel
 
-public class ServiceEngineerListActivity extends CustomActivity {
-    private ActivityServiceEngineerListBinding binding;
-    private AttendanceViewModel attendanceViewModel;
-    private ComplaintViewModel viewModel;
+class ServiceEngineerListActivity : CustomActivity() {
+    private var binding: ActivityServiceEngineerListBinding? = null
+    private var attendanceViewModel: AttendanceViewModel? = null
+    private var viewModel: ComplaintViewModel? = null
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_service_engineer_list);
-        viewModel = ViewModelProviders.of(this).get(ComplaintViewModel.class);
-        attendanceViewModel = ViewModelProviders.of(this).get(AttendanceViewModel.class);
-        initView();
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_service_engineer_list)
+        viewModel = ViewModelProviders.of(this).get(
+            ComplaintViewModel::class.java
+        )
+        attendanceViewModel = ViewModelProviders.of(this).get(
+            AttendanceViewModel::class.java
+        )
+        initView()
     }
 
-    private void initView() {
-
+    private fun initView() {
     }
-
 }

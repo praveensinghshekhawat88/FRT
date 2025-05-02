@@ -1,151 +1,155 @@
-package com.callmangement.ui.complaint;
+package com.callmangement.ui.complaint
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
+import android.app.Dialog
+import android.app.TimePickerDialog
+import android.content.ActivityNotFoundException
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.widget.DatePicker
+import android.widget.TextView
+import android.widget.TimePicker
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.callmangement.R
+import com.callmangement.custom.CustomActivity
+import com.callmangement.custom_spinner_with_checkbox.MutliSelectDistributionPartsAdapter
+import com.callmangement.databinding.ActivityChallanUploadBinding
+import com.callmangement.databinding.CustomMultiSelectBinding
+import com.callmangement.imagepicker.model.Config
+import com.callmangement.imagepicker.model.Image
+import com.callmangement.imagepicker.ui.imagepicker.ImagePicker
+import com.callmangement.model.ModelResponse
+import com.callmangement.model.complaints.ModelComplaintList
+import com.callmangement.model.complaints.ModelResolveComplaint
+import com.callmangement.model.inventrory.ModelParts
+import com.callmangement.model.inventrory.ModelPartsList
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance.retrofitInstance
+import com.callmangement.support.ImageUtilsForRotate.ensurePortrait
+import com.callmangement.support.dexter.Dexter
+import com.callmangement.support.dexter.MultiplePermissionsReport
+import com.callmangement.support.dexter.PermissionToken
+import com.callmangement.support.dexter.listener.PermissionRequest
+import com.callmangement.support.dexter.listener.multi.MultiplePermissionsListener
+import com.callmangement.support.slidetoact.SlideToActView
+import com.callmangement.support.slidetoact.SlideToActView.OnSlideCompleteListener
+import com.callmangement.ui.home.ZoomInZoomOutActivity
+import com.callmangement.ui.inventory.InventoryViewModel
+import com.callmangement.utils.CompressImage.Companion.compress
+import com.callmangement.utils.Constants
+import com.callmangement.utils.Constants.isNetworkAvailable
+import com.callmangement.utils.PrefManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.IOException
+import java.nio.charset.StandardCharsets
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.Objects
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
+class ChallanUploadActivity : CustomActivity(), View.OnClickListener {
+    val REQUEST_PICK_IMAGES_CUSTOM_AAD_COMPLAINT: Int = 1113
+    val REQUEST_PICK_IMAGES_DSO_LETTER: Int = 1114
+    private val myCalendarResolvedDate: Calendar = Calendar.getInstance()
+    var TAG: String = "Cancel"
+    var alreadySelectedParts: List<String> = ArrayList()
+    lateinit var permissions: Array<String>
+    private var binding: ActivityChallanUploadBinding? = null
+    private var model: ModelComplaintList? = null
+    private var prefManager: PrefManager? = null
+    private var viewModel: ComplaintViewModel? = null
+    private var inventoryViewModel: InventoryViewModel? = null
+    private var remark = ""
+    private var replacePart = ""
+    private var courierDetail = ""
+    private var challanNumber = ""
+    private var resolvedDate = ""
+    private var param: String? = null
+    private var imageStoragePath = ""
+    private var dsoletterStoragePath = ""
 
-import com.bumptech.glide.Glide;
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
-import com.callmangement.R;
-import com.callmangement.custom.CustomActivity;
-import com.callmangement.custom_spinner_with_checkbox.MutliSelectDistributionPartsAdapter;
-import com.callmangement.databinding.ActivityChallanUploadBinding;
-import com.callmangement.databinding.ActivityComplaintDetailBinding;
-import com.callmangement.databinding.CustomMultiSelectBinding;
-import com.callmangement.imagepicker.model.Config;
-import com.callmangement.imagepicker.model.Image;
-import com.callmangement.imagepicker.ui.imagepicker.ImagePicker;
-import com.callmangement.model.ModelResponse;
-import com.callmangement.model.complaints.ModelComplaintList;
-import com.callmangement.model.inventrory.ModelPartsList;
-import com.callmangement.support.ImageUtilsForRotate;
-import com.callmangement.ui.home.ZoomInZoomOutActivity;
-import com.callmangement.ui.inventory.InventoryViewModel;
-import com.callmangement.utils.CompressImage;
-import com.callmangement.utils.Constants;
-import com.callmangement.utils.PrefManager;
-import com.callmangement.support.dexter.Dexter;
-import com.callmangement.support.dexter.MultiplePermissionsReport;
-import com.callmangement.support.dexter.PermissionToken;
-import com.callmangement.support.dexter.listener.PermissionRequest;
-import com.callmangement.support.dexter.listener.multi.MultiplePermissionsListener;
+    //    private String dsoletterImageStoragePath = "";
+    private var DSO_LETTER_TYPE = ""
+    private var permissionGranted = false
+    private var listParts: List<ModelPartsList>? = ArrayList()
+    private var replacePartsIds = ""
+    private var dateResolved: OnDateSetListener? = null
+    private var dialogReplaceParts: Dialog? = null
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class ChallanUploadActivity extends CustomActivity implements View.OnClickListener {
-    public final int REQUEST_PICK_IMAGES_CUSTOM_AAD_COMPLAINT = 1113;
-    public final int REQUEST_PICK_IMAGES_DSO_LETTER = 1114;
-    private static final int REQUEST_READ_STORAGE = 100;
-    private final Calendar myCalendarResolvedDate = Calendar.getInstance();
-    String TAG = "Cancel";
-    List<String> alreadySelectedParts = new ArrayList<>();
-    String[] permissions;
-    private ActivityChallanUploadBinding binding;
-    private ModelComplaintList model;
-    private PrefManager prefManager;
-    private ComplaintViewModel viewModel;
-    private InventoryViewModel inventoryViewModel;
-    private String remark = "";
-    private String replacePart = "";
-    private String courierDetail = "";
-    private String challanNumber = "";
-    private String resolvedDate = "";
-    private String param;
-    private String imageStoragePath = "";
-    private String dsoletterStoragePath = "";
-//    private String dsoletterImageStoragePath = "";
-
-    private String DSO_LETTER_TYPE = "";
-    private boolean permissionGranted;
-    private List<ModelPartsList> listParts = new ArrayList<>();
-    private String replacePartsIds = "";
-    private DatePickerDialog.OnDateSetListener dateResolved;
-    private Dialog dialogReplaceParts;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_challan_upload);
-        binding.actionBar.ivBack.setVisibility(View.VISIBLE);
-        binding.actionBar.ivThreeDot.setVisibility(View.GONE);
-        binding.actionBar.layoutLanguage.setVisibility(View.GONE);
-        binding.actionBar.buttonPDF.setVisibility(View.GONE);
-        binding.actionBar.textToolbarTitle.setText(getResources().getString(R.string.challan_upload));
-        prefManager = new PrefManager(mContext);
-        model = (ModelComplaintList) getIntent().getSerializableExtra("param");
-        param = getIntent().getStringExtra("param2");
-        binding.setData(model);
-        viewModel = ViewModelProviders.of(this).get(ComplaintViewModel.class);
-        inventoryViewModel = ViewModelProviders.of(this).get(InventoryViewModel.class);
-        initView();
-
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_challan_upload)
+        binding!!.actionBar.ivBack.visibility = View.VISIBLE
+        binding!!.actionBar.ivThreeDot.visibility = View.GONE
+        binding!!.actionBar.layoutLanguage.visibility = View.GONE
+        binding!!.actionBar.buttonPDF.visibility = View.GONE
+        binding!!.actionBar.textToolbarTitle.text = resources.getString(R.string.challan_upload)
+        prefManager = PrefManager(mContext!!)
+        model = intent.getSerializableExtra("param") as ModelComplaintList?
+        param = intent.getStringExtra("param2")
+        binding!!.setData(model)
+        viewModel = ViewModelProviders.of(this).get(
+            ComplaintViewModel::class.java
+        )
+        inventoryViewModel = ViewModelProviders.of(this).get(
+            InventoryViewModel::class.java
+        )
+        initView()
     }
 
-    private void initView() {
-        checkPermission();
-        setUpOnClickListener();
-        setUpData();
-        getSE_AvlStockPartsList();
+    private fun initView() {
+        checkPermission()
+        setUpOnClickListener()
+        setUpData()
+        sE_AvlStockPartsList
 
-        binding.inputChallanNumber.requestFocus();
+        binding!!.inputChallanNumber.requestFocus()
 
-        dialogReplaceParts = new Dialog(this);
+        dialogReplaceParts = Dialog(this)
     }
 
-    private void setUpOnClickListener() {
-        binding.seImage.setOnClickListener(this);
-        binding.inputResolvedDate.setOnClickListener(this);
-        binding.buttonResolved.setOnClickListener(this);
-        binding.btnChallanUpload.setOnClickListener(this);
-        binding.inputImage.setOnClickListener(this);
-        binding.inputDSOLetter.setOnClickListener(this);
-        binding.inputReplacePart.setOnClickListener(this);
-        binding.actionBar.ivBack.setOnClickListener(this);
-        binding.buttonSliderSendToSE.setOnSlideCompleteListener(slideToActView -> onClickSendToSEComplaint());
-        binding.buttonAcceptComplaint.setOnClickListener(this);
+    private fun setUpOnClickListener() {
+        binding!!.seImage.setOnClickListener(this)
+        binding!!.inputResolvedDate.setOnClickListener(this)
+        binding!!.buttonResolved.setOnClickListener(this)
+        binding!!.btnChallanUpload.setOnClickListener(this)
+        binding!!.inputImage.setOnClickListener(this)
+        binding!!.inputDSOLetter.setOnClickListener(this)
+        binding!!.inputReplacePart.setOnClickListener(this)
+        binding!!.actionBar.ivBack.setOnClickListener(this)
+        binding!!.buttonSliderSendToSE.onSlideCompleteListener =
+            object : OnSlideCompleteListener {
+                override fun onSlideComplete(view: SlideToActView) {
+                    onClickSendToSEComplaint()
+                }
+            }
+        binding!!.buttonAcceptComplaint.setOnClickListener(this)
 
 
-//        binding.chkBoxIsPhysicalDamage.setOnClickListener(new View.OnClickListener() {
+        //        binding.chkBoxIsPhysicalDamage.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //
@@ -158,19 +162,19 @@ public class ChallanUploadActivity extends CustomActivity implements View.OnClic
 //                }
 //            }
 //        });
-
     }
 
-    private void setUpData() {
-        dateResolved = (view1, year, monthOfYear, dayOfMonth) -> {
-            myCalendarResolvedDate.set(Calendar.YEAR, year);
-            myCalendarResolvedDate.set(Calendar.MONTH, monthOfYear);
-            myCalendarResolvedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            timePicker();
-        };
+    private fun setUpData() {
+        dateResolved =
+            OnDateSetListener { view1: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                myCalendarResolvedDate[Calendar.YEAR] = year
+                myCalendarResolvedDate[Calendar.MONTH] = monthOfYear
+                myCalendarResolvedDate[Calendar.DAY_OF_MONTH] = dayOfMonth
+                timePicker()
+            }
 
 
-//        if (prefManager.getUSER_TYPE_ID().equalsIgnoreCase("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) {
+        //        if (prefManager.getUSER_TYPE_ID().equalsIgnoreCase("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) {
 //            if (param.equalsIgnoreCase("pending")) {
 //                binding.chkBoxIsPhysicalDamage.setVisibility(View.VISIBLE);
 //                binding.inputRemark.setClickable(true);
@@ -1123,117 +1127,144 @@ public class ChallanUploadActivity extends CustomActivity implements View.OnClic
 //                }
 //            }
 //        }
+        binding!!.btnChallanUpload.visibility = View.GONE
 
-
-        binding.btnChallanUpload.setVisibility(View.GONE);
-
-        if (prefManager.getUSER_TYPE_ID().equalsIgnoreCase("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) {
-            binding.btnChallanUpload.setVisibility(View.VISIBLE);
-        } else if (prefManager.getUSER_TYPE_ID().equalsIgnoreCase("6") && prefManager.getUSER_TYPE().equalsIgnoreCase("DSO")) {
-            binding.btnChallanUpload.setVisibility(View.GONE);
-        } else if (prefManager.getUSER_TYPE_ID().equals("2") && prefManager.getUSER_TYPE().equalsIgnoreCase("Manager")) {
-            binding.btnChallanUpload.setVisibility(View.VISIBLE);
-        } else if (prefManager.getUSER_TYPE_ID().equals("5") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceCentre")) {
-            binding.btnChallanUpload.setVisibility(View.GONE);
-        } else if (prefManager.getUSER_TYPE_ID().equals("1") && prefManager.getUSER_TYPE().equalsIgnoreCase("Admin")) {
-            binding.btnChallanUpload.setVisibility(View.VISIBLE);
+        if (prefManager!!.uSER_TYPE_ID.equals(
+                "4",
+                ignoreCase = true
+            ) && prefManager!!.uSER_TYPE.equals("ServiceEngineer", ignoreCase = true)
+        ) {
+            binding!!.btnChallanUpload.visibility = View.VISIBLE
+        } else if (prefManager!!.uSER_TYPE_ID.equals(
+                "6",
+                ignoreCase = true
+            ) && prefManager!!.uSER_TYPE.equals("DSO", ignoreCase = true)
+        ) {
+            binding!!.btnChallanUpload.visibility = View.GONE
+        } else if (prefManager!!.uSER_TYPE_ID == "2" && prefManager!!.uSER_TYPE.equals(
+                "Manager",
+                ignoreCase = true
+            )
+        ) {
+            binding!!.btnChallanUpload.visibility = View.VISIBLE
+        } else if (prefManager!!.uSER_TYPE_ID == "5" && prefManager!!.uSER_TYPE.equals(
+                "ServiceCentre",
+                ignoreCase = true
+            )
+        ) {
+            binding!!.btnChallanUpload.visibility = View.GONE
+        } else if (prefManager!!.uSER_TYPE_ID == "1" && prefManager!!.uSER_TYPE.equals(
+                "Admin",
+                ignoreCase = true
+            )
+        ) {
+            binding!!.btnChallanUpload.visibility = View.VISIBLE
         }
-
     }
 
-    private void timePicker() {
-        Calendar mCurrentTime = Calendar.getInstance();
-        int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mCurrentTime.get(Calendar.MINUTE);
-        int second = mCurrentTime.get(Calendar.SECOND);
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(this, (timePicker, selectedHour, selectedMinute) -> {
-            @SuppressLint("DefaultLocale") String timeStr = String.format("%02d:%02d:%02d", selectedHour, selectedMinute, second);
-            updateLabelResolvedDateTime(timeStr);
-        }, hour, minute, false);
-        mTimePicker.setTitle(getResources().getString(R.string.select_time));
-        mTimePicker.show();
+    private fun timePicker() {
+        val mCurrentTime = Calendar.getInstance()
+        val hour = mCurrentTime[Calendar.HOUR_OF_DAY]
+        val minute = mCurrentTime[Calendar.MINUTE]
+        val second = mCurrentTime[Calendar.SECOND]
+        val mTimePicker = TimePickerDialog(
+            this,
+            { timePicker: TimePicker?, selectedHour: Int, selectedMinute: Int ->
+                @SuppressLint("DefaultLocale") val timeStr =
+                    String.format("%02d:%02d:%02d", selectedHour, selectedMinute, second)
+                updateLabelResolvedDateTime(timeStr)
+            },
+            hour,
+            minute,
+            false
+        )
+        mTimePicker.setTitle(resources.getString(R.string.select_time))
+        mTimePicker.show()
     }
 
     @SuppressLint("SetTextI18n")
-    private void updateLabelResolvedDateTime(String timeStr) {
-        Objects.requireNonNull(binding.inputResolvedDate.getText()).clear();
-        String myFormat = "yyyy-MM-dd";
-        String myFormatSelectedDate = "dd-MM-yyyy";
+    private fun updateLabelResolvedDateTime(timeStr: String) {
+        Objects.requireNonNull(binding!!.inputResolvedDate.text)!!.clear()
+        val myFormat = "yyyy-MM-dd"
+        val myFormatSelectedDate = "dd-MM-yyyy"
 
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        SimpleDateFormat sdfSelectedDate = new SimpleDateFormat(myFormatSelectedDate, Locale.US);
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        val sdfSelectedDate = SimpleDateFormat(myFormatSelectedDate, Locale.US)
 
-        String[] separator = model.complainRegDateStr.split(" ");
-        String regDateSep = separator[0];
-        String regTimeSep = separator[1];
-        String selectedDate = sdfSelectedDate.format(myCalendarResolvedDate.getTime());
+        val separator =
+            model!!.complainRegDateStr!!.split(" ".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray()
+        val regDateSep = separator[0]
+        val regTimeSep = separator[1]
+        val selectedDate = sdfSelectedDate.format(myCalendarResolvedDate.time)
 
         try {
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
-            Date regTime = sdfTime.parse(regTimeSep);
-            Date selectedTime = sdfTime.parse(timeStr);
-            if (regDateSep.equals(selectedDate)) {
+            @SuppressLint("SimpleDateFormat") val sdfTime = SimpleDateFormat("HH:mm:ss")
+            val regTime = sdfTime.parse(regTimeSep)
+            val selectedTime = sdfTime.parse(timeStr)
+            if (regDateSep == selectedDate) {
                 if (Objects.requireNonNull(selectedTime).before(regTime)) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage(getResources().getString(R.string.please_select_time_after_registered_complaint_time))
-                            .setCancelable(false)
-                            .setPositiveButton(getResources().getString(R.string.ok), (dialog, id) -> dialog.cancel());
-                    AlertDialog alert = builder.create();
-                    alert.setTitle(getResources().getString(R.string.alert));
-                    alert.show();
+                    val builder = AlertDialog.Builder(this)
+                    builder.setMessage(resources.getString(R.string.please_select_time_after_registered_complaint_time))
+                        .setCancelable(false)
+                        .setPositiveButton(resources.getString(R.string.ok)) { dialog: DialogInterface, id: Int -> dialog.cancel() }
+                    val alert = builder.create()
+                    alert.setTitle(resources.getString(R.string.alert))
+                    alert.show()
                 } else {
-                    binding.inputResolvedDate.setText(sdf.format(myCalendarResolvedDate.getTime()) + " " + timeStr);
+                    binding!!.inputResolvedDate.setText(sdf.format(myCalendarResolvedDate.time) + " " + timeStr)
                 }
             } else {
-                binding.inputResolvedDate.setText(sdf.format(myCalendarResolvedDate.getTime()) + " " + timeStr);
+                binding!!.inputResolvedDate.setText(sdf.format(myCalendarResolvedDate.time) + " " + timeStr)
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    private void onClickSendToSEComplaint() {
-        remark = Objects.requireNonNull(binding.inputRemark.getText()).toString().trim();
-        replacePart = Objects.requireNonNull(binding.inputReplacePart.getText()).toString().trim();
-        courierDetail = Objects.requireNonNull(binding.inputCourierDetail.getText()).toString().trim();
-        challanNumber = Objects.requireNonNull(binding.inputChallanNumber.getText()).toString().trim();
-        resolvedDate = Objects.requireNonNull(binding.inputResolvedDate.getText()).toString().trim();
+    private fun onClickSendToSEComplaint() {
+        remark = Objects.requireNonNull(binding!!.inputRemark.text).toString().trim { it <= ' ' }
+        replacePart =
+            Objects.requireNonNull(binding!!.inputReplacePart.text).toString().trim { it <= ' ' }
+        courierDetail =
+            Objects.requireNonNull(binding!!.inputCourierDetail.text).toString().trim { it <= ' ' }
+        challanNumber =
+            Objects.requireNonNull(binding!!.inputChallanNumber.text).toString().trim { it <= ' ' }
+        resolvedDate =
+            Objects.requireNonNull(binding!!.inputResolvedDate.text).toString().trim { it <= ' ' }
 
         /*replacePartsIds = "";
         replacePart = "";*/
-
         if (challanNumber.isEmpty()) {
-            binding.buttonSliderSendToSE.setOuterColor(Color.RED);
-            binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_clear);
-            new Handler(Looper.myLooper()).postDelayed(() -> {
-                binding.buttonSliderSendToSE.setOuterColor(getResources().getColor(R.color.holo_blue_dark));
-                binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_check);
-                binding.buttonSliderSendToSE.resetSlider();
-            }, 2000);
-            makeToast(getResources().getString(R.string.please_input_challan_number));
-
+            binding!!.buttonSliderSendToSE.outerColor = Color.RED
+            binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_clear
+            Handler(Looper.myLooper()!!).postDelayed({
+                binding!!.buttonSliderSendToSE.outerColor =
+                    resources.getColor(R.color.holo_blue_dark)
+                binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_check
+                binding!!.buttonSliderSendToSE.resetSlider()
+            }, 2000)
+            makeToast(resources.getString(R.string.please_input_challan_number))
         } else if (resolvedDate.isEmpty()) {
-            binding.buttonSliderSendToSE.setOuterColor(Color.RED);
-            binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_clear);
-            new Handler(Looper.myLooper()).postDelayed(() -> {
-                binding.buttonSliderSendToSE.setOuterColor(getResources().getColor(R.color.holo_blue_dark));
-                binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_check);
-                binding.buttonSliderSendToSE.resetSlider();
-            }, 2000);
-            makeToast(getResources().getString(R.string.please_select_resolved_date));
-
+            binding!!.buttonSliderSendToSE.outerColor = Color.RED
+            binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_clear
+            Handler(Looper.myLooper()!!).postDelayed({
+                binding!!.buttonSliderSendToSE.outerColor =
+                    resources.getColor(R.color.holo_blue_dark)
+                binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_check
+                binding!!.buttonSliderSendToSE.resetSlider()
+            }, 2000)
+            makeToast(resources.getString(R.string.please_select_resolved_date))
         } else if (remark.isEmpty()) {
-            binding.buttonSliderSendToSE.setOuterColor(Color.RED);
-            binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_clear);
-            new Handler(Looper.myLooper()).postDelayed(() -> {
-                binding.buttonSliderSendToSE.setOuterColor(getResources().getColor(R.color.holo_blue_dark));
-                binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_check);
-                binding.buttonSliderSendToSE.resetSlider();
-            }, 2000);
-            makeToast(getResources().getString(R.string.please_input_remark));
-
+            binding!!.buttonSliderSendToSE.outerColor = Color.RED
+            binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_clear
+            Handler(Looper.myLooper()!!).postDelayed({
+                binding!!.buttonSliderSendToSE.outerColor =
+                    resources.getColor(R.color.holo_blue_dark)
+                binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_check
+                binding!!.buttonSliderSendToSE.resetSlider()
+            }, 2000)
+            makeToast(resources.getString(R.string.please_input_remark))
         } /*else if (replacePart.isEmpty()){
                 binding.buttonSliderSendToSE.setOuterColor(Color.RED);
                 binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_clear);
@@ -1245,388 +1276,447 @@ public class ChallanUploadActivity extends CustomActivity implements View.OnClic
                 makeToast(getResources().getString(R.string.please_input_replace_part));
 
             }*/ else if (courierDetail.isEmpty()) {
-            binding.buttonSliderSendToSE.setOuterColor(Color.RED);
-            binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_clear);
-            new Handler(Looper.myLooper()).postDelayed(() -> {
-                binding.buttonSliderSendToSE.setOuterColor(getResources().getColor(R.color.holo_blue_dark));
-                binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_check);
-                binding.buttonSliderSendToSE.resetSlider();
-            }, 2000);
-            makeToast(getResources().getString(R.string.please_input_courier_detail));
-
+            binding!!.buttonSliderSendToSE.outerColor = Color.RED
+            binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_clear
+            Handler(Looper.myLooper()!!).postDelayed({
+                binding!!.buttonSliderSendToSE.outerColor =
+                    resources.getColor(R.color.holo_blue_dark)
+                binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_check
+                binding!!.buttonSliderSendToSE.resetSlider()
+            }, 2000)
+            makeToast(resources.getString(R.string.please_input_courier_detail))
         } else if (imageStoragePath.isEmpty()) {
-            binding.buttonSliderSendToSE.setOuterColor(Color.RED);
-            binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_clear);
-            new Handler(Looper.myLooper()).postDelayed(() -> {
-                binding.buttonSliderSendToSE.setOuterColor(getResources().getColor(R.color.holo_blue_dark));
-                binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_check);
-                binding.buttonSliderSendToSE.resetSlider();
-            }, 2000);
-            makeToast(getResources().getString(R.string.please_select_image));
-
-        } else if (binding.inputDSOLetter.getVisibility() == View.VISIBLE && dsoletterStoragePath.isEmpty()) {
-            binding.buttonSliderSendToSE.setOuterColor(Color.RED);
-            binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_clear);
-            new Handler(Looper.myLooper()).postDelayed(() -> {
-                binding.buttonSliderSendToSE.setOuterColor(getResources().getColor(R.color.holo_blue_dark));
-                binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_check);
-                binding.buttonSliderSendToSE.resetSlider();
-            }, 2000);
-            makeToast(getResources().getString(R.string.please_upload_dso_letter));
-
+            binding!!.buttonSliderSendToSE.outerColor = Color.RED
+            binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_clear
+            Handler(Looper.myLooper()!!).postDelayed({
+                binding!!.buttonSliderSendToSE.outerColor =
+                    resources.getColor(R.color.holo_blue_dark)
+                binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_check
+                binding!!.buttonSliderSendToSE.resetSlider()
+            }, 2000)
+            makeToast(resources.getString(R.string.please_select_image))
+        } else if (binding!!.inputDSOLetter.visibility == View.VISIBLE && dsoletterStoragePath.isEmpty()) {
+            binding!!.buttonSliderSendToSE.outerColor = Color.RED
+            binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_clear
+            Handler(Looper.myLooper()!!).postDelayed({
+                binding!!.buttonSliderSendToSE.outerColor =
+                    resources.getColor(R.color.holo_blue_dark)
+                binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_check
+                binding!!.buttonSliderSendToSE.resetSlider()
+            }, 2000)
+            makeToast(resources.getString(R.string.please_upload_dso_letter))
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setMessage(getResources().getString(R.string.are_you_sure_you_want_to_send_to_service_center_this_complaint))
-                    .setCancelable(false)
-                    .setPositiveButton(getResources().getString(R.string.ok), (dialog, id) -> {
-                        dialog.cancel();
-
-                        String dsoletterStoragePathStr = "";
-                        if (binding.inputDSOLetter.getVisibility() == View.VISIBLE && !dsoletterStoragePath.isEmpty()) {
-                            dsoletterStoragePathStr = dsoletterStoragePath;
-                        }
-
-                        resolveComplaint(convertStringToUTF8(remark), binding.chkBoxIsPhysicalDamage.isChecked() ? "1" : "0", "SendToSECenter", convertStringToUTF8(replacePart), convertStringToUTF8(courierDetail), imageStoragePath, convertStringToUTF8(challanNumber), resolvedDate, replacePartsIds, dsoletterStoragePathStr, DSO_LETTER_TYPE);
-
-                    }).setNegativeButton(getResources().getString(R.string.no), (dialog, id) -> {
-                        dialog.cancel();
-                        binding.buttonSliderSendToSE.setOuterColor(Color.RED);
-                        binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_clear);
-                        new Handler(Looper.myLooper()).postDelayed(() -> {
-                            binding.buttonSliderSendToSE.setOuterColor(getResources().getColor(R.color.holo_blue_dark));
-                            binding.buttonSliderSendToSE.resetSlider();
-                        }, 2000);
-                    });
-            AlertDialog alert = builder.create();
-            alert.setTitle(getResources().getString(R.string.alert));
-            alert.show();
+            val builder = AlertDialog.Builder(
+                mContext!!
+            )
+            builder.setMessage(resources.getString(R.string.are_you_sure_you_want_to_send_to_service_center_this_complaint))
+                .setCancelable(false)
+                .setPositiveButton(resources.getString(R.string.ok)) { dialog: DialogInterface, id: Int ->
+                    dialog.cancel()
+                    var dsoletterStoragePathStr = ""
+                    if (binding!!.inputDSOLetter.visibility == View.VISIBLE && !dsoletterStoragePath.isEmpty()) {
+                        dsoletterStoragePathStr = dsoletterStoragePath
+                    }
+                    resolveComplaint(
+                        convertStringToUTF8(remark),
+                        if (binding!!.chkBoxIsPhysicalDamage.isChecked) "1" else "0",
+                        "SendToSECenter",
+                        convertStringToUTF8(replacePart),
+                        convertStringToUTF8(courierDetail),
+                        imageStoragePath,
+                        convertStringToUTF8(challanNumber),
+                        resolvedDate,
+                        replacePartsIds,
+                        dsoletterStoragePathStr,
+                        DSO_LETTER_TYPE
+                    )
+                }
+                .setNegativeButton(resources.getString(R.string.no)) { dialog: DialogInterface, id: Int ->
+                    dialog.cancel()
+                    binding!!.buttonSliderSendToSE.outerColor = Color.RED
+                    binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_clear
+                    Handler(Looper.myLooper()!!).postDelayed({
+                        binding!!.buttonSliderSendToSE.outerColor =
+                            resources.getColor(R.color.holo_blue_dark)
+                        binding!!.buttonSliderSendToSE.resetSlider()
+                    }, 2000)
+                }
+            val alert = builder.create()
+            alert.setTitle(resources.getString(R.string.alert))
+            alert.show()
         }
     }
 
-    public void onClickResolveComplaint() {
-        remark = Objects.requireNonNull(binding.inputRemark.getText()).toString().trim();
-        replacePart = Objects.requireNonNull(binding.inputReplacePart.getText()).toString().trim();
-        courierDetail = Objects.requireNonNull(binding.inputCourierDetail.getText()).toString().trim();
-        challanNumber = Objects.requireNonNull(binding.inputChallanNumber.getText()).toString().trim();
-        resolvedDate = Objects.requireNonNull(binding.inputResolvedDate.getText()).toString().trim();
+    fun onClickResolveComplaint() {
+        remark = Objects.requireNonNull(binding!!.inputRemark.text).toString().trim { it <= ' ' }
+        replacePart =
+            Objects.requireNonNull(binding!!.inputReplacePart.text).toString().trim { it <= ' ' }
+        courierDetail =
+            Objects.requireNonNull(binding!!.inputCourierDetail.text).toString().trim { it <= ' ' }
+        challanNumber =
+            Objects.requireNonNull(binding!!.inputChallanNumber.text).toString().trim { it <= ' ' }
+        resolvedDate =
+            Objects.requireNonNull(binding!!.inputResolvedDate.text).toString().trim { it <= ' ' }
 
         if (challanNumber.isEmpty()) {
-            makeToast(getResources().getString(R.string.please_input_challan_number));
+            makeToast(resources.getString(R.string.please_input_challan_number))
         } else if (resolvedDate.isEmpty()) {
-            makeToast(getResources().getString(R.string.please_select_resolved_date));
+            makeToast(resources.getString(R.string.please_select_resolved_date))
         } else if (remark.isEmpty()) {
-            makeToast(getResources().getString(R.string.please_input_remark));
+            makeToast(resources.getString(R.string.please_input_remark))
         } /*else if (replacePart.isEmpty()){
             makeToast(getResources().getString(R.string.please_input_replace_part));
         }*/ else if (courierDetail.isEmpty()) {
-            makeToast(getResources().getString(R.string.please_input_courier_detail));
+            makeToast(resources.getString(R.string.please_input_courier_detail))
         } else if (imageStoragePath.isEmpty()) {
-            makeToast(getResources().getString(R.string.please_select_image));
+            makeToast(resources.getString(R.string.please_select_image))
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(getResources().getString(R.string.are_you_sure_you_want_to_resolve_this_complaint))
-                    .setCancelable(false)
-                    .setPositiveButton(getResources().getString(R.string.yes), (dialog, id) -> {
-                        dialog.cancel();
-
-                        String dsoletterStoragePathStr = "";
-                        if (binding.inputDSOLetter.getVisibility() == View.VISIBLE && !dsoletterStoragePath.isEmpty()) {
-                            dsoletterStoragePathStr = dsoletterStoragePath;
-                        }
-                        resolveComplaint(convertStringToUTF8(remark), binding.chkBoxIsPhysicalDamage.isChecked() ? "1" : "0", "Resolved", convertStringToUTF8(replacePart), convertStringToUTF8(courierDetail), imageStoragePath, convertStringToUTF8(challanNumber), resolvedDate, replacePartsIds, dsoletterStoragePathStr, DSO_LETTER_TYPE);
-                    })
-                    .setNegativeButton(getResources().getString(R.string.no), (dialog, id) -> dialog.cancel());
-            AlertDialog alert = builder.create();
-            alert.setTitle(getResources().getString(R.string.alert));
-            alert.show();
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage(resources.getString(R.string.are_you_sure_you_want_to_resolve_this_complaint))
+                .setCancelable(false)
+                .setPositiveButton(resources.getString(R.string.yes)) { dialog: DialogInterface, id: Int ->
+                    dialog.cancel()
+                    var dsoletterStoragePathStr = ""
+                    if (binding!!.inputDSOLetter.visibility == View.VISIBLE && !dsoletterStoragePath.isEmpty()) {
+                        dsoletterStoragePathStr = dsoletterStoragePath
+                    }
+                    resolveComplaint(
+                        convertStringToUTF8(remark),
+                        if (binding!!.chkBoxIsPhysicalDamage.isChecked) "1" else "0",
+                        "Resolved",
+                        convertStringToUTF8(replacePart),
+                        convertStringToUTF8(courierDetail),
+                        imageStoragePath,
+                        convertStringToUTF8(challanNumber),
+                        resolvedDate,
+                        replacePartsIds,
+                        dsoletterStoragePathStr,
+                        DSO_LETTER_TYPE
+                    )
+                }
+                .setNegativeButton(resources.getString(R.string.no)) { dialog: DialogInterface, id: Int -> dialog.cancel() }
+            val alert = builder.create()
+            alert.setTitle(resources.getString(R.string.alert))
+            alert.show()
         }
     }
 
-    private void resolveComplaint(String remark, String IsPhysicalDamage, String getStatus, String replacePart, String courierDetail, String se_image, String challanNo, String seRemarkDate, String replacePartsIds, String damageApprovalLetter, String DSO_LETTER_TYPE) {
-        isLoading();
-        viewModel.resolveComplaint(prefManager.getUSER_Id(), IsPhysicalDamage, remark, model.complainRegNo, getStatus, replacePart, courierDetail, se_image, challanNo, seRemarkDate, replacePartsIds, damageApprovalLetter, DSO_LETTER_TYPE).observe(this, modelResolveComplaint -> {
-            isLoading();
-            Log.d("replacepartsid", "  " + replacePartsIds);
+    private fun resolveComplaint(
+        remark: String,
+        IsPhysicalDamage: String,
+        getStatus: String,
+        replacePart: String,
+        courierDetail: String,
+        se_image: String,
+        challanNo: String,
+        seRemarkDate: String,
+        replacePartsIds: String,
+        damageApprovalLetter: String,
+        DSO_LETTER_TYPE: String
+    ) {
+        isLoading
+        viewModel!!.resolveComplaint(
+            prefManager!!.uSER_Id,
+            IsPhysicalDamage,
+            remark,
+            model!!.complainRegNo,
+            getStatus,
+            replacePart,
+            courierDetail,
+            se_image,
+            challanNo,
+            seRemarkDate,
+            replacePartsIds,
+            damageApprovalLetter,
+            DSO_LETTER_TYPE
+        )!!.observe(
+            this
+        ) { modelResolveComplaint: ModelResolveComplaint? ->
+            isLoading
+            Log.d("replacepartsid", "  $replacePartsIds")
+            if (modelResolveComplaint!!.status == "200") {
+                val msg = modelResolveComplaint!!.message
 
-            if (modelResolveComplaint.status.equals("200")) {
-
-                String msg = modelResolveComplaint.message;
-//                Toast.makeText(this, "" + msg, Toast.LENGTH_SHORT).show();
+                //                Toast.makeText(this, "" + msg, Toast.LENGTH_SHORT).show();
 //                binding.buttonSliderSendToSE.setOuterColor(getResources().getColor(R.color.holo_blue_dark));
 //                binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_check);
 //                binding.buttonSliderSendToSE.resetSlider();
 //                Intent returnIntent = new Intent();
 //                setResult(Activity.RESULT_OK, returnIntent);
 //                finish();
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                val builder = AlertDialog.Builder(this)
                 builder.setMessage(msg)
-                        .setCancelable(false)
-                        .setPositiveButton(getResources().getString(R.string.yes), (dialog, id) -> {
-                            dialog.cancel();
-
-                            binding.buttonSliderSendToSE.setOuterColor(getResources().getColor(R.color.holo_blue_dark));
-                            binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_check);
-                            binding.buttonSliderSendToSE.resetSlider();
-                            Intent returnIntent = new Intent();
-                            setResult(Activity.RESULT_OK, returnIntent);
-                            finish();
-
-                        });
-                AlertDialog alert = builder.create();
-                alert.setTitle(getResources().getString(R.string.alert));
-                alert.show();
+                    .setCancelable(false)
+                    .setPositiveButton(resources.getString(R.string.yes)) { dialog: DialogInterface, id: Int ->
+                        dialog.cancel()
+                        binding!!.buttonSliderSendToSE.outerColor =
+                            resources.getColor(R.color.holo_blue_dark)
+                        binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_check
+                        binding!!.buttonSliderSendToSE.resetSlider()
+                        val returnIntent = Intent()
+                        setResult(RESULT_OK, returnIntent)
+                        finish()
+                    }
+                val alert = builder.create()
+                alert.setTitle(resources.getString(R.string.alert))
+                alert.show()
             } else {
-                String msg = modelResolveComplaint.message;
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                val msg = modelResolveComplaint.message
+                val builder = AlertDialog.Builder(this)
                 builder.setMessage(msg)
-                        .setCancelable(false)
-                        .setPositiveButton(getResources().getString(R.string.yes), (dialog, id) -> {
-                            dialog.cancel();
-                            binding.buttonSliderSendToSE.setOuterColor(Color.RED);
-                            binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_clear);
-                            new Handler(Looper.myLooper()).postDelayed(() -> {
-                                binding.buttonSliderSendToSE.setOuterColor(getResources().getColor(R.color.holo_blue_dark));
-                                binding.buttonSliderSendToSE.resetSlider();
-                            }, 2000);
-                        });
-                AlertDialog alert = builder.create();
-                alert.setTitle(getResources().getString(R.string.alert));
-                alert.show();
+                    .setCancelable(false)
+                    .setPositiveButton(resources.getString(R.string.yes)) { dialog: DialogInterface, id: Int ->
+                        dialog.cancel()
+                        binding!!.buttonSliderSendToSE.outerColor = Color.RED
+                        binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_clear
+                        Handler(Looper.myLooper()!!).postDelayed({
+                            binding!!.buttonSliderSendToSE.outerColor =
+                                resources.getColor(R.color.holo_blue_dark)
+                            binding!!.buttonSliderSendToSE.resetSlider()
+                        }, 2000)
+                    }
+                val alert = builder.create()
+                alert.setTitle(resources.getString(R.string.alert))
+                alert.show()
             }
-        });
+        }
     }
 
-    public void onClickChallanUpload() {
-        remark = Objects.requireNonNull(binding.inputRemark.getText()).toString().trim();
-        replacePart = Objects.requireNonNull(binding.inputReplacePart.getText()).toString().trim();
-        courierDetail = Objects.requireNonNull(binding.inputCourierDetail.getText()).toString().trim();
-        challanNumber = Objects.requireNonNull(binding.inputChallanNumber.getText()).toString().trim();
-        resolvedDate = Objects.requireNonNull(binding.inputResolvedDate.getText()).toString().trim();
+    fun onClickChallanUpload() {
+        remark = Objects.requireNonNull(binding!!.inputRemark.text).toString().trim { it <= ' ' }
+        replacePart =
+            Objects.requireNonNull(binding!!.inputReplacePart.text).toString().trim { it <= ' ' }
+        courierDetail =
+            Objects.requireNonNull(binding!!.inputCourierDetail.text).toString().trim { it <= ' ' }
+        challanNumber =
+            Objects.requireNonNull(binding!!.inputChallanNumber.text).toString().trim { it <= ' ' }
+        resolvedDate =
+            Objects.requireNonNull(binding!!.inputResolvedDate.text).toString().trim { it <= ' ' }
 
         if (challanNumber.isEmpty()) {
-            makeToast(getResources().getString(R.string.please_input_challan_number));
-//        } else if (resolvedDate.isEmpty()) {
+            makeToast(resources.getString(R.string.please_input_challan_number))
+            //        } else if (resolvedDate.isEmpty()) {
 //            makeToast(getResources().getString(R.string.please_select_resolved_date));
 //        } else if (remark.isEmpty()) {
 //            makeToast(getResources().getString(R.string.please_input_remark));
 //        }  else if (courierDetail.isEmpty()) {
 //            makeToast(getResources().getString(R.string.please_input_courier_detail));
         } else if (imageStoragePath.isEmpty()) {
-            makeToast(getResources().getString(R.string.please_select_image));
+            makeToast(resources.getString(R.string.please_select_image))
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(getResources().getString(R.string.are_you_sure_you_want_to_upload_challan))
-                    .setCancelable(false)
-                    .setPositiveButton(getResources().getString(R.string.yes), (dialog, id) -> {
-                        dialog.cancel();
-
-                        //    resolveComplaint(convertStringToUTF8(remark), binding.chkBoxIsPhysicalDamage.isChecked() ? "1" : "0", "Resolved", convertStringToUTF8(replacePart), convertStringToUTF8(courierDetail), imageStoragePath, convertStringToUTF8(challanNumber), resolvedDate, replacePartsIds, dsoletterStoragePathStr, DSO_LETTER_TYPE);
-                        challanUpload(convertStringToUTF8(challanNumber), imageStoragePath);
-
-                    })
-                    .setNegativeButton(getResources().getString(R.string.no), (dialog, id) -> dialog.cancel());
-            AlertDialog alert = builder.create();
-            alert.setTitle(getResources().getString(R.string.alert));
-            alert.show();
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage(resources.getString(R.string.are_you_sure_you_want_to_upload_challan))
+                .setCancelable(false)
+                .setPositiveButton(resources.getString(R.string.yes)) { dialog: DialogInterface, id: Int ->
+                    dialog.cancel()
+                    //    resolveComplaint(convertStringToUTF8(remark), binding.chkBoxIsPhysicalDamage.isChecked() ? "1" : "0", "Resolved", convertStringToUTF8(replacePart), convertStringToUTF8(courierDetail), imageStoragePath, convertStringToUTF8(challanNumber), resolvedDate, replacePartsIds, dsoletterStoragePathStr, DSO_LETTER_TYPE);
+                    challanUpload(convertStringToUTF8(challanNumber), imageStoragePath)
+                }
+                .setNegativeButton(resources.getString(R.string.no)) { dialog: DialogInterface, id: Int -> dialog.cancel() }
+            val alert = builder.create()
+            alert.setTitle(resources.getString(R.string.alert))
+            alert.show()
         }
     }
 
-    private void challanUpload(String challanNo, String challanImage) {
-        isLoading();
-        viewModel.challanUpload(prefManager.getUSER_Id(), model.complainId, model.complainRegNo, challanNo, challanImage)
-                .observe(this, modelResolveComplaint -> {
-                    isLoading();
-                    Log.d("replacepartsid", "  " + replacePartsIds);
+    private fun challanUpload(challanNo: String, challanImage: String) {
+        isLoading
+        viewModel!!.challanUpload(
+            prefManager!!.uSER_Id,
+            model!!.complainId,
+            model!!.complainRegNo,
+            challanNo,
+            challanImage
+        )!!.observe(this) { modelResolveComplaint: ModelResolveComplaint? ->
+                isLoading
+                Log.d("replacepartsid", "  $replacePartsIds")
+                if (modelResolveComplaint!!.status == "200") {
+                    val msg = modelResolveComplaint.message
 
-                    if (modelResolveComplaint.status.equals("200")) {
-
-                        String msg = modelResolveComplaint.message;
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        builder.setMessage(msg)
-                                .setCancelable(false)
-                                .setPositiveButton(getResources().getString(R.string.ok), (dialog, id) -> {
-                                    dialog.cancel();
-
-                                    binding.buttonSliderSendToSE.setOuterColor(getResources().getColor(R.color.holo_blue_dark));
-                                    binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_check);
-                                    binding.buttonSliderSendToSE.resetSlider();
-                                    Intent returnIntent = new Intent();
-                                    setResult(Activity.RESULT_OK, returnIntent);
-                                    finish();
-
-                                });
-                        AlertDialog alert = builder.create();
-                        alert.setTitle(getResources().getString(R.string.alert));
-                        alert.show();
-                    } else {
-                        String msg = modelResolveComplaint.message;
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        builder.setMessage(msg)
-                                .setCancelable(false)
-                                .setPositiveButton(getResources().getString(R.string.ok), (dialog, id) -> {
-                                    dialog.cancel();
-                                    binding.buttonSliderSendToSE.setOuterColor(Color.RED);
-                                    binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_clear);
-                                    new Handler(Looper.myLooper()).postDelayed(() -> {
-                                        binding.buttonSliderSendToSE.setOuterColor(getResources().getColor(R.color.holo_blue_dark));
-                                        binding.buttonSliderSendToSE.resetSlider();
-                                    }, 2000);
-                                });
-                        AlertDialog alert = builder.create();
-                        alert.setTitle(getResources().getString(R.string.alert));
-                        alert.show();
-                    }
-                });
-    }
-
-    private void isLoading() {
-        viewModel.getIsLoading().observe(this, aBoolean -> {
-            if (aBoolean) {
-
-
-                showProgress(getResources().getString(R.string.please_wait));
-            } else {
-                hideProgress();
+                    val builder = AlertDialog.Builder(this)
+                    builder.setMessage(msg)
+                        .setCancelable(false)
+                        .setPositiveButton(resources.getString(R.string.ok)) { dialog: DialogInterface, id: Int ->
+                            dialog.cancel()
+                            binding!!.buttonSliderSendToSE.outerColor =
+                                resources.getColor(R.color.holo_blue_dark)
+                            binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_check
+                            binding!!.buttonSliderSendToSE.resetSlider()
+                            val returnIntent = Intent()
+                            setResult(RESULT_OK, returnIntent)
+                            finish()
+                        }
+                    val alert = builder.create()
+                    alert.setTitle(resources.getString(R.string.alert))
+                    alert.show()
+                } else {
+                    val msg = modelResolveComplaint.message
+                    val builder = AlertDialog.Builder(this)
+                    builder.setMessage(msg)
+                        .setCancelable(false)
+                        .setPositiveButton(resources.getString(R.string.ok)) { dialog: DialogInterface, id: Int ->
+                            dialog.cancel()
+                            binding!!.buttonSliderSendToSE.outerColor = Color.RED
+                            binding!!.buttonSliderSendToSE.completeIcon = R.drawable.ic_clear
+                            Handler(Looper.myLooper()!!).postDelayed({
+                                binding!!.buttonSliderSendToSE.outerColor =
+                                    resources.getColor(R.color.holo_blue_dark)
+                                binding!!.buttonSliderSendToSE.resetSlider()
+                            }, 2000)
+                        }
+                    val alert = builder.create()
+                    alert.setTitle(resources.getString(R.string.alert))
+                    alert.show()
+                }
             }
-        });
     }
 
-    private void isInventoryLoading() {
-        inventoryViewModel.getIsLoading().observe(this, aBoolean -> {
-            if (aBoolean) {
-                showProgress(getResources().getString(R.string.please_wait));
-            } else {
-                hideProgress();
+    private val isLoading: Unit
+        get() {
+            viewModel!!.isLoading!!.observe(this) { aBoolean: Boolean? ->
+                if (aBoolean!!) {
+                    showProgress(resources.getString(R.string.please_wait))
+                } else {
+                    hideProgress()
+                }
             }
-        });
+        }
+
+    private val isInventoryLoading: Unit
+        get() {
+            inventoryViewModel!!.isLoading.observe(this) { aBoolean: Boolean ->
+                if (aBoolean) {
+                    showProgress(resources.getString(R.string.please_wait))
+                } else {
+                    hideProgress()
+                }
+            }
+        }
+
+    private fun convertStringToUTF8(s: String): String {
+        val out = String(s.toByteArray(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1)
+        return out
     }
 
-    private String convertStringToUTF8(String s) {
-        String out;
-        out = new String(s.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
-        return out;
-    }
-
-    private void checkPermission() {
+    private fun checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Dexter.withContext(this)
-                    .withPermissions(
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.READ_MEDIA_IMAGES,
-                            Manifest.permission.READ_MEDIA_VIDEO,
-                            Manifest.permission.CAMERA
-                    ).withListener(new MultiplePermissionsListener() {
-                        @Override
-                        public void onPermissionsChecked(MultiplePermissionsReport report) {
-                            if (report.areAllPermissionsGranted()) {
-                                permissionGranted = true;
-                            }
+                .withPermissions(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.READ_MEDIA_IMAGES,
+                    Manifest.permission.READ_MEDIA_VIDEO,
+                    Manifest.permission.CAMERA
+                ).withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                        if (report.areAllPermissionsGranted()) {
+                            permissionGranted = true
                         }
+                    }
 
-                        @Override
-                        public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                            token.continuePermissionRequest();
-                        }
-                    }).check();
+                    override fun onPermissionRationaleShouldBeShown(
+                        permissions: List<PermissionRequest>,
+                        token: PermissionToken
+                    ) {
+                        token.continuePermissionRequest()
+                    }
+                }).check()
         } else {
-
             Dexter.withContext(this)
-                    .withPermissions(
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.CAMERA
-                    ).withListener(new MultiplePermissionsListener() {
-                        @Override
-                        public void onPermissionsChecked(MultiplePermissionsReport report) {
-                            if (report.areAllPermissionsGranted()) {
-                                permissionGranted = true;
-                            }
+                .withPermissions(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA
+                ).withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                        if (report.areAllPermissionsGranted()) {
+                            permissionGranted = true
                         }
+                    }
 
-                        @Override
-                        public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                            token.continuePermissionRequest();
-                        }
-                    }).check();
-
-
+                    override fun onPermissionRationaleShouldBeShown(
+                        permissions: List<PermissionRequest>,
+                        token: PermissionToken
+                    ) {
+                        token.continuePermissionRequest()
+                    }
+                }).check()
         }
-
-
     }
 
 
-    private void selectImage() {
+    private fun selectImage() {
         try {
-            final CharSequence[] items = {getResources().getString(R.string.imagepicker_str_take_photo), getResources().getString(R.string.imagepicker_str_choose_from_gallery), getResources().getString(R.string.imagepicker_str_cancel)};
-            TextView title = new TextView(mContext);
-            title.setText(getResources().getString(R.string.imagepicker_str_select_challan_image));
-            title.setBackgroundColor(getResources().getColor(R.color.colorActionBar));
-            title.setPadding(15, 25, 15, 25);
-            title.setGravity(Gravity.CENTER);
-            title.setTextColor(Color.WHITE);
-            title.setTextSize(22);
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setCustomTitle(title);
+            val items = arrayOf<CharSequence>(
+                resources.getString(R.string.imagepicker_str_take_photo),
+                resources.getString(R.string.imagepicker_str_choose_from_gallery),
+                resources.getString(R.string.imagepicker_str_cancel)
+            )
+            val title = TextView(mContext)
+            title.text = resources.getString(R.string.imagepicker_str_select_challan_image)
+            title.setBackgroundColor(resources.getColor(R.color.colorActionBar))
+            title.setPadding(15, 25, 15, 25)
+            title.gravity = Gravity.CENTER
+            title.setTextColor(Color.WHITE)
+            title.textSize = 22f
+            val builder = AlertDialog.Builder(
+                mContext!!
+            )
+            builder.setCustomTitle(title)
             // builder.setTitle("Add Photo!");
-            builder.setItems(items, (dialog, item) -> {
-                if (items[item].equals(getResources().getString(R.string.imagepicker_str_take_photo))) {
+            builder.setItems(items) { dialog: DialogInterface, item: Int ->
+                if (items[item] == resources.getString(R.string.imagepicker_str_take_photo)) {
                     ImagePicker.with(mContext)
-                            .setToolbarColor("#212121")
-                            .setStatusBarColor("#000000")
-                            .setToolbarTextColor("#FFFFFF")
-                            .setToolbarIconColor("#FFFFFF")
-                            .setProgressBarColor("#4CAF50")
-                            .setBackgroundColor("#212121")
-                            .setCameraOnly(true)
-                            .setMultipleMode(true)
-                            .setFolderMode(true)
-                            .setShowCamera(true)
-                            .setFolderTitle("Albums")
-                            .setImageTitle("Galleries")
-                            .setDoneTitle("Done")
-                            .setMaxSize(1)
-                            .setSavePath(Constants.saveImagePath)
-                            .setSelectedImages(new ArrayList<>())
-                            .start(REQUEST_PICK_IMAGES_CUSTOM_AAD_COMPLAINT);
-
-                } else if (items[item].equals(getResources().getString(R.string.imagepicker_str_choose_from_gallery))) {
+                        .setToolbarColor("#212121")
+                        .setStatusBarColor("#000000")
+                        .setToolbarTextColor("#FFFFFF")
+                        .setToolbarIconColor("#FFFFFF")
+                        .setProgressBarColor("#4CAF50")
+                        .setBackgroundColor("#212121")
+                        .setCameraOnly(true)
+                        .setMultipleMode(true)
+                        .setFolderMode(true)
+                        .setShowCamera(true)
+                        .setFolderTitle("Albums")
+                        .setImageTitle("Galleries")
+                        .setDoneTitle("Done")
+                        .setMaxSize(1)
+                        .setSavePath(Constants.saveImagePath)
+                        .setSelectedImages(ArrayList())
+                        .start(REQUEST_PICK_IMAGES_CUSTOM_AAD_COMPLAINT)
+                } else if (items[item] == resources.getString(R.string.imagepicker_str_choose_from_gallery)) {
                     ImagePicker.with(mContext)
-                            .setToolbarColor("#212121")
-                            .setStatusBarColor("#000000")
-                            .setToolbarTextColor("#FFFFFF")
-                            .setToolbarIconColor("#FFFFFF")
-                            .setProgressBarColor("#4CAF50")
-                            .setBackgroundColor("#212121")
-                            .setCameraOnly(false)
-                            .setMultipleMode(true)
-                            .setFolderMode(true)
-                            .setShowCamera(false)
-                            .setFolderTitle("Albums")
-                            .setImageTitle("Galleries")
-                            .setDoneTitle("Done")
-                            .setMaxSize(1)
-                            .setSavePath(Constants.saveImagePath)
-                            .setSelectedImages(new ArrayList<>())
-                            .start(REQUEST_PICK_IMAGES_CUSTOM_AAD_COMPLAINT);
-                } else if (items[item].equals(getResources().getString(R.string.imagepicker_str_cancel))) {
-                    dialog.dismiss();
+                        .setToolbarColor("#212121")
+                        .setStatusBarColor("#000000")
+                        .setToolbarTextColor("#FFFFFF")
+                        .setToolbarIconColor("#FFFFFF")
+                        .setProgressBarColor("#4CAF50")
+                        .setBackgroundColor("#212121")
+                        .setCameraOnly(false)
+                        .setMultipleMode(true)
+                        .setFolderMode(true)
+                        .setShowCamera(false)
+                        .setFolderTitle("Albums")
+                        .setImageTitle("Galleries")
+                        .setDoneTitle("Done")
+                        .setMaxSize(1)
+                        .setSavePath(Constants.saveImagePath)
+                        .setSelectedImages(ArrayList())
+                        .start(REQUEST_PICK_IMAGES_CUSTOM_AAD_COMPLAINT)
+                } else if (items[item] == resources.getString(R.string.imagepicker_str_cancel)) {
+                    dialog.dismiss()
                 }
-            });
-            builder.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.d("kdcfjcl", "" + e);
+            }
+            builder.show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.d("kdcfjcl", "" + e)
         }
     }
 
-    private void selectMultiCheckboxForReplacePart() {
-
+    private fun selectMultiCheckboxForReplacePart() {
         /*if (!model.getComplPartsIds().isEmpty()) {
             String[] data = model.getComplPartsIds().split(",");
             for (int i =0; i < data.length; i++){
@@ -1638,374 +1728,397 @@ public class ChallanUploadActivity extends CustomActivity implements View.OnClic
             }
         }*/
 
-        if (!dialogReplaceParts.isShowing()) {
-            replacePartsIds = "";
-            CustomMultiSelectBinding dialogBinding;
+        if (!dialogReplaceParts!!.isShowing) {
+            replacePartsIds = ""
             //    final Dialog dialog = new Dialog(this);
-            dialogBinding = CustomMultiSelectBinding.inflate(getLayoutInflater());
-            dialogReplaceParts.setContentView(dialogBinding.getRoot());
-            dialogReplaceParts.setTitle(getResources().getString(R.string.select_replace_parts));
-            dialogReplaceParts.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialogReplaceParts.setCanceledOnTouchOutside(false);
+            val dialogBinding =
+                CustomMultiSelectBinding.inflate(layoutInflater)
+            dialogReplaceParts!!.setContentView(dialogBinding.root)
+            dialogReplaceParts!!.setTitle(resources.getString(R.string.select_replace_parts))
+            dialogReplaceParts!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialogReplaceParts!!.setCanceledOnTouchOutside(false)
 
-            dialogBinding.recyclerViewParts.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-            dialogBinding.recyclerViewParts.setAdapter(new MutliSelectDistributionPartsAdapter(this, listParts));
+            dialogBinding.recyclerViewParts.layoutManager =
+                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            dialogBinding.recyclerViewParts.adapter =
+                MutliSelectDistributionPartsAdapter(this, listParts)
 
-            dialogBinding.done.setOnClickListener(view -> {
-                replacePartsIds = getCommaSeparatedIds(listParts);
-
-                Log.d("replacePartsIds", replacePartsIds);
-                String partName = getCommaSeparatedName(listParts);
-                binding.inputReplacePart.setText(partName);
-                dialogReplaceParts.dismiss();
-            });
-
-            dialogBinding.cancel.setOnClickListener(view -> {
-
-                for (int i = 0; i < listParts.size(); i++) {
-                    listParts.get(i).setSelectFlag(false);
-                }
-
-                replacePartsIds = getCommaSeparatedIds(listParts);
-                Log.d("replacePartsIds", replacePartsIds);
-                binding.inputReplacePart.setText("");
-                dialogReplaceParts.dismiss();
-            });
-
-            dialogReplaceParts.show();
-        }
-
-    }
-
-    private String getCommaSeparatedIds(List<ModelPartsList> selectedIds) {
-        StringBuilder partsIds = new StringBuilder();
-        for (int i = 0; i < selectedIds.size(); i++) {
-            if (selectedIds.get(i).isSelectFlag())
-                partsIds.append(", ").append(selectedIds.get(i).getItemId());
-        }
-        if (partsIds.length() > 0) {
-            return partsIds.substring(1);
-        } else {
-            return "";
-        }
-    }
-
-    private String getCommaSeparatedName(List<ModelPartsList> selectedIds) {
-        StringBuilder partName = new StringBuilder();
-        for (int i = 0; i < selectedIds.size(); i++) {
-            if (selectedIds.get(i).isSelectFlag())
-                partName.append(", ").append(selectedIds.get(i).getItemName());
-        }
-        if (partName.length() > 0) {
-            return partName.substring(1);
-        } else {
-            return "";
-        }
-    }
-
-    private void getSE_AvlStockPartsList() {
-        isInventoryLoading();
-        inventoryViewModel.getAvailableStockListForSE(prefManager.getUSER_Id(), "0").observe(this, modelParts -> {
-            isInventoryLoading();
-            if (modelParts.status.equals("200")) {
-                listParts = modelParts.getParts();
-                Log.d("fdnf", "  " + listParts);
+            dialogBinding.done.setOnClickListener { view: View? ->
+                replacePartsIds = getCommaSeparatedIds(listParts)
+                Log.d("replacePartsIds", replacePartsIds)
+                val partName = getCommaSeparatedName(listParts)
+                binding!!.inputReplacePart.setText(partName)
+                dialogReplaceParts!!.dismiss()
             }
-        });
+
+            dialogBinding.cancel.setOnClickListener { view: View? ->
+                for (i in listParts!!.indices) {
+                    listParts!![i].isSelectFlag = false
+                }
+                replacePartsIds = getCommaSeparatedIds(listParts)
+                Log.d("replacePartsIds", replacePartsIds)
+                binding!!.inputReplacePart.setText("")
+                dialogReplaceParts!!.dismiss()
+            }
+
+            dialogReplaceParts!!.show()
+        }
     }
 
-    private void acceptComplaint() {
-        if (Constants.isNetworkAvailable(mContext)) {
-            showProgress();
-            APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<ModelResponse> call = service.AcceptBySE(prefManager.getUSER_Id(), model.complainRegNo);
-            call.enqueue(new Callback<ModelResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<ModelResponse> call, @NonNull Response<ModelResponse> response) {
-                    hideProgress();
-                    if (response.isSuccessful()) {
+    private fun getCommaSeparatedIds(selectedIds: List<ModelPartsList>?): String {
+        val partsIds = StringBuilder()
+        for (i in selectedIds!!.indices) {
+            if (selectedIds[i].isSelectFlag) partsIds.append(", ").append(selectedIds[i].itemId)
+        }
+        return if (partsIds.length > 0) {
+            partsIds.substring(1)
+        } else {
+            ""
+        }
+    }
+
+    private fun getCommaSeparatedName(selectedIds: List<ModelPartsList>?): String {
+        val partName = StringBuilder()
+        for (i in selectedIds!!.indices) {
+            if (selectedIds[i].isSelectFlag) partName.append(", ").append(selectedIds[i].itemName)
+        }
+        return if (partName.length > 0) {
+            partName.substring(1)
+        } else {
+            ""
+        }
+    }
+
+    private val sE_AvlStockPartsList: Unit
+        get() {
+            isInventoryLoading
+            inventoryViewModel!!.getAvailableStockListForSE(prefManager!!.uSER_Id, "0")
+                .observe(this) { modelParts: ModelParts ->
+                    isInventoryLoading
+                    if (modelParts.status == "200") {
+                        listParts = modelParts.parts
+                        Log.d("fdnf", "  $listParts")
+                    }
+                }
+        }
+
+    private fun acceptComplaint() {
+        if (isNetworkAvailable(mContext!!)) {
+            showProgress()
+            val service = retrofitInstance!!.create(
+                APIService::class.java
+            )
+            val call = service.AcceptBySE(prefManager!!.uSER_Id, model!!.complainRegNo)
+            call!!.enqueue(object : Callback<ModelResponse?> {
+                override fun onResponse(
+                    call: Call<ModelResponse?>,
+                    response: Response<ModelResponse?>
+                ) {
+                    hideProgress()
+                    if (response.isSuccessful) {
                         if (response.code() == 200) {
-                            ModelResponse modelResponse = response.body();
-                            if (Objects.requireNonNull(modelResponse).status.equals("200")) {
-                                Intent returnIntent = new Intent();
-                                setResult(Activity.RESULT_OK, returnIntent);
-                                finish();
+                            val modelResponse = response.body()
+                            if (Objects.requireNonNull(modelResponse)!!.status == "200") {
+                                val returnIntent = Intent()
+                                setResult(RESULT_OK, returnIntent)
+                                finish()
                             } else {
-                                makeToast(getResources().getString(R.string.error));
+                                makeToast(resources.getString(R.string.error))
                             }
                         } else {
-                            makeToast(getResources().getString(R.string.error));
+                            makeToast(resources.getString(R.string.error))
                         }
                     } else {
-                        makeToast(getResources().getString(R.string.error));
+                        makeToast(resources.getString(R.string.error))
                     }
                 }
 
-                @Override
-                public void onFailure(@NonNull Call<ModelResponse> call, @NonNull Throwable t) {
-                    hideProgress();
-                    makeToast(getResources().getString(R.string.error_message));
+                override fun onFailure(call: Call<ModelResponse?>, t: Throwable) {
+                    hideProgress()
+                    makeToast(resources.getString(R.string.error_message))
                 }
-            });
+            })
         } else {
-            makeToast(getResources().getString(R.string.no_internet_connection));
+            makeToast(resources.getString(R.string.no_internet_connection))
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_PICK_IMAGES_CUSTOM_AAD_COMPLAINT && resultCode == RESULT_OK && data != null) {
-            ArrayList<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
-            if (images != null && images.size() > 0) {
-                Image image = images.get(0);
-                imageStoragePath = image.getPath();
+            val images = data.getParcelableArrayListExtra<Image>(Config.EXTRA_IMAGES)
+            if (images != null && images.size > 0) {
+                val image = images[0]
+                imageStoragePath = image.path
                 if (imageStoragePath.contains("file:/")) {
-                    imageStoragePath = imageStoragePath.replace("file:/", "");
+                    imageStoragePath = imageStoragePath.replace("file:/", "")
                 }
-                imageStoragePath = CompressImage.compress(imageStoragePath, this);
-                binding.inputImage.setText(image.getPath());
+                imageStoragePath = compress(imageStoragePath, this)
+                binding!!.inputImage.setText(image.path)
 
                 try {
-                    ImageUtilsForRotate.ensurePortrait(imageStoragePath);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }catch (NullPointerException e){
-                    e.printStackTrace();
+                    ensurePortrait(imageStoragePath)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } catch (e: NullPointerException) {
+                    e.printStackTrace()
                 }
             }
         }
 
         if (requestCode == REQUEST_PICK_IMAGES_DSO_LETTER && resultCode == RESULT_OK && data != null) {
-            ArrayList<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
-            if (images != null && images.size() > 0) {
-                Image image = images.get(0);
-                DSO_LETTER_TYPE = "IMAGE";
-                dsoletterStoragePath = image.getPath();
+            val images = data.getParcelableArrayListExtra<Image>(Config.EXTRA_IMAGES)
+            if (images != null && images.size > 0) {
+                val image = images[0]
+                DSO_LETTER_TYPE = "IMAGE"
+                dsoletterStoragePath = image.path
                 if (dsoletterStoragePath.contains("file:/")) {
-                    dsoletterStoragePath = dsoletterStoragePath.replace("file:/", "");
+                    dsoletterStoragePath = dsoletterStoragePath.replace("file:/", "")
                 }
-                dsoletterStoragePath = CompressImage.compress(dsoletterStoragePath, this);
-                binding.inputDSOLetter.setText(image.getPath());
+                dsoletterStoragePath = compress(dsoletterStoragePath, this)
+                binding!!.inputDSOLetter.setText(image.path)
                 try {
-                    ImageUtilsForRotate.ensurePortrait(dsoletterStoragePath);
-                } catch (IOException | NullPointerException e) {
-                    e.printStackTrace();
+                    ensurePortrait(dsoletterStoragePath)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } catch (e: NullPointerException) {
+                    e.printStackTrace()
                 }
             }
         }
 
         if (requestCode == REQUEST_CODE_PICK_PDF && resultCode == RESULT_OK) {
             if (data != null) {
-                Uri uri = data.getData();
+                val uri = data.data
                 //     getFileFromUri(getApplicationContext(),uri);
                 //    openPdf(uri);
-                DSO_LETTER_TYPE = "PDF";
-                dsoletterStoragePath = String.valueOf(uri);
-//                dsoletterStoragePath = data.getData().getPath().toString();
+                DSO_LETTER_TYPE = "PDF"
+                dsoletterStoragePath = uri.toString()
+                //                dsoletterStoragePath = data.getData().getPath().toString();
 //                if (dsoletterStoragePath.contains("file:/")) {
 //                    dsoletterStoragePath = dsoletterStoragePath.replace("file:/", "");
 //                }
-                binding.inputDSOLetter.setText(uri.getPath());
+                binding!!.inputDSOLetter.setText(uri!!.path)
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
+    override fun onClick(view: View) {
+        val id = view.id
         if (id == R.id.inputResolvedDate) {
-            DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, dateResolved, myCalendarResolvedDate
-                    .get(Calendar.YEAR), myCalendarResolvedDate.get(Calendar.MONTH),
-                    myCalendarResolvedDate.get(Calendar.DAY_OF_MONTH));
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+            val datePickerDialog = DatePickerDialog(
+                mContext!!,
+                dateResolved,
+                myCalendarResolvedDate[Calendar.YEAR],
+                myCalendarResolvedDate[Calendar.MONTH],
+                myCalendarResolvedDate[Calendar.DAY_OF_MONTH]
+            )
+            @SuppressLint("SimpleDateFormat") val format = SimpleDateFormat("dd-MM-yyyy")
             try {
-                Date date = format.parse(model.complainRegDateStr);
-                datePickerDialog.getDatePicker().setMinDate(Objects.requireNonNull(date).getTime());
-            } catch (Exception e) {
-                e.printStackTrace();
+                val date = format.parse(model!!.complainRegDateStr)
+                datePickerDialog.datePicker.minDate = Objects.requireNonNull(date).time
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-            datePickerDialog.show();
+            datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+            datePickerDialog.show()
         } else if (id == R.id.inputReplacePart) {
-            if (Constants.isNetworkAvailable(mContext)) {
-                selectMultiCheckboxForReplacePart();
+            if (isNetworkAvailable(mContext!!)) {
+                selectMultiCheckboxForReplacePart()
             } else {
-                makeToast(getResources().getString(R.string.no_internet_connection));
+                makeToast(resources.getString(R.string.no_internet_connection))
             }
         } else if (id == R.id.inputImage) {
             if (permissionGranted) {
-                selectImage();
+                selectImage()
             } else {
-                makeToast(getResources().getString(R.string.please_allow_all_permission));
+                makeToast(resources.getString(R.string.please_allow_all_permission))
             }
         } else if (id == R.id.inputDSOLetter) {
             //   chooseFile();
             //    checkStoragePermission();
             if (permissionGranted) {
-                selectDSOLetter();
+                selectDSOLetter()
             } else {
-                makeToast(getResources().getString(R.string.please_allow_all_permission));
+                makeToast(resources.getString(R.string.please_allow_all_permission))
             }
-
         } else if (id == R.id.buttonResolved) {
-            onClickResolveComplaint();
+            onClickResolveComplaint()
         } else if (id == R.id.btnChallanUpload) {
-            onClickChallanUpload();
+            onClickChallanUpload()
         } else if (id == R.id.se_image) {
-            startActivity(new Intent(mContext, ZoomInZoomOutActivity.class).putExtra("image", model.imagePath));
+            startActivity(
+                Intent(mContext, ZoomInZoomOutActivity::class.java).putExtra(
+                    "image",
+                    model!!.imagePath
+                )
+            )
         } else if (id == R.id.iv_back) {
-            onBackPressed();
+            onBackPressed()
         } else if (id == R.id.buttonAcceptComplaint) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(getResources().getString(R.string.are_you_sure_you_want_to_accept_this_complaint))
-                    .setCancelable(false)
-                    .setPositiveButton(getResources().getString(R.string.yes), (dialog, ids) -> {
-                        dialog.cancel();
-                        acceptComplaint();
-                    })
-                    .setNegativeButton(getResources().getString(R.string.no), (dialog, ids) -> dialog.cancel());
-            AlertDialog alert = builder.create();
-            alert.setTitle(getResources().getString(R.string.alert));
-            alert.show();
-        }
-    }
-
-    private void chooseFile() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_READ_STORAGE);
-        } else {
-            openFilePicker();
-        }
-    }
-
-//    private void openFilePicker() {
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.setType("*/*");
-//        String[] mimeTypes = {"image/*", "application/pdf"};
-//        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-//        resultLauncher.launch(intent);
-//    }
-
-
-    private void selectDSOLetter() {
-        try {
-            final CharSequence[] items = {getResources().getString(R.string.imagepicker_str_take_photo), getResources().getString(R.string.imagepicker_str_choose_from_gallery), getResources().getString(R.string.choose_pdf), getResources().getString(R.string.imagepicker_str_cancel)};
-            TextView title = new TextView(mContext);
-            title.setText(getResources().getString(R.string.imagepicker_str_select_challan_image));
-            title.setBackgroundColor(getResources().getColor(R.color.colorActionBar));
-            title.setPadding(15, 25, 15, 25);
-            title.setGravity(Gravity.CENTER);
-            title.setTextColor(Color.WHITE);
-            title.setTextSize(22);
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setCustomTitle(title);
-            // builder.setTitle("Add Photo!");
-            builder.setItems(items, (dialog, item) -> {
-                if (items[item].equals(getResources().getString(R.string.imagepicker_str_take_photo))) {
-                    ImagePicker.with(mContext)
-                            .setToolbarColor("#212121")
-                            .setStatusBarColor("#000000")
-                            .setToolbarTextColor("#FFFFFF")
-                            .setToolbarIconColor("#FFFFFF")
-                            .setProgressBarColor("#4CAF50")
-                            .setBackgroundColor("#212121")
-                            .setCameraOnly(true)
-                            .setMultipleMode(true)
-                            .setFolderMode(true)
-                            .setShowCamera(true)
-                            .setFolderTitle("Albums")
-                            .setImageTitle("Galleries")
-                            .setDoneTitle("Done")
-                            .setMaxSize(1)
-                            .setSavePath(Constants.saveImagePath)
-                            .setSelectedImages(new ArrayList<>())
-                            .start(REQUEST_PICK_IMAGES_DSO_LETTER);
-
-                } else if (items[item].equals(getResources().getString(R.string.imagepicker_str_choose_from_gallery))) {
-                    ImagePicker.with(mContext)
-                            .setToolbarColor("#212121")
-                            .setStatusBarColor("#000000")
-                            .setToolbarTextColor("#FFFFFF")
-                            .setToolbarIconColor("#FFFFFF")
-                            .setProgressBarColor("#4CAF50")
-                            .setBackgroundColor("#212121")
-                            .setCameraOnly(false)
-                            .setMultipleMode(true)
-                            .setFolderMode(true)
-                            .setShowCamera(false)
-                            .setFolderTitle("Albums")
-                            .setImageTitle("Galleries")
-                            .setDoneTitle("Done")
-                            .setMaxSize(1)
-                            .setSavePath(Constants.saveImagePath)
-                            .setSelectedImages(new ArrayList<>())
-                            .start(REQUEST_PICK_IMAGES_DSO_LETTER);
-                } else if (items[item].equals(getResources().getString(R.string.choose_pdf))) {
-                    checkStoragePermission();
-                } else if (items[item].equals(getResources().getString(R.string.imagepicker_str_cancel))) {
-                    dialog.dismiss();
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage(resources.getString(R.string.are_you_sure_you_want_to_accept_this_complaint))
+                .setCancelable(false)
+                .setPositiveButton(resources.getString(R.string.yes)) { dialog: DialogInterface, ids: Int ->
+                    dialog.cancel()
+                    acceptComplaint()
                 }
-            });
-            builder.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.d("kdcfjcl", "" + e);
+                .setNegativeButton(resources.getString(R.string.no)) { dialog: DialogInterface, ids: Int -> dialog.cancel() }
+            val alert = builder.create()
+            alert.setTitle(resources.getString(R.string.alert))
+            alert.show()
         }
     }
 
-    private void checkStoragePermission() {
+    private fun chooseFile() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                REQUEST_READ_STORAGE
+            )
+        } else {
+            openFilePicker()
+        }
+    }
+
+
+    //    private void openFilePicker() {
+    //        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+    //        intent.setType("*/*");
+    //        String[] mimeTypes = {"image/*", "application/pdf"};
+    //        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+    //        resultLauncher.launch(intent);
+    //    }
+    private fun selectDSOLetter() {
+        try {
+            val items = arrayOf<CharSequence>(
+                resources.getString(R.string.imagepicker_str_take_photo),
+                resources.getString(R.string.imagepicker_str_choose_from_gallery),
+                resources.getString(R.string.choose_pdf),
+                resources.getString(R.string.imagepicker_str_cancel)
+            )
+            val title = TextView(mContext)
+            title.text = resources.getString(R.string.imagepicker_str_select_challan_image)
+            title.setBackgroundColor(resources.getColor(R.color.colorActionBar))
+            title.setPadding(15, 25, 15, 25)
+            title.gravity = Gravity.CENTER
+            title.setTextColor(Color.WHITE)
+            title.textSize = 22f
+            val builder = AlertDialog.Builder(
+                mContext!!
+            )
+            builder.setCustomTitle(title)
+            // builder.setTitle("Add Photo!");
+            builder.setItems(items) { dialog: DialogInterface, item: Int ->
+                if (items[item] == resources.getString(R.string.imagepicker_str_take_photo)) {
+                    ImagePicker.with(mContext)
+                        .setToolbarColor("#212121")
+                        .setStatusBarColor("#000000")
+                        .setToolbarTextColor("#FFFFFF")
+                        .setToolbarIconColor("#FFFFFF")
+                        .setProgressBarColor("#4CAF50")
+                        .setBackgroundColor("#212121")
+                        .setCameraOnly(true)
+                        .setMultipleMode(true)
+                        .setFolderMode(true)
+                        .setShowCamera(true)
+                        .setFolderTitle("Albums")
+                        .setImageTitle("Galleries")
+                        .setDoneTitle("Done")
+                        .setMaxSize(1)
+                        .setSavePath(Constants.saveImagePath)
+                        .setSelectedImages(ArrayList())
+                        .start(REQUEST_PICK_IMAGES_DSO_LETTER)
+                } else if (items[item] == resources.getString(R.string.imagepicker_str_choose_from_gallery)) {
+                    ImagePicker.with(mContext)
+                        .setToolbarColor("#212121")
+                        .setStatusBarColor("#000000")
+                        .setToolbarTextColor("#FFFFFF")
+                        .setToolbarIconColor("#FFFFFF")
+                        .setProgressBarColor("#4CAF50")
+                        .setBackgroundColor("#212121")
+                        .setCameraOnly(false)
+                        .setMultipleMode(true)
+                        .setFolderMode(true)
+                        .setShowCamera(false)
+                        .setFolderTitle("Albums")
+                        .setImageTitle("Galleries")
+                        .setDoneTitle("Done")
+                        .setMaxSize(1)
+                        .setSavePath(Constants.saveImagePath)
+                        .setSelectedImages(ArrayList())
+                        .start(REQUEST_PICK_IMAGES_DSO_LETTER)
+                } else if (items[item] == resources.getString(R.string.choose_pdf)) {
+                    checkStoragePermission()
+                } else if (items[item] == resources.getString(R.string.imagepicker_str_cancel)) {
+                    dialog.dismiss()
+                }
+            }
+            builder.show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.d("kdcfjcl", "" + e)
+        }
+    }
+
+    private fun checkStoragePermission() {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_STORAGE);
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_STORAGE
+                )
             } else {
-                openFilePicker();
+                openFilePicker()
             }
         } else {
-            openFilePicker();
+            openFilePicker()
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_READ_STORAGE && grantResults.length > 0 &&
-                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            openFilePicker();
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_READ_STORAGE && grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            openFilePicker()
         } else {
-            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private static final int REQUEST_CODE_PICK_PDF = 101;
-
-    private void openFilePicker() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("application/pdf");
-//        intent.setType("*/*");
+    private fun openFilePicker() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.setType("application/pdf")
+        //        intent.setType("*/*");
 //        String[] mimeTypes = {"image/*", "application/pdf"};
 //        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(Intent.createChooser(intent, "Select PDF"), REQUEST_CODE_PICK_PDF);
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        startActivityForResult(Intent.createChooser(intent, "Select PDF"), REQUEST_CODE_PICK_PDF)
     }
 
 
-    private void openPdf(Uri uri) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, "application/pdf");
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+    private fun openPdf(uri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(uri, "application/pdf")
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
         try {
-            startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, "No application found to open PDF", Toast.LENGTH_SHORT).show();
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, "No application found to open PDF", Toast.LENGTH_SHORT).show()
         }
     }
 
+    companion object {
+        private const val REQUEST_READ_STORAGE = 100
+        private const val REQUEST_CODE_PICK_PDF = 101
+    }
 }

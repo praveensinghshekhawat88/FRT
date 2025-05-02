@@ -1,22 +1,21 @@
-package com.callmangement.Network;
+package com.callmangement.network
 
-import android.util.Log;
+import android.util.Log
+import com.callmangement.BuildConfig
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 
-import com.callmangement.BuildConfig;
+import okhttp3.Protocol
+import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
+import java.util.concurrent.TimeUnit
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLSession
 
-import java.util.Collections;
-import java.util.concurrent.TimeUnit;
+object RestClient {
+    const val CONNECTION_TIME_OUT: Int = 240
 
-import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
-
-public class RestClient {
-
-    public static final Integer CONNECTION_TIME_OUT = 240;
-/*
+    /*
     public static OkHttpClient okClient() {
         return new OkHttpClient.Builder()
                 .connectTimeout(3, TimeUnit.MINUTES)
@@ -26,8 +25,7 @@ public class RestClient {
                 .build();
     }
 */
-
-    public static OkHttpClient okClient() {
+    fun okClient(): OkHttpClient {
 //        return new OkHttpClient.Builder()
 //                .connectTimeout(3, TimeUnit.MINUTES)
 //                .writeTimeout(3, TimeUnit.MINUTES)
@@ -35,45 +33,38 @@ public class RestClient {
 //                .hostnameVerifier((hostname, session) -> true)
 //                .build();
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-            @Override
-            public void log(String message) {
-                Log.e("RESPONSE", message);
-            }
-        });
+        val httpClient: OkHttpClient.Builder = OkHttpClient.Builder()
+        val httpLoggingInterceptor =
+            HttpLoggingInterceptor { message -> Log.e("RESPONSE", message) }
 
-        httpClient.addInterceptor(chain -> {
-            Request originalRequest = chain.request();
+        httpClient.addInterceptor(Interceptor { chain: Interceptor.Chain ->
+            var originalRequest = chain.request()
             // set OAuth token
-            Request.Builder newRequest = originalRequest.newBuilder();
+            val newRequest: Request.Builder = originalRequest.newBuilder()
 
-            originalRequest = newRequest.build();
+            originalRequest = newRequest.build()
 
-            Response response = chain.proceed(originalRequest);
-            int responseCode = response.code();
+            val response = chain.proceed(originalRequest)
+            val responseCode = response.code
+            response
+        })
 
-            return response;
-        });
+        httpClient.readTimeout(CONNECTION_TIME_OUT.toLong(), TimeUnit.SECONDS)
+        httpClient.writeTimeout(CONNECTION_TIME_OUT.toLong(), TimeUnit.SECONDS)
+        httpClient.connectTimeout(CONNECTION_TIME_OUT.toLong(), TimeUnit.SECONDS)
+        httpClient.hostnameVerifier(HostnameVerifier { hostname: String?, session: SSLSession? -> true })
+        httpClient.addInterceptor(httpLoggingInterceptor)
 
-        httpClient.readTimeout(CONNECTION_TIME_OUT, TimeUnit.SECONDS);
-        httpClient.writeTimeout(CONNECTION_TIME_OUT, TimeUnit.SECONDS);
-        httpClient.connectTimeout(CONNECTION_TIME_OUT, TimeUnit.SECONDS);
-        httpClient.hostnameVerifier((hostname, session) -> true);
-        httpClient.addInterceptor(httpLoggingInterceptor);
-
-    //    httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
+        //    httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         if (BuildConfig.DEBUG) {
-            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         } else {
-            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE)
         }
 
         // set the connection time to 1 minutes
-        httpClient.protocols(Collections.singletonList(Protocol.HTTP_1_1));
+        httpClient.protocols(listOf(Protocol.HTTP_1_1))
 
-        return httpClient.build();
+        return httpClient.build()
     }
 }

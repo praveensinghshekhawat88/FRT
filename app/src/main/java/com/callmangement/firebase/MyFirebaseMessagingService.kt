@@ -7,8 +7,8 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import androidx.core.app.ActivityCompat
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.database.DbController
 import com.callmangement.utils.DateTimeUtils
 import com.callmangement.utils.PrefManager
@@ -19,7 +19,6 @@ import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.tasks.Task
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -129,12 +128,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private fun saveLocation(address: String, latitude: Double, longitude: Double) {
         //  Log.e("location", "latitude - " + latitude + ", longitude - " + longitude + ", address - " + address);
         DbController(applicationContext).insertLocation(
-            prefManager!!.useR_Id,
-            prefManager!!.useR_DistrictId,
+            prefManager!!.uSER_Id,
+            prefManager!!.uSER_DistrictId,
             latitude.toString(),
             longitude.toString(),
             address,
-            DateTimeUtils.getCurrentDataTime()
+            DateTimeUtils.currentDataTime
         )
         try {
             locationDataFromLocalDB
@@ -191,16 +190,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             "application/json; charset=utf-8".toMediaTypeOrNull(),
             locationJsonArray.toString()
         )
-        val service = RetrofitInstance.getRetrofitInstance().create(
+        val service = RetrofitInstance.retrofitInstance!!.create(
             APIService::class.java
         )
         val call = service.saveSELocations(
-            prefManager!!.useR_Id,
-            prefManager!!.useR_DistrictId,
-            prefManager!!.devicE_ID,
+            prefManager!!.uSER_Id,
+            prefManager!!.uSER_DistrictId,
+            prefManager!!.dEVICE_ID,
             jsonArrBody
         )
-        call.enqueue(object : Callback<ResponseBody?> {
+        call!!.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 try {
                     if (response.isSuccessful) {

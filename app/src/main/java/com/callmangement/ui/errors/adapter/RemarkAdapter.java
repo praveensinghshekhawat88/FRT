@@ -1,11 +1,7 @@
 package com.callmangement.ui.errors.adapter;
 
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -13,23 +9,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
-import com.callmangement.R;
-import com.callmangement.databinding.ItemManagerPosErrorActivityBinding;
 import com.callmangement.databinding.ItemRemarkBinding;
-import com.callmangement.ui.errors.activity.ErrorposDetail;
-import com.callmangement.ui.errors.model.GetPosDeviceErrorDatum;
 import com.callmangement.ui.errors.model.GetRemarkDatum;
-import com.callmangement.ui.errors.model.UpdateErrorStatusRoot;
-import com.callmangement.utils.Constants;
 
 import java.util.ArrayList;
-import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder> {
     private final Context context;

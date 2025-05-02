@@ -10,8 +10,8 @@ import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.custom.CustomActivity
 import com.callmangement.databinding.ActivityGraphBinding
@@ -49,7 +49,7 @@ class GraphActivity : CustomActivity() {
     private var districtId = "0"
     private var checkDistrict = 0
     private var districtNameEng = ""
-    private var district_List: MutableList<ModelDistrictList?>? = ArrayList()
+    private var district_List: MutableList<ModelDistrictList>? = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_graph)
@@ -60,20 +60,20 @@ class GraphActivity : CustomActivity() {
         viewModel = ViewModelProviders.of(this).get(
             ComplaintViewModel::class.java
         )
-        prefManager = PrefManager(mContext)
-        if (prefManager!!.useR_TYPE_ID == "4" && prefManager!!.useR_TYPE.equals(
+        prefManager = PrefManager(mContext!!)
+        if (prefManager!!.uSER_TYPE_ID == "4" && prefManager!!.uSER_TYPE.equals(
                 "ServiceEngineer",
                 ignoreCase = true
             )
         ) { // for service engineer
-            districtId = prefManager!!.useR_DistrictId
+            districtId = prefManager!!.uSER_DistrictId!!
             binding!!.rlDistrict.visibility = View.GONE
-        } else if (prefManager!!.useR_TYPE_ID.equals(
+        } else if (prefManager!!.uSER_TYPE_ID.equals(
                 "6",
                 ignoreCase = true
-            ) && prefManager!!.useR_TYPE.equals("DSO", ignoreCase = true)
+            ) && prefManager!!.uSER_TYPE.equals("DSO", ignoreCase = true)
         ) { // for dso
-            districtId = prefManager!!.useR_DistrictId
+            districtId = prefManager!!.uSER_DistrictId!!
             binding!!.rlDistrict.visibility = View.GONE
         } else {
             districtList()
@@ -131,11 +131,11 @@ class GraphActivity : CustomActivity() {
         val toDate = todayDate
 
         showProgress()
-        val service = RetrofitInstance.getRetrofitInstance().create(
+        val service = RetrofitInstance.retrofitInstance!!.create(
             APIService::class.java
         )
         val call = service.getComplaintListDistStatusDateWise(
-            prefManager!!.useR_Id.toString(),
+            prefManager!!.uSER_Id.toString(),
             districtId,
             complainStatusId,
             fromDate,
@@ -145,7 +145,7 @@ class GraphActivity : CustomActivity() {
             "0",
             ""
         )
-        call.enqueue(object : Callback<ModelComplaint?> {
+        call!!.enqueue(object : Callback<ModelComplaint?> {
             @RequiresApi(api = Build.VERSION_CODES.N)
             override fun onResponse(
                 call: Call<ModelComplaint?>,
@@ -159,7 +159,7 @@ class GraphActivity : CustomActivity() {
                         val sortedList: List<ModelComplaintList> = ArrayList(complaintList!!)
                         for (model in sortedList) {
                             model.registrationComplainDateTimeStamp =
-                                DateTimeUtils.getTimeStamp(model.complainRegDateStr)
+                                DateTimeUtils.getTimeStamp(model.complainRegDateStr!!)
                         }
                         Collections.sort(
                             sortedList,
@@ -236,11 +236,11 @@ class GraphActivity : CustomActivity() {
         val toDate = todayDate
 
         showProgress()
-        val service = RetrofitInstance.getRetrofitInstance().create(
+        val service = RetrofitInstance.retrofitInstance!!.create(
             APIService::class.java
         )
         val call = service.getComplaintListDistStatusDateWise(
-            prefManager!!.useR_Id.toString(),
+            prefManager!!.uSER_Id.toString(),
             districtId,
             complainStatusId,
             fromDate,
@@ -250,7 +250,7 @@ class GraphActivity : CustomActivity() {
             "0",
             ""
         )
-        call.enqueue(object : Callback<ModelComplaint?> {
+        call!!.enqueue(object : Callback<ModelComplaint?> {
             @RequiresApi(api = Build.VERSION_CODES.N)
             override fun onResponse(
                 call: Call<ModelComplaint?>,
@@ -264,7 +264,7 @@ class GraphActivity : CustomActivity() {
                         val sortedList: List<ModelComplaintList> = ArrayList(complaintList)
                         for (model in sortedList) {
                             model.registrationComplainDateTimeStamp =
-                                DateTimeUtils.getTimeStamp(model.complainRegDateStr)
+                                DateTimeUtils.getTimeStamp(model.complainRegDateStr!!)
                         }
 
                         Collections.sort<ModelComplaintList>(
@@ -339,8 +339,8 @@ class GraphActivity : CustomActivity() {
     }
 
     private fun districtList() {
-        viewModel!!.district.observe(this) { modelDistrict: ModelDistrict ->
-            if (modelDistrict.status == "200") {
+        viewModel!!.district!!.observe(this) { modelDistrict: ModelDistrict? ->
+            if (modelDistrict!!.status == "200") {
                 district_List = modelDistrict.district_List
 
                 if (district_List != null && district_List!!.size > 0) {
@@ -365,8 +365,8 @@ class GraphActivity : CustomActivity() {
 
     private val isLoading: Unit
         get() {
-            viewModel!!.isLoading.observe(this) { aBoolean: Boolean ->
-                if (aBoolean) {
+            viewModel!!.isLoading!!.observe(this) { aBoolean: Boolean? ->
+                if (aBoolean!!) {
                     showProgress(resources.getString(R.string.please_wait))
                 } else {
                     hideProgress()

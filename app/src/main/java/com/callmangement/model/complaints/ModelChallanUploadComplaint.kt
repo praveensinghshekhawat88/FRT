@@ -12,7 +12,7 @@ class ModelChallanUploadComplaint(@JvmField var totalItems: Int, @JvmField var t
     var message: String? = null
 
     @SerializedName("Data")
-    var complaint_List: List<ModelComplaintList>? = ArrayList()
+    var complaint_List: MutableList <ModelComplaintList>? = ArrayList()
         get() {
             if (field == null) return ArrayList()
             return field

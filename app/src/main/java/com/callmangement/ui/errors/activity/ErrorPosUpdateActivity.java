@@ -1,7 +1,5 @@
 package com.callmangement.ui.errors.activity;
 
-import static android.R.layout.simple_spinner_item;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,17 +9,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.MultipartRequester;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.MultipartRequester;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityErrorrPosUpdateBinding;
@@ -30,12 +26,8 @@ import com.callmangement.imagepicker.model.Image;
 import com.callmangement.imagepicker.ui.imagepicker.ImagePicker;
 import com.callmangement.support.ImageUtilsForRotate;
 import com.callmangement.support.OnSingleClickListener;
-import com.callmangement.ui.errors.model.GetErrorTypesRoot;
-import com.callmangement.ui.errors.model.GetErrortypesDatum;
 import com.callmangement.ui.errors.model.GetPosDeviceErrorDatum;
-import com.callmangement.ui.errors.model.SaveErroeReqRoot;
 import com.callmangement.ui.errors.model.UpdateErroeReqRoot;
-import com.callmangement.ui.home.MainActivity;
 import com.callmangement.utils.CompressImage;
 import com.callmangement.utils.Constants;
 import com.callmangement.utils.PrefManager;

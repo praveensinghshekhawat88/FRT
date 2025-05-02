@@ -92,10 +92,10 @@ class SLAReportsDetailsActivityAdapter(private val context: Context) :
             holder.binding.textComplaintResolveDate.visibility = View.GONE
         }
 
-        if (prefManager!!.useR_TYPE_ID.equals(
+        if (prefManager!!.uSER_TYPE_ID.equals(
                 "6",
                 ignoreCase = true
-            ) && prefManager!!.useR_TYPE.equals("DSO", ignoreCase = true)
+            ) && prefManager!!.uSER_TYPE.equals("DSO", ignoreCase = true)
         ) {
             holder.binding.textResoleDays.visibility = View.GONE
         } else {

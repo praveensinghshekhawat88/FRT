@@ -1,117 +1,24 @@
-package com.callmangement.ui.biometric_delivery.model;
+package com.callmangement.ui.biometric_delivery.model
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-import java.io.Serializable;
+class UpdateDeviceTypeToChangeFSensorResp : Serializable {
+    var message: String? = null
+    var status: String? = null
 
-public class UpdateDeviceTypeToChangeFSensorResp implements Serializable {
-
-    private String message;
-    private String status;
     @SerializedName("Data")
-    private Data data;
+    var data: Data? = null
 
-    public Data getData() {
-        return data;
+    inner class Data : Serializable {
+        var message: String? = null
+        var isStatus: Boolean = false
+        var isUpdatedDtype: Boolean = false
+        var fpscode: String? = null
+        var deviceCode: String? = null
+        var infoMsgEn: String? = null
+        var infoMsgHi: String? = null
+        var infoDescMsgHi: String? = null
+        var infoDescMsgEn: String? = null
     }
-
-    public void setData(Data data) {
-        this.data = data;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public class Data implements Serializable{
-        private String message;
-        private boolean status,isUpdatedDtype;
-        private String fpscode,deviceCode,infoMsgEn,infoMsgHi,infoDescMsgHi,infoDescMsgEn;
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public boolean isStatus() {
-            return status;
-        }
-
-        public void setStatus(boolean status) {
-            this.status = status;
-        }
-
-        public String getFpscode() {
-            return fpscode;
-        }
-
-        public void setFpscode(String fpscode) {
-            this.fpscode = fpscode;
-        }
-
-        public String getDeviceCode() {
-            return deviceCode;
-        }
-
-        public void setDeviceCode(String deviceCode) {
-            this.deviceCode = deviceCode;
-        }
-
-        public String getInfoMsgEn() {
-            return infoMsgEn;
-        }
-
-        public void setInfoMsgEn(String infoMsgEn) {
-            this.infoMsgEn = infoMsgEn;
-        }
-
-        public String getInfoMsgHi() {
-            return infoMsgHi;
-        }
-
-        public void setInfoMsgHi(String infoMsgHi) {
-            this.infoMsgHi = infoMsgHi;
-        }
-
-        public String getInfoDescMsgHi() {
-            return infoDescMsgHi;
-        }
-
-        public void setInfoDescMsgHi(String infoDescMsgHi) {
-            this.infoDescMsgHi = infoDescMsgHi;
-        }
-
-        public String getInfoDescMsgEn() {
-            return infoDescMsgEn;
-        }
-
-        public void setInfoDescMsgEn(String infoDescMsgEn) {
-            this.infoDescMsgEn = infoDescMsgEn;
-        }
-
-        public boolean isUpdatedDtype() {
-            return isUpdatedDtype;
-        }
-
-        public void setUpdatedDtype(boolean updatedDtype) {
-            isUpdatedDtype = updatedDtype;
-        }
-    }
-
-
 }

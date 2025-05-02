@@ -1,31 +1,21 @@
 package com.callmangement.ui.inventory;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.adapter.DispatchChallanListActivityAdapter;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityDispatchChallanListBinding;
 import com.callmangement.model.inventrory.ModelDispatchInvoice;
-import com.callmangement.model.inventrory.ModelInventoryResponse;
 import com.callmangement.model.inventrory.ModelPartsDispatchInvoiceList;
 import com.callmangement.utils.Constants;
 import com.callmangement.utils.PrefManager;

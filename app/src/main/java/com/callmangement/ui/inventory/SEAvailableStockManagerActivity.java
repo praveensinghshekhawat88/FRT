@@ -1,6 +1,5 @@
 package com.callmangement.ui.inventory;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -11,15 +10,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.adapter.SEAvailableStockManagerActivityAdapter;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivitySeavailableStockManagerBinding;
 import com.callmangement.model.district.ModelDistrictList;
-import com.callmangement.model.fps_repeat_on_service_center.ModelRepeatFpsComplaintsList;
-import com.callmangement.model.inventrory.ModelParts;
 import com.callmangement.model.inventrory.ModelPartsList;
 import com.callmangement.model.inventrory.ModelSEUsers;
 import com.callmangement.model.inventrory.ModelSEUsersList;
@@ -277,7 +274,7 @@ public class SEAvailableStockManagerActivity extends CustomActivity implements V
     }
 
     private void isLoading() {
-        viewModel.getIsLoading().observe(this, aBoolean -> {
+        viewModel.isLoading().observe(this, aBoolean -> {
             if (aBoolean) {
                 showProgress(getResources().getString(R.string.please_wait));
             } else {

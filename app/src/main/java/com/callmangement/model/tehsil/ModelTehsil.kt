@@ -12,5 +12,5 @@ class ModelTehsil {
     var message: String? = null
 
     @SerializedName("Tehsil_List")
-    var tehsil_List: List<ModelTehsilList> = ArrayList()
+    var tehsil_List: MutableList<ModelTehsilList?>? = ArrayList()
 }

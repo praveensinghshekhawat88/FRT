@@ -1,12 +1,10 @@
 package com.callmangement.ui.inventory;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,13 +13,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -29,18 +25,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.adapter.DialogAddStockListAdapter;
-import com.callmangement.adapter.DialogChallanForDispatchAdapter;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.custom.SpinnerAdapter;
 import com.callmangement.databinding.ActivityAddStockBinding;
 import com.callmangement.model.inventrory.ModelAddStock;
 import com.callmangement.model.inventrory.ModelPartsList;
 import com.callmangement.report_pdf.AddStockPdfActivity;
-import com.callmangement.report_pdf.DispatchChallanPDFActivity;
 import com.callmangement.utils.Constants;
 import com.callmangement.utils.PrefManager;
 

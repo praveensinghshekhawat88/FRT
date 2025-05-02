@@ -1,7 +1,6 @@
 package com.callmangement.EHR.ehrActivities;
 
 
-import static com.callmangement.EHR.ehrActivities.BaseActivity.BaseUrl;
 import static com.callmangement.custom.CustomActivity.hideKeyboard;
 import static java.lang.String.valueOf;
 
@@ -40,8 +39,8 @@ import com.callmangement.EHR.models.FeedbackbyDCListRoot;
 import com.callmangement.EHR.models.ModelSEUser;
 import com.callmangement.EHR.models.ModelSEUserList;
 import com.callmangement.EHR.support.Utils;
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.databinding.ActivityFeedbackformListBinding;
 import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrictList_w;
@@ -75,8 +74,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-
-import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -520,7 +517,7 @@ public class FeedbackFormListActivity extends BaseActivity {
             APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
 
             //  Call<WeightInsRoot> call = apiInterface.apiIrisWeighInstallation(USER_Id,"",districtId,"","0",fromDate,toDate);
-            Call<FeedbackbyDCListRoot> call = apiInterface.getVisitFeedbackbyDCList(USER_Id, "0", fpscodee, districtId, fromDate, toDate, SEUserId);
+            Call<FeedbackbyDCListRoot> call = apiInterface.getVisitFeedbackDCList(USER_Id, "0", fpscodee, districtId, fromDate, toDate, SEUserId);
             Log.d("fromDate_toDate", "--" + fromDate + " " + toDate);
             Log.d("responseis ", "" + USER_Id + "  " + "0" + fpscodee + "  " + districtId + " " + fromDate + toDate + " " + SEUserId);
 

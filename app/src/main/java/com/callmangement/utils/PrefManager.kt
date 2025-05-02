@@ -1,62 +1,19 @@
-package com.callmangement.utils;
+package com.callmangement.utils
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.text.BoringLayout;
-import android.view.inputmethod.InputMethodManager;
+import android.content.Context
+import android.content.SharedPreferences
 
-public class PrefManager {
-    private final SharedPreferences pref;
-    private final SharedPreferences.Editor editor;
-    private final Context _context;
-    private static final String PREF_NAME = "ePDS_FRT";
-    private static final String USER_LOGIN_STATUS = "USER_LOGIN_STATUS";
-    private static final String USER_EXIST = "USER_EXIST";
-    private static final String APP_MODE = "APP_MODE";
-    private static final String USER_ID = "USER_ID";
-    private static final String USER_TYPE = "USER_TYPE";
-    private static final String USER_TYPE_ID = "USER_TYPE_ID";
-    private static final String DEVICE_ID = "DEVICE_ID";
-    private static final String FIREBASE_DEVICE_TOKEN = "FIREBASE_DEVICE_TOKEN";
-    private static final String USER_LAST_LOGIN = "USER_LAST_LOGIN";
-    private static final String USER_TOKEN = "USER_TOKEN";
-    private static final String USER_NAME = "USER_NAME";
-    private static final String USER_EMAIL = "USER_EMAIL";
-    private static final String USER_Mobile = "USER_Mobile";
-    private static final String USER_ROLENAME = "USER_ROLENAME";
-    private static final String USER_PASSWORD = "USER_PASSWORD";
-    private static final String USER_ADDRESS = "USER_ADDRESS";
-    private static final String USER_LATITUDE = "LATITUDE";
-    private static final String USER_LONGITUDE = "LONGITUDE";
-    private static final String USER_PunchIn = "USER_PunchIn";
-    private static final String USER_PunchOut = "USER_PunchOut";
-    private static final String USER_PunchInTime = "USER_PunchInTime";
-    private static final String USER_PunchOutTime = "USER_PunchOutTime";
-    private static final String USER_PunchInLatitude = "USER_PunchInLatitude";
-    private static final String USER_PunchInLongitude = "USER_PunchInLongitude";
-    private static final String USER_PunchOutLatitude = "USER_PunchOutLatitude";
-    private static final String USER_PunchOutLongitude = "USER_PunchOutLongitude";
-    private static final String USER_CURRENTLAT = "USER_CURRENTLAT";
-    private static final String USER_CURRENTLONG = "USER_CURRENTLONG";
-    private static final String USER_CURRENTTIME = "USER_CURRENTTIME";
-    private static final String USER_DISTRICT_ID = "USER_DISTRICT_ID";
-    private static final String USER_DISTRICT = "USER_DISTRICT";
-    private static final String USER_CHANGE_LANGUAGE = "USER_CHANGE_LANGUAGE";
-    private static final String COMPLAINT_POSITION = "COMPLAINT_POSITION";
-    private static final String SYSTEM_ID = "SYSTEM_ID";
-    private static final String FROM_DATE = "FROM_DATE";
-    private static final String TO_DATE = "TO_DATE";
-    private static final String PERMISSION_GRANTED_BACKGROUND = "PERMISSION_GRANTED_BACKGROUND";
-    private static final String PERMISSION_GRANTED = "PERMISSION_GRANTED";
-    private static final String MANAGE_SPECIAL_LOGIN = "MANAGE_SPECIAL_LOGIN";
-    public PrefManager(Context context) {
-        this._context = context;
-        pref = _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        editor = pref.edit();
+class PrefManager(private val _context: Context) {
+    private val pref: SharedPreferences
+    private val editor: SharedPreferences.Editor
+
+    init {
+        pref = _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        editor = pref.edit()
     }
 
-    /*public static void hideSoftKeyboard(Activity activity) {
+    var userCurrentlat: String?
+        /*public static void hideSoftKeyboard(Activity activity) {
         final InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         if (inputMethodManager.isActive()) {
             if (activity.getCurrentFocus() != null) {
@@ -64,326 +21,297 @@ public class PrefManager {
             }
         }
     }*/
-
-   public String getUserCurrentlat(){
-       return pref.getString(USER_CURRENTLAT, "");
-   }
-
-   public void setUserCurrentlat(String currentLat){
-       editor.putString(USER_CURRENTLAT, currentLat);
-       editor.apply();
-   }
-    public String getUserCurrentlong(){
-        return pref.getString(USER_CURRENTLONG, "");
-
-    }
-
-    public void setUserCurrentlong(String currentLong){
-        editor.putString(USER_CURRENTLONG, currentLong);
-        editor.apply();
-    }
-
-    public String getUserCurrenttime(){
-        return pref.getString(USER_CURRENTTIME, "");
-    }
-
-    public void setUserCurrenttime(String currentTime){
-        editor.putString(USER_CURRENTTIME, currentTime);
-        editor.apply();
-    }
-
-    public String getUserAddress() {
-        return pref.getString(USER_ADDRESS, "");
-    }
-
-    public void setUserAddress(String address) {
-        editor.putString(USER_ADDRESS, address);
-        editor.apply();
-    }
-
-    public String getUSER_PunchIn() {
-        return pref.getString(USER_PunchIn, "false");
-    }
-
-    public void setUSER_PunchIn(String PunchIn) {
-        editor.putString(USER_PunchIn, PunchIn);
-        editor.apply();
-    }
-
-    public String getUSER_PunchInTime() {
-        return pref.getString(USER_PunchInTime, "");
-    }
-
-    public void setUSER_PunchInTime(String user_punchInTime) {
-        editor.putString(USER_PunchInTime, user_punchInTime);
-        editor.apply();
-    }
-
-    public String getUSER_PunchOutTime() {
-        return pref.getString(USER_PunchOutTime, "");
-    }
-
-    public void setUSER_PunchOutTime(String user_punchOutTime) {
-        editor.putString(USER_PunchOutTime, user_punchOutTime);
-        editor.apply();
-    }
-
-    public String getUSER_PunchInLatitude() {
-        return pref.getString(USER_PunchInLatitude, "");
-    }
-
-    public void setUSER_PunchInLatitude(String user_punchInLatitude) {
-        editor.putString(USER_PunchInLatitude, user_punchInLatitude);
-        editor.apply();
-    }
-
-    public String getUSER_PunchInLongitude() {
-        return pref.getString(USER_PunchInLongitude, "");
-    }
-
-    public void setUSER_PunchInLongitude(String user_punchInLongitude) {
-        editor.putString(USER_PunchInLongitude, user_punchInLongitude);
-        editor.apply();
-    }
-
-    public String getUSER_PunchOutLatitude() {
-        return pref.getString(USER_PunchOutLatitude, "");
-    }
-
-    public void setUSER_PunchOutLatitude(String user_punchOutLatitude) {
-        editor.putString(USER_PunchOutLatitude, user_punchOutLatitude);
-        editor.apply();
-    }
-
-    public String getUSER_PunchOutLongitude() {
-        return pref.getString(USER_PunchOutLongitude, "");
-    }
-
-    public void setUSER_PunchOutLongitude(String user_punchOutLongitude) {
-        editor.putString(USER_PunchOutLongitude, user_punchOutLongitude);
-        editor.apply();
-    }
-
-    public String getUSER_PunchOut() {
-        return pref.getString(USER_PunchOut, "false");
-    }
-
-    public void setUSER_PunchOut(String PunchOut) {
-        editor.putString(USER_PunchOut, PunchOut);
-        editor.apply();
-    }
-
-    public String getUserLatitude() {
-        return pref.getString(USER_LATITUDE, "0");
-    }
-
-    public void setParamAndResponse(String param) {
-        editor.putString("location_param", param);
-        editor.apply();
-    }
-
-    public String getParamAndResponse() {
-        return pref.getString("location_param", "");
-    }
-
-
-    public void setUserLatitude(String latitude) {
-        editor.putString(USER_LATITUDE, latitude);
-        editor.apply();
-    }
-
-    public String getUserLongitude() {
-        return pref.getString(USER_LONGITUDE, "0");
-    }
-
-    public void setUserLongitude(String longitude) {
-        editor.putString(USER_LONGITUDE, longitude);
-        editor.apply();
-    }
-
-    public String getUserLoginStatus() {
-        return pref.getString(USER_LOGIN_STATUS, "");
-    }
-
-    public void setUserLoginStatus(String status) {
-        editor.putString(USER_LOGIN_STATUS, status);
-        editor.apply();
-    }
-
-    public String getUSER_Id() {
-        return pref.getString(USER_ID, "");
-    }
-
-    public void setUser_Id(String user_id) {
-        editor.putString(USER_ID, user_id);
-        editor.apply();
-    }
-
-    public String getUSER_TOKEN() {
-        return pref.getString(USER_TOKEN, "");
-    }
-
-    public void setUSER_TOKEN(String _USER_TOKEN) {
-        editor.putString(USER_TOKEN, _USER_TOKEN);
-        editor.apply();
+        get() = pref.getString(USER_CURRENTLAT, "")
+        set(currentLat) {
+            editor.putString(USER_CURRENTLAT, currentLat)
+            editor.apply()
+        }
+
+    var userCurrentlong: String?
+        get() = pref.getString(USER_CURRENTLONG, "")
+        set(currentLong) {
+            editor.putString(USER_CURRENTLONG, currentLong)
+            editor.apply()
+        }
+
+    var userCurrenttime: String?
+        get() = pref.getString(USER_CURRENTTIME, "")
+        set(currentTime) {
+            editor.putString(USER_CURRENTTIME, currentTime)
+            editor.apply()
+        }
+
+    var userAddress: String?
+        get() = pref.getString(USER_ADDRESS, "")
+        set(address) {
+            editor.putString(USER_ADDRESS, address)
+            editor.apply()
+        }
+
+    var uSER_PunchIn: String?
+        get() = pref.getString(USER_PunchIn, "false")
+        set(PunchIn) {
+            editor.putString(USER_PunchIn, PunchIn)
+            editor.apply()
+        }
+
+    var uSER_PunchInTime: String?
+        get() = pref.getString(USER_PunchInTime, "")
+        set(user_punchInTime) {
+            editor.putString(USER_PunchInTime, user_punchInTime)
+            editor.apply()
+        }
+
+    var uSER_PunchOutTime: String?
+        get() = pref.getString(USER_PunchOutTime, "")
+        set(user_punchOutTime) {
+            editor.putString(USER_PunchOutTime, user_punchOutTime)
+            editor.apply()
+        }
+
+    var uSER_PunchInLatitude: String?
+        get() = pref.getString(USER_PunchInLatitude, "")
+        set(user_punchInLatitude) {
+            editor.putString(USER_PunchInLatitude, user_punchInLatitude)
+            editor.apply()
+        }
+
+    var uSER_PunchInLongitude: String?
+        get() = pref.getString(USER_PunchInLongitude, "")
+        set(user_punchInLongitude) {
+            editor.putString(USER_PunchInLongitude, user_punchInLongitude)
+            editor.apply()
+        }
+
+    var uSER_PunchOutLatitude: String?
+        get() = pref.getString(USER_PunchOutLatitude, "")
+        set(user_punchOutLatitude) {
+            editor.putString(USER_PunchOutLatitude, user_punchOutLatitude)
+            editor.apply()
+        }
+
+    var uSER_PunchOutLongitude: String?
+        get() = pref.getString(USER_PunchOutLongitude, "")
+        set(user_punchOutLongitude) {
+            editor.putString(USER_PunchOutLongitude, user_punchOutLongitude)
+            editor.apply()
+        }
+
+    var uSER_PunchOut: String?
+        get() = pref.getString(USER_PunchOut, "false")
+        set(PunchOut) {
+            editor.putString(USER_PunchOut, PunchOut)
+            editor.apply()
+        }
+
+    var userLatitude: String?
+        get() = pref.getString(USER_LATITUDE, "0")
+        set(latitude) {
+            editor.putString(USER_LATITUDE, latitude)
+            editor.apply()
+        }
+
+    var paramAndResponse: String?
+        get() = pref.getString("location_param", "")
+        set(param) {
+            editor.putString("location_param", param)
+            editor.apply()
+        }
+
+
+    var userLongitude: String?
+        get() = pref.getString(USER_LONGITUDE, "0")
+        set(longitude) {
+            editor.putString(USER_LONGITUDE, longitude)
+            editor.apply()
+        }
+
+    var userLoginStatus: String?
+        get() = pref.getString(USER_LOGIN_STATUS, "")
+        set(status) {
+            editor.putString(USER_LOGIN_STATUS, status)
+            editor.apply()
+        }
+
+    val uSER_Id: String?
+        get() = pref.getString(USER_ID, "")
+
+    fun setUser_Id(user_id: String?) {
+        editor.putString(USER_ID, user_id)
+        editor.apply()
+    }
+
+    var uSER_TOKEN: String?
+        get() = pref.getString(USER_TOKEN, "")
+        set(_USER_TOKEN) {
+            editor.putString(USER_TOKEN, _USER_TOKEN)
+            editor.apply()
+        }
+
+    var uSER_NAME: String?
+        get() = pref.getString(USER_NAME, "")
+        set(_USER_NAME) {
+            editor.putString(USER_NAME, _USER_NAME)
+            editor.apply()
+        }
+
+    var uSER_EMAIL: String?
+        get() = pref.getString(USER_EMAIL, "")
+        set(_USER_EMAIL) {
+            editor.putString(USER_EMAIL, _USER_EMAIL)
+            editor.apply()
+        }
+
+    var uSER_ROLENAME: String?
+        get() = pref.getString(USER_ROLENAME, "")
+        set(_USER_ROLENAME) {
+            editor.putString(USER_ROLENAME, _USER_ROLENAME)
+            editor.apply()
+        }
+
+    var uSER_PASSWORD: String?
+        get() = pref.getString(USER_PASSWORD, "")
+        set(_USER_PASSWORD) {
+            editor.putString(USER_PASSWORD, _USER_PASSWORD)
+            editor.apply()
+        }
+
+    fun clear() {
+        editor.clear()
+        editor.commit()
+    }
+
+    var uSER_TYPE: String?
+        get() = pref.getString(USER_TYPE, "")
+        set(_USER_TYPE) {
+            editor.putString(USER_TYPE, _USER_TYPE)
+            editor.apply()
+        }
+
+    var uSER_TYPE_ID: String?
+        get() = pref.getString(USER_TYPE_ID, "")
+        set(_USER_TYPE_ID) {
+            editor.putString(USER_TYPE_ID, _USER_TYPE_ID)
+            editor.apply()
+        }
+
+    var dEVICE_ID: String?
+        get() = pref.getString(DEVICE_ID, "")
+        set(_DEVICE_ID) {
+            editor.putString(DEVICE_ID, _DEVICE_ID)
+            editor.apply()
+        }
+
+    var fIREBASE_DEVICE_TOKEN: String?
+        get() = pref.getString(FIREBASE_DEVICE_TOKEN, "")
+        set(_FIREBASE_DEVICE_TOKEN) {
+            editor.putString(FIREBASE_DEVICE_TOKEN, _FIREBASE_DEVICE_TOKEN)
+            editor.apply()
+        }
+
+    var uSER_Mobile: String?
+        get() = pref.getString(USER_Mobile, "")
+        set(_USER_Mobile) {
+            editor.putString(USER_Mobile, _USER_Mobile)
+            editor.apply()
+        }
+
+    var uSER_DistrictId: String?
+        get() = pref.getString(USER_DISTRICT_ID, "")
+        set(_USER_DistrictId) {
+            editor.putString(USER_DISTRICT_ID, _USER_DistrictId)
+            editor.apply()
+        }
+
+    var uSER_District: String?
+        get() = pref.getString(USER_DISTRICT, "")
+        set(_USER_District) {
+            editor.putString(USER_DISTRICT, _USER_District)
+            editor.apply()
+        }
+
+    var uSER_Change_Language: String?
+        get() = pref.getString(USER_CHANGE_LANGUAGE, "")
+        set(_USER_Change_Language) {
+            editor.putString(USER_CHANGE_LANGUAGE, _USER_Change_Language)
+            editor.apply()
+        }
+
+    var cOMPLAINT_POSITION: Int
+        get() = pref.getInt(COMPLAINT_POSITION, 0)
+        set(_COMPLAINT_POSITION) {
+            editor.putInt(COMPLAINT_POSITION, _COMPLAINT_POSITION)
+            editor.apply()
+        }
+
+    var sYSTEM_ID: String?
+        get() = pref.getString(SYSTEM_ID, "")
+        set(system_id) {
+            editor.putString(SYSTEM_ID, system_id)
+            editor.apply()
+        }
+
+    var fROM_DATE: String?
+        get() = pref.getString(FROM_DATE, "")
+        set(_FROM_DATE) {
+            editor.putString(FROM_DATE, _FROM_DATE)
+            editor.apply()
+        }
+
+    var tO_DATE: String?
+        get() = pref.getString(TO_DATE, "")
+        set(_TO_DATE) {
+            editor.putString(TO_DATE, _TO_DATE)
+            editor.apply()
+        }
+
+    var mANAGE_SPECIAL_LOGIN: String?
+        get() = pref.getString(MANAGE_SPECIAL_LOGIN, "false")
+        set(_MANAGE_SPECIAL_LOGIN) {
+            editor.putString(MANAGE_SPECIAL_LOGIN, _MANAGE_SPECIAL_LOGIN)
+            editor.apply()
+        }
+
+    companion object {
+        private const val PREF_NAME = "ePDS_FRT"
+        private const val USER_LOGIN_STATUS = "USER_LOGIN_STATUS"
+        private const val USER_EXIST = "USER_EXIST"
+        private const val APP_MODE = "APP_MODE"
+        private const val USER_ID = "USER_ID"
+        private const val USER_TYPE = "USER_TYPE"
+        private const val USER_TYPE_ID = "USER_TYPE_ID"
+        private const val DEVICE_ID = "DEVICE_ID"
+        private const val FIREBASE_DEVICE_TOKEN = "FIREBASE_DEVICE_TOKEN"
+        private const val USER_LAST_LOGIN = "USER_LAST_LOGIN"
+        private const val USER_TOKEN = "USER_TOKEN"
+        private const val USER_NAME = "USER_NAME"
+        private const val USER_EMAIL = "USER_EMAIL"
+        private const val USER_Mobile = "USER_Mobile"
+        private const val USER_ROLENAME = "USER_ROLENAME"
+        private const val USER_PASSWORD = "USER_PASSWORD"
+        private const val USER_ADDRESS = "USER_ADDRESS"
+        private const val USER_LATITUDE = "LATITUDE"
+        private const val USER_LONGITUDE = "LONGITUDE"
+        private const val USER_PunchIn = "USER_PunchIn"
+        private const val USER_PunchOut = "USER_PunchOut"
+        private const val USER_PunchInTime = "USER_PunchInTime"
+        private const val USER_PunchOutTime = "USER_PunchOutTime"
+        private const val USER_PunchInLatitude = "USER_PunchInLatitude"
+        private const val USER_PunchInLongitude = "USER_PunchInLongitude"
+        private const val USER_PunchOutLatitude = "USER_PunchOutLatitude"
+        private const val USER_PunchOutLongitude = "USER_PunchOutLongitude"
+        private const val USER_CURRENTLAT = "USER_CURRENTLAT"
+        private const val USER_CURRENTLONG = "USER_CURRENTLONG"
+        private const val USER_CURRENTTIME = "USER_CURRENTTIME"
+        private const val USER_DISTRICT_ID = "USER_DISTRICT_ID"
+        private const val USER_DISTRICT = "USER_DISTRICT"
+        private const val USER_CHANGE_LANGUAGE = "USER_CHANGE_LANGUAGE"
+        private const val COMPLAINT_POSITION = "COMPLAINT_POSITION"
+        private const val SYSTEM_ID = "SYSTEM_ID"
+        private const val FROM_DATE = "FROM_DATE"
+        private const val TO_DATE = "TO_DATE"
+        private const val PERMISSION_GRANTED_BACKGROUND = "PERMISSION_GRANTED_BACKGROUND"
+        private const val PERMISSION_GRANTED = "PERMISSION_GRANTED"
+        private const val MANAGE_SPECIAL_LOGIN = "MANAGE_SPECIAL_LOGIN"
     }
-
-    public String getUSER_NAME() {
-        return pref.getString(USER_NAME, "");
-    }
-
-    public void setUSER_NAME(String _USER_NAME) {
-        editor.putString(USER_NAME, _USER_NAME);
-        editor.apply();
-    }
-
-    public String getUSER_EMAIL() {
-        return pref.getString(USER_EMAIL, "");
-    }
-
-    public void setUSER_EMAIL(String _USER_EMAIL) {
-        editor.putString(USER_EMAIL, _USER_EMAIL);
-        editor.apply();
-    }
-
-    public String getUSER_ROLENAME() {
-        return pref.getString(USER_ROLENAME, "");
-    }
-
-    public void setUSER_ROLENAME(String _USER_ROLENAME) {
-        editor.putString(USER_ROLENAME, _USER_ROLENAME);
-        editor.apply();
-    }
-
-    public String getUSER_PASSWORD() {
-        return pref.getString(USER_PASSWORD, "");
-    }
-
-    public void setUSER_PASSWORD(String _USER_PASSWORD) {
-        editor.putString(USER_PASSWORD, _USER_PASSWORD);
-        editor.apply();
-    }
-
-    public void clear() {
-        editor.clear();
-        editor.commit();
-    }
-
-    public String getUSER_TYPE() {
-        return pref.getString(USER_TYPE, "");
-    }
-
-    public void setUSER_TYPE(String _USER_TYPE) {
-        editor.putString(USER_TYPE, _USER_TYPE);
-        editor.apply();
-    }
-
-    public String getUSER_TYPE_ID() {
-        return pref.getString(USER_TYPE_ID, "");
-    }
-
-    public void setUSER_TYPE_ID(String _USER_TYPE_ID) {
-        editor.putString(USER_TYPE_ID, _USER_TYPE_ID);
-        editor.apply();
-    }
-
-    public String getDEVICE_ID() {
-        return pref.getString(DEVICE_ID, "");
-    }
-
-    public void setDEVICE_ID(String _DEVICE_ID) {
-        editor.putString(DEVICE_ID, _DEVICE_ID);
-        editor.apply();
-    }
-
-    public String getFIREBASE_DEVICE_TOKEN() {
-        return pref.getString(FIREBASE_DEVICE_TOKEN, "");
-    }
-
-    public void setFIREBASE_DEVICE_TOKEN(String _FIREBASE_DEVICE_TOKEN) {
-        editor.putString(FIREBASE_DEVICE_TOKEN, _FIREBASE_DEVICE_TOKEN);
-        editor.apply();
-    }
-
-    public String getUSER_Mobile() {
-        return pref.getString(USER_Mobile, "");
-    }
-
-    public void setUSER_Mobile(String _USER_Mobile) {
-        editor.putString(USER_Mobile, _USER_Mobile);
-        editor.apply();
-    }
-
-    public String getUSER_DistrictId() {
-        return pref.getString(USER_DISTRICT_ID, "");
-    }
-
-    public void setUSER_DistrictId(String _USER_DistrictId) {
-        editor.putString(USER_DISTRICT_ID, _USER_DistrictId);
-        editor.apply();
-    }
-
-    public String getUSER_District() {
-        return pref.getString(USER_DISTRICT, "");
-    }
-
-    public void setUSER_District(String _USER_District) {
-        editor.putString(USER_DISTRICT, _USER_District);
-        editor.apply();
-    }
-
-    public String getUSER_Change_Language() {
-        return pref.getString(USER_CHANGE_LANGUAGE, "");
-    }
-
-    public void setUSER_Change_Language(String _USER_Change_Language) {
-        editor.putString(USER_CHANGE_LANGUAGE, _USER_Change_Language);
-        editor.apply();
-    }
-
-    public int getCOMPLAINT_POSITION() {
-        return pref.getInt(COMPLAINT_POSITION, 0);
-    }
-
-    public void setCOMPLAINT_POSITION(int _COMPLAINT_POSITION) {
-        editor.putInt(COMPLAINT_POSITION, _COMPLAINT_POSITION);
-        editor.apply();
-    }
-
-    public String getSYSTEM_ID() {
-        return pref.getString(SYSTEM_ID, "");
-    }
-
-    public void setSYSTEM_ID(String system_id) {
-        editor.putString(SYSTEM_ID, system_id);
-        editor.apply();
-    }
-
-    public String getFROM_DATE() {
-        return pref.getString(FROM_DATE, "");
-    }
-
-    public void setFROM_DATE(String _FROM_DATE) {
-        editor.putString(FROM_DATE, _FROM_DATE);
-        editor.apply();
-    }
-
-    public String getTO_DATE() {
-        return pref.getString(TO_DATE, "");
-    }
-
-    public void setTO_DATE(String _TO_DATE) {
-        editor.putString(TO_DATE, _TO_DATE);
-        editor.apply();
-    }
-
-    public String getMANAGE_SPECIAL_LOGIN() {
-        return pref.getString(MANAGE_SPECIAL_LOGIN, "false");
-    }
-
-    public void setMANAGE_SPECIAL_LOGIN(String _MANAGE_SPECIAL_LOGIN) {
-        editor.putString(MANAGE_SPECIAL_LOGIN, _MANAGE_SPECIAL_LOGIN);
-        editor.apply();
-    }
-
 }

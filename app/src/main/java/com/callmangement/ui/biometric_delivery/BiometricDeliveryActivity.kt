@@ -1,420 +1,400 @@
-package com.callmangement.ui.biometric_delivery;
+package com.callmangement.ui.biometric_delivery
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.ResultReceiver;
-import android.provider.Settings;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.ImageSpan;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
-import android.util.Base64;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TimePicker;
-import android.widget.Toast;
+import android.Manifest
+import android.app.Activity
+import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.Typeface
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
+import android.net.Uri
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.ResultReceiver
+import android.provider.Settings
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.TextUtils
+import android.text.style.ForegroundColorSpan
+import android.text.style.ImageSpan
+import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
+import android.util.Base64
+import android.util.Log
+import android.view.KeyEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.callmangement.R
+import com.callmangement.custom.CustomActivity
+import com.callmangement.databinding.ActivityBiometricDeliveryBinding
+import com.callmangement.imagepicker.model.Config
+import com.callmangement.imagepicker.model.Image
+import com.callmangement.imagepicker.ui.imagepicker.ImagePicker
+import com.callmangement.network.APIService
+import com.callmangement.network.MultipartRequester.fromString
+import com.callmangement.network.RetrofitInstance.retrofitInstance
+import com.callmangement.support.FetchAddressIntentServices
+import com.callmangement.support.ImageUtilsForRotate.ensurePortrait
+import com.callmangement.support.OnSingleClickListener
+import com.callmangement.support.signatureview.SignatureView
+import com.callmangement.ui.biometric_delivery.model.DetailsByFPSForSensorRoot
+import com.callmangement.ui.biometric_delivery.model.DeviceCodeByFPSResponse
+import com.callmangement.ui.biometric_delivery.model.SaveBiometricDeliverResponse
+import com.callmangement.ui.biometric_delivery.model.UpdateDeviceTypeToChangeFSensorResp
+import com.callmangement.ui.iris_derivery_installation.Model.CheckIrisSerialNoResponse
+import com.callmangement.ui.qrcodescanner.BarcodeScanningActivity
+import com.callmangement.utils.CompressImage.Companion.compress
+import com.callmangement.utils.Constants
+import com.callmangement.utils.Constants.isNetworkAvailable
+import com.callmangement.utils.PrefManager
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody.Part.Companion.createFormData
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.http.Part
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.util.Objects
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+class BiometricDeliveryActivity : CustomActivity() {
+    val REQUEST_PICK_IMAGE_ONE: Int = 1111
+    val REQUEST_PICK_IMAGE_TWO: Int = 1112
+    val REQUEST_PICK_IMAGE_THREE: Int = 1113
+    val REQUEST_PICK_IMAGE_FOUR: Int = 1114
+    val REQUEST_PICK_IMAGE_FIVE: Int = 1115
+    private val spinnerList: List<String> = ArrayList()
+    private val myFormat = "yyyy-MM-dd"
+    private var mActivity: Activity? = null
+    private var preference: PrefManager? = null
+    private var txt_fpscode: EditText? = null
+    private var Fps_code: String? = null
+    var lati: Double = 0.0
+    var longi: Double = 0.0
+    private val stringArrayListHavingAllFilePath: ArrayList<String>? = ArrayList()
+    private var fullAddress: String? = null
+    private var resultReceiver: ResultReceiver? = null
+    private var completeAddressStr: String? = ""
+    private var mSignaturePad: SignatureView? = null
+    private var modelSpinner: RelativeLayout? = null
+    private var Model: String? = null
+    private var DeviceCode: String? = null
+    private var SerialNo: String? = null
+    private var Mobile_No: String? = null
+    private var FPS_CODE: String? = null
+    private var Full_Address: String? = null
+    private var Lati: String? = null
+    private var Longi: String? = null
+    private var Remarks: String? = null
+    private var Delivered_On: String? = null
+    private var IsDeliverd_IRIS: String? = null
+    private var IsDeliverd_WeighingScale: String? = null
+    private var alertDialog: AlertDialog? = null
+    private var encodedSignature: String? = null
+    private var signatureBitmap: Bitmap? = null
+    private var attachmentPartsImage6: RequestBody? = null
+    private var signatureRequestBody: RequestBody? = null
+    private var formattedDateTime: String? = null
+    private var mydatetime: String? = null
+    private var binding: ActivityBiometricDeliveryBinding? = null
+    private var partsImageStoragePath1 = ""
+    private var partsImageStoragePath2 = ""
+    private var partsImageStoragePath3 = ""
+    private val partsImageStoragePath4 = ""
+    private val partsImageStoragePath5 = ""
+    private var dateAndTimeEditText: EditText? = null
+    private var selectedDateTime: Calendar? = null
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.MultipartRequester;
-import com.callmangement.Network.RetrofitInstance;
-import com.callmangement.R;
-import com.callmangement.custom.CustomActivity;
-import com.callmangement.databinding.ActivityBiometricDeliveryBinding;
-import com.callmangement.imagepicker.model.Config;
-import com.callmangement.imagepicker.model.Image;
-import com.callmangement.imagepicker.ui.imagepicker.ImagePicker;
-import com.callmangement.support.FetchAddressIntentServices;
-import com.callmangement.support.ImageUtilsForRotate;
-import com.callmangement.support.OnSingleClickListener;
-import com.callmangement.support.signatureview.SignatureView;
-import com.callmangement.ui.biometric_delivery.model.DetailByFpsForSensorData;
-import com.callmangement.ui.biometric_delivery.model.DetailsByFPSForSensorRoot;
-import com.callmangement.ui.biometric_delivery.model.DeviceCodeByFPSResponse;
-import com.callmangement.ui.biometric_delivery.model.SaveBiometricDeliverResponse;
-import com.callmangement.ui.biometric_delivery.model.UpdateDeviceTypeToChangeFSensorResp;
-import com.callmangement.ui.ins_weighing_scale.model.fps.DetailByFpsData;
-import com.callmangement.ui.ins_weighing_scale.model.fps.DetailByFpsRoot;
-import com.callmangement.ui.iris_derivery_installation.Model.CheckIrisSerialNoResponse;
-import com.callmangement.ui.qrcodescanner.BarcodeScanningActivity;
-import com.callmangement.utils.CompressImage;
-import com.callmangement.utils.Constants;
-import com.callmangement.utils.PrefManager;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-
-public class BiometricDeliveryActivity extends CustomActivity {
-    private static final int GALLERY_REQUEST_CODE = 123;
-    private static final int CAMERA_REQUEST_CODE = 456;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    public final int REQUEST_PICK_IMAGE_ONE = 1111;
-    public final int REQUEST_PICK_IMAGE_TWO = 1112;
-    public final int REQUEST_PICK_IMAGE_THREE = 1113;
-    public final int REQUEST_PICK_IMAGE_FOUR = 1114;
-    public final int REQUEST_PICK_IMAGE_FIVE = 1115;
-    private final List<String> spinnerList = new ArrayList<>();
-    private final String myFormat = "yyyy-MM-dd";
-    private Activity mActivity;
-    private Context mContext;
-    private PrefManager preference;
-    private EditText txt_fpscode;
-    private String Fps_code;
-    double lati, longi;
-    private ArrayList<String> stringArrayListHavingAllFilePath = new ArrayList<>();
-    private String fullAddress;
-    private ResultReceiver resultReceiver;
-    private String completeAddressStr = "";
-    private SignatureView mSignaturePad;
-    private RelativeLayout modelSpinner;
-    private String Model, DeviceCode, SerialNo, Mobile_No, FPS_CODE, Full_Address, Lati, Longi, Remarks, Delivered_On, IsDeliverd_IRIS, IsDeliverd_WeighingScale;
-    private AlertDialog alertDialog;
-    private String encodedSignature;
-    private Bitmap signatureBitmap;
-    private RequestBody attachmentPartsImage6;
-    private RequestBody signatureRequestBody;
-    private String formattedDateTime;
-    private String mydatetime;
-    private ActivityBiometricDeliveryBinding binding;
-    private String partsImageStoragePath1 = "";
-    private String partsImageStoragePath2 = "";
-    private String partsImageStoragePath3 = "";
-    private final String partsImageStoragePath4 = "";
-    private final String partsImageStoragePath5 = "";
-    private EditText dateAndTimeEditText;
-    private Calendar selectedDateTime;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
-//        getSupportActionBar().hide(); // hide the title bar
-        binding = ActivityBiometricDeliveryBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_NO_TITLE) //will hide the title
+        //        getSupportActionBar().hide(); // hide the title bar
+        binding = ActivityBiometricDeliveryBinding.inflate(
+            layoutInflater
+        )
+        setContentView(binding!!.root)
         //  setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        init();
+        init()
     }
 
-    private void init() {
-        mActivity = this;
-        mContext = this;
-        preference = new PrefManager(mContext);
-        resultReceiver = new BiometricDeliveryActivity.AddressResultReceiver(new Handler());
-        binding.actionBarND.ivBack.setVisibility(View.VISIBLE);
-        binding.actionBarND.textToolbarTitle.setText(getResources().getString(R.string.biometric_delivery));
-        dateAndTimeEditText = findViewById(R.id.dateAndTimeEditText);
-        selectedDateTime = Calendar.getInstance();
+    private fun init() {
+        mActivity = this
+        mContext = this
+        preference = PrefManager(mContext!!)
+        resultReceiver = AddressResultReceiver(Handler())
+        binding!!.actionBarND.ivBack.visibility = View.VISIBLE
+        binding!!.actionBarND.textToolbarTitle.text =
+            resources.getString(R.string.biometric_delivery)
+        dateAndTimeEditText = findViewById(R.id.dateAndTimeEditText)
+        selectedDateTime = Calendar.getInstance()
 
-        CoustomDialoge();
-        checkbox();
-        setClickListener();
-        modelspinner();
-
+        CoustomDialoge()
+        checkbox()
+        setClickListener()
+        modelspinner()
     }
 
-    private void modelspinner() {
-        modelSpinner = findViewById(R.id.rl_model);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.iris_model, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.inputmodel.setAdapter(adapter);
+    private fun modelspinner() {
+        modelSpinner = findViewById(R.id.rl_model)
+        val adapter = ArrayAdapter.createFromResource(
+            this, R.array.iris_model, android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding!!.inputmodel.adapter = adapter
     }
 
-    private void setClickListener() {
-        binding.linChooseImages1.setOnClickListener(new OnSingleClickListener() {
-            @Override
-            public void onSingleClick(View v) {
-                selectImage(REQUEST_PICK_IMAGE_ONE);
+    private fun setClickListener() {
+        binding!!.linChooseImages1.setOnClickListener(object : OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                selectImage(REQUEST_PICK_IMAGE_ONE)
             }
-        });
+        })
 
-        binding.linChooseImages2.setOnClickListener(new OnSingleClickListener() {
-            @Override
-            public void onSingleClick(View v) {
-                selectImage(REQUEST_PICK_IMAGE_TWO);
+        binding!!.linChooseImages2.setOnClickListener(object : OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                selectImage(REQUEST_PICK_IMAGE_TWO)
             }
-        });
+        })
 
-        binding.linChooseImages3.setOnClickListener(new OnSingleClickListener() {
-            @Override
-            public void onSingleClick(View v) {
-                selectImage(REQUEST_PICK_IMAGE_THREE);
+        binding!!.linChooseImages3.setOnClickListener(object : OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                selectImage(REQUEST_PICK_IMAGE_THREE)
             }
-        });
+        })
 
-        binding.linChooseImages4.setOnClickListener(new OnSingleClickListener() {
-            @Override
-            public void onSingleClick(View v) {
-                selectImage(REQUEST_PICK_IMAGE_FOUR);
+        binding!!.linChooseImages4.setOnClickListener(object : OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                selectImage(REQUEST_PICK_IMAGE_FOUR)
             }
-        });
+        })
 
-        binding.actionBarND.ivBack.setOnClickListener(new OnSingleClickListener() {
-            @Override
-            public void onSingleClick(View v) {
-                if (alertDialog != null && alertDialog.isShowing()) {
+        binding!!.actionBarND.ivBack.setOnClickListener(object : OnSingleClickListener() {
+            override fun onSingleClick(v: View?) {
+                if (alertDialog != null && alertDialog!!.isShowing) {
                     // Dismiss the dialog if it's showing
-                    alertDialog.dismiss();
-                    Intent i = new Intent(mContext, BiometricDeliveryDashboardActivity.class);
-                    startActivity(i);
+                    alertDialog!!.dismiss()
+                    val i = Intent(mContext, BiometricDeliveryDashboardActivity::class.java)
+                    startActivity(i)
                 } else {
-                    onBackPressed();
+                    onBackPressed()
                 }
             }
-        });
+        })
 
-        binding.linChooseImagessig.setOnClickListener(view -> {
+        binding!!.linChooseImagessig.setOnClickListener { view: View? ->
             //     binding.actionFullpage.sigpage.setVisibility(View.VISIBLE);
             //    binding.scroolview.setVisibility(View.GONE);
-            signatureDialoge();
-        });
+            signatureDialoge()
+        }
 
 
-        binding.inputSerialno.setOnClickListener(view -> {
+        binding!!.inputSerialno.setOnClickListener { view: View? -> }
 
-//            IntentIntegrator intentIntegrator = new IntentIntegrator(this);
-//            intentIntegrator.setPrompt("Scan a barcode or QR Code");
-//            intentIntegrator.setOrientationLocked(false);
-//            intentIntegrator.initiateScan();
-
-            //        Intent i = new Intent(BiometricDeliveryActivity.this, BarcodeScanningActivity.class);
-            //        i.putExtra("scanning_SDK", BarcodeScanningActivity.ScannerSDK.MLKIT);
-            //        startActivityForResult(i,222);
-
-            //     binding.inputSerialno.setText("");
-            //    startScanning();
-
-        });
-
-        binding.buttonSubmit.setOnClickListener(view -> {
+        binding!!.buttonSubmit.setOnClickListener { view: View? ->
             //    selectedValue = binding.inputmodel.getSelectedItem().toString();
             //   Model = binding.inputmodel.getText().toString();
-
-            Model = binding.inputmodel.getSelectedItem().toString();
-            DeviceCode = binding.inputDeviceCode.getText().toString();
-            SerialNo = binding.inputSerialno.getText().toString();
-            Mobile_No = binding.inputMobile.getText().toString();
-            FPS_CODE = binding.inputFpsCode.getText().toString();
-            Full_Address = fullAddress;
-            Lati = String.valueOf(lati);
-            Longi = String.valueOf(longi);
-            Remarks = "";
-            Calendar calendar = Calendar.getInstance();
-            Date today = calendar.getTime();
-            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-            String todayDate = sdf.format(today);
-            Delivered_On = todayDate;
-            IsDeliverd_IRIS = "0";
-            IsDeliverd_WeighingScale = "1";
+            Model = binding!!.inputmodel.selectedItem.toString()
+            DeviceCode = binding!!.inputDeviceCode.text.toString()
+            SerialNo = binding!!.inputSerialno.text.toString()
+            Mobile_No = binding!!.inputMobile.text.toString()
+            FPS_CODE = binding!!.inputFpsCode.text.toString()
+            Full_Address = fullAddress
+            Lati = lati.toString()
+            Longi = longi.toString()
+            Remarks = ""
+            val calendar = Calendar.getInstance()
+            val today = calendar.time
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            val todayDate = sdf.format(today)
+            Delivered_On = todayDate
+            IsDeliverd_IRIS = "0"
+            IsDeliverd_WeighingScale = "1"
 
             //    Log.d("Mobile_No"," "+ Mobile_No);
-            binding.ivTvspinner.setVisibility(View.GONE);
+            binding!!.ivTvspinner.visibility = View.GONE
 
-             /*       if (selectItem == null || selectedValue.equals(tv_select) || selectedValue.isEmpty() || selectedValue.length() == 0) {
+            /*       if (selectItem == null || selectedValue.equals(tv_select) || selectedValue.isEmpty() || selectedValue.length() == 0) {
                         makeToast(getResources().getString(R.string.select_errortype));
                     }
                 else*/
-
-            if (FPS_CODE == null || FPS_CODE.isEmpty() || FPS_CODE.length() == 0) {
+            if (FPS_CODE == null || FPS_CODE!!.isEmpty() || FPS_CODE!!.length == 0) {
                 //  makeToast(getResources().getString(R.string.enter_fps_code));
-                binding.inputFpsCode.setError("???");
-                String msg = getResources().getString(R.string.enter_fps_code);
-                showAlertDialogWithSingleButton(mContext, msg);
-            } else if (Model == null || Model.isEmpty() || Model.length() == 0 || Model.equals("-Select Model-")) {
-                binding.ivTvspinner.setError("???");
-                binding.ivTvspinner.setVisibility(View.VISIBLE);
+                binding!!.inputFpsCode.error = "???"
+                val msg = resources.getString(R.string.enter_fps_code)
+                showAlertDialogWithSingleButton(mContext!!, msg)
+            } else if (Model == null || Model!!.isEmpty() || Model!!.length == 0 || Model == "-Select Model-") {
+                binding!!.ivTvspinner.error = "???"
+                binding!!.ivTvspinner.visibility = View.VISIBLE
                 //      makeToast(getResources().getString(R.string.please_select_model));
-                String msg = getResources().getString(R.string.please_select_model);
-                showAlertDialogWithSingleButton(mContext, msg);
-            } else if (SerialNo == null || SerialNo.isEmpty() || SerialNo.length() == 0) {
+                val msg = resources.getString(R.string.please_select_model)
+                showAlertDialogWithSingleButton(mContext!!, msg)
+            } else if (SerialNo == null || SerialNo!!.isEmpty() || SerialNo!!.length == 0) {
                 // makeToast(getResources().getString(R.string.please_select_serialno));
                 // binding.inputSerialno.requestFocus();
 
                 //     binding.inputSerialno.setError("???");
-                String msg = getResources().getString(R.string.please_select_serialno);
-                showAlertDialogWithSingleButton(mContext, msg);
 
-            } else if (Mobile_No == null || Mobile_No.isEmpty() || Mobile_No.length() != 10) {
+                val msg = resources.getString(R.string.please_select_serialno)
+                showAlertDialogWithSingleButton(mContext!!, msg)
+            } else if (Mobile_No == null || Mobile_No!!.isEmpty() || Mobile_No!!.length != 10) {
                 //makeToast(getResources().getString(R.string.enter_your_exact_mobile_no));
-                binding.inputMobile.setError("???");
-                String msg = getResources().getString(R.string.enter_your_exact_mobile_no);
-                showAlertDialogWithSingleButton(mContext, msg);
-
-            } else if (stringArrayListHavingAllFilePath == null || stringArrayListHavingAllFilePath.size() < 3) {
+                binding!!.inputMobile.error = "???"
+                val msg = resources.getString(R.string.enter_your_exact_mobile_no)
+                showAlertDialogWithSingleButton(mContext!!, msg)
+            } else if (stringArrayListHavingAllFilePath == null || stringArrayListHavingAllFilePath.size < 3) {
                 //  makeToast(getResources().getString(R.string.please_select_all_img));
 
-                String msg = getResources().getString(R.string.please_select_all_img);
+                val msg = resources.getString(R.string.please_select_all_img)
 
-                showAlertDialogWithSingleButton(mContext, msg);
+                showAlertDialogWithSingleButton(mContext!!, msg)
+
                 //  binding.inputSerialno.requestFocus();
-
             } else if (signatureRequestBody == null) {
                 // makeToast(getResources().getString(R.string.please_sign));
                 //  binding.inputSerialno.requestFocus();
-                String msg = getResources().getString(R.string.please_sign);
-                showAlertDialogWithSingleButton(mContext, msg);
+                val msg = resources.getString(R.string.please_sign)
+                showAlertDialogWithSingleButton(mContext!!, msg)
             } else {
-                checkLocationServices();
+                checkLocationServices()
             }
-        });
+        }
     }
 
-    private void openCameraWithScanner() {
-
-        Intent intent = new Intent(this, BarcodeScanningActivity.class);
-        intent.putExtra("scanning_SDK", BarcodeScanningActivity.ScannerSDK.MLKIT);
-        resultLauncher.launch(intent);
-
+    private fun openCameraWithScanner() {
+        val intent = Intent(this, BarcodeScanningActivity::class.java)
+        intent.putExtra("scanning_SDK", BarcodeScanningActivity.ScannerSDK.MLKIT)
+        resultLauncher.launch(intent)
     }
 
-    private void startScanning() {
+    private fun startScanning() {
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED
+            ) == PackageManager.PERMISSION_GRANTED
         ) {
-            openCameraWithScanner();
+            openCameraWithScanner()
         } else {
-            final String[] permissions = new String[]{Manifest.permission.CAMERA};
+            val permissions = arrayOf(Manifest.permission.CAMERA)
             ActivityCompat.requestPermissions(
-                    this,
-                    permissions,
-                    CAMERA_REQUEST_CODE
-            );
+                this,
+                permissions,
+                CAMERA_REQUEST_CODE
+            )
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == CAMERA_REQUEST_CODE && grantResults.length > 0) {
+        if (requestCode == CAMERA_REQUEST_CODE && grantResults.size > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openCameraWithScanner();
+                openCameraWithScanner()
             } else if (!ActivityCompat.shouldShowRequestPermissionRationale(
                     this,
                     Manifest.permission.CAMERA
-            )
+                )
             ) {
-                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package", getPackageName(), null);
-                intent.setData(uri);
-                startActivityForResult(intent, CAMERA_REQUEST_CODE);
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri = Uri.fromParts("package", packageName, null)
+                intent.setData(uri)
+                startActivityForResult(intent, CAMERA_REQUEST_CODE)
             }
         }
     }
 
-    private void checkLocationServices() {
-
-        if (ContextCompat.checkSelfPermission(getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(mActivity,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    LOCATION_PERMISSION_REQUEST_CODE);
-            String msg = "???? ????????? ?? ?????? ??? ?? ??? ??| ???? ???? ?????? ??????? ???? ?? ??? ?? ! ????? ???? ?? ?????? ?? ?????? ???? ????? ";
-            showAlertDialogWithSingleButton(mContext, msg);
+    private fun checkLocationServices() {
+        if (ContextCompat.checkSelfPermission(
+                applicationContext,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                mActivity!!,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+            val msg =
+                "???? ????????? ?? ?????? ??? ?? ??? ??| ???? ???? ?????? ??????? ???? ?? ??? ?? ! ????? ???? ?? ?????? ?? ?????? ???? ????? "
+            showAlertDialogWithSingleButton(mContext!!, msg)
         } else {
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            boolean isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+            val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+            val isNetworkEnabled =
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
             if (isGpsEnabled || isNetworkEnabled) {
-                getCurrentLocation();
+                currentLocation
                 // Location services are enabled
             } else {
-                showSettingsAlert();
+                showSettingsAlert()
             }
         }
         //for phone location
     }
 
-    public void showSettingsAlert() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+    fun showSettingsAlert() {
+        val alertDialog = AlertDialog.Builder(this)
         // Setting Dialog Title
-        alertDialog.setTitle("Permission necessary");
+        alertDialog.setTitle("Permission necessary")
         // Setting Dialog Message
-        alertDialog.setMessage("???? ????????? ?? ?????? ??? ?? ??? ??| ???? ???? ?????? ??????? ???? ?? ??? ?? ! " +
-                "????? ???? ?? ?????? ?? ?????? ???? ????? ");
+        alertDialog.setMessage(
+            "???? ????????? ?? ?????? ??? ?? ??? ??| ???? ???? ?????? ??????? ???? ?? ??? ?? ! " +
+                    "????? ???? ?? ?????? ?? ?????? ???? ????? "
+        )
         // On pressing Settings button
         alertDialog.setPositiveButton(
-                getResources().getString(R.string.button_ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(
-                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(intent);
-                    }
-                });
-        alertDialog.show();
+            resources.getString(R.string.button_ok)
+        ) { dialog, which ->
+            val intent = Intent(
+                Settings.ACTION_LOCATION_SOURCE_SETTINGS
+            )
+            startActivity(intent)
+        }
+        alertDialog.show()
     }
 
-    private void signatureDialoge() {
-
-       /* int currentOrientation = getResources().getConfiguration().orientation;
+    private fun signatureDialoge() {
+        /* int currentOrientation = getResources().getConfiguration().orientation;
 
         if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -422,153 +402,172 @@ public class BiometricDeliveryActivity extends CustomActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }*/
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_full_page_iris, null);
-        mSignaturePad = dialogView.findViewById(R.id.signature_pad);
-        dialogBuilder.setView(dialogView);
-        AlertDialog alertDialog = dialogBuilder.create();
+        val dialogBuilder = AlertDialog.Builder(this)
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.dialog_full_page_iris, null)
+        mSignaturePad = dialogView.findViewById(R.id.signature_pad)
+        dialogBuilder.setView(dialogView)
+        val alertDialog = dialogBuilder.create()
         // Optional: Set dialog properties if needed
         // For example: alertDialog.setCancelable(false);
-        alertDialog.show();
+        alertDialog.show()
 
-        dialogView.findViewById(R.id.btn_clear).setOnClickListener(new OnSingleClickListener() {
-            @Override
-            public void onSingleClick(View v) {
-                mSignaturePad.clearCanvas();
-            }
-        });
+        dialogView.findViewById<View>(R.id.btn_clear)
+            .setOnClickListener(object : OnSingleClickListener() {
+                override fun onSingleClick(v: View?) {
+                    mSignaturePad!!.clearCanvas()
+                }
+            })
 
-        dialogView.findViewById(R.id.back).setOnClickListener(new OnSingleClickListener() {
-            @Override
-            public void onSingleClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
+        dialogView.findViewById<View>(R.id.back)
+            .setOnClickListener(object : OnSingleClickListener() {
+                override fun onSingleClick(v: View?) {
+                    alertDialog.dismiss()
+                }
+            })
 
-        dialogView.findViewById(R.id.btn_clear).setOnClickListener(new OnSingleClickListener() {
-            @Override
-            public void onSingleClick(View v) {
-                mSignaturePad.clearCanvas();
-            }
-        });
+        dialogView.findViewById<View>(R.id.btn_clear)
+            .setOnClickListener(object : OnSingleClickListener() {
+                override fun onSingleClick(v: View?) {
+                    mSignaturePad!!.clearCanvas()
+                }
+            })
 
-        dialogView.findViewById(R.id.btn_okay).setOnClickListener(new OnSingleClickListener() {
-            @Override
-            public void onSingleClick(View v) {
-              /*  Bitmap bitmap = mainBinding.signatureView.getSignatureBitmap();
+        dialogView.findViewById<View>(R.id.btn_okay)
+            .setOnClickListener(object : OnSingleClickListener() {
+                override fun onSingleClick(v: View?) {
+                    /*  Bitmap bitmap = mainBinding.signatureView.getSignatureBitmap();
                 if(bitmap != null)
                 {
                     mainBinding.imgSignature.setImageBitmap(bitmap);
                 }*/
-                signatureBitmap = rotateBitmap(mSignaturePad.getSignatureBitmap(), 90); // Get the signature as a Bitmap
-                encodedSignature = encodeBitmapToBase64(signatureBitmap);
-                attachmentPartsImage6 = RequestBody.create(MediaType.parse("text/plain"), encodedSignature);
-                File signatureFile = createFileFromBitmap(signatureBitmap);
-// Create a request body for the signature image
-                signatureRequestBody = RequestBody.create(MediaType.parse("image/*"), signatureFile);
-// Create MultipartBody.Part for the signature image
-                MultipartBody.Part signaturePart = MultipartBody.Part.createFormData("DealerSignImage", "signature.png", signatureRequestBody);
-                binding.ivPartsImagesig.setImageBitmap(signatureBitmap);
-                alertDialog.dismiss();
-
-            }
-        });
+                    signatureBitmap = rotateBitmap(
+                        mSignaturePad!!.getSignatureBitmap(),
+                        90f
+                    ) // Get the signature as a Bitmap
+                    encodedSignature = encodeBitmapToBase64(signatureBitmap)
+                    attachmentPartsImage6 =
+                        RequestBody.create("text/plain".toMediaTypeOrNull(), encodedSignature!!)
+                    val signatureFile = createFileFromBitmap(signatureBitmap)
+                    // Create a request body for the signature image
+                    signatureRequestBody =
+                        RequestBody.create("image/*".toMediaTypeOrNull(), signatureFile!!)
+                    // Create MultipartBody.Part for the signature image
+//                    val signaturePart: Part = createFormData.createFormData(
+//                        "DealerSignImage",
+//                        "signature.png",
+//                        signatureRequestBody
+//                    )
+                    binding!!.ivPartsImagesig.setImageBitmap(signatureBitmap)
+                    alertDialog.dismiss()
+                }
+            })
 
         // Optional: Customize dialog window properties (size, position, etc.)
-        Window window = alertDialog.getWindow();
-        if (window != null) {
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            // Other window properties can be set here
-        }
+        val window = alertDialog.window
+        window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
 
-    private File createFileFromBitmap(Bitmap bitmap) {
+    private fun createFileFromBitmap(bitmap: Bitmap?): File? {
         try {
-            File file = new File(getCacheDir(), "signature.png");
-            file.createNewFile();
+            val file = File(cacheDir, "signature.png")
+            file.createNewFile()
             if (bitmap != null) {
                 // Convert bitmap to byte array
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-                byte[] bitmapData = bos.toByteArray();
+                val bos = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG, 0,  /*ignored for PNG*/bos)
+                val bitmapData = bos.toByteArray()
                 // Write the bytes in file
-                FileOutputStream fos = new FileOutputStream(file);
-                fos.write(bitmapData);
-                fos.flush();
-                fos.close();
-                return file;
+                val fos = FileOutputStream(file)
+                fos.write(bitmapData)
+                fos.flush()
+                fos.close()
+                return file
             } else {
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return null
         }
-        return null;
+        return null
     }
 
-    private String encodeBitmapToBase64(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    private fun encodeBitmapToBase64(bitmap: Bitmap?): String? {
+        val baos = ByteArrayOutputStream()
         if (bitmap != null) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-            byte[] byteArrayImage = baos.toByteArray();
-            return Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+            val byteArrayImage = baos.toByteArray()
+            return Base64.encodeToString(byteArrayImage, Base64.DEFAULT)
         } else {
         }
-        return null;
+        return null
     }
 
-    private void getCurrentLocation() {
-        // progressBar.setVisibility(View.VISIBLE);
-        showProgress(getResources().getString(R.string.get_location));
-        LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(3000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    private val currentLocation: Unit
+        get() {
+            // progressBar.setVisibility(View.VISIBLE);
+            showProgress(resources.getString(R.string.get_location))
+            val locationRequest = LocationRequest()
+            locationRequest.setInterval(10000)
+            locationRequest.setFastestInterval(3000)
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        LocationServices.getFusedLocationProviderClient(mActivity)
-                .requestLocationUpdates(locationRequest, new LocationCallback() {
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        super.onLocationResult(locationResult);
-                        LocationServices.getFusedLocationProviderClient(getApplicationContext())
-                                .removeLocationUpdates(this);
-                        if (locationResult != null && locationResult.getLocations().size() > 0) {
-                            hideProgress();
-                            int latestlocIndex = locationResult.getLocations().size() - 1;
-                            lati = locationResult.getLocations().get(latestlocIndex).getLatitude();
-                            longi = locationResult.getLocations().get(latestlocIndex).getLongitude();
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this, Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return
+            }
+            LocationServices.getFusedLocationProviderClient(mActivity!!)
+                .requestLocationUpdates(locationRequest, object : LocationCallback() {
+                    override fun onLocationResult(locationResult: LocationResult) {
+                        super.onLocationResult(locationResult)
+                        LocationServices.getFusedLocationProviderClient(applicationContext)
+                            .removeLocationUpdates(this)
+                        if (locationResult != null && locationResult.locations.size > 0) {
+                            hideProgress()
+                            val latestlocIndex = locationResult.locations.size - 1
+                            lati = locationResult.locations[latestlocIndex].latitude
+                            longi = locationResult.locations[latestlocIndex].longitude
                             //    textLatLong.setText(String.format("Latitude : %s\n Longitude: %s", lati, longi));
                             //my
-                            Location location = new Location("providerNA");
-                            location.setLongitude(longi);
-                            location.setLatitude(lati);
-                            fetchaddressfromlocation(location);
+                            val location = Location("providerNA")
+                            location.longitude = longi
+                            location.latitude = lati
+                            fetchaddressfromlocation(location)
                             //    Log.d("locationlocation", "" + location);
-                            completeAddressStr = getAddressFromLatLong();
+                            completeAddressStr = addressFromLatLong
                             //   Log.d("completeAddressStr", completeAddressStr);
-                            hideProgress();
+                            hideProgress()
 
-                            if (completeAddressStr != null && completeAddressStr.length() != 0) {
-                                saveInstallationReq(FPS_CODE, Model, DeviceCode, SerialNo, Mobile_No, stringArrayListHavingAllFilePath);
+                            if (completeAddressStr != null && completeAddressStr!!.length != 0) {
+                                saveInstallationReq(
+                                    FPS_CODE,
+                                    Model,
+                                    DeviceCode,
+                                    SerialNo,
+                                    Mobile_No,
+                                    stringArrayListHavingAllFilePath
+                                )
                             } else {
-                                String msg = "???? ???? ?????? ??????? ???? ?? ??? ?? ! ???? ?? ?????? ?? ?????? ???? ????? ";
-                                showAlertDialogWithSingleButton(mActivity, msg);
+                                val msg =
+                                    "???? ???? ?????? ??????? ???? ?? ??? ?? ! ???? ?? ?????? ?? ?????? ???? ????? "
+                                showAlertDialogWithSingleButton(mActivity!!, msg)
                             }
 
                             // String msg = "???? ???? ?????? ??????? ???? ?? ??? ?? ! ???? ?? ?????? ?? ?????? ???? ?????";}
 
-                           /* String FS = String.valueOf(ed_fps.getText());
+                            /* String FS = String.valueOf(ed_fps.getText());
 
                             if(districtId.equals(-1))
                             {
@@ -582,41 +581,42 @@ public class BiometricDeliveryActivity extends CustomActivity {
                             }
 */
                         } else {
-                            hideProgress();
+                            hideProgress()
                         }
                     }
-                }, Looper.getMainLooper());
-    }
-
-    private void fetchaddressfromlocation(Location location) {
-        Intent intent = new Intent(this, FetchAddressIntentServices.class);
-        intent.putExtra(Constants.RECEVIER, resultReceiver);
-        intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
-        startService(intent);
-    }
-
-    private String getAddressFromLatLong() {
-        String localCompleteAddressStr = "";
-        try {
-            Geocoder gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
-            List<Address> addresses = gcd.getFromLocation(lati, longi, 1);
-            if (addresses.size() > 0) {
-                localCompleteAddressStr = addresses.get(0).getAddressLine(0);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            localCompleteAddressStr = "";
+                }, Looper.getMainLooper())
         }
-        return localCompleteAddressStr;
+
+    private fun fetchaddressfromlocation(location: Location) {
+        val intent = Intent(this, FetchAddressIntentServices::class.java)
+        intent.putExtra(Constants.RECEVIER, resultReceiver)
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, location)
+        startService(intent)
     }
 
-    private void checkbox() {
-        // binding.llWm.setVisibility(View.GONE);
-        binding.llIris.setVisibility(View.GONE);
-        binding.llWm.setVisibility(View.VISIBLE);
-        binding.checkBoxWm.setChecked(true);
+    private val addressFromLatLong: String
+        get() {
+            var localCompleteAddressStr = ""
+            try {
+                val gcd = Geocoder(applicationContext, Locale.getDefault())
+                val addresses = gcd.getFromLocation(lati, longi, 1)
+                if (addresses!!.size > 0) {
+                    localCompleteAddressStr = addresses[0].getAddressLine(0)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                localCompleteAddressStr = ""
+            }
+            return localCompleteAddressStr
+        }
 
-    /*    binding.checkBoxWm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private fun checkbox() {
+        // binding.llWm.setVisibility(View.GONE);
+        binding!!.llIris.visibility = View.GONE
+        binding!!.llWm.visibility = View.VISIBLE
+        binding!!.checkBoxWm.isChecked = true
+
+        /*    binding.checkBoxWm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -646,333 +646,351 @@ public class BiometricDeliveryActivity extends CustomActivity {
 */
     }
 
-    private void CoustomDialoge() {
-
-        final AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-        View mView = getLayoutInflater().inflate(R.layout.activity_coustomfpsdialoge, null);
+    private fun CoustomDialoge() {
+        val alert = AlertDialog.Builder(mContext)
+        val mView = layoutInflater.inflate(R.layout.activity_coustomfpsdialoge, null)
         //  mView.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_dialog_bg));
-        txt_fpscode = mView.findViewById(R.id.txt_input);
-        Button btn_cancel = mView.findViewById(R.id.btn_cancel);
-        btn_cancel.setVisibility(View.VISIBLE);
+        txt_fpscode = mView.findViewById(R.id.txt_input)
+        val btn_cancel = mView.findViewById<Button>(R.id.btn_cancel)
+        btn_cancel.visibility = View.VISIBLE
 
-        Button btn_okay = mView.findViewById(R.id.btn_okay);
-        alert.setView(mView);
-        alertDialog = alert.create();
-        alertDialog.setCanceledOnTouchOutside(false);
+        val btn_okay = mView.findViewById<Button>(R.id.btn_okay)
+        alert.setView(mView)
+        alertDialog = alert.create()
+        alertDialog!!.setCanceledOnTouchOutside(false)
+
         //alertDialog.getWindow().setBackgroundDrawable(new BitmapDrawable(getResources(), blurredBitmap));
+        btn_cancel.setOnClickListener {
+            val i = Intent(mContext, BiometricDeliveryDashboardActivity::class.java)
+            startActivity(i)
+            /*InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                    alertDialog.dismiss();*/
+        }
 
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(mContext, BiometricDeliveryDashboardActivity.class);
-                startActivity(i);
-
-                /*InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-                alertDialog.dismiss();*/
-            }
-        });
-
-        btn_okay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btn_okay.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
                 //    myCustomMessage.setText(txt_inputText.getText().toString());
-                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-                //     GetCustomerDetailsByFPS();
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
 
-                getL0DeviceCodeByFPS();
+                //     GetCustomerDetailsByFPS();
+                l0DeviceCodeByFPS
 
                 //  alertDialog.dismiss();
             }
-        });
+        })
 
-        alertDialog.setOnKeyListener(new Dialog.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode,
-                                 KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    dialog.dismiss();
-                    finish();
-                }
-                return false;
+        alertDialog!!.setOnKeyListener(DialogInterface.OnKeyListener { dialog, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                dialog.dismiss()
+                finish()
             }
-        });
-        alertDialog.show();
+            false
+        })
+        alertDialog!!.show()
     }
 
-    private void GetCustomerDetailsByFPS() {
-        Fps_code = txt_fpscode.getText().toString().trim();
-        if (Constants.isNetworkAvailable(mActivity)) {
-            hideKeyboard(mActivity);
-            showProgress(getResources().getString(R.string.please_wait));
-            String USER_Id = preference.getUSER_Id();
+    private fun GetCustomerDetailsByFPS() {
+        Fps_code = txt_fpscode!!.text.toString().trim { it <= ' ' }
+        if (isNetworkAvailable(mActivity!!)) {
+            hideKeyboard(mActivity!!)
+            showProgress(resources.getString(R.string.please_wait))
+            val USER_Id = preference!!.uSER_Id
             //   Log.d("USER_ID", " "+USER_Id);
-            APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<DetailsByFPSForSensorRoot> call = apiInterface.getCustomerDetailsByFPSForSensorDistribution(Fps_code, USER_Id, "0");
-            call.enqueue(new Callback<DetailsByFPSForSensorRoot>() {
-                @Override
-                public void onResponse(@NonNull Call<DetailsByFPSForSensorRoot> call, @NonNull Response<DetailsByFPSForSensorRoot> response) {
-                    hideProgress();
-                    if (response.isSuccessful()) {
+            val apiInterface = retrofitInstance!!.create(
+                APIService::class.java
+            )
+            val call =
+                apiInterface.getCustomerDetailsByFPSForSensorDistribution(Fps_code, USER_Id, "0")
+            call!!.enqueue(object : Callback<DetailsByFPSForSensorRoot?> {
+                override fun onResponse(
+                    call: Call<DetailsByFPSForSensorRoot?>,
+                    response: Response<DetailsByFPSForSensorRoot?>
+                ) {
+                    hideProgress()
+                    if (response.isSuccessful) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
-                                    alertDialog.dismiss();
+                                if (Objects.requireNonNull(response.body())!!.status == "200") {
+                                    alertDialog!!.dismiss()
 
-                                    DetailsByFPSForSensorRoot detailByFpsRoot = response.body();
-                                    String fps_message = detailByFpsRoot.getMessage();
-                                    Toast.makeText(mContext, fps_message, Toast.LENGTH_SHORT).show();
-                                    DetailByFpsForSensorData detailByFpsData = detailByFpsRoot.getData();
+                                    val detailByFpsRoot = response.body()
+                                    val fps_message = detailByFpsRoot!!.message
+                                    Toast.makeText(mContext, fps_message, Toast.LENGTH_SHORT).show()
+                                    val detailByFpsData = detailByFpsRoot.data
                                     if (detailByFpsData != null) {
+                                        val DistrictName = detailByFpsData.districtName
+                                        val Fpscode = detailByFpsData.fpscode
+                                        val DealerName = detailByFpsData.dealerName
+                                        val FpsdeviceCode = detailByFpsData.fpsdeviceCode
+                                        val DealerMobileNo = detailByFpsData.dealerMobileNo
+                                        val Block = detailByFpsData.blockName
+                                        val biometricSerialNo =
+                                            detailByFpsData.biometricSerialNo.toString()
+                                        binding!!.inputDealerName.text = DealerName
+                                        binding!!.inputDistrict.text = DistrictName
+                                        binding!!.inputFpsCode.text = Fpscode
+                                        binding!!.inputMobile.setText(DealerMobileNo)
+                                        binding!!.inputBlock.text = Block
+                                        binding!!.inputSerialno.text = biometricSerialNo
+                                        binding!!.inputDeviceCode.text = FpsdeviceCode
 
-                                        String DistrictName = detailByFpsData.getDistrictName();
-                                        String Fpscode = detailByFpsData.getFpscode();
-                                        String DealerName = detailByFpsData.getDealerName();
-                                        String FpsdeviceCode = detailByFpsData.getFpsdeviceCode();
-                                        String DealerMobileNo = detailByFpsData.getDealerMobileNo();
-                                        String Block = detailByFpsData.getBlockName();
-                                        String biometricSerialNo = String.valueOf(detailByFpsData.getBiometricSerialNo());
-                                        binding.inputDealerName.setText(DealerName);
-                                        binding.inputDistrict.setText(DistrictName);
-                                        binding.inputFpsCode.setText(Fpscode);
-                                        binding.inputMobile.setText(DealerMobileNo);
-                                        binding.inputBlock.setText(Block);
-                                        binding.inputSerialno.setText(biometricSerialNo);
-                                        binding.inputDeviceCode.setText(FpsdeviceCode);
-
-                                        Date currentDate = new Date();
+                                        val currentDate = Date()
                                         // Define the desired date format
-                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                                        val dateFormat = SimpleDateFormat(
+                                            "yyyy-MM-dd HH:mm",
+                                            Locale.getDefault()
+                                        )
                                         // Format the current date and time
-                                        String formattedDate = dateFormat.format(currentDate);
+                                        val formattedDate = dateFormat.format(currentDate)
                                         // Now, 'formattedDate' contains the date in the desired format
                                         //     Log.d("Current Date"," "+ formattedDate);
-                                        dateAndTimeEditText.setText(formattedDate);
+                                        dateAndTimeEditText!!.setText(formattedDate)
 
                                         //   binding.inputSerialno.setText(WeighingScaleSerialNo);
                                         //  binding.inputmodel.setText(WeighingScaleModelName);
                                         //  binding.inputIrisCode.setText(IrisScannerSerialNo);
                                         //    binding.inputIrisName.setText(IrisScannerModelName);
-
-                                        if (ContextCompat.checkSelfPermission(getApplicationContext(),
-                                                Manifest.permission.ACCESS_FINE_LOCATION)
-                                                != PackageManager.PERMISSION_GRANTED) {
-                                            ActivityCompat.requestPermissions(mActivity,
-                                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                                    LOCATION_PERMISSION_REQUEST_CODE);
+                                        if (ContextCompat.checkSelfPermission(
+                                                applicationContext,
+                                                Manifest.permission.ACCESS_FINE_LOCATION
+                                            )
+                                            != PackageManager.PERMISSION_GRANTED
+                                        ) {
+                                            ActivityCompat.requestPermissions(
+                                                mActivity!!,
+                                                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                                                LOCATION_PERMISSION_REQUEST_CODE
+                                            )
                                         } else {
                                         }
                                     } else {
-                                        String msg = response.body().getMessage();
-                                        showAlertDialogWithSingleButton(mContext, msg);
+                                        val msg = response.body()!!.message
+                                        showAlertDialogWithSingleButton(
+                                            mContext!!, msg
+                                        )
                                         //  makeToast(String.valueOf(response.body().getMessage()));
                                         // Handle the case when countDatum is empty or null
                                     }
                                 } else {
-                                    alertDialog.show();
+                                    alertDialog!!.show()
                                     //  makeToast(String.valueOf(response.body().getMessage()));
-                                    String msg = response.body().getMessage();
-                                    showAlertDialogWithSingleButton(mContext, msg);
+                                    val msg = response.body()!!.message
+                                    showAlertDialogWithSingleButton(
+                                        mContext!!, msg
+                                    )
                                     // Handle the case when the response status is not 200 or the response body is null
                                 }
                             } else {
-                                String msg = response.body().getMessage();
-                                showAlertDialogWithSingleButton(mContext, msg);
+                                val msg = response.body()!!.message
+                                showAlertDialogWithSingleButton(mContext!!, msg)
                                 // makeToast(String.valueOf(response.body().getMessage()));
                             }
                         } else {
-                            String msg = "HTTP Error: " + response.code();
-                            showAlertDialogWithSingleButton(mContext, msg);
+                            val msg = "HTTP Error: " + response.code()
+                            showAlertDialogWithSingleButton(mContext!!, msg)
                         }
                     } else {
-                        String msg = "HTTP Error: " + response.code();
-                        showAlertDialogWithSingleButton(mContext, msg);
+                        val msg = "HTTP Error: " + response.code()
+                        showAlertDialogWithSingleButton(mContext!!, msg)
                         // makeToast(getResources().getString(R.string.error));
                     }
                 }
 
-                @Override
-                public void onFailure(@NonNull Call<DetailsByFPSForSensorRoot> call, @NonNull Throwable error) {
-                    hideProgress();
+                override fun onFailure(call: Call<DetailsByFPSForSensorRoot?>, error: Throwable) {
+                    hideProgress()
                     // makeToast(getResources().getString(R.string.error));
-                    String msg = error.getMessage();
-                    showAlertDialogWithSingleButton(mContext, msg);
-                    call.cancel();
+                    val msg = error.message
+                    showAlertDialogWithSingleButton(mContext!!, msg)
+                    call.cancel()
                 }
-            });
+            })
         } else {
-            makeToast(getResources().getString(R.string.no_internet_connection));
+            makeToast(resources.getString(R.string.no_internet_connection))
         }
     }
 
-    private void selectImage(final Integer requestCode) {
+    private fun selectImage(requestCode: Int) {
         try {
             ImagePicker.with(mActivity)
-                    .setToolbarColor("#212121")
-                    .setStatusBarColor("#000000")
-                    .setToolbarTextColor("#FFFFFF")
-                    .setToolbarIconColor("#FFFFFF")
-                    .setProgressBarColor("#4CAF50")
-                    .setBackgroundColor("#212121")
-                    .setCameraOnly(true)
-                    .setMultipleMode(true)
-                    .setFolderMode(true)
-                    .setShowCamera(true)
-                    .setFolderTitle("Albums")
-                    .setImageTitle("Galleries")
-                    .setDoneTitle("Done")
-                    .setMaxSize(1)
-                    .setSavePath(Constants.saveImagePath)
-                    .setSelectedImages(new ArrayList<>())
-                    .start(requestCode);
-        } catch (Exception e) {
-            e.printStackTrace();
+                .setToolbarColor("#212121")
+                .setStatusBarColor("#000000")
+                .setToolbarTextColor("#FFFFFF")
+                .setToolbarIconColor("#FFFFFF")
+                .setProgressBarColor("#4CAF50")
+                .setBackgroundColor("#212121")
+                .setCameraOnly(true)
+                .setMultipleMode(true)
+                .setFolderMode(true)
+                .setShowCamera(true)
+                .setFolderTitle("Albums")
+                .setImageTitle("Galleries")
+                .setDoneTitle("Done")
+                .setMaxSize(1)
+                .setSavePath(Constants.saveImagePath)
+                .setSelectedImages(ArrayList())
+                .start(requestCode)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == CAMERA_REQUEST_CODE) {
             if (ContextCompat.checkSelfPermission(
                     this,
                     Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED
+                ) == PackageManager.PERMISSION_GRANTED
             ) {
-                openCameraWithScanner();
+                openCameraWithScanner()
             }
         }
 
         if (requestCode == REQUEST_PICK_IMAGE_ONE && resultCode == RESULT_OK && data != null) {
-            ArrayList<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
-            if (images != null && images.size() > 0) {
-                Image image = images.get(0);
+            val images = data.getParcelableArrayListExtra<Image>(Config.EXTRA_IMAGES)
+            if (images != null && images.size > 0) {
+                val image = images[0]
                 // String imageStoragePath = image.getPath();
-                partsImageStoragePath1 = image.getPath();
+                partsImageStoragePath1 = image.path
                 if (partsImageStoragePath1.contains("file:/")) {
-                    partsImageStoragePath1 = partsImageStoragePath1.replace("file:/", "");
+                    partsImageStoragePath1 = partsImageStoragePath1.replace("file:/", "")
                 }
-                partsImageStoragePath1 = CompressImage.compress(partsImageStoragePath1, this);
-                File imgFile = new File(partsImageStoragePath1);
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                partsImageStoragePath1 = compress(partsImageStoragePath1, this)
+                val imgFile = File(partsImageStoragePath1)
+                val myBitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
 
                 try {
-                    binding.ivPartsImage1.setImageBitmap(ImageUtilsForRotate.ensurePortrait(partsImageStoragePath1));
-                    stringArrayListHavingAllFilePath.add(partsImageStoragePath1);
-                } catch (IOException e) {
-                    binding.ivPartsImage1.setImageBitmap(myBitmap);
-                    stringArrayListHavingAllFilePath.add(partsImageStoragePath1);
+                    binding!!.ivPartsImage1.setImageBitmap(ensurePortrait(partsImageStoragePath1))
+                    stringArrayListHavingAllFilePath!!.add(partsImageStoragePath1)
+                } catch (e: IOException) {
+                    binding!!.ivPartsImage1.setImageBitmap(myBitmap)
+                    stringArrayListHavingAllFilePath!!.add(partsImageStoragePath1)
 
-                    e.printStackTrace();
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
+                    e.printStackTrace()
+                } catch (e: NullPointerException) {
+                    e.printStackTrace()
                 }
             }
         } else if (requestCode == REQUEST_PICK_IMAGE_TWO && resultCode == RESULT_OK && data != null) {
-            ArrayList<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
-            if (images != null && images.size() > 0) {
-                Image image = images.get(0);
-                String imageStoragePath = image.getPath();
-                partsImageStoragePath2 = image.getPath();
+            val images = data.getParcelableArrayListExtra<Image>(Config.EXTRA_IMAGES)
+            if (images != null && images.size > 0) {
+                val image = images[0]
+                val imageStoragePath = image.path
+                partsImageStoragePath2 = image.path
                 if (partsImageStoragePath2.contains("file:/")) {
-                    partsImageStoragePath2 = partsImageStoragePath2.replace("file:/", "");
+                    partsImageStoragePath2 = partsImageStoragePath2.replace("file:/", "")
                 }
-                partsImageStoragePath2 = CompressImage.compress(partsImageStoragePath2, this);
-                File imgFile = new File(partsImageStoragePath2);
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                partsImageStoragePath2 = compress(partsImageStoragePath2, this)
+                val imgFile = File(partsImageStoragePath2)
+                val myBitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
 
                 try {
-                    binding.ivPartsImage2.setImageBitmap(ImageUtilsForRotate.ensurePortrait(partsImageStoragePath2));
-                    stringArrayListHavingAllFilePath.add(partsImageStoragePath2);
-                } catch (IOException e) {
-                    binding.ivPartsImage2.setImageBitmap(myBitmap);
-                    stringArrayListHavingAllFilePath.add(partsImageStoragePath2);
-                    e.printStackTrace();
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
+                    binding!!.ivPartsImage2.setImageBitmap(ensurePortrait(partsImageStoragePath2))
+                    stringArrayListHavingAllFilePath!!.add(partsImageStoragePath2)
+                } catch (e: IOException) {
+                    binding!!.ivPartsImage2.setImageBitmap(myBitmap)
+                    stringArrayListHavingAllFilePath!!.add(partsImageStoragePath2)
+                    e.printStackTrace()
+                } catch (e: NullPointerException) {
+                    e.printStackTrace()
                 }
-
             }
         } else if (requestCode == REQUEST_PICK_IMAGE_THREE && resultCode == RESULT_OK && data != null) {
-            ArrayList<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
-            if (images != null && images.size() > 0) {
-                Image image = images.get(0);
+            val images = data.getParcelableArrayListExtra<Image>(Config.EXTRA_IMAGES)
+            if (images != null && images.size > 0) {
+                val image = images[0]
                 //  String imageStoragePath = image.getPath();
-                partsImageStoragePath3 = image.getPath();
+                partsImageStoragePath3 = image.path
                 if (partsImageStoragePath3.contains("file:/")) {
-                    partsImageStoragePath3 = partsImageStoragePath3.replace("file:/", "");
+                    partsImageStoragePath3 = partsImageStoragePath3.replace("file:/", "")
                 }
-                partsImageStoragePath3 = CompressImage.compress(partsImageStoragePath3, this);
-                File imgFile = new File(partsImageStoragePath3);
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                partsImageStoragePath3 = compress(partsImageStoragePath3, this)
+                val imgFile = File(partsImageStoragePath3)
+                val myBitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
 
                 try {
-                    binding.ivPartsImage3.setImageBitmap(ImageUtilsForRotate.ensurePortrait(partsImageStoragePath3));
-                    stringArrayListHavingAllFilePath.add(partsImageStoragePath3);
-                } catch (IOException e) {
-                    binding.ivPartsImage3.setImageBitmap(myBitmap);
-                    stringArrayListHavingAllFilePath.add(partsImageStoragePath3);
-                    e.printStackTrace();
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
+                    binding!!.ivPartsImage3.setImageBitmap(ensurePortrait(partsImageStoragePath3))
+                    stringArrayListHavingAllFilePath!!.add(partsImageStoragePath3)
+                } catch (e: IOException) {
+                    binding!!.ivPartsImage3.setImageBitmap(myBitmap)
+                    stringArrayListHavingAllFilePath!!.add(partsImageStoragePath3)
+                    e.printStackTrace()
+                } catch (e: NullPointerException) {
+                    e.printStackTrace()
                 }
-
             }
         }
 
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
 
-    private void saveInstallationReq(String fps_code, String model, String DeviceCode, String serialNo, String mobile_no, ArrayList<String> arrayHavingAllFilePath) {
-        if (Constants.isNetworkAvailable(mActivity)) {
-            hideKeyboard(mActivity);
-            showProgress(getResources().getString(R.string.please_wait));
-            String USER_Id = preference.getUSER_Id();
+    private fun saveInstallationReq(
+        fps_code: String?,
+        model: String?,
+        DeviceCode: String?,
+        serialNo: String?,
+        mobile_no: String?,
+        arrayHavingAllFilePath: ArrayList<String>?
+    ) {
+        if (isNetworkAvailable(mActivity!!)) {
+            hideKeyboard(mActivity!!)
+            showProgress(resources.getString(R.string.please_wait))
+            val USER_Id = preference!!.uSER_Id
             //   Log.d("USER_ID"," "+ USER_Id);
-            mydatetime = String.valueOf(dateAndTimeEditText.getText());
+            mydatetime = dateAndTimeEditText!!.text.toString()
 
-            APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
+            val apiInterface = retrofitInstance!!.create(
+                APIService::class.java
+            )
             //   Log.d("apifullapifullapifull", " "+fullAddress);
-            RequestBody attachmentPartsImage1;
-            RequestBody attachmentPartsImage2;
-            RequestBody attachmentPartsImage3;
-            RequestBody attachmentPartsImage4;
-            RequestBody attachmentPartsImage5;
+            val attachmentPartsImage1: RequestBody
+            val attachmentPartsImage2: RequestBody
+            val attachmentPartsImage3: RequestBody
+            var attachmentPartsImage4: RequestBody
+            var attachmentPartsImage5: RequestBody
 
-            String fileNamePartsImage1 = "";
-            String fileNamePartsImage2 = "";
-            String fileNamePartsImage3 = "";
-            String fileNamePartsImage4 = "";
-            String fileNamePartsImage5 = "";
+            var fileNamePartsImage1: String? = ""
+            var fileNamePartsImage2: String? = ""
+            var fileNamePartsImage3: String? = ""
+            val fileNamePartsImage4 = ""
+            val fileNamePartsImage5 = ""
 
-            if (!partsImageStoragePath1.equals("")) {
-                fileNamePartsImage1 = new File(partsImageStoragePath1).getName();
-                attachmentPartsImage1 = RequestBody.create(MediaType.parse("multipart/form-data"), new File(partsImageStoragePath1));
+            if (partsImageStoragePath1 != "") {
+                fileNamePartsImage1 = File(partsImageStoragePath1).name
+                attachmentPartsImage1 = RequestBody.create(
+                    "multipart/form-data".toMediaTypeOrNull(),
+                    File(partsImageStoragePath1)
+                )
             } else {
-                fileNamePartsImage1 = "";
-                attachmentPartsImage1 = RequestBody.create(MediaType.parse("text/plain"), "");
+                fileNamePartsImage1 = ""
+                attachmentPartsImage1 = RequestBody.create("text/plain".toMediaTypeOrNull(), "")
             }
 
-            if (!partsImageStoragePath2.equals("")) {
-                fileNamePartsImage2 = new File(partsImageStoragePath2).getName();
-                attachmentPartsImage2 = RequestBody.create(MediaType.parse("multipart/form-data"), new File(partsImageStoragePath2));
+            if (partsImageStoragePath2 != "") {
+                fileNamePartsImage2 = File(partsImageStoragePath2).name
+                attachmentPartsImage2 = RequestBody.create(
+                    "multipart/form-data".toMediaTypeOrNull(),
+                    File(partsImageStoragePath2)
+                )
             } else {
-                fileNamePartsImage2 = "";
-                attachmentPartsImage2 = RequestBody.create(MediaType.parse("text/plain"), "");
+                fileNamePartsImage2 = ""
+                attachmentPartsImage2 = RequestBody.create("text/plain".toMediaTypeOrNull(), "")
             }
 
-            if (!partsImageStoragePath3.equals("")) {
-                fileNamePartsImage3 = new File(partsImageStoragePath3).getName();
-                attachmentPartsImage3 = RequestBody.create(MediaType.parse("multipart/form-data"), new File(partsImageStoragePath3));
+            if (partsImageStoragePath3 != "") {
+                fileNamePartsImage3 = File(partsImageStoragePath3).name
+                attachmentPartsImage3 = RequestBody.create(
+                    "multipart/form-data".toMediaTypeOrNull(),
+                    File(partsImageStoragePath3)
+                )
             } else {
-                fileNamePartsImage3 = "";
-                attachmentPartsImage3 = RequestBody.create(MediaType.parse("text/plain"), "");
+                fileNamePartsImage3 = ""
+                attachmentPartsImage3 = RequestBody.create("text/plain".toMediaTypeOrNull(), "")
             }
 
-        /*    if (!partsImageStoragePath4.equals("")) {
+            /*    if (!partsImageStoragePath4.equals("")) {
                 fileNamePartsImage4 = new File(partsImageStoragePath4).getName();
                 attachmentPartsImage4 = RequestBody.create(MediaType.parse("multipart/form-data"), new File(partsImageStoragePath4));
             } else {
@@ -980,200 +998,215 @@ public class BiometricDeliveryActivity extends CustomActivity {
                 attachmentPartsImage4 = RequestBody.create(MediaType.parse("text/plain"), "");
             }*/
 
-  /* if (!partsImageStoragePath5.equals("")) {
+            /* if (!partsImageStoragePath5.equals("")) {
                 fileNamePartsImage5 = new File(partsImageStoragePath5).getName();
                 attachmentPartsImage6= RequestBody.create(MediaType.parse("multipart/form-data"), new File(partsImageStoragePath5));
             } else {
                 fileNamePartsImage5 = "";
                 attachmentPartsImage6 = RequestBody.create(MediaType.parse("text/plain"), encodedSignature);
             }*/
+            val call = apiInterface.saveSensorDistribution(
+                fromString(USER_Id),
+                fromString("0"),
+                fromString(DeviceCode),
+                fromString(serialNo),
+                fromString(fps_code),
+                fromString(mobile_no),  //        MultipartRequester.fromString(model),
+                fromString(completeAddressStr),
+                fromString(lati.toString()),
+                fromString(longi.toString()),
+                fromString(Remarks),  // MultipartRequester.fromString("2023-12-12 14:12"),
+                fromString(mydatetime),
+                createFormData(
+                    "BiometricSerialNoImage",
+                    fileNamePartsImage2,
+                    attachmentPartsImage2
+                ),
 
-            Call<SaveBiometricDeliverResponse> call = apiInterface.saveSensorDistribution(
-                    MultipartRequester.fromString(USER_Id),
-                    MultipartRequester.fromString("0"),
-                    MultipartRequester.fromString(DeviceCode),
-                    MultipartRequester.fromString(serialNo),
-                    MultipartRequester.fromString(fps_code),
-                    MultipartRequester.fromString(mobile_no),
-                    //        MultipartRequester.fromString(model),
-                    MultipartRequester.fromString(completeAddressStr),
-                    MultipartRequester.fromString(String.valueOf(lati)),
-                    MultipartRequester.fromString(String.valueOf(longi)),
-                    MultipartRequester.fromString(Remarks),
-                    // MultipartRequester.fromString("2023-12-12 14:12"),
-                    MultipartRequester.fromString(mydatetime),
-                    MultipartBody.Part.createFormData("BiometricSerialNoImage", fileNamePartsImage2, attachmentPartsImage2),
-                    MultipartBody.Part.createFormData("DealerImageWithBiometric", fileNamePartsImage1, attachmentPartsImage1),
-                    MultipartBody.Part.createFormData("DealerSignature", "signature.png", signatureRequestBody),
-                    MultipartBody.Part.createFormData("DealerPhotoIDProof", fileNamePartsImage3, attachmentPartsImage3));
+                createFormData(
+                    "DealerImageWithBiometric",
+                    fileNamePartsImage1,
+                    attachmentPartsImage1
+                ),
+                createFormData(
+                    "DealerSignature",
+                    "signature.png",
+                    signatureRequestBody!!
+                ),
+                createFormData(
+                    "DealerPhotoIDProof",
+                    fileNamePartsImage3,
+                    attachmentPartsImage3
+                )
+            )
 
 
             //campDocumentsParts);
-            Log.d("sendResponse", "-----" + "USER_Id" + USER_Id);
-            Log.d("sendResponse", "-----" + "model" + model);
-            Log.d("sendResponse", "-----" + "serialNo" + serialNo);
-            Log.d("sendResponse", "-----" + "bvcnvbn");
-            Log.d("sendResponse", "-----" + "vbnn");
-            Log.d("sendResponse", "-----" + "mobile_no" + mobile_no);
-            Log.d("sendResponse", "-----" + "fps_code" + fps_code);
-            Log.d("sendResponse", "-----" + "completeAddressStr" + completeAddressStr);
-            Log.d("sendResponse", "-----" + "lati" + lati);
-            Log.d("sendResponse", "-----" + "longi" + longi);
-            Log.d("sendResponse", "-----" + "Remarks" + Remarks);
-            Log.d("sendResponse", "-----" + "Delivered_On" + mydatetime);
-            Log.d("sendResponse", "-----" + "hgfhd");
-            Log.d("sendResponse", "-----" + "fgrgr" + "0");
-            Log.d("sendResponse", "-----" + "fg" + "1");
-            //  Log.d("fjksDGFGSDFF", fullAddress);
+            Log.d("sendResponse", "-----USER_Id$USER_Id")
+            Log.d("sendResponse", "-----model$model")
+            Log.d("sendResponse", "-----serialNo$serialNo")
+            Log.d("sendResponse", "-----" + "bvcnvbn")
+            Log.d("sendResponse", "-----" + "vbnn")
+            Log.d("sendResponse", "-----mobile_no$mobile_no")
+            Log.d("sendResponse", "-----fps_code$fps_code")
+            Log.d("sendResponse", "-----completeAddressStr$completeAddressStr")
+            Log.d("sendResponse", "-----lati$lati")
+            Log.d("sendResponse", "-----longi$longi")
+            Log.d("sendResponse", "-----Remarks$Remarks")
+            Log.d("sendResponse", "-----Delivered_On$mydatetime")
+            Log.d("sendResponse", "-----" + "hgfhd")
+            Log.d("sendResponse", "-----" + "fgrgr" + "0")
+            Log.d("sendResponse", "-----" + "fg" + "1")
 
-            call.enqueue(new Callback<SaveBiometricDeliverResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<SaveBiometricDeliverResponse> call, @NonNull Response<SaveBiometricDeliverResponse> response) {
-                    hideProgress();
-                    if (response.isSuccessful()) {
+            //  Log.d("fjksDGFGSDFF", fullAddress);
+            call!!.enqueue(object : Callback<SaveBiometricDeliverResponse?> {
+                override fun onResponse(
+                    call: Call<SaveBiometricDeliverResponse?>,
+                    response: Response<SaveBiometricDeliverResponse?>
+                ) {
+                    hideProgress()
+                    if (response.isSuccessful) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
-
-//                                    makeToast(String.valueOf(response.body().getResponse().getMessage()));
+                                if (Objects.requireNonNull(response.body())!!.status == "200") {
+                                    //                                    makeToast(String.valueOf(response.body().getResponse().getMessage()));
 //                                    Intent intent = new Intent(mActivity, BiometricDeliveryDashboardActivity.class);
 //                                    startActivity(intent);
 
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                                    builder.setMessage(String.valueOf(response.body().getResponse().getMessage()))
-                                            .setCancelable(false)
-                                            .setPositiveButton(getResources().getString(R.string.ok), (dialog, id) -> {
-                                                Intent intent = new Intent(mContext, BiometricDeliveryDashboardActivity.class);
-                                                startActivity(intent);
-                                            });
-                                    AlertDialog alert = builder.create();
-                                    alert.setTitle(getResources().getString(R.string.alert));
-                                    alert.show();
-
+                                    val builder = AlertDialog.Builder(mContext)
+                                    builder.setMessage(response.body()!!.response!!.message.toString())
+                                        .setCancelable(false)
+                                        .setPositiveButton(resources.getString(R.string.ok)) { dialog: DialogInterface?, id: Int ->
+                                            val intent = Intent(
+                                                mContext,
+                                                BiometricDeliveryDashboardActivity::class.java
+                                            )
+                                            startActivity(intent)
+                                        }
+                                    val alert = builder.create()
+                                    alert.setTitle(resources.getString(R.string.alert))
+                                    alert.show()
                                 } else {
                                     // makeToast(String.valueOf(response.body().getResponse().getMessage()));
-                                    String msg = response.body().getResponse().getMessage();
-                                    showAlertDialogWithSingleButton(mContext, msg);
+                                    val msg = response.body()!!.response!!.message
+                                    showAlertDialogWithSingleButton(
+                                        mContext!!, msg
+                                    )
                                 }
                             } else {
-                                String msg = response.body().getResponse().getMessage();
-                                showAlertDialogWithSingleButton(mContext, msg);
+                                val msg = response.body()!!.response!!.message
+                                showAlertDialogWithSingleButton(mContext!!, msg)
                                 // makeToast(getResources().getString(R.string.error));
                             }
                         } else {
-                            String msg = "HTTP Error: " + response.code();
-                            showAlertDialogWithSingleButton(mContext, msg);
+                            val msg = "HTTP Error: " + response.code()
+                            showAlertDialogWithSingleButton(mContext!!, msg)
                         }
                     } else {
-                        String msg = "HTTP Error: " + response.code();
-                        showAlertDialogWithSingleButton(mContext, msg);
+                        val msg = "HTTP Error: " + response.code()
+                        showAlertDialogWithSingleButton(mContext!!, msg)
                     }
                 }
 
-                @Override
-                public void onFailure(@NonNull Call<SaveBiometricDeliverResponse> call, @NonNull Throwable error) {
-                    hideProgress();
-                    showAlertDialogWithSingleButton(mContext, error.getMessage());
+                override fun onFailure(
+                    call: Call<SaveBiometricDeliverResponse?>,
+                    error: Throwable
+                ) {
+                    hideProgress()
+                    showAlertDialogWithSingleButton(mContext!!, error.message)
                     //   makeToast(getResources().getString(R.string.error));
-                    call.cancel();
+                    call.cancel()
                 }
-            });
+            })
         } else {
             // makeToast(getResources().getString(R.string.no_internet_connection));
-            showAlertDialogWithSingleButton(mContext, getResources().getString(R.string.no_internet_connection));
+            showAlertDialogWithSingleButton(
+                mContext!!,
+                resources.getString(R.string.no_internet_connection)
+            )
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (alertDialog != null && alertDialog.isShowing()) {
+    override fun onBackPressed() {
+        if (alertDialog != null && alertDialog!!.isShowing) {
             // Dismiss the dialog if it's showing
-            alertDialog.dismiss();
-            Intent i = new Intent(mContext, BiometricDeliveryDashboardActivity.class);
-            startActivity(i);
+            alertDialog!!.dismiss()
+            val i = Intent(mContext, BiometricDeliveryDashboardActivity::class.java)
+            startActivity(i)
         } else {
-            super.onBackPressed();
+            super.onBackPressed()
         }
     }
 
-    public void makeToast(String string) {
-        if (TextUtils.isEmpty(string)) return;
-        Toast.makeText(mContext, string, Toast.LENGTH_SHORT).show();
+    override fun makeToast(string: String?) {
+        if (TextUtils.isEmpty(string)) return
+        Toast.makeText(mContext, string, Toast.LENGTH_SHORT).show()
     }
 
-    public void showDateTimePicker(View view) {
-        int year = selectedDateTime.get(Calendar.YEAR);
-        int month = selectedDateTime.get(Calendar.MONTH);
-        int day = selectedDateTime.get(Calendar.DAY_OF_MONTH);
+    fun showDateTimePicker(view: View?) {
+        val year = selectedDateTime!![Calendar.YEAR]
+        val month = selectedDateTime!![Calendar.MONTH]
+        val day = selectedDateTime!![Calendar.DAY_OF_MONTH]
 
         // Show DatePickerDialog
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        selectedDateTime.set(year, month, day);
-                        showTimePicker();
-                    }
-                },
-                year, month, day
-        );
-        datePickerDialog.show();
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { datePicker, year, month, day ->
+                selectedDateTime!![year, month] = day
+                showTimePicker()
+            },
+            year, month, day
+        )
+        datePickerDialog.show()
     }
 
-    private void showTimePicker() {
-
-        int hour = selectedDateTime.get(Calendar.HOUR_OF_DAY);
-        int minute = selectedDateTime.get(Calendar.MINUTE);
+    private fun showTimePicker() {
+        val hour = selectedDateTime!![Calendar.HOUR_OF_DAY]
+        val minute = selectedDateTime!![Calendar.MINUTE]
         // Show TimePickerDialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(
-                this,
-                new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        selectedDateTime.set(Calendar.HOUR_OF_DAY, hour);
-                        selectedDateTime.set(Calendar.MINUTE, minute);
-                        updateDateTimeEditText();
-                    }
-                },
-                hour, minute, true
-        );
-        timePickerDialog.show();
+        val timePickerDialog = TimePickerDialog(
+            this,
+            { timePicker, hour, minute ->
+                selectedDateTime!![Calendar.HOUR_OF_DAY] = hour
+                selectedDateTime!![Calendar.MINUTE] = minute
+                updateDateTimeEditText()
+            },
+            hour, minute, true
+        )
+        timePickerDialog.show()
     }
 
-    private void updateDateTimeEditText() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-        formattedDateTime = dateFormat.format(selectedDateTime.getTime());
-        dateAndTimeEditText.setText(formattedDateTime);
+    private fun updateDateTimeEditText() {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        formattedDateTime = dateFormat.format(selectedDateTime!!.time)
+        dateAndTimeEditText!!.setText(formattedDateTime)
     }
 
-    private class AddressResultReceiver extends ResultReceiver {
-        public AddressResultReceiver(Handler handler) {
-            super(handler);
-        }
-
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-            super.onReceiveResult(resultCode, resultData);
+    private inner class AddressResultReceiver(handler: Handler?) : ResultReceiver(handler) {
+        override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
+            super.onReceiveResult(resultCode, resultData)
             if (resultCode == Constants.SUCCESS_RESULT) {
+                val ADDRESS = "ADDRESS " + resultData.getString(Constants.ADDRESS) + ", "
+                val LOCAITY = "LOCAITY " + resultData.getString(Constants.LOCAITY) + ", "
+                val STATE = "STATE " + resultData.getString(Constants.STATE) + ", "
+                val DISTRICT = "DISTRICT " + resultData.getString(Constants.DISTRICT) + ", "
+                val COUNTRY = "COUNTRY " + resultData.getString(Constants.COUNTRY) + ", "
+                val POST_CODE = "POST_CODE " + resultData.getString(Constants.POST_CODE) + " "
 
-                String ADDRESS = "ADDRESS " + resultData.getString(Constants.ADDRESS) + ", ";
-                String LOCAITY = "LOCAITY " + resultData.getString(Constants.LOCAITY) + ", ";
-                String STATE = "STATE " + resultData.getString(Constants.STATE) + ", ";
-                String DISTRICT = "DISTRICT " + resultData.getString(Constants.DISTRICT) + ", ";
-                String COUNTRY = "COUNTRY " + resultData.getString(Constants.COUNTRY) + ", ";
-                String POST_CODE = "POST_CODE " + resultData.getString(Constants.POST_CODE) + " ";
-
-                fullAddress = ADDRESS + LOCAITY + STATE + DISTRICT + COUNTRY + POST_CODE;
+                fullAddress = ADDRESS + LOCAITY + STATE + DISTRICT + COUNTRY + POST_CODE
                 //     Log.d("resultDataresultData", fullAddress);
             } else {
-                Toast.makeText(mContext, resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                    mContext,
+                    resultData.getString(Constants.RESULT_DATA_KEY),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-            hideProgress();
+            hideProgress()
         }
     }
 
-/*
+    /*
     ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -1185,152 +1218,213 @@ public class BiometricDeliveryActivity extends CustomActivity {
                 }
             });
 */
+    var resultLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult<Intent, ActivityResult>(
+            ActivityResultContracts.StartActivityForResult(),
+            object : ActivityResultCallback<ActivityResult?> {
 
-    ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
+
+                override fun onActivityResult(result: ActivityResult?) {
+                    if (result!!.resultCode == RESULT_OK) {
                         // Here, no request code
                         //     Intent data = result.getData();
                         //        binding.inputSerialno.setText(result.getData().getStringExtra("result"));
-                        checkIrisSerialNo(result.getData().getStringExtra("result"));
+                        checkIrisSerialNo(result.data!!.getStringExtra("result"))
                     }
                 }
-            });
+            })
 
 
-    private void checkIrisSerialNo(String irisScannerSerialNo) {
-        if (Constants.isNetworkAvailable(mContext)) {
-            hideKeyboard(mActivity);
-            showProgress(getResources().getString(R.string.please_wait));
-            String USER_Id = preference.getUSER_Id();
+    private fun checkIrisSerialNo(irisScannerSerialNo: String?) {
+        if (isNetworkAvailable(mContext!!)) {
+            hideKeyboard(mActivity!!)
+            showProgress(resources.getString(R.string.please_wait))
+            val USER_Id = preference!!.uSER_Id
             //    Log.d("USER_ID", USER_Id);
-            APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<CheckIrisSerialNoResponse> call = apiInterface.checkIrisSerialNo(USER_Id, "3", irisScannerSerialNo);
-            call.enqueue(new Callback<CheckIrisSerialNoResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<CheckIrisSerialNoResponse> call, @NonNull Response<CheckIrisSerialNoResponse> response) {
-                    hideProgress();
-                    if (response.isSuccessful()) {
+            val apiInterface = retrofitInstance!!.create(
+                APIService::class.java
+            )
+            val call = apiInterface.checkIrisSerialNo(USER_Id, "3", irisScannerSerialNo)
+            call!!.enqueue(object : Callback<CheckIrisSerialNoResponse?> {
+                override fun onResponse(
+                    call: Call<CheckIrisSerialNoResponse?>,
+                    response: Response<CheckIrisSerialNoResponse?>
+                ) {
+                    hideProgress()
+                    if (response.isSuccessful) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (Objects.requireNonNull(response.body())!!.status == "200") {
                                     //    alertDialog.dismiss();
-                                    CheckIrisSerialNoResponse checkIrisSerialNoResponse = response.body();
-                                    if (checkIrisSerialNoResponse.getResponse() != null &&
-                                            checkIrisSerialNoResponse.getResponse().getStatus()) {
-                                        binding.inputSerialno.setText(irisScannerSerialNo);
+                                    val checkIrisSerialNoResponse = response.body()
+                                    if (checkIrisSerialNoResponse!!.response != null &&
+                                        checkIrisSerialNoResponse.response.status
+                                    ) {
+                                        binding!!.inputSerialno.text = irisScannerSerialNo
                                     } else {
-                                        String msg = response.body().getMessage();
-                                        showAlertDialogWithSingleButton(mContext, msg);
+                                        val msg = response.body()!!.message
+                                        showAlertDialogWithSingleButton(
+                                            mContext!!, msg
+                                        )
                                         //  makeToast(String.valueOf(response.body().getMessage()));
                                         // Handle the case when countDatum is empty or null
                                     }
                                 } else {
                                     //     alertDialog.show();
                                     //  makeToast(String.valueOf(response.body().getMessage()));
-                                    String msg = response.body().getMessage();
-                                    showAlertDialogWithSingleButton(mContext, msg);
+                                    val msg = response.body()!!.message
+                                    showAlertDialogWithSingleButton(
+                                        mContext!!, msg
+                                    )
                                     // Handle the case when the response status is not 200 or the response body is null
                                 }
                             } else {
-                                String msg = response.body().getMessage();
-                                showAlertDialogWithSingleButton(mContext, msg);
+                                val msg = response.body()!!.message
+                                showAlertDialogWithSingleButton(mContext!!, msg)
                                 // makeToast(String.valueOf(response.body().getMessage()));
                             }
                         } else {
-                            String msg = "HTTP Error: " + response.code();
-                            showAlertDialogWithSingleButton(mContext, msg);
+                            val msg = "HTTP Error: " + response.code()
+                            showAlertDialogWithSingleButton(mContext!!, msg)
                         }
                     } else {
-                        String msg = "HTTP Error: " + response.code();
-                        showAlertDialogWithSingleButton(mContext, msg);
+                        val msg = "HTTP Error: " + response.code()
+                        showAlertDialogWithSingleButton(mContext!!, msg)
                         // makeToast(getResources().getString(R.string.error));
                     }
                 }
 
-                @Override
-                public void onFailure(@NonNull Call<CheckIrisSerialNoResponse> call, @NonNull Throwable error) {
-                    hideProgress();
+                override fun onFailure(call: Call<CheckIrisSerialNoResponse?>, error: Throwable) {
+                    hideProgress()
                     // makeToast(getResources().getString(R.string.error));
-                    String msg = error.getMessage();
-                    showAlertDialogWithSingleButton(mContext, msg);
-                    call.cancel();
+                    val msg = error.message
+                    showAlertDialogWithSingleButton(mContext!!, msg)
+                    call.cancel()
                 }
-            });
+            })
         } else {
-            makeToast(getResources().getString(R.string.no_internet_connection));
+            makeToast(resources.getString(R.string.no_internet_connection))
         }
     }
 
-    private void getL0DeviceCodeByFPS() {
+    private val l0DeviceCodeByFPS: Unit
+        get() {
+            Fps_code = txt_fpscode!!.text.toString().trim { it <= ' ' }
 
-        Fps_code = txt_fpscode.getText().toString().trim();
+            if (isNetworkAvailable(mContext!!)) {
+                hideKeyboard(mActivity!!)
+                showProgress(resources.getString(R.string.please_wait))
+                val USER_Id = preference!!.uSER_Id
+                //    Log.d("USER_ID", USER_Id);
+                val apiInterface = retrofitInstance!!.create(
+                    APIService::class.java
+                )
+                val call = apiInterface.getL0DeviceCodeByFPS(USER_Id, Fps_code)
+                call!!.enqueue(object : Callback<DeviceCodeByFPSResponse?> {
+                    override fun onResponse(
+                        call: Call<DeviceCodeByFPSResponse?>,
+                        response: Response<DeviceCodeByFPSResponse?>
+                    ) {
+                        hideProgress()
+                        if (response.isSuccessful) {
+                            if (response.code() == 200) {
+                                if (response.body() != null) {
+                                    if (Objects.requireNonNull(response.body())!!.status == "200") {
+                                        //    alertDialog.dismiss();
+                                        val deviceCodeByFPSResponse = response.body()
+                                        if (deviceCodeByFPSResponse!!.data != null &&
+                                            deviceCodeByFPSResponse.data!!.isStatus
+                                        ) {
+                                            //   binding.inputSerialno.setText(irisScannerSerialNo);
 
-        if (Constants.isNetworkAvailable(mContext)) {
-            hideKeyboard(mActivity);
-            showProgress(getResources().getString(R.string.please_wait));
-            String USER_Id = preference.getUSER_Id();
-            //    Log.d("USER_ID", USER_Id);
-            APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<DeviceCodeByFPSResponse> call = apiInterface.getL0DeviceCodeByFPS(USER_Id, Fps_code);
-            call.enqueue(new Callback<DeviceCodeByFPSResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<DeviceCodeByFPSResponse> call, @NonNull Response<DeviceCodeByFPSResponse> response) {
-                    hideProgress();
-                    if (response.isSuccessful()) {
-                        if (response.code() == 200) {
-                            if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
-                                    //    alertDialog.dismiss();
-                                    DeviceCodeByFPSResponse deviceCodeByFPSResponse = response.body();
-                                    if (deviceCodeByFPSResponse.getData() != null &&
-                                            deviceCodeByFPSResponse.getData().isStatus()) {
-                                        //   binding.inputSerialno.setText(irisScannerSerialNo);
-
-                                        //        showAlertDialogWithSingleButton(mContext, deviceCodeByFPSResponse.getData().getInfoMsgHi()
-                                        //            +"\n\n"+ deviceCodeByFPSResponse.getData().getInfoDescMsgHi());
+                                            //        showAlertDialogWithSingleButton(mContext, deviceCodeByFPSResponse.getData().getInfoMsgHi()
+                                            //            +"\n\n"+ deviceCodeByFPSResponse.getData().getInfoDescMsgHi());
 
 
-                                        if (deviceCodeByFPSResponse.getData().isUpdatedDtype()) {
-                                            GetCustomerDetailsByFPS();
-                                        } else {
+                                            if (deviceCodeByFPSResponse.data!!.isUpdatedDtype) {
+                                                GetCustomerDetailsByFPS()
+                                            } else {
+                                                val message = SpannableStringBuilder()
+                                                message.append(deviceCodeByFPSResponse.data!!.infoMsgHi)
 
-                                            SpannableStringBuilder message = new SpannableStringBuilder();
-                                            message.append(deviceCodeByFPSResponse.getData().getInfoMsgHi());
+                                                val start = message.length
+                                                message.append("\n\nWARNING   ")
+                                                val end = message.length
+                                                message.setSpan(
+                                                    StyleSpan(Typeface.BOLD),
+                                                    start,
+                                                    end,
+                                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                                )
+                                                message.setSpan(
+                                                    ForegroundColorSpan(Color.RED),
+                                                    start,
+                                                    end,
+                                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                                )
 
-                                            int start = message.length();
-                                            message.append("\n\nWARNING   ");
-                                            int end = message.length();
-                                            message.setSpan(new StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                            message.setSpan(new ForegroundColorSpan(Color.RED), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                                val warningIcon =
+                                                    resources.getDrawable(R.drawable.warning)
+                                                if (warningIcon != null) {
+                                                    val iconSize =
+                                                        (18 * mContext!!.resources.displayMetrics.density).toInt() // 18dp size
+                                                    warningIcon.setBounds(
+                                                        0,
+                                                        0,
+                                                        iconSize,
+                                                        iconSize
+                                                    ) // Custom size set karna
+                                                }
+                                                //    warningIcon.setBounds(0, 0, warningIcon.getIntrinsicWidth(), warningIcon.getIntrinsicHeight());
+                                                val imageSpan =
+                                                    ImageSpan(warningIcon!!, ImageSpan.ALIGN_CENTER)
+                                                message.setSpan(
+                                                    imageSpan,
+                                                    message.length - 1,
+                                                    message.length,
+                                                    Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                                                )
 
-                                            Drawable warningIcon = getResources().getDrawable(R.drawable.warning);
-                                            if (warningIcon != null) {
-                                                int iconSize = (int) (18 * mContext.getResources().getDisplayMetrics().density); // 18dp size
-                                                warningIcon.setBounds(0, 0, iconSize, iconSize); // Custom size set karna
-                                            }
-                                            //    warningIcon.setBounds(0, 0, warningIcon.getIntrinsicWidth(), warningIcon.getIntrinsicHeight());
-                                            ImageSpan imageSpan = new ImageSpan(warningIcon, ImageSpan.ALIGN_CENTER);
-                                            message.setSpan(imageSpan, message.length() - 1, message.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                                                val start1 = message.length
+                                                message.append(
+                                                    """
+    
+    ${deviceCodeByFPSResponse.data!!.infoDescMsgHi}
+    """.trimIndent()
+                                                )
+                                                val end1 = message.length
+                                                message.setSpan(
+                                                    ForegroundColorSpan(Color.RED),
+                                                    start1,
+                                                    end1,
+                                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                                )
+                                                message.setSpan(
+                                                    RelativeSizeSpan(1.2f),
+                                                    0,
+                                                    message.length,
+                                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                                ) // Text size
 
-                                            int start1 = message.length();
-                                            message.append("\n" + deviceCodeByFPSResponse.getData().getInfoDescMsgHi());
-                                            int end1 = message.length();
-                                            message.setSpan(new ForegroundColorSpan(Color.RED), start1, end1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                            message.setSpan(new RelativeSizeSpan(1.2f), 0, message.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); // Text size
+                                                val confirm = SpannableStringBuilder()
+                                                confirm.append("Confirm")
+                                                confirm.setSpan(
+                                                    RelativeSizeSpan(1.2f),
+                                                    0,
+                                                    confirm.length,
+                                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                                ) // Text size
 
-                                            SpannableStringBuilder confirm = new SpannableStringBuilder();
-                                            confirm.append("Confirm");
-                                            confirm.setSpan(new RelativeSizeSpan(1.2f), 0, confirm.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); // Text size
+                                                val back = SpannableStringBuilder()
+                                                back.append("Back")
+                                                back.setSpan(
+                                                    RelativeSizeSpan(1.2f),
+                                                    0,
+                                                    back.length,
+                                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                                ) // Text size
 
-                                            SpannableStringBuilder back = new SpannableStringBuilder();
-                                            back.append("Back");
-                                            back.setSpan(new RelativeSizeSpan(1.2f), 0, back.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); // Text size
-
-//                                            new androidx.appcompat.app.AlertDialog.Builder(mContext)
+                                                //                                            new androidx.appcompat.app.AlertDialog.Builder(mContext)
 //                                                    .setTitle(getResources().getString(R.string.app_name))
 //                                                    .setCancelable(false)
 //                                                    //         .setMessage(deviceCodeByFPSResponse.getData().getInfoMsgHi()
@@ -1341,21 +1435,21 @@ public class BiometricDeliveryActivity extends CustomActivity {
 //                                                    }).setNegativeButton(back, (dialog, which) -> {
 //
 //                                                    }).show();
-
-                                            AlertDialog dialog = new AlertDialog.Builder(mContext)
-                                                    .setTitle(getResources().getString(R.string.app_name))
+                                                val dialog = AlertDialog.Builder(mContext)
+                                                    .setTitle(resources.getString(R.string.app_name))
                                                     .setCancelable(false)
                                                     .setMessage(message)
-                                                    .setPositiveButton(confirm, (dialogInterface, which) -> {
-                                                        updateDeviceTypeToChangeFSensor(deviceCodeByFPSResponse.getData().getDeviceCode());
-                                                    })
-                                                    .setNegativeButton(back, (dialogInterface, which) -> {
-                                                    })
-                                                    .show();
+                                                    .setPositiveButton(confirm) { dialogInterface: DialogInterface?, which: Int ->
+                                                        updateDeviceTypeToChangeFSensor(
+                                                            deviceCodeByFPSResponse.data!!.deviceCode!!
+                                                        )
+                                                    }
+                                                    .setNegativeButton(back) { dialogInterface: DialogInterface?, which: Int -> }
+                                                    .show()
 
-                                            // AlertDialog ke buttons ko customize karna
-                                       //     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(ContextCompat.getColor(mContext, R.color.amber_700));
-                                        //    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackgroundColor(ContextCompat.getColor(mContext, R.color.amber_700));
+                                                // AlertDialog ke buttons ko customize karna
+                                                //     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(ContextCompat.getColor(mContext, R.color.amber_700));
+                                                //    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackgroundColor(ContextCompat.getColor(mContext, R.color.amber_700));
 
 //                                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackground(ContextCompat.getDrawable(mContext, R.drawable.buttongradient));
 //                                            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackground(ContextCompat.getDrawable(mContext, R.drawable.buttongradient));
@@ -1365,97 +1459,120 @@ public class BiometricDeliveryActivity extends CustomActivity {
 //                                            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
 //
 
-                                            // **AlertDialog ke buttons ko customize karna**
-                                            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                                            Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                                                // **AlertDialog ke buttons ko customize karna**
+                                                val positiveButton =
+                                                    dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                                                val negativeButton =
+                                                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
 
-// **Background Set Karna**
-                                            positiveButton.setBackground(ContextCompat.getDrawable(mContext, R.drawable.buttongradient));
-                                            negativeButton.setBackground(ContextCompat.getDrawable(mContext, R.drawable.buttongradient));
+                                                // **Background Set Karna**
+                                                positiveButton.background =
+                                                    ContextCompat.getDrawable(
+                                                        mContext!!, R.drawable.buttongradient
+                                                    )
+                                                negativeButton.background =
+                                                    ContextCompat.getDrawable(
+                                                        mContext!!, R.drawable.buttongradient
+                                                    )
 
-// **Text Color Change Karna**
-                                            positiveButton.setTextColor(Color.WHITE);
-                                            negativeButton.setTextColor(Color.WHITE);
+                                                // **Text Color Change Karna**
+                                                positiveButton.setTextColor(Color.WHITE)
+                                                negativeButton.setTextColor(Color.WHITE)
 
-// **Margin Add Karna**
-                                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                                                // **Margin Add Karna**
+                                                val params = LinearLayout.LayoutParams(
                                                     LinearLayout.LayoutParams.WRAP_CONTENT,  // Width
-                                                    LinearLayout.LayoutParams.WRAP_CONTENT   // Height
-                                            );
-                                            params.setMargins(20, 0, 20, 0);  // Left, Top, Right, Bottom Margin
-                                            positiveButton.setLayoutParams(params);
-                                            negativeButton.setLayoutParams(params);
+                                                    LinearLayout.LayoutParams.WRAP_CONTENT // Height
+                                                )
+                                                params.setMargins(
+                                                    20,
+                                                    0,
+                                                    20,
+                                                    0
+                                                ) // Left, Top, Right, Bottom Margin
+                                                positiveButton.layoutParams = params
+                                                negativeButton.layoutParams = params
 
-                                            // **Padding Set Karna**
-                                            positiveButton.setPadding(20, 0, 20, 0);  // (Left, Top, Right, Bottom) - Padding
-                                            negativeButton.setPadding(50, 0, 50, 0);
-
+                                                // **Padding Set Karna**
+                                                positiveButton.setPadding(
+                                                    20,
+                                                    0,
+                                                    20,
+                                                    0
+                                                ) // (Left, Top, Right, Bottom) - Padding
+                                                negativeButton.setPadding(50, 0, 50, 0)
+                                            }
+                                        } else {
+                                            val msg = response.body()!!.message
+                                            showAlertDialogWithSingleButton(
+                                                mContext!!, msg
+                                            )
+                                            //  makeToast(String.valueOf(response.body().getMessage()));
+                                            // Handle the case when countDatum is empty or null
                                         }
                                     } else {
-                                        String msg = response.body().getMessage();
-                                        showAlertDialogWithSingleButton(mContext, msg);
+                                        //     alertDialog.show();
                                         //  makeToast(String.valueOf(response.body().getMessage()));
-                                        // Handle the case when countDatum is empty or null
+                                        val msg = response.body()!!.message
+                                        showAlertDialogWithSingleButton(
+                                            mContext!!, msg
+                                        )
+                                        // Handle the case when the response status is not 200 or the response body is null
                                     }
                                 } else {
-                                    //     alertDialog.show();
-                                    //  makeToast(String.valueOf(response.body().getMessage()));
-                                    String msg = response.body().getMessage();
-                                    showAlertDialogWithSingleButton(mContext, msg);
-                                    // Handle the case when the response status is not 200 or the response body is null
+                                    val msg = response.body()!!.message
+                                    showAlertDialogWithSingleButton(mContext!!, msg)
+                                    // makeToast(String.valueOf(response.body().getMessage()));
                                 }
                             } else {
-                                String msg = response.body().getMessage();
-                                showAlertDialogWithSingleButton(mContext, msg);
-                                // makeToast(String.valueOf(response.body().getMessage()));
+                                val msg = "HTTP Error: " + response.code()
+                                showAlertDialogWithSingleButton(mContext!!, msg)
                             }
                         } else {
-                            String msg = "HTTP Error: " + response.code();
-                            showAlertDialogWithSingleButton(mContext, msg);
+                            val msg = "HTTP Error: " + response.code()
+                            showAlertDialogWithSingleButton(mContext!!, msg)
+                            // makeToast(getResources().getString(R.string.error));
                         }
-                    } else {
-                        String msg = "HTTP Error: " + response.code();
-                        showAlertDialogWithSingleButton(mContext, msg);
-                        // makeToast(getResources().getString(R.string.error));
                     }
-                }
 
-                @Override
-                public void onFailure(@NonNull Call<DeviceCodeByFPSResponse> call, @NonNull Throwable error) {
-                    hideProgress();
-                    // makeToast(getResources().getString(R.string.error));
-                    String msg = error.getMessage();
-                    showAlertDialogWithSingleButton(mContext, msg);
-                    call.cancel();
-                }
-            });
-        } else {
-            makeToast(getResources().getString(R.string.no_internet_connection));
+                    override fun onFailure(call: Call<DeviceCodeByFPSResponse?>, error: Throwable) {
+                        hideProgress()
+                        // makeToast(getResources().getString(R.string.error));
+                        val msg = error.message
+                        showAlertDialogWithSingleButton(mContext!!, msg)
+                        call.cancel()
+                    }
+                })
+            } else {
+                makeToast(resources.getString(R.string.no_internet_connection))
+            }
         }
-    }
 
-    private void updateDeviceTypeToChangeFSensor(String deviceCode) {
-
-
-        if (Constants.isNetworkAvailable(mContext)) {
-            hideKeyboard(mActivity);
-            showProgress(getResources().getString(R.string.please_wait));
-            String USER_Id = preference.getUSER_Id();
+    private fun updateDeviceTypeToChangeFSensor(deviceCode: String) {
+        if (isNetworkAvailable(mContext!!)) {
+            hideKeyboard(mActivity!!)
+            showProgress(resources.getString(R.string.please_wait))
+            val USER_Id = preference!!.uSER_Id
             //    Log.d("USER_ID", USER_Id);
-            APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<UpdateDeviceTypeToChangeFSensorResp> call = apiInterface.updateDeviceTypeToChangeFSensor(USER_Id, deviceCode);
-            call.enqueue(new Callback<UpdateDeviceTypeToChangeFSensorResp>() {
-                @Override
-                public void onResponse(@NonNull Call<UpdateDeviceTypeToChangeFSensorResp> call, @NonNull Response<UpdateDeviceTypeToChangeFSensorResp> response) {
-                    hideProgress();
-                    if (response.isSuccessful()) {
+            val apiInterface = retrofitInstance!!.create(
+                APIService::class.java
+            )
+            val call = apiInterface.updateDeviceTypeToChangeFSensor(USER_Id, deviceCode)
+            call!!.enqueue(object : Callback<UpdateDeviceTypeToChangeFSensorResp?> {
+                override fun onResponse(
+                    call: Call<UpdateDeviceTypeToChangeFSensorResp?>,
+                    response: Response<UpdateDeviceTypeToChangeFSensorResp?>
+                ) {
+                    hideProgress()
+                    if (response.isSuccessful) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (Objects.requireNonNull(response.body())!!.status == "200") {
                                     //    alertDialog.dismiss();
-                                    UpdateDeviceTypeToChangeFSensorResp updateDeviceTypeToChangeFSensorResp = response.body();
-                                    if (updateDeviceTypeToChangeFSensorResp.getData() != null &&
-                                            updateDeviceTypeToChangeFSensorResp.getData().isStatus()) {
+                                    val updateDeviceTypeToChangeFSensorResp = response.body()
+                                    if (updateDeviceTypeToChangeFSensorResp!!.data != null &&
+                                        updateDeviceTypeToChangeFSensorResp.data!!.isStatus
+                                    ) {
                                         //   binding.inputSerialno.setText(irisScannerSerialNo);
 
                                         //     showAlertDialogWithSingleButton(mContext, updateDeviceTypeToChangeFSensorResp.getData().getInfoMsgHi()
@@ -1468,65 +1585,81 @@ public class BiometricDeliveryActivity extends CustomActivity {
 //
 //                                        } else {
 
-                                        SpannableStringBuilder message = new SpannableStringBuilder();
-                                        message.append(updateDeviceTypeToChangeFSensorResp.getData().getInfoMsgHi());
-                                        message.append("\n\n" + updateDeviceTypeToChangeFSensorResp.getData().getInfoDescMsgHi());
 
-                                        new androidx.appcompat.app.AlertDialog.Builder(mContext)
-                                                .setTitle(getResources().getString(R.string.app_name))
-                                                .setCancelable(false)
-                                                //         .setMessage(deviceCodeByFPSResponse.getData().getInfoMsgHi()
-                                                //                 + "\n\n??????? " +getResources().getDrawable(R.drawable.warning)+"\n"+ deviceCodeByFPSResponse.getData().getInfoDescMsgHi())
-                                                .setMessage(message)
-                                                .setPositiveButton("OK", (dialog, which) -> {
-                                                    GetCustomerDetailsByFPS();
-                                                }).setNegativeButton("Back", (dialog, which) -> {
+                                        val message = SpannableStringBuilder()
+                                        message.append(updateDeviceTypeToChangeFSensorResp.data!!.infoMsgHi)
+                                        message.append(
+                                            """
+    
+    
+    ${updateDeviceTypeToChangeFSensorResp.data!!.infoDescMsgHi}
+    """.trimIndent()
+                                        )
 
-                                                })
-                                                .show();
+                                        androidx.appcompat.app.AlertDialog.Builder(mContext!!)
+                                            .setTitle(resources.getString(R.string.app_name))
+                                            .setCancelable(false) //         .setMessage(deviceCodeByFPSResponse.getData().getInfoMsgHi()
+                                            //                 + "\n\n??????? " +getResources().getDrawable(R.drawable.warning)+"\n"+ deviceCodeByFPSResponse.getData().getInfoDescMsgHi())
+                                            .setMessage(message)
+                                            .setPositiveButton("OK") { dialog: DialogInterface?, which: Int ->
+                                                GetCustomerDetailsByFPS()
+                                            }
+                                            .setNegativeButton("Back") { dialog: DialogInterface?, which: Int -> }
+                                            .show()
                                         //                }
                                     } else {
-                                        String msg = response.body().getMessage();
-                                        showAlertDialogWithSingleButton(mContext, msg);
+                                        val msg = response.body()!!.message
+                                        showAlertDialogWithSingleButton(
+                                            mContext!!, msg
+                                        )
                                         //  makeToast(String.valueOf(response.body().getMessage()));
                                         // Handle the case when countDatum is empty or null
                                     }
                                 } else {
                                     //     alertDialog.show();
                                     //  makeToast(String.valueOf(response.body().getMessage()));
-                                    String msg = response.body().getMessage();
-                                    showAlertDialogWithSingleButton(mContext, msg);
+                                    val msg = response.body()!!.message
+                                    showAlertDialogWithSingleButton(
+                                        mContext!!, msg
+                                    )
                                     // Handle the case when the response status is not 200 or the response body is null
                                 }
                             } else {
-                                String msg = response.body().getMessage();
-                                showAlertDialogWithSingleButton(mContext, msg);
+                                val msg = response.body()!!.message
+                                showAlertDialogWithSingleButton(mContext!!, msg)
                                 // makeToast(String.valueOf(response.body().getMessage()));
                             }
                         } else {
-                            String msg = "HTTP Error: " + response.code();
-                            showAlertDialogWithSingleButton(mContext, msg);
+                            val msg = "HTTP Error: " + response.code()
+                            showAlertDialogWithSingleButton(mContext!!, msg)
                         }
                     } else {
-                        String msg = "HTTP Error: " + response.code();
-                        showAlertDialogWithSingleButton(mContext, msg);
+                        val msg = "HTTP Error: " + response.code()
+                        showAlertDialogWithSingleButton(mContext!!, msg)
                         // makeToast(getResources().getString(R.string.error));
                     }
                 }
 
-                @Override
-                public void onFailure(@NonNull Call<UpdateDeviceTypeToChangeFSensorResp> call, @NonNull Throwable error) {
-                    hideProgress();
+                override fun onFailure(
+                    call: Call<UpdateDeviceTypeToChangeFSensorResp?>,
+                    error: Throwable
+                ) {
+                    hideProgress()
                     // makeToast(getResources().getString(R.string.error));
-                    String msg = error.getMessage();
-                    showAlertDialogWithSingleButton(mContext, msg);
-                    call.cancel();
+                    val msg = error.message
+                    showAlertDialogWithSingleButton(mContext!!, msg)
+                    call.cancel()
                 }
-            });
+            })
         } else {
-            makeToast(getResources().getString(R.string.no_internet_connection));
+            makeToast(resources.getString(R.string.no_internet_connection))
         }
     }
 
+    companion object {
+        private const val GALLERY_REQUEST_CODE = 123
+        private const val CAMERA_REQUEST_CODE = 456
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+    }
 }
 

@@ -12,5 +12,5 @@ class ModelParts {
     var message: String? = null
 
     @SerializedName("Parts")
-    var parts: List<ModelPartsList?> = ArrayList()
+    var parts: List<ModelPartsList>? = ArrayList()
 }

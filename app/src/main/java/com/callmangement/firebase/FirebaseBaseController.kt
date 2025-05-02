@@ -10,7 +10,7 @@ import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.callmangement.Network.AppConfig
+import com.callmangement.network.AppConfig
 import com.callmangement.R
 
 /**

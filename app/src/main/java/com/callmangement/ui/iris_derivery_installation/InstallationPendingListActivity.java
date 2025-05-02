@@ -3,14 +3,12 @@ package com.callmangement.ui.iris_derivery_installation;
 import static java.lang.String.valueOf;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -22,7 +20,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -31,12 +28,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityInstallationPendingListBinding;
-import com.callmangement.report_pdf.DistributedStatusReportPdfActivity;
 import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrictList_w;
 import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrict_w;
 import com.callmangement.ui.iris_derivery_installation.Model.IrisInstallationPendingListResp;

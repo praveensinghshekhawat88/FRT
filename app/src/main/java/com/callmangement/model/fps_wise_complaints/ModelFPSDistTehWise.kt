@@ -19,5 +19,5 @@ class ModelFPSDistTehWise {
 
     @JvmField
     @SerializedName("FPSList")
-    var modelFPSDistTehWiseList: List<ModelFPSDistTehWiseList> = ArrayList()
+    var modelFPSDistTehWiseList: MutableList<ModelFPSDistTehWiseList> = ArrayList()
 }

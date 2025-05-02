@@ -1,7 +1,5 @@
 package com.callmangement.ui.iris_derivery_installation;
 
-import static com.google.gson.internal.$Gson$Types.arrayOf;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -49,9 +47,9 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.MultipartRequester;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.MultipartRequester;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityIrisNewDeliveryBinding;
@@ -61,7 +59,6 @@ import com.callmangement.imagepicker.ui.imagepicker.ImagePicker;
 import com.callmangement.support.FetchAddressIntentServices;
 import com.callmangement.support.ImageUtilsForRotate;
 import com.callmangement.support.OnSingleClickListener;
-import com.callmangement.ui.ins_weighing_scale.model.SaveInstall.SaveRoot;
 import com.callmangement.ui.ins_weighing_scale.model.fps.DetailByFpsData;
 import com.callmangement.ui.ins_weighing_scale.model.fps.DetailByFpsRoot;
 import com.callmangement.ui.iris_derivery_installation.Model.CheckIrisSerialNoResponse;
@@ -94,7 +91,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Part;
 
 public class IrisNewDeliveryActivity extends CustomActivity {
     private static final int GALLERY_REQUEST_CODE = 123;

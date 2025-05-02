@@ -26,8 +26,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.callmangement.EHR.adapter.FeedbackReportAdapter;
 import com.callmangement.EHR.models.FeedbackbyDCListDatum;
 import com.callmangement.EHR.models.FeedbackbyDCListRoot;
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityFeedbackformReportBinding;
@@ -387,7 +387,7 @@ public class FeedbackReportActivity extends CustomActivity {
             APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
 
             //  Call<WeightInsRoot> call = apiInterface.apiIrisWeighInstallation(USER_Id,"",districtId,"","0",fromDate,toDate);
-            Call<FeedbackbyDCListRoot> call = apiInterface.getVisitFeedbackbyDCList(USER_Id,"0" ,fpscodee, districtId,  fromDate, toDate,"");
+            Call<FeedbackbyDCListRoot> call = apiInterface.getVisitFeedbackDCList(USER_Id,"0" ,fpscodee, districtId,  fromDate, toDate,"");
 
 
             call.enqueue(new Callback<FeedbackbyDCListRoot>() {

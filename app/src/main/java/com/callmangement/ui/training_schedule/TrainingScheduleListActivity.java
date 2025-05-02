@@ -19,8 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.adapter.TrainingScheduleListActivityAdapter;
 import com.callmangement.custom.CustomActivity;
@@ -28,7 +28,6 @@ import com.callmangement.databinding.ActivityTrainingScheduleListBinding;
 import com.callmangement.model.district.ModelDistrictList;
 import com.callmangement.model.tehsil.ModelTehsil;
 import com.callmangement.model.tehsil.ModelTehsilList;
-import com.callmangement.model.training_schedule.ModelTrainingScheduleList;
 import com.callmangement.utils.EqualSpacingItemDecoration;
 import com.callmangement.utils.PrefManager;
 

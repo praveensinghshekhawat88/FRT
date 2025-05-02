@@ -23,8 +23,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.callmangement.BuildConfig;
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.adapter.DistributedPosListActivityAdapter;
 import com.callmangement.custom.CustomActivity;

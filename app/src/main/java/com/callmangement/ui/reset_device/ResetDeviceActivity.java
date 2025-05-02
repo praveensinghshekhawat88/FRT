@@ -1,10 +1,7 @@
 package com.callmangement.ui.reset_device;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -16,16 +13,13 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
-import com.callmangement.adapter.DialogChallanForDispatchAdapter;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityResetDeviceBinding;
 import com.callmangement.model.district.ModelDistrictList;
-import com.callmangement.model.inventrory.ModelPartsList;
 import com.callmangement.model.inventrory.ModelSEUsers;
 import com.callmangement.model.inventrory.ModelSEUsersList;
 import com.callmangement.model.reset_device.ModelResetDevice;
@@ -277,7 +271,7 @@ public class ResetDeviceActivity extends CustomActivity implements View.OnClickL
     }
 
     private void isLoading() {
-        viewModel.getIsLoading().observe(this, aBoolean -> {
+        viewModel.isLoading().observe(this, aBoolean -> {
             if (aBoolean) {
                 showProgress(getResources().getString(R.string.please_wait));
             } else {

@@ -1,61 +1,44 @@
-package com.callmangement.ui.biometric_delivery.adapter;
+package com.callmangement.ui.biometric_delivery.adapter
 
-import android.app.Activity;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import androidx.recyclerview.widget.RecyclerView;
-import com.callmangement.databinding.ItemSensorSummaryBinding;
-import com.callmangement.ui.biometric_delivery.model.SensorSummaryResponse;
-import com.callmangement.utils.PrefManager;
-import java.util.ArrayList;
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.databinding.ItemSensorSummaryBinding
+import com.callmangement.ui.biometric_delivery.model.SensorSummaryResponse
 
-public class SensorSummaryAdapter extends RecyclerView.Adapter<SensorSummaryAdapter.MyViewHolder> {
-    private final ArrayList<SensorSummaryResponse.Data> sensorSummaryList;
-
-    public SensorSummaryAdapter(ArrayList<SensorSummaryResponse.Data> weighInsDataArrayList) {
-        this.sensorSummaryList = weighInsDataArrayList;
+class SensorSummaryAdapter(private val sensorSummaryList: ArrayList<SensorSummaryResponse.Data>) :
+    RecyclerView.Adapter<SensorSummaryAdapter.MyViewHolder?>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val itemSensorSummaryBinding =
+            ItemSensorSummaryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(itemSensorSummaryBinding)
     }
 
-    @Override
-    public SensorSummaryAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val model = sensorSummaryList[position]
 
-        ItemSensorSummaryBinding itemSensorSummaryBinding = ItemSensorSummaryBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new SensorSummaryAdapter.MyViewHolder(itemSensorSummaryBinding);
+
+
+        holder.binding.txtDistrictName.text = model.district
+        holder.binding.txtTotalDistributed.text = model.total_Distributed_BiometricSensor
+        holder.binding.txtTotalMapped.text = model.total_Mapped_BiometricSensor
+        holder.binding.txttotalL0Machine.text = model.total_L0_Machine
+        holder.binding.txtPending.text = model.total_Pending
     }
 
-    @Override
-    public void onBindViewHolder(SensorSummaryAdapter.MyViewHolder holder, int position) {
-
-        SensorSummaryResponse.Data model = sensorSummaryList.get(position);;
-
-        holder.binding.txtDistrictName.setText(model.getDistrict());
-        holder.binding.txtTotalDistributed.setText(model.getTotal_Distributed_BiometricSensor());
-        holder.binding.txtTotalMapped.setText(model.getTotal_Mapped_BiometricSensor());
-        holder.binding.txttotalL0Machine.setText(model.getTotal_L0_Machine());
-        holder.binding.txtPending.setText(model.getTotal_Pending());
-
+    override fun getItemCount(): Int {
+        return sensorSummaryList.size
     }
 
-    @Override
-    public int getItemCount() {
-        return sensorSummaryList.size();
-    }
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final ItemSensorSummaryBinding binding;
-
-        public MyViewHolder(ItemSensorSummaryBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-            binding.getRoot().setOnClickListener(v -> {
-            });
+    class MyViewHolder(val binding: ItemSensorSummaryBinding) : RecyclerView.ViewHolder(
+        binding.root
+    ), View.OnClickListener {
+        init {
+            binding.root.setOnClickListener { v: View? -> }
         }
 
-        @Override
-        public void onClick(View v) {
+        override fun onClick(v: View) {
         }
     }
-    
 }

@@ -1,343 +1,357 @@
-package com.callmangement.utils;
+package com.callmangement.utils
 
-import android.annotation.SuppressLint;
-import android.text.TextUtils;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.TimeZone;
+import android.annotation.SuppressLint
+import android.text.TextUtils
+import java.text.DateFormat
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.util.Objects
+import java.util.TimeZone
 
-public class DateTimeUtils {
-    public static String FMT_UTC = "yyyy-MM-dd HH:mm:ss";
-    public static String FMT_UTC_DATE = "yyyy-MM-dd";
-    public static String FMT_LOCAL = "EEE, d MMM HH:mm";
-    public static String FMT_LOCAL_DATE = "EEE, d MMM yyyy";
-    public static String DATE_SERVER = "yyyy-MM-dd";
-    public static String DATE_LOCAL = "yyyy/MM/dd";
-    public static String TIME = "HH:mm:ss";
-    private static final int SECOND_MILLIS = 1000;
-    private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
-    private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
-    private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
+object DateTimeUtils {
+    var FMT_UTC: String = "yyyy-MM-dd HH:mm:ss"
+    var FMT_UTC_DATE: String = "yyyy-MM-dd"
+    var FMT_LOCAL: String = "EEE, d MMM HH:mm"
+    var FMT_LOCAL_DATE: String = "EEE, d MMM yyyy"
+    var DATE_SERVER: String = "yyyy-MM-dd"
+    var DATE_LOCAL: String = "yyyy/MM/dd"
+    var TIME: String = "HH:mm:ss"
+    private const val SECOND_MILLIS = 1000
+    private const val MINUTE_MILLIS = 60 * SECOND_MILLIS
+    private const val HOUR_MILLIS = 60 * MINUTE_MILLIS
+    private const val DAY_MILLIS = 24 * HOUR_MILLIS
 
-    public static String fromSec(int sec) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("d MMMM yyyy");
-        String dateString = formatter.format(new Date(sec * 1000L));
-        return dateString;
+    fun fromSec(sec: Int): String {
+        @SuppressLint("SimpleDateFormat") val formatter = SimpleDateFormat("d MMMM yyyy")
+        val dateString = formatter.format(Date(sec * 1000L))
+        return dateString
     }
 
-    public static String toString(int sec) {
-        if (sec < 60) return sec + "SEC";
+    fun toString(sec: Int): String {
+        var sec = sec
+        if (sec < 60) return sec.toString() + "SEC"
         else {
-            int min = sec / 60;
-            sec %= 60;
-            return min + "MIN " + sec + "SEC";
+            val min = sec / 60
+            sec %= 60
+            return min.toString() + "MIN " + sec + "SEC"
         }
     }
 
-    public static String getUTCTime() {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(FMT_UTC);
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        return sdf.format(new Date());
+    val uTCTime: String
+        get() {
+            @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat(FMT_UTC)
+            sdf.timeZone = TimeZone.getTimeZone("UTC")
+            return sdf.format(Date())
+        }
+
+    val localTime: String
+        get() {
+            @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat(FMT_LOCAL)
+            return sdf.format(Date())
+        }
+
+    @JvmStatic
+    val currentTime: String
+        get() {
+            @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat(FMT_UTC)
+            return sdf.format(Date())
+        }
+
+    fun getDateString(format: String?): String {
+        return getDateString(format, Date())
     }
 
-    public static String getLocalTime() {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(FMT_LOCAL);
-        return sdf.format(new Date());
+    fun getDate(year: Int, month: Int, day: Int): String {
+        val fmt = DATE_SERVER
+        @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat(fmt)
+
+        val calendar = Calendar.getInstance()
+        calendar[year, month] = day
+        return sdf.format(calendar.time)
     }
 
-    public static String getCurrentTime() {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(FMT_UTC);
-        return sdf.format(new Date());
-    }
-
-    public static String getDateString(String format) {
-        return getDateString(format, new Date());
-    }
-
-    public static String getDate(int year, int month, int day) {
-        String fmt = DATE_SERVER;
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(fmt);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-        return sdf.format(calendar.getTime());
-    }
-
-    public static Date getDateForLocal(String strDate) {
-        SimpleDateFormat srcDf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        try {
-            return srcDf.parse(strDate);
-        } catch (ParseException e) {
-            return null;
+    fun getDateForLocal(strDate: String?): Date? {
+        val srcDf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        return try {
+            srcDf.parse(strDate)
+        } catch (e: ParseException) {
+            null
         }
     }
 
-    public static String getUTCDate(int year, int month, int day) {
-        String fmt = DATE_SERVER;
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(fmt);
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-        return sdf.format(calendar.getTime());
+    fun getUTCDate(year: Int, month: Int, day: Int): String {
+        val fmt = DATE_SERVER
+        @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat(fmt)
+        sdf.timeZone = TimeZone.getTimeZone("UTC")
+        val calendar = Calendar.getInstance()
+        calendar[year, month] = day
+        return sdf.format(calendar.time)
     }
 
 
-    public static String getDateString(String format, Date date) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(format);
-        return sdf.format(date);
+    fun getDateString(format: String?, date: Date?): String {
+        @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat(format)
+        return sdf.format(date)
     }
 
-    public static String getUTCDateString(String format, Date date) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(format);
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        return sdf.format(date);
+    fun getUTCDateString(format: String?, date: Date?): String {
+        @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat(format)
+        sdf.timeZone = TimeZone.getTimeZone("UTC")
+        return sdf.format(date)
     }
 
     @SuppressLint("DefaultLocale")
-    public static String utcYearMonth(int localYear, int localMonth) {
-        return local2utc(String.format("%d-%2d-01 00:00:00", localYear, localMonth));
+    fun utcYearMonth(localYear: Int, localMonth: Int): String {
+        return local2utc(String.format("%d-%2d-01 00:00:00", localYear, localMonth))
     }
 
-    public static Calendar utc2LocalCalendar(String dateTime) {
-        Calendar cal = Calendar.getInstance();
+    fun utc2LocalCalendar(dateTime: String): Calendar {
+        val cal = Calendar.getInstance()
         if (!TextUtils.isEmpty(dateTime) && !dateTime.contains(" ")) {
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(FMT_UTC_DATE);
-//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat(FMT_UTC_DATE)
+            //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             try {
-                cal.setTime(Objects.requireNonNull(sdf.parse(dateTime)));
-            } catch (ParseException e) {
-                e.printStackTrace();
+                cal.time = Objects.requireNonNull(sdf.parse(dateTime))
+            } catch (e: ParseException) {
+                e.printStackTrace()
             }
         } else {
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(FMT_UTC);
-//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat(FMT_UTC)
+            //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             try {
-                cal.setTime(Objects.requireNonNull(sdf.parse(dateTime)));
-            } catch (ParseException e) {
-                e.printStackTrace();
+                cal.time = Objects.requireNonNull(sdf.parse(dateTime))
+            } catch (e: ParseException) {
+                e.printStackTrace()
             }
         }
-        return cal;
+        return cal
     }
 
     @SuppressLint("SimpleDateFormat")
-    public static Calendar utc2LocalCalendar(String dateTime, boolean isEnd) {
-        Calendar cal = Calendar.getInstance();
+    fun utc2LocalCalendar(dateTime: String, isEnd: Boolean): Calendar {
+        var dateTime = dateTime
+        val cal = Calendar.getInstance()
         if (!TextUtils.isEmpty(dateTime) && !dateTime.contains(" ")) {
-            SimpleDateFormat sdf;
+            val sdf: SimpleDateFormat
             if (isEnd) {
-                dateTime += " 18:00:00";
-                sdf = new SimpleDateFormat(FMT_UTC);
-            } else sdf = new SimpleDateFormat(FMT_UTC_DATE);
-//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                dateTime += " 18:00:00"
+                sdf = SimpleDateFormat(FMT_UTC)
+            } else sdf = SimpleDateFormat(FMT_UTC_DATE)
+            //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             try {
-                cal.setTime(Objects.requireNonNull(sdf.parse(dateTime)));
-            } catch (ParseException e) {
-                e.printStackTrace();
+                cal.time = Objects.requireNonNull(sdf.parse(dateTime))
+            } catch (e: ParseException) {
+                e.printStackTrace()
             }
         } else {
-            SimpleDateFormat sdf = new SimpleDateFormat(FMT_UTC);
-//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            val sdf = SimpleDateFormat(FMT_UTC)
+            //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             try {
-                cal.setTime(Objects.requireNonNull(sdf.parse(dateTime)));
-            } catch (ParseException e) {
-                e.printStackTrace();
+                cal.time = Objects.requireNonNull(sdf.parse(dateTime))
+            } catch (e: ParseException) {
+                e.printStackTrace()
             }
         }
-        return cal;
+        return cal
     }
 
 
-    public static String utc2localDateTime(String time) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(FMT_UTC);
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat newSdf = new SimpleDateFormat(FMT_LOCAL);
-//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Calendar calendar = Calendar.getInstance();
-        newSdf.setTimeZone(calendar.getTimeZone());
+    fun utc2localDateTime(time: String): String {
+        @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat(FMT_UTC)
+        @SuppressLint("SimpleDateFormat") val newSdf = SimpleDateFormat(FMT_LOCAL)
+        //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        val calendar = Calendar.getInstance()
+        newSdf.timeZone = calendar.timeZone
 
         try {
-            Date date = sdf.parse(time);
-            return newSdf.format(Objects.requireNonNull(date));
-        } catch (ParseException e) {
-            e.printStackTrace();
+            val date = sdf.parse(time)
+            return newSdf.format(Objects.requireNonNull(date))
+        } catch (e: ParseException) {
+            e.printStackTrace()
         }
-        return time;
+        return time
     }
 
-    public static String utc2localDate(String time) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(FMT_UTC);
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat newSdf = new SimpleDateFormat(FMT_LOCAL_DATE);
-//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Calendar calendar = Calendar.getInstance();
-        newSdf.setTimeZone(calendar.getTimeZone());
+    fun utc2localDate(time: String): String {
+        @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat(FMT_UTC)
+        @SuppressLint("SimpleDateFormat") val newSdf = SimpleDateFormat(FMT_LOCAL_DATE)
+        //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        val calendar = Calendar.getInstance()
+        newSdf.timeZone = calendar.timeZone
 
         try {
-            Date date = sdf.parse(time);
-            return newSdf.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            val date = sdf.parse(time)
+            return newSdf.format(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
         }
-        return time;
+        return time
     }
 
-    public static String toLocalDate(String time) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(FMT_UTC_DATE);
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat newSdf = new SimpleDateFormat(FMT_LOCAL_DATE);
+    fun toLocalDate(time: String): String {
+        @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat(FMT_UTC_DATE)
+        @SuppressLint("SimpleDateFormat") val newSdf = SimpleDateFormat(FMT_LOCAL_DATE)
         try {
-            Date date = sdf.parse(time);
-            return newSdf.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            val date = sdf.parse(time)
+            return newSdf.format(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
         }
-        return time;
+        return time
     }
 
-    public static String toLocalDateTime(String time) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(FMT_UTC);
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat newSdf = new SimpleDateFormat(FMT_LOCAL);
+    fun toLocalDateTime(time: String): String {
+        @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat(FMT_UTC)
+        @SuppressLint("SimpleDateFormat") val newSdf = SimpleDateFormat(FMT_LOCAL)
         try {
-            Date date = sdf.parse(time);
-            return newSdf.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            val date = sdf.parse(time)
+            return newSdf.format(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
         }
-        return time;
+        return time
     }
 
-    public static String local2utc(String time) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(FMT_UTC);
-        Calendar calendar = Calendar.getInstance();
-        sdf.setTimeZone(calendar.getTimeZone());
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat newSdf = new SimpleDateFormat(FMT_UTC);
-//        newSdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+    fun local2utc(time: String): String {
+        @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat(FMT_UTC)
+        val calendar = Calendar.getInstance()
+        sdf.timeZone = calendar.timeZone
+        @SuppressLint("SimpleDateFormat") val newSdf = SimpleDateFormat(FMT_UTC)
+        //        newSdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
-            Date date = sdf.parse(time);
-            return newSdf.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            val date = sdf.parse(time)
+            return newSdf.format(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
         }
-        return time;
+        return time
     }
 
 
-    public static long getInterval(String time, String now) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat(FMT_UTC);
+    fun getInterval(time: String?, now: String?): Long {
+        @SuppressLint("SimpleDateFormat") val format = SimpleDateFormat(FMT_UTC)
         try {
-            Date d1 = format.parse(time);
-            Date d2 = format.parse(now);
-            return ((Objects.requireNonNull(d2).getTime() - Objects.requireNonNull(d1).getTime()));
-        } catch (ParseException e) {
-            e.printStackTrace();
+            val d1 = format.parse(time)
+            val d2 = format.parse(now)
+            return ((Objects.requireNonNull(d2).time - Objects.requireNonNull(d1).time))
+        } catch (e: ParseException) {
+            e.printStackTrace()
         }
-        return 0;
+        return 0
     }
 
-    public static String getDiffTimeString(String time, String now) {
-        long diff = getInterval(time, now);
+    fun getDiffTimeString(time: String?, now: String?): String {
+        val diff = getInterval(time, now)
 
-        if (diff < MINUTE_MILLIS) {
-            return "Just now";
+        return if (diff < MINUTE_MILLIS) {
+            "Just now"
         } else if (diff < 2 * MINUTE_MILLIS) {
-            return "A minute ago";
+            "A minute ago"
         } else if (diff < 50 * MINUTE_MILLIS) {
-            return diff / MINUTE_MILLIS + " minutes ago";
+            (diff / MINUTE_MILLIS).toString() + " minutes ago"
         } else if (diff < 90 * MINUTE_MILLIS) {
-            return "An hour ago";
+            "An hour ago"
         } else if (diff < 24 * HOUR_MILLIS) {
-            return diff / HOUR_MILLIS + " hours ago";
+            (diff / HOUR_MILLIS).toString() + " hours ago"
         } else if (diff < 48 * HOUR_MILLIS) {
-            return "Yesterday";
+            "Yesterday"
         } else {
-            return diff / DAY_MILLIS + " days ago";
+            (diff / DAY_MILLIS).toString() + " days ago"
         }
     }
 
-    public static String getDateStringForServer(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        return dateFormat.format(date);
+    fun getDateStringForServer(date: Date?): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        return dateFormat.format(date)
     }
 
-    public static String getDateStringForServer(String strDate) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.US);
+    fun getDateStringForServer(strDate: String): String {
+        val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.US)
         try {
-            Date date = dateFormat.parse(strDate);
-            SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-            return serverFormat.format(date);
-        } catch (ParseException e) {
-            return strDate;
+            val date = dateFormat.parse(strDate)
+            val serverFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            return serverFormat.format(date)
+        } catch (e: ParseException) {
+            return strDate
         }
     }
 
-    public static String getDateStringForLocal(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.US);
-        return dateFormat.format(date);
+    fun getDateStringForLocal(date: Date?): String {
+        val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.US)
+        return dateFormat.format(date)
     }
 
-    public static String getDateStringForLocal(String strDate) {
-        if (TextUtils.equals(strDate, "0000-00-00")) return "";
+    fun getDateStringForLocal(strDate: String): String {
+        if (TextUtils.equals(strDate, "0000-00-00")) return ""
 
-        SimpleDateFormat srcDf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        Date date = null;
+        val srcDf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        var date: Date? = null
         try {
-            date = srcDf.parse(strDate);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.US);
-            return dateFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return strDate;
+            date = srcDf.parse(strDate)
+            val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.US)
+            return dateFormat.format(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            return strDate
         }
     }
 
-    public static String getDateTimeStringForLocal(String strDate) {
-        if (TextUtils.equals(strDate, "0000-00-00 00:00:00")) return "";
-        SimpleDateFormat srcDf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-        Date date = null;
+    fun getDateTimeStringForLocal(strDate: String): String {
+        if (TextUtils.equals(strDate, "0000-00-00 00:00:00")) return ""
+        val srcDf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        var date: Date? = null
         try {
-            date = srcDf.parse(strDate);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.US);
-            return dateFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return strDate;
+            date = srcDf.parse(strDate)
+            val dateFormat = SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.US)
+            return dateFormat.format(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            return strDate
         }
     }
 
-    public static String getCurrentDataTime(){
-        Calendar calendar = Calendar.getInstance();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return simpleDateFormat.format(calendar.getTime());
-    }
+    val currentDataTime: String
+        get() {
+            val calendar = Calendar.getInstance()
+            @SuppressLint("SimpleDateFormat") val simpleDateFormat =
+                SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            return simpleDateFormat.format(calendar.time)
+        }
 
-    public static long getTimeStamp(String dateStr){
-        if (!dateStr.equals("")) {
-            @SuppressLint("SimpleDateFormat") DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-            Date date = null;
+    @JvmStatic
+    fun getTimeStamp(dateStr: String): Long {
+        if (dateStr != "") {
+            @SuppressLint("SimpleDateFormat") val formatter: DateFormat =
+                SimpleDateFormat("dd-MM-yyyy")
+            var date: Date? = null
             try {
-                date = formatter.parse(dateStr);
-            } catch (ParseException e) {
-                e.printStackTrace();
+                date = formatter.parse(dateStr)
+            } catch (e: ParseException) {
+                e.printStackTrace()
             }
-            return Objects.requireNonNull(date).getTime();
-        }else return 0;
+            return Objects.requireNonNull(date)!!.time
+        } else return 0
     }
 
-    public static String getCurrentDate() {
-        //"2020-02-04T00:00:00"
-        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
+    @JvmStatic
+    val currentDate: String
+        get() {
+            //"2020-02-04T00:00:00"
+            @SuppressLint("SimpleDateFormat") val dateFormat: DateFormat =
+                SimpleDateFormat("yyyy-MM-dd")
+            val date = Date()
+            return dateFormat.format(date)
+        }
 
-    public static String getCurrentTimeServer() {
-        //"2020-02-04T00:00:00"
-        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-        Date currentTime = Calendar.getInstance().getTime();
-        return dateFormat.format(currentTime);
-    }
-
+    val currentTimeServer: String
+        get() {
+            //"2020-02-04T00:00:00"
+            @SuppressLint("SimpleDateFormat") val dateFormat: DateFormat =
+                SimpleDateFormat("hh:mm:ss")
+            val currentTime = Calendar.getInstance().time
+            return dateFormat.format(currentTime)
+        }
 }

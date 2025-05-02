@@ -77,7 +77,7 @@ class ChallanUploadListAdapter(private val context: Context) :
             val intent = Intent(view.context, ChallanUploadActivity::class.java)
             intent.putExtra("param", model)
             intent.putExtra("param2", "pending")
-            prefManager.complainT_POSITION = position
+            prefManager.cOMPLAINT_POSITION = position
             (view.context as Activity).startActivityForResult(intent, REQUEST_CODE)
         }
 

@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import com.bumptech.glide.Glide;
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityPosDistributionFormViewBinding;
@@ -130,7 +130,7 @@ public class PosDistributionFormViewActivity extends CustomActivity implements V
     }
 
     private void isLoading() {
-        viewModel.getIsLoading().observe(this, aBoolean -> {
+        viewModel.isLoading().observe(this, aBoolean -> {
             if (aBoolean) {
                 showProgress(getResources().getString(R.string.please_wait));
             } else {

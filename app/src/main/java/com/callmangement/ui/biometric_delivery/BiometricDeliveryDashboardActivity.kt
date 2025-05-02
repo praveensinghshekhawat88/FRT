@@ -1,190 +1,186 @@
-package com.callmangement.ui.biometric_delivery;
+package com.callmangement.ui.biometric_delivery
 
-import static java.lang.String.valueOf;
+import android.app.Activity
+import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.os.Vibrator
+import android.text.TextUtils
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.DatePicker
+import android.widget.Toast
+import androidx.cardview.widget.CardView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.callmangement.R
+import com.callmangement.custom.CustomActivity
+import com.callmangement.databinding.ActivityBiometricDeliveryDashboardBinding
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance.retrofitInstance
+import com.callmangement.ui.biometric_delivery.model.BiometricDashboardResponse
+import com.callmangement.ui.home.MainActivity
+import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrictList_w
+import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrict_w
+import com.callmangement.utils.Constants.isNetworkAvailable
+import com.callmangement.utils.PrefManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Collections
+import java.util.Locale
+import java.util.Objects
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.Vibrator;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
+class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListener {
+    private var binding: ActivityBiometricDeliveryDashboardBinding? = null
+    private val spinnerList: MutableList<String> = ArrayList()
+    private val myFormat = "yyyy-MM-dd"
+    private val myCalendarFromDate: Calendar = Calendar.getInstance()
+    private val myCalendarToDate: Calendar = Calendar.getInstance()
+    private val cvNewDelivery: CardView? = null
+    private val cvCompleteDelivery: CardView? = null
+    private val cvAbout: CardView? = null
+    private var mActivity: Activity? = null
+    private var builder: AlertDialog.Builder? = null
+    private var prefManager: PrefManager? = null
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
-import com.callmangement.R;
-import com.callmangement.custom.CustomActivity;
-import com.callmangement.databinding.ActivityBiometricDeliveryBinding;
-import com.callmangement.databinding.ActivityBiometricDeliveryDashboardBinding;
-import com.callmangement.ui.biometric_delivery.model.BiometricDashboardResponse;
-import com.callmangement.ui.closed_guard_delivery.CloseGuardDeliveryListActivity;
-import com.callmangement.ui.home.MainActivity;
-import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrictList_w;
-import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrict_w;
-import com.callmangement.ui.iris_derivery_installation.InstallationPendingListActivity;
-import com.callmangement.ui.iris_derivery_installation.IrisInstalledListActivity;
-import com.callmangement.ui.iris_derivery_installation.IrisReplaceListActivity;
-import com.callmangement.utils.Constants;
-import com.callmangement.utils.PrefManager;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class BiometricDeliveryDashboardActivity extends CustomActivity implements View.OnClickListener {
-    private ActivityBiometricDeliveryDashboardBinding binding;
-    private final List<String> spinnerList = new ArrayList<>();
-    private final String myFormat = "yyyy-MM-dd";
-    private final Calendar myCalendarFromDate = Calendar.getInstance();
-    private final Calendar myCalendarToDate = Calendar.getInstance();
-    private CardView cvNewDelivery, cvCompleteDelivery, cvAbout;
-    private Activity mActivity;
-    private Context mContext;
-    private AlertDialog.Builder builder;
-    private PrefManager prefManager;
     //   PrefManager preference;
-    private List<ModelDistrictList_w> district_List = new ArrayList<>();
-    private int checkDistrict = 0;
-    private String districtId = "0";
-    private final String districtIdd = "0";
-    private String districtNameEng = "";
-    private String dis;
-    private int checkFilter = 0;
-    private String fromDate = "";
-    private String toDate = "";
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private String Pending = "";
+    private var district_List: MutableList<ModelDistrictList_w?>? = ArrayList()
+    private var checkDistrict = 0
+    private var districtId: String? = "0"
+    private val districtIdd: String? = "0"
+    private var districtNameEng = ""
+    private var dis: String? = null
+    private var checkFilter = 0
+    private var fromDate = ""
+    private var toDate = ""
+    private var swipeRefreshLayout: SwipeRefreshLayout? = null
+    private var Pending = ""
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityBiometricDeliveryDashboardBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        init();
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityBiometricDeliveryDashboardBinding.inflate(
+            layoutInflater
+        )
+        setContentView(binding!!.root)
+        init()
     }
 
-    private void init() {
-        mActivity = this;
-        mContext = this;
-        prefManager = new PrefManager(mContext);
-        swipeRefreshLayout = findViewById(R.id.refreshLayoutt);
-        binding.actionBar.ivBack.setVisibility(View.VISIBLE);
-        binding.actionBar.ivThreeDot.setVisibility(View.GONE);
-        binding.actionBar.layoutLanguage.setVisibility(View.GONE);
-        binding.actionBar.textToolbarTitle.setText("Biometric Delivery Dashboard");
+    private fun init() {
+        mActivity = this
+        mContext = this
+        prefManager = PrefManager(mContext!!)
+        swipeRefreshLayout = findViewById(R.id.refreshLayoutt)
+        binding!!.actionBar.ivBack.visibility = View.VISIBLE
+        binding!!.actionBar.ivThreeDot.visibility = View.GONE
+        binding!!.actionBar.layoutLanguage.visibility = View.GONE
+        binding!!.actionBar.textToolbarTitle.text = "Biometric Delivery Dashboard"
         //preference = PrefManager.getInstance(mActivity);
         //   prefManager = new PrefManager(mContext);
-        setUpData();
-        setClickListener();
+        setUpData()
+        setClickListener()
     }
 
-    private void setUpData() {
-        if (prefManager.getUSER_TYPE_ID().equals("1") && prefManager.getUSER_TYPE().equalsIgnoreCase("Admin")) {
-            binding.rlDistrict.setVisibility(View.VISIBLE);
-            binding.seDistrict.setVisibility(View.GONE);
-            binding.spacer.setVisibility(View.VISIBLE);
-            binding.cvIrisReplace.setVisibility(View.GONE);
+    private fun setUpData() {
+        if (prefManager!!.uSER_TYPE_ID == "1" && prefManager!!.uSER_TYPE.equals(
+                "Admin",
+                ignoreCase = true
+            )
+        ) {
+            binding!!.rlDistrict.visibility = View.VISIBLE
+            binding!!.seDistrict.visibility = View.GONE
+            binding!!.spacer.visibility = View.VISIBLE
+            binding!!.cvIrisReplace.visibility = View.GONE
 
-            SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.remove("districtId_key");
-            editor.apply();
-        } else if (prefManager.getUSER_TYPE_ID().equals("2") && prefManager.getUSER_TYPE().equalsIgnoreCase("Manager")) {
-            binding.rlDistrict.setVisibility(View.VISIBLE);
-            binding.spacer.setVisibility(View.VISIBLE);
-            binding.seDistrict.setVisibility(View.GONE);
-            binding.cvIrisReplace.setVisibility(View.GONE);
+            val sp = getSharedPreferences("your_prefs", MODE_PRIVATE)
+            val editor = sp.edit()
+            editor.remove("districtId_key")
+            editor.apply()
+        } else if (prefManager!!.uSER_TYPE_ID == "2" && prefManager!!.uSER_TYPE.equals(
+                "Manager",
+                ignoreCase = true
+            )
+        ) {
+            binding!!.rlDistrict.visibility = View.VISIBLE
+            binding!!.spacer.visibility = View.VISIBLE
+            binding!!.seDistrict.visibility = View.GONE
+            binding!!.cvIrisReplace.visibility = View.GONE
 
-            SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.remove("districtId_key");
-            editor.apply();
-        } else if (prefManager.getUSER_TYPE_ID().equals("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) {
-            binding.rlDistrict.setVisibility(View.GONE);
-            binding.spacer.setVisibility(View.VISIBLE);
-            binding.seDistrict.setVisibility(View.VISIBLE);
+            val sp = getSharedPreferences("your_prefs", MODE_PRIVATE)
+            val editor = sp.edit()
+            editor.remove("districtId_key")
+            editor.apply()
+        } else if (prefManager!!.uSER_TYPE_ID == "4" && prefManager!!.uSER_TYPE.equals(
+                "ServiceEngineer",
+                ignoreCase = true
+            )
+        ) {
+            binding!!.rlDistrict.visibility = View.GONE
+            binding!!.spacer.visibility = View.VISIBLE
+            binding!!.seDistrict.visibility = View.VISIBLE
             //    binding.cvIrisReplace.setVisibility(View.GONE);
-            binding.cvIrisReplace.setVisibility(View.VISIBLE);
+            binding!!.cvIrisReplace.visibility = View.VISIBLE
 
-            districtId = getIntent().getStringExtra("districtId");
+            districtId = intent.getStringExtra("districtId")
             if (districtIdd != null && !districtIdd.isEmpty()) {
                 try {
-                    SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putInt("districtId_key", Integer.parseInt(districtId));
-                    editor.commit();
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
+                    val sp = getSharedPreferences("your_prefs", MODE_PRIVATE)
+                    val editor = sp.edit()
+                    editor.putInt("districtId_key", districtId!!.toInt())
+                    editor.commit()
+                } catch (e: NumberFormatException) {
+                    e.printStackTrace()
                 }
             } else {
             }
         }
 
-        binding.cvInstalled.setVisibility(View.GONE);
-        binding.cvIrisReplace.setVisibility(View.GONE);
+        binding!!.cvInstalled.visibility = View.GONE
+        binding!!.cvIrisReplace.visibility = View.GONE
 
 
-        String USER_NAME = prefManager.getUSER_NAME();
-        String USER_EMAIL = prefManager.getUSER_EMAIL();
-        String USER_Mobile = prefManager.getUSER_Mobile();
-        String USER_DISTRICT = prefManager.getUSER_District();
-        Log.d("USER_NAME", " " + USER_NAME);
-        Log.d("USER_Email", " " + USER_EMAIL);
-        Log.d("USER_Dis", " " + USER_DISTRICT);
+        val USER_NAME = prefManager!!.uSER_NAME
+        val USER_EMAIL = prefManager!!.uSER_EMAIL
+        val USER_Mobile = prefManager!!.uSER_Mobile
+        val USER_DISTRICT = prefManager!!.uSER_District
+        Log.d("USER_NAME", " $USER_NAME")
+        Log.d("USER_Email", " $USER_EMAIL")
+        Log.d("USER_Dis", " $USER_DISTRICT")
 
-        binding.textUsername.setText(USER_NAME);
-        binding.textEmail.setText(USER_EMAIL);
-        binding.textmbl.setText(USER_Mobile);
+        binding!!.textUsername.text = USER_NAME
+        binding!!.textEmail.text = USER_EMAIL
+        binding!!.textmbl.text = USER_Mobile
         //29-01-2024
         //  districtId = getIntent().getStringExtra("districtId");
-        binding.seDistrict.setText(USER_DISTRICT);
-        builder = new AlertDialog.Builder(this);
-        districtList();
-        districtNameEng = "--" + getResources().getString(R.string.district) + "--";
-        Calendar calendar = Calendar.getInstance();
-        Date today = calendar.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        String todayDate = sdf.format(today);
-        fromDate = todayDate;
-        toDate = todayDate;
-        getInstallationCntApi(districtId, fromDate, toDate);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
-                getInstallationCntApi(districtId, fromDate, toDate);
-            }
-        });
+        binding!!.seDistrict.text = USER_DISTRICT
+        builder = AlertDialog.Builder(this)
+        districtList()
+        districtNameEng = "--" + resources.getString(R.string.district) + "--"
+        val calendar = Calendar.getInstance()
+        val today = calendar.time
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        val todayDate = sdf.format(today)
+        fromDate = todayDate
+        toDate = todayDate
+        getInstallationCntApi(districtId, fromDate, toDate)
+        swipeRefreshLayout!!.setOnRefreshListener {
+            swipeRefreshLayout!!.isRefreshing = false
+            getInstallationCntApi(districtId, fromDate, toDate)
+        }
 
         // Log.d("useriduserid",""+prefManager.getUSER_TYPE_ID());
         // binding.textDestrict.setText(USER_DISTRICT);
         // getInstallationCntApi();
-        setUpDateRangeSpinner();
-
+        setUpDateRangeSpinner()
     }
 
-    private void setClickListener() {
+    private fun setClickListener() {
 //        binding.cvInstalled.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -233,44 +229,39 @@ public class BiometricDeliveryDashboardActivity extends CustomActivity implement
 //        });
 
 
-        if (prefManager.getUSER_TYPE_ID().equals("1")) {
+        if ((prefManager!!.uSER_TYPE_ID == "1")) {
+        } else if ((prefManager!!.uSER_TYPE_ID == "2")) {
+        } else if ((prefManager!!.uSER_TYPE_ID == "4")) {
+            binding!!.lytDistribute.setOnClickListener(View.OnClickListener {
+                val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
+                vibrator.vibrate(100)
+                if ((Pending == "0")) {
+                    showAlertDialogWithSingleButton(
+                        (mActivity)!!,
+                        resources.getString(R.string.noinstpending)
+                    )
+                    // Check if the device supports vibration
+                } else {
+                    val selectedDate = binding!!.spinner.selectedItemPosition.toString()
+                    val selectedDis = binding!!.spinnerDistrict.selectedItemPosition.toString()
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("2")) {
-
-        } else if (prefManager.getUSER_TYPE_ID().equals("4")) {
-
-            binding.lytDistribute.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                    vibrator.vibrate(100);
-
-                    if (Pending.equals("0")) {
-                        showAlertDialogWithSingleButton(mActivity, getResources().getString(R.string.noinstpending));
-                        // Check if the device supports vibration
-                    } else {
-                        String selectedDate = String.valueOf(binding.spinner.getSelectedItemPosition());
-                        String selectedDis = String.valueOf(binding.spinnerDistrict.getSelectedItemPosition());
-
-                        Intent i = new Intent(mContext, BiometricDeliveryActivity.class);
-                        i.putExtra("key_districtId", districtId);
-                        i.putExtra("key_fromDate", fromDate);
-                        i.putExtra("key_toDate", toDate);
-                        i.putExtra("key_selectedDate", selectedDate);
-                        i.putExtra("key_selectedDis", selectedDis);
-                        startActivityForResult(i, 222);
-                        Log.d("selectedDis", "selectedDis" + selectedDis);
-                    }
+                    val i = Intent(mContext, BiometricDeliveryActivity::class.java)
+                    i.putExtra("key_districtId", districtId)
+                    i.putExtra("key_fromDate", fromDate)
+                    i.putExtra("key_toDate", toDate)
+                    i.putExtra("key_selectedDate", selectedDate)
+                    i.putExtra("key_selectedDis", selectedDis)
+                    startActivityForResult(i, 222)
+                    Log.d("selectedDis", "selectedDis$selectedDis")
                 }
-                // Check if the device supports vibration
-            });
+            } // Check if the device supports vibration
+            )
         }
 
-        binding.lytTotalL0Machine.setOnClickListener(this);
-        binding.lytTotalMapped.setOnClickListener(this);
-        binding.lytTotalDistributed.setOnClickListener(this);
-        binding.cvInstallationPending.setOnClickListener(this);
+        binding!!.lytTotalL0Machine.setOnClickListener(this)
+        binding!!.lytTotalMapped.setOnClickListener(this)
+        binding!!.lytTotalDistributed.setOnClickListener(this)
+        binding!!.cvInstallationPending.setOnClickListener(this)
 
         /*binding.logout.setOnClickListener(new OnSingleClickListener() {
             @Override
@@ -304,33 +295,32 @@ public class BiometricDeliveryDashboardActivity extends CustomActivity implement
 //                }
 //            }
 //        });
-
-        binding.lytSummary.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        binding!!.lytSummary.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+                val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
                 // Check if the device supports vibration
                 if (vibrator.hasVibrator()) {
                     // Vibrate for 500 milliseconds (0.5 seconds)
-                    vibrator.vibrate(100);
-                    String selectedDate = String.valueOf(binding.spinner.getSelectedItemPosition());
-                    String selectedDis = String.valueOf(binding.spinnerDistrict.getSelectedItemPosition());
+                    vibrator.vibrate(100)
+                    val selectedDate = binding!!.spinner.selectedItemPosition.toString()
+                    val selectedDis = binding!!.spinnerDistrict.selectedItemPosition.toString()
 
-                    Log.d("selectedDate", selectedDate);
+                    Log.d("selectedDate", selectedDate)
 
-                    Intent i = new Intent(mContext, SensorSummaryActivity.class);
-                    i.putExtra("key_districtId", districtId);
-                    i.putExtra("key_fromDate", fromDate);
-                    i.putExtra("key_toDate", toDate);
-                    i.putExtra("key_selectedDate", selectedDate);
-                    i.putExtra("key_selectedDis", selectedDis);
+                    val i = Intent(mContext, SensorSummaryActivity::class.java)
+                    i.putExtra("key_districtId", districtId)
+                    i.putExtra("key_fromDate", fromDate)
+                    i.putExtra("key_toDate", toDate)
+                    i.putExtra("key_selectedDate", selectedDate)
+                    i.putExtra("key_selectedDis", selectedDis)
 
-                    startActivity(i);
+                    startActivity(i)
                 }
             }
-        });
+        })
 
-//        binding.lytTotalDistributed.setOnClickListener(new View.OnClickListener() {
+
+        //        binding.lytTotalDistributed.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -354,33 +344,35 @@ public class BiometricDeliveryDashboardActivity extends CustomActivity implement
 //                }
 //            }
 //        });
-
-
-        binding.actionBar.ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(mContext, MainActivity.class);
-                startActivity(i);
+        binding!!.actionBar.ivBack.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View) {
+                val i = Intent(mContext, MainActivity::class.java)
+                startActivity(i)
             }
-        });
+        })
 
-        binding.spinnerDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (++checkDistrict > 1) {
-                    districtNameEng = district_List.get(i).getDistrictNameEng();
-                    dis = district_List.get(i).getDistrictNameEng();
-                    Log.d("dfgfd", " " + dis);
-                    districtId = district_List.get(i).getDistrictId();
-                    Log.d("fggfgh", " " + districtId);
-                    SharedPreferences.Editor editor = getSharedPreferences("MyPrefs", MODE_PRIVATE).edit();
-                    editor.putString("dis", dis);
-                    editor.putString("districtId", districtId);
-                    editor.apply();
+        binding!!.spinnerDistrict.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View,
+                    i: Int,
+                    l: Long
+                ) {
+                    if (++checkDistrict > 1) {
+                        districtNameEng = district_List!![i]!!.districtNameEng
+                        dis = district_List!![i]!!.districtNameEng
+                        Log.d("dfgfd", " $dis")
+                        districtId = district_List!![i]!!.districtId
+                        Log.d("fggfgh", " $districtId")
+                        val editor = getSharedPreferences("MyPrefs", MODE_PRIVATE).edit()
+                        editor.putString("dis", dis)
+                        editor.putString("districtId", districtId)
+                        editor.apply()
 
-                    getInstallationCntApi(districtId, fromDate, toDate);
+                        getInstallationCntApi(districtId, fromDate, toDate)
 
-                          /*  if (districtNameEng.equalsIgnoreCase("--" + getResources().getString(R.string.district) + "--")) {
+                        /*  if (districtNameEng.equalsIgnoreCase("--" + getResources().getString(R.string.district) + "--")) {
                                 SEUser_list.clear();
                                 Collections.reverse(SEUser_list);
                                 ModelSEUserList list = new ModelSEUserList();
@@ -394,276 +386,316 @@ public class BiometricDeliveryDashboardActivity extends CustomActivity implement
                             } else {
                                 SEUsersList(districtId);
                             }*/
+                    }
+                }
+
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {
                 }
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-
-        binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        binding!!.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 if (++checkFilter > 1) {
-                    String item = adapterView.getItemAtPosition(i).toString();
-                    if (!item.equalsIgnoreCase("--" + getResources().getString(R.string.select_filter) + "--")) {
-                        Objects.requireNonNull(binding.textFromDate.getText()).clear();
-                        Objects.requireNonNull(binding.textToDate.getText()).clear();
-                        if (item.equalsIgnoreCase(getResources().getString(R.string.today))) {
-                            binding.layoutDateRange.setVisibility(View.GONE);
-                            Calendar calendar = Calendar.getInstance();
-                            Date today = calendar.getTime();
-                            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                            String todayDate = sdf.format(today);
-                            fromDate = todayDate;
-                            toDate = todayDate;
+                    val item = adapterView.getItemAtPosition(i).toString()
+                    if (!item.equals(
+                            "--" + resources.getString(R.string.select_filter) + "--",
+                            ignoreCase = true
+                        )
+                    ) {
+                        Objects.requireNonNull(binding!!.textFromDate.text)!!.clear()
+                        Objects.requireNonNull(binding!!.textToDate.text)!!.clear()
+                        if (item.equals(resources.getString(R.string.today), ignoreCase = true)) {
+                            binding!!.layoutDateRange.visibility = View.GONE
+                            val calendar = Calendar.getInstance()
+                            val today = calendar.time
+                            val sdf = SimpleDateFormat(myFormat, Locale.US)
+                            val todayDate = sdf.format(today)
+                            fromDate = todayDate
+                            toDate = todayDate
 
-                            getInstallationCntApi(districtId, fromDate, toDate);
+                            getInstallationCntApi(districtId, fromDate, toDate)
 
                             // getPosError(expenseStatusId,districtId,fromDate,toDate,fpscodee);
-
-                        } else if (item.equalsIgnoreCase(getResources().getString(R.string.yesterday))) {
-                            binding.layoutDateRange.setVisibility(View.GONE);
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.add(Calendar.DAY_OF_YEAR, -1);
-                            Date yesterday = calendar.getTime();
-                            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                            String yesterdayDate = sdf.format(yesterday);
-                            fromDate = yesterdayDate;
-                            toDate = yesterdayDate;
-                            getInstallationCntApi(districtId, fromDate, toDate);
+                        } else if (item.equals(
+                                resources.getString(R.string.yesterday),
+                                ignoreCase = true
+                            )
+                        ) {
+                            binding!!.layoutDateRange.visibility = View.GONE
+                            val calendar = Calendar.getInstance()
+                            calendar.add(Calendar.DAY_OF_YEAR, -1)
+                            val yesterday = calendar.time
+                            val sdf = SimpleDateFormat(myFormat, Locale.US)
+                            val yesterdayDate = sdf.format(yesterday)
+                            fromDate = yesterdayDate
+                            toDate = yesterdayDate
+                            getInstallationCntApi(districtId, fromDate, toDate)
 
                             //   getPosError(expenseStatusId,districtId,fromDate,toDate,fpscodee);
+                        } else if (item.equals(
+                                resources.getString(R.string.current_month),
+                                ignoreCase = true
+                            )
+                        ) {
+                            binding!!.layoutDateRange.visibility = View.GONE
+                            val sdf = SimpleDateFormat(myFormat, Locale.US)
+                            val calendar = Calendar.getInstance()
+                            calendar[Calendar.DAY_OF_MONTH] =
+                                calendar.getActualMinimum(Calendar.DAY_OF_MONTH)
+                            calendar[Calendar.HOUR_OF_DAY] = 0
+                            calendar[Calendar.MINUTE] = 0
+                            calendar[Calendar.SECOND] = 0
+                            calendar[Calendar.MILLISECOND] = 0
+                            val firstDateOfCurrentMonth = calendar.time
+                            val date1 = sdf.format(firstDateOfCurrentMonth)
+                            val calendar1 = Calendar.getInstance()
+                            val currentDateOfCurrentMonth = calendar1.time
+                            val date2 = sdf.format(currentDateOfCurrentMonth)
+                            fromDate = date1
+                            toDate = date2
 
-                        } else if (item.equalsIgnoreCase(getResources().getString(R.string.current_month))) {
-                            binding.layoutDateRange.setVisibility(View.GONE);
-                            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
-                            calendar.set(Calendar.HOUR_OF_DAY, 0);
-                            calendar.set(Calendar.MINUTE, 0);
-                            calendar.set(Calendar.SECOND, 0);
-                            calendar.set(Calendar.MILLISECOND, 0);
-                            Date firstDateOfCurrentMonth = calendar.getTime();
-                            String date1 = sdf.format(firstDateOfCurrentMonth);
-                            Calendar calendar1 = Calendar.getInstance();
-                            Date currentDateOfCurrentMonth = calendar1.getTime();
-                            String date2 = sdf.format(currentDateOfCurrentMonth);
-                            fromDate = date1;
-                            toDate = date2;
-
-                            getInstallationCntApi(districtId, fromDate, toDate);
+                            getInstallationCntApi(districtId, fromDate, toDate)
 
                             //      getPosError(expenseStatusId,districtId,fromDate,toDate,fpscodee);
+                        } else if (item.equals(
+                                resources.getString(R.string.previous_month),
+                                ignoreCase = true
+                            )
+                        ) {
+                            binding!!.layoutDateRange.visibility = View.GONE
+                            val sdf = SimpleDateFormat(myFormat, Locale.US)
+                            val aCalendar = Calendar.getInstance()
+                            aCalendar.add(Calendar.MONTH, -1)
+                            aCalendar[Calendar.DATE] = 1
+                            val firstDateOfPreviousMonth = aCalendar.time
+                            val date1 = sdf.format(firstDateOfPreviousMonth)
+                            aCalendar[Calendar.DATE] =
+                                aCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+                            val lastDateOfPreviousMonth = aCalendar.time
+                            val date2 = sdf.format(lastDateOfPreviousMonth)
+                            fromDate = date1
+                            toDate = date2
 
-                        } else if (item.equalsIgnoreCase(getResources().getString(R.string.previous_month))) {
-                            binding.layoutDateRange.setVisibility(View.GONE);
-                            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                            Calendar aCalendar = Calendar.getInstance();
-                            aCalendar.add(Calendar.MONTH, -1);
-                            aCalendar.set(Calendar.DATE, 1);
-                            Date firstDateOfPreviousMonth = aCalendar.getTime();
-                            String date1 = sdf.format(firstDateOfPreviousMonth);
-                            aCalendar.set(Calendar.DATE, aCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-                            Date lastDateOfPreviousMonth = aCalendar.getTime();
-                            String date2 = sdf.format(lastDateOfPreviousMonth);
-                            fromDate = date1;
-                            toDate = date2;
-
-                            getInstallationCntApi(districtId, fromDate, toDate);
+                            getInstallationCntApi(districtId, fromDate, toDate)
 
                             //       getPosError(expenseStatusId,districtId,fromDate,toDate,fpscodee);
-
-                        } else if (item.equalsIgnoreCase(getResources().getString(R.string.custom_filter))) {
-                            binding.layoutDateRange.setVisibility(View.VISIBLE);
-
+                        } else if (item.equals(
+                                resources.getString(R.string.custom_filter),
+                                ignoreCase = true
+                            )
+                        ) {
+                            binding!!.layoutDateRange.visibility = View.VISIBLE
                         }
                     } else {
-                        fromDate = "";
-                        toDate = "";
-                        Objects.requireNonNull(binding.textFromDate.getText()).clear();
-                        Objects.requireNonNull(binding.textToDate.getText()).clear();
-                        binding.layoutDateRange.setVisibility(View.GONE);
+                        fromDate = ""
+                        toDate = ""
+                        Objects.requireNonNull(binding!!.textFromDate.text)!!.clear()
+                        Objects.requireNonNull(binding!!.textToDate.text)!!.clear()
+                        binding!!.layoutDateRange.visibility = View.GONE
 
-                        getInstallationCntApi(districtId, fromDate, toDate);
+                        getInstallationCntApi(districtId, fromDate, toDate)
 
                         //     getPosError(expenseStatusId,districtId,fromDate,toDate,fpscodee);
                     }
                 }
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
             }
-        });
+        }
 
-        binding.textFromDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog.OnDateSetListener dateFromDate = (view1, year, monthOfYear, dayOfMonth) -> {
-                    myCalendarFromDate.set(Calendar.YEAR, year);
-                    myCalendarFromDate.set(Calendar.MONTH, monthOfYear);
-                    myCalendarFromDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    updateLabelFromDate();
-                };
-                DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, dateFromDate, myCalendarFromDate
-                        .get(Calendar.YEAR), myCalendarFromDate.get(Calendar.MONTH),
-                        myCalendarFromDate.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                long minDateInMillis = myCalendarToDate.getTimeInMillis();
-                datePickerDialog.getDatePicker().setMaxDate(minDateInMillis);
-                datePickerDialog.show();
+        binding!!.textFromDate.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View) {
+                val dateFromDate =
+                    OnDateSetListener { view1: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                        myCalendarFromDate[Calendar.YEAR] = year
+                        myCalendarFromDate[Calendar.MONTH] = monthOfYear
+                        myCalendarFromDate[Calendar.DAY_OF_MONTH] = dayOfMonth
+                        updateLabelFromDate()
+                    }
+                val datePickerDialog = DatePickerDialog(
+                    (mContext)!!,
+                    dateFromDate,
+                    myCalendarFromDate[Calendar.YEAR],
+                    myCalendarFromDate[Calendar.MONTH],
+                    myCalendarFromDate[Calendar.DAY_OF_MONTH]
+                )
+                datePickerDialog.datePicker.maxDate = System.currentTimeMillis() - 1000
+                val minDateInMillis = myCalendarToDate.timeInMillis
+                datePickerDialog.datePicker.maxDate = minDateInMillis
+                datePickerDialog.show()
             }
-        });
+        })
 
-        binding.textToDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog.OnDateSetListener dateToDate = (view1, year, monthOfYear, dayOfMonth) -> {
-                    myCalendarToDate.set(Calendar.YEAR, year);
-                    myCalendarToDate.set(Calendar.MONTH, monthOfYear);
-                    myCalendarToDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    updateLabelToDate();
-                };
-                DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, dateToDate, myCalendarToDate
-                        .get(Calendar.YEAR), myCalendarToDate.get(Calendar.MONTH),
-                        myCalendarToDate.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                long minDateInMillis = myCalendarFromDate.getTimeInMillis();
-                datePickerDialog.getDatePicker().setMinDate(minDateInMillis);
-                datePickerDialog.show();
+        binding!!.textToDate.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View) {
+                val dateToDate =
+                    OnDateSetListener { view1: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                        myCalendarToDate[Calendar.YEAR] = year
+                        myCalendarToDate[Calendar.MONTH] = monthOfYear
+                        myCalendarToDate[Calendar.DAY_OF_MONTH] = dayOfMonth
+                        updateLabelToDate()
+                    }
+                val datePickerDialog = DatePickerDialog(
+                    (mContext)!!,
+                    dateToDate,
+                    myCalendarToDate[Calendar.YEAR],
+                    myCalendarToDate[Calendar.MONTH],
+                    myCalendarToDate[Calendar.DAY_OF_MONTH]
+                )
+                datePickerDialog.datePicker.maxDate = System.currentTimeMillis() - 1000
+                val minDateInMillis = myCalendarFromDate.timeInMillis
+                datePickerDialog.datePicker.minDate = minDateInMillis
+                datePickerDialog.show()
             }
-        });
+        })
 
-        binding.btnsearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getInstallationCntApi(districtId, fromDate, toDate);
+        binding!!.btnsearch.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View) {
+                getInstallationCntApi(districtId, fromDate, toDate)
             }
-        });
+        })
     }
 
-    private void updateLabelFromDate() {
-        String myFormat = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        binding.textFromDate.setText(sdf.format(myCalendarFromDate.getTime()));
-        Objects.requireNonNull(binding.textToDate.getText()).clear();
-        fromDate = Objects.requireNonNull(binding.textFromDate.getText()).toString().trim();
+    private fun updateLabelFromDate() {
+        val myFormat = "yyyy-MM-dd"
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        binding!!.textFromDate.setText(sdf.format(myCalendarFromDate.time))
+        Objects.requireNonNull(binding!!.textToDate.text)!!.clear()
+        fromDate = Objects.requireNonNull(binding!!.textFromDate.text).toString().trim { it <= ' ' }
     }
 
-    private void updateLabelToDate() {
-        String myFormat = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        binding.textToDate.setText(sdf.format(myCalendarToDate.getTime()));
-        toDate = Objects.requireNonNull(binding.textToDate.getText()).toString().trim();
+    private fun updateLabelToDate() {
+        val myFormat = "yyyy-MM-dd"
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        binding!!.textToDate.setText(sdf.format(myCalendarToDate.time))
+        toDate = Objects.requireNonNull(binding!!.textToDate.text).toString().trim { it <= ' ' }
         //    getPosError(expenseStatusId,districtId,fromDate,toDate,fpscodee);
-        getInstallationCntApi(districtId, fromDate, toDate);
+        getInstallationCntApi(districtId, fromDate, toDate)
     }
 
-    private void getInstallationCntApi(String districtId, String fromDate, String toDate) {
-
+    private fun getInstallationCntApi(districtId: String?, fromDate: String, toDate: String) {
         //Progress Bar while connection establishes
-        if (Constants.isNetworkAvailable(mActivity)) {
-            hideKeyboard(mActivity);
+
+        if (isNetworkAvailable(mActivity!!)) {
+            hideKeyboard(mActivity!!)
             //  Utils.showCustomProgressDialogCommonForAll(mActivity, getResources().getString(R.string.please_wait));
-            showProgress();
-            String USER_Id = prefManager.getUSER_Id();
-            Log.d("USER_ID", " " + USER_Id);
-            Log.d("districtId", " " + districtId);
-            APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<BiometricDashboardResponse> call = service.getBiometricSensorDashboardData(USER_Id, districtId, "", fromDate, toDate, "0");
-            call.enqueue(new Callback<BiometricDashboardResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<BiometricDashboardResponse> call, @NonNull Response<BiometricDashboardResponse> response) {
+            showProgress()
+            val USER_Id = prefManager!!.uSER_Id
+            Log.d("USER_ID", " $USER_Id")
+            Log.d("districtId", " $districtId")
+            val service = retrofitInstance!!.create(
+                APIService::class.java
+            )
+            val call = service.getBiometricSensorDashboardData(
+                USER_Id,
+                districtId,
+                "",
+                fromDate,
+                toDate,
+                "0"
+            )
+            call!!.enqueue(object : Callback<BiometricDashboardResponse?> {
+                override fun onResponse(
+                    call: Call<BiometricDashboardResponse?>,
+                    response: Response<BiometricDashboardResponse?>
+                ) {
                     // Utils.hideCustomProgressDialogCommonForAll();
-                    hideProgress();
-                    if (response.isSuccessful()) {
+                    hideProgress()
+                    if (response.isSuccessful) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
-                                    BiometricDashboardResponse countRoot = response.body();
-                                    BiometricDashboardResponse.Data countDatum = countRoot.getData();
-                                    // makeToast(String.valueOf(response.body().getMessage()));
+                                if (Objects.requireNonNull(response.body())!!.status == "200") {
+                                    val countRoot = response.body()
+                                    val countDatum = countRoot!!.data
 
+                                    // makeToast(String.valueOf(response.body().getMessage()));
                                     if (countDatum != null) {
                                         // Perform operations with the data in countDatum
 
-                                        String total = countDatum.getTotal_Distributed_BiometricSensor();
-                                        Pending = countDatum.getTotal_Pending();
-                                        //    String Installed = String.valueOf(datum.getTotalIRISDeliverdInstalled());
+                                        val total =
+                                            countDatum.total_Distributed_BiometricSensor
+                                        Pending = countDatum.total_Pending!!
 
-                                        binding.tvTotalcount.setText(total);
-                                        binding.txtPending.setText(Pending);
-                                        binding.txttotalL0Machine.setText(countDatum.getTotal_L0_Machine());
-                                        binding.txtTotalMapped.setText(countDatum.getTotal_Mapped_BiometricSensor());
+                                        //    String Installed = String.valueOf(datum.getTotalIRISDeliverdInstalled());
+                                        binding!!.tvTotalcount.text = total
+                                        binding!!.txtPending.text = Pending
+                                        binding!!.txttotalL0Machine.text =
+                                            countDatum.total_L0_Machine
+                                        binding!!.txtTotalMapped.text =
+                                            countDatum.total_Mapped_BiometricSensor
                                         //    binding.tvInstalled.setText(Installed);
                                         // Use 'dataValue' or perform operations with other properties
                                     } else {
-                                        makeToast(String.valueOf(response.body().getMessage()));
+                                        makeToast(response.body()!!.message.toString())
                                         // Handle the case when countDatum is empty or null
                                     }
                                 } else {
                                     // Handle the case when the response status is not 200 or the response body is null
                                 }
                             } else {
-                                makeToast(String.valueOf(response.body().getMessage()));
+                                makeToast(response.body()!!.message.toString())
                             }
                         } else {
-                            String msg = "HTTP Error: " + response.code();
-                            Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                            val msg = "HTTP Error: " + response.code()
+                            Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
                         }
                     } else {
-                        String msg = "HTTP Error: " + response.code();
-                        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                        val msg = "HTTP Error: " + response.code()
+                        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
                     }
                 }
 
-                @Override
-                public void onFailure(@NonNull Call<BiometricDashboardResponse> call, @NonNull Throwable error) {
+                override fun onFailure(call: Call<BiometricDashboardResponse?>, error: Throwable) {
                     //  Utils.hideCustomProgressDialogCommonForAll();
-                    hideProgress();
-                    makeToast(getResources().getString(R.string.error));
-                    call.cancel();
+                    hideProgress()
+                    makeToast(resources.getString(R.string.error))
+                    call.cancel()
                 }
-            });
+            })
         } else {
-            makeToast(getResources().getString(R.string.no_internet_connection));
+            makeToast(resources.getString(R.string.no_internet_connection))
         }
     }
 
-    private void districtList() {
-
-        if (Constants.isNetworkAvailable(mActivity)) {
-            hideKeyboard(mActivity);
+    private fun districtList() {
+        if (isNetworkAvailable(mActivity!!)) {
+            hideKeyboard(mActivity!!)
             //   Utils.showCustomProgressDialogCommonForAll(mActivity, getResources().getString(R.string.please_wait));
-            String USER_Id = prefManager.getUSER_Id();
-            APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<ModelDistrict_w> call = service.apiGetDistictList_w();
-            call.enqueue(new Callback<ModelDistrict_w>() {
-                @Override
-                public void onResponse(@NonNull Call<ModelDistrict_w> call, @NonNull Response<ModelDistrict_w> response) {
+            val USER_Id = prefManager!!.uSER_Id
+            val service = retrofitInstance!!.create(
+                APIService::class.java
+            )
+            val call = service.apiGetDistictList_w()
+            call!!.enqueue(object : Callback<ModelDistrict_w?> {
+                override fun onResponse(
+                    call: Call<ModelDistrict_w?>,
+                    response: Response<ModelDistrict_w?>
+                ) {
                     //            hideProgress();
-                    if (response.isSuccessful()) {
+                    if (response.isSuccessful) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
-                                    district_List = response.body().getDistrict_List();
-                                    if (district_List != null && district_List.size() > 0) {
-                                        Collections.reverse(district_List);
-                                        ModelDistrictList_w l = new ModelDistrictList_w();
-                                        l.setDistrictId(valueOf(-1));
-                                        l.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
-                                        district_List.add(l);
-                                        Collections.reverse(district_List);
-                                        ArrayAdapter<ModelDistrictList_w> dataAdapter = new ArrayAdapter<>(mActivity, android.R.layout.simple_spinner_item, district_List);
-                                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                        binding.spinnerDistrict.setAdapter(dataAdapter);
+                                if (Objects.requireNonNull(response.body())!!.status == "200") {
+                                    district_List = response.body()!!.district_List
+                                    if (district_List != null && district_List!!.size > 0) {
+                                        Collections.reverse(district_List)
+                                        val l = ModelDistrictList_w()
+                                        l.districtId = (-1).toString()
+                                        l.districtNameEng =
+                                            "--" + resources.getString(R.string.district) + "--"
+                                        district_List!!.add(l)
+                                        Collections.reverse(district_List)
+                                        val dataAdapter = ArrayAdapter(
+                                            mActivity!!,
+                                            android.R.layout.simple_spinner_item,
+                                            district_List!!
+                                        )
+                                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                                        binding!!.spinnerDistrict.adapter = dataAdapter
 
 
-
-                                      /*  if(d2!=null && !d2.isEmpty())
+                                        /*  if(d2!=null && !d2.isEmpty())
                                         {
                                             Log.d("ghjh",""+d2);
                                    int userId = Integer.parseInt(d2); // replace with the user ID you want to select
@@ -677,157 +709,152 @@ public class BiometricDeliveryDashboardActivity extends CustomActivity implement
                                         }*/
                                     }
                                 } else {
-                                    makeToast(response.body().getMessage());
+                                    makeToast(response.body()!!.message)
                                 }
                             } else {
-                                makeToast(getResources().getString(R.string.error));
+                                makeToast(resources.getString(R.string.error))
                             }
                         } else {
-                            makeToast(getResources().getString(R.string.error));
+                            makeToast(resources.getString(R.string.error))
                         }
                     } else {
-                        makeToast(getResources().getString(R.string.error));
+                        makeToast(resources.getString(R.string.error))
                     }
                 }
 
-                @Override
-                public void onFailure(@NonNull Call<ModelDistrict_w> call, @NonNull Throwable error) {
-                    hideProgress();
-                    makeToast(getResources().getString(R.string.error));
-                    call.cancel();
+                override fun onFailure(call: Call<ModelDistrict_w?>, error: Throwable) {
+                    hideProgress()
+                    makeToast(resources.getString(R.string.error))
+                    call.cancel()
                 }
-            });
+            })
         } else {
-            makeToast(getResources().getString(R.string.no_internet_connection));
+            makeToast(resources.getString(R.string.no_internet_connection))
         }
     }
 
-    private void setUpDateRangeSpinner() {
-        spinnerList.add("--" + getResources().getString(R.string.select_filter) + "--");
-        spinnerList.add(getResources().getString(R.string.today));
-        spinnerList.add(getResources().getString(R.string.yesterday));
-        spinnerList.add(getResources().getString(R.string.current_month));
-        spinnerList.add(getResources().getString(R.string.previous_month));
-        spinnerList.add(getResources().getString(R.string.custom_filter));
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerList);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinner.setAdapter(dataAdapter);
-        binding.spinner.setSelection(1);
-        String selectedString = (String) binding.spinner.getSelectedItem();
-        int selectedItemPosition = binding.spinner.getSelectedItemPosition();
+    private fun setUpDateRangeSpinner() {
+        spinnerList.add("--" + resources.getString(R.string.select_filter) + "--")
+        spinnerList.add(resources.getString(R.string.today))
+        spinnerList.add(resources.getString(R.string.yesterday))
+        spinnerList.add(resources.getString(R.string.current_month))
+        spinnerList.add(resources.getString(R.string.previous_month))
+        spinnerList.add(resources.getString(R.string.custom_filter))
+        val dataAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerList)
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding!!.spinner.adapter = dataAdapter
+        binding!!.spinner.setSelection(1)
+        val selectedString = binding!!.spinner.selectedItem as String
+        val selectedItemPosition = binding!!.spinner.selectedItemPosition
         if (selectedItemPosition == 1) {
-            Calendar calendar = Calendar.getInstance();
-            Date today = calendar.getTime();
-            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-            String todayDate = sdf.format(today);
-            fromDate = todayDate;
-            toDate = todayDate;
+            val calendar = Calendar.getInstance()
+            val today = calendar.time
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            val todayDate = sdf.format(today)
+            fromDate = todayDate
+            toDate = todayDate
         } else {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent i = new Intent(mContext, MainActivity.class);
-        startActivity(i);
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val i = Intent(mContext, MainActivity::class.java)
+        startActivity(i)
     }
 
-    public void makeToast(String string) {
-        if (TextUtils.isEmpty(string)) return;
-        Toast.makeText(mActivity, string, Toast.LENGTH_SHORT).show();
+    override fun makeToast(string: String?) {
+        if (TextUtils.isEmpty(string)) return
+        Toast.makeText(mActivity, string, Toast.LENGTH_SHORT).show()
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 222) {
-            getInstallationCntApi(districtId, fromDate, toDate);
+            getInstallationCntApi(districtId, fromDate, toDate)
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.lytTotalL0Machine) {
-
-            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+    override fun onClick(v: View) {
+        if (v.id == R.id.lytTotalL0Machine) {
+            val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
             // Check if the device supports vibration
             if (vibrator.hasVibrator()) {
                 // Vibrate for 500 milliseconds (0.5 seconds)
-                vibrator.vibrate(100);
-                String selectedDate = String.valueOf(binding.spinner.getSelectedItemPosition());
-                String selectedDis = String.valueOf(binding.spinnerDistrict.getSelectedItemPosition());
+                vibrator.vibrate(100)
+                val selectedDate = binding!!.spinner.selectedItemPosition.toString()
+                val selectedDis = binding!!.spinnerDistrict.selectedItemPosition.toString()
 
-                Intent i = new Intent(mContext, BiometricDeliveryListActivity.class);
-                i.putExtra("key_districtId", districtId);
-                i.putExtra("key_districtName", districtNameEng);
-                i.putExtra("key_fromDate", fromDate);
-                i.putExtra("key_toDate", toDate);
-                i.putExtra("key_selectedDate", selectedDate);
-                i.putExtra("key_selectedDis", selectedDis);
-                i.putExtra("FILTER_TYPE_ID", "0");
+                val i = Intent(mContext, BiometricDeliveryListActivity::class.java)
+                i.putExtra("key_districtId", districtId)
+                i.putExtra("key_districtName", districtNameEng)
+                i.putExtra("key_fromDate", fromDate)
+                i.putExtra("key_toDate", toDate)
+                i.putExtra("key_selectedDate", selectedDate)
+                i.putExtra("key_selectedDis", selectedDis)
+                i.putExtra("FILTER_TYPE_ID", "0")
 
-                startActivity(i);
+                startActivity(i)
             }
-        } else if (v.getId() == R.id.lytTotalMapped) {
-            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        } else if (v.id == R.id.lytTotalMapped) {
+            val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
             // Check if the device supports vibration
             if (vibrator.hasVibrator()) {
                 // Vibrate for 500 milliseconds (0.5 seconds)
-                vibrator.vibrate(100);
-                String selectedDate = String.valueOf(binding.spinner.getSelectedItemPosition());
-                String selectedDis = String.valueOf(binding.spinnerDistrict.getSelectedItemPosition());
+                vibrator.vibrate(100)
+                val selectedDate = binding!!.spinner.selectedItemPosition.toString()
+                val selectedDis = binding!!.spinnerDistrict.selectedItemPosition.toString()
 
-                Intent i = new Intent(mContext, BiometricDeliveryListActivity.class);
-                i.putExtra("key_districtId", districtId);
-                i.putExtra("key_districtName", districtNameEng);
-                i.putExtra("key_fromDate", fromDate);
-                i.putExtra("key_toDate", toDate);
-                i.putExtra("key_selectedDate", selectedDate);
-                i.putExtra("key_selectedDis", selectedDis);
-                i.putExtra("FILTER_TYPE_ID", "1");
+                val i = Intent(mContext, BiometricDeliveryListActivity::class.java)
+                i.putExtra("key_districtId", districtId)
+                i.putExtra("key_districtName", districtNameEng)
+                i.putExtra("key_fromDate", fromDate)
+                i.putExtra("key_toDate", toDate)
+                i.putExtra("key_selectedDate", selectedDate)
+                i.putExtra("key_selectedDis", selectedDis)
+                i.putExtra("FILTER_TYPE_ID", "1")
 
-                startActivity(i);
+                startActivity(i)
             }
-        }else if (v.getId() == R.id.lytTotalDistributed) {
-            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        } else if (v.id == R.id.lytTotalDistributed) {
+            val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
             // Check if the device supports vibration
             if (vibrator.hasVibrator()) {
                 // Vibrate for 500 milliseconds (0.5 seconds)
-                vibrator.vibrate(100);
-                String selectedDate = String.valueOf(binding.spinner.getSelectedItemPosition());
-                String selectedDis = String.valueOf(binding.spinnerDistrict.getSelectedItemPosition());
+                vibrator.vibrate(100)
+                val selectedDate = binding!!.spinner.selectedItemPosition.toString()
+                val selectedDis = binding!!.spinnerDistrict.selectedItemPosition.toString()
 
-                Intent i = new Intent(mContext, BiometricDeliveryListActivity.class);
-                i.putExtra("key_districtId", districtId);
-                i.putExtra("key_districtName", districtNameEng);
-                i.putExtra("key_fromDate", fromDate);
-                i.putExtra("key_toDate", toDate);
-                i.putExtra("key_selectedDate", selectedDate);
-                i.putExtra("key_selectedDis", selectedDis);
-                i.putExtra("FILTER_TYPE_ID", "2");
+                val i = Intent(mContext, BiometricDeliveryListActivity::class.java)
+                i.putExtra("key_districtId", districtId)
+                i.putExtra("key_districtName", districtNameEng)
+                i.putExtra("key_fromDate", fromDate)
+                i.putExtra("key_toDate", toDate)
+                i.putExtra("key_selectedDate", selectedDate)
+                i.putExtra("key_selectedDis", selectedDis)
+                i.putExtra("FILTER_TYPE_ID", "2")
 
-                startActivity(i);
+                startActivity(i)
             }
-        }else if (v.getId() == R.id.cvInstallationPending) {
-            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        } else if (v.id == R.id.cvInstallationPending) {
+            val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
             // Check if the device supports vibration
             if (vibrator.hasVibrator()) {
                 // Vibrate for 500 milliseconds (0.5 seconds)
-                vibrator.vibrate(100);
-                String selectedDate = String.valueOf(binding.spinner.getSelectedItemPosition());
-                String selectedDis = String.valueOf(binding.spinnerDistrict.getSelectedItemPosition());
+                vibrator.vibrate(100)
+                val selectedDate = binding!!.spinner.selectedItemPosition.toString()
+                val selectedDis = binding!!.spinnerDistrict.selectedItemPosition.toString()
 
-                Intent i = new Intent(mContext, BiometricDeliveryListActivity.class);
-                i.putExtra("key_districtId", districtId);
-                i.putExtra("key_districtName", districtNameEng);
-                i.putExtra("key_fromDate", fromDate);
-                i.putExtra("key_toDate", toDate);
-                i.putExtra("key_selectedDate", selectedDate);
-                i.putExtra("key_selectedDis", selectedDis);
-                i.putExtra("FILTER_TYPE_ID", "3");
+                val i = Intent(mContext, BiometricDeliveryListActivity::class.java)
+                i.putExtra("key_districtId", districtId)
+                i.putExtra("key_districtName", districtNameEng)
+                i.putExtra("key_fromDate", fromDate)
+                i.putExtra("key_toDate", toDate)
+                i.putExtra("key_selectedDate", selectedDate)
+                i.putExtra("key_selectedDis", selectedDis)
+                i.putExtra("FILTER_TYPE_ID", "3")
 
-                startActivity(i);
+                startActivity(i)
             }
         }
     }

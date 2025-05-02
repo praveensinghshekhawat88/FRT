@@ -1,57 +1,32 @@
 package com.callmangement.EHR.ehrActivities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.callmangement.EHR.models.FeedbackbyDCListDatum;
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
 import com.callmangement.R;
-import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityFeedbackListdetailedBinding;
-import com.callmangement.databinding.ActivityInstalledListdetailedBinding;
-import com.callmangement.imagepicker.ui.imagepicker.ImagePicker;
 import com.callmangement.ui.ins_weighing_scale.adapter.ViewImageInstalledAdapterIris;
-import com.callmangement.ui.ins_weighing_scale.model.Installed.InstalledDatum;
-import com.callmangement.ui.ins_weighing_scale.model.InstalledDetailed.InstalledDetailedData;
-import com.callmangement.ui.ins_weighing_scale.model.InstalledDetailed.InstalledDetailedRoot;
-import com.callmangement.ui.ins_weighing_scale.model.InstalledDetailed.InstalledImagesDetail;
-import com.callmangement.utils.Constants;
-import com.callmangement.utils.EqualSpacingItemDecoration;
 import com.callmangement.utils.PrefManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
 import java.util.ArrayList;
-import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class FeedBackListDetail extends FragmentActivity implements View.OnClickListener, OnMapReadyCallback {
     private ActivityFeedbackListdetailedBinding binding;

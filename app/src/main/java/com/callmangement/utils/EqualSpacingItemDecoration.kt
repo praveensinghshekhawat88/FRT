@@ -1,71 +1,73 @@
-package com.callmangement.utils;
+package com.callmangement.utils
 
-import android.graphics.Rect;
-import android.view.View;
+import android.graphics.Rect
+import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-public class EqualSpacingItemDecoration extends RecyclerView.ItemDecoration {
-    private final int spacing;
-    private int displayMode;
-    public static final int HORIZONTAL = 0;
-    public static final int VERTICAL = 1;
-    public static final int GRID = 2;
-    public EqualSpacingItemDecoration(int spacing) {
-        this(spacing, -1);
+class EqualSpacingItemDecoration @JvmOverloads constructor(
+    private val spacing: Int,
+    private var displayMode: Int = -1
+) : ItemDecoration() {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        val position = parent.getChildViewHolder(view).adapterPosition
+        val itemCount = state.itemCount
+        val layoutManager = parent.layoutManager
+        setSpacingForDirection(outRect, layoutManager, position, itemCount)
     }
-    public EqualSpacingItemDecoration(int spacing, int displayMode) {
-        this.spacing = spacing;
-        this.displayMode = displayMode;
-    }
-    @Override
-    public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, RecyclerView parent, RecyclerView.State state) {
-        int position = parent.getChildViewHolder(view).getAdapterPosition();
-        int itemCount = state.getItemCount();
-        RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
-        setSpacingForDirection(outRect, layoutManager, position, itemCount);
-    }
-    private void setSpacingForDirection(Rect outRect,
-                                        RecyclerView.LayoutManager layoutManager,
-                                        int position,
-                                        int itemCount) {
 
+    private fun setSpacingForDirection(
+        outRect: Rect,
+        layoutManager: RecyclerView.LayoutManager?,
+        position: Int,
+        itemCount: Int
+    ) {
         // Resolve display mode automatically
+
         if (displayMode == -1) {
-            displayMode = resolveDisplayMode(layoutManager);
+            displayMode = resolveDisplayMode(layoutManager)
         }
-        switch (displayMode) {
-            case HORIZONTAL:
-                outRect.left = spacing;
-                outRect.right = position == itemCount - 1 ? spacing : 0;
-                outRect.top = spacing;
-                outRect.bottom = spacing;
-                break;
-            case VERTICAL:
-                outRect.left = spacing;
-                outRect.right = spacing;
-                outRect.top = spacing;
-                outRect.bottom = position == itemCount - 1 ? spacing : 0;
-                break;
-            case GRID:
-                if (layoutManager instanceof GridLayoutManager) {
-                    GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
-                    int cols = gridLayoutManager.getSpanCount();
-                    int rows = itemCount / cols;
-                    outRect.left = spacing;
-                    outRect.right = position % cols == cols - 1 ? spacing : 0;
-                    outRect.top = spacing;
-                    outRect.bottom = position / cols == rows - 1 ? spacing : 0;
-                }
-                break;
+        when (displayMode) {
+            HORIZONTAL -> {
+                outRect.left = spacing
+                outRect.right = if (position == itemCount - 1) spacing else 0
+                outRect.top = spacing
+                outRect.bottom = spacing
+            }
+
+            VERTICAL -> {
+                outRect.left = spacing
+                outRect.right = spacing
+                outRect.top = spacing
+                outRect.bottom = if (position == itemCount - 1) spacing else 0
+            }
+
+            GRID -> if (layoutManager is GridLayoutManager) {
+                val cols = layoutManager.spanCount
+                val rows = itemCount / cols
+                outRect.left = spacing
+                outRect.right = if (position % cols == cols - 1) spacing else 0
+                outRect.top = spacing
+                outRect.bottom = if (position / cols == rows - 1) spacing else 0
+            }
         }
     }
 
-    private int resolveDisplayMode(RecyclerView.LayoutManager layoutManager) {
-        if (layoutManager instanceof GridLayoutManager) return GRID;
-        if (layoutManager.canScrollHorizontally()) return HORIZONTAL;
-        return VERTICAL;
+    private fun resolveDisplayMode(layoutManager: RecyclerView.LayoutManager?): Int {
+        if (layoutManager is GridLayoutManager) return GRID
+        if (layoutManager!!.canScrollHorizontally()) return HORIZONTAL
+        return VERTICAL
+    }
+
+    companion object {
+        const val HORIZONTAL: Int = 0
+        const val VERTICAL: Int = 1
+        const val GRID: Int = 2
     }
 }

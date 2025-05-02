@@ -1,17 +1,17 @@
-package com.callmangement.Network;
+package com.callmangement.network
 
-import com.callmangement.BuildConfig;
+import com.callmangement.BuildConfig
 
-public class AppConfig {
-    private static final boolean DEBUG = true;
+object AppConfig {
+    private const val DEBUG = true
+
     // Versions
-    public static final String PACKAGE_NAME = BuildConfig.APPLICATION_ID;
-    public static final String VERSION_NAME = BuildConfig.VERSION_NAME;
-    public static final int VERSION_CODE = BuildConfig.VERSION_CODE;
+    const val PACKAGE_NAME: String = BuildConfig.APPLICATION_ID
+    const val VERSION_NAME: String = BuildConfig.VERSION_NAME
+    const val VERSION_CODE: Int = BuildConfig.VERSION_CODE
 
-    public static final int NOTIFICATION_ID = 100;
-    public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
+    const val NOTIFICATION_ID: Int = 100
+    const val NOTIFICATION_ID_BIG_IMAGE: Int = 101
 
-    public static final String api_key = "";
-
+    const val api_key: String = ""
 }

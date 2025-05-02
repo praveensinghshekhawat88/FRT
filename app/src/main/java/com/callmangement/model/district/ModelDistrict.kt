@@ -13,5 +13,5 @@ class ModelDistrict {
 
     @JvmField
     @SerializedName("District_List")
-    var district_List: MutableList<ModelDistrictList?>? = ArrayList()
+    var district_List: MutableList<ModelDistrictList>? = ArrayList()
 }

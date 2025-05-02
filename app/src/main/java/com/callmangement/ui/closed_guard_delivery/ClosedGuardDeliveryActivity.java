@@ -24,7 +24,6 @@ import android.os.ResultReceiver;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,13 +46,12 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.MultipartRequester;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.MultipartRequester;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityClosedGuardDeliveryBinding;
-import com.callmangement.databinding.ActivityIrisNewDeliveryBinding;
 import com.callmangement.imagepicker.model.Config;
 import com.callmangement.imagepicker.model.Image;
 import com.callmangement.imagepicker.ui.imagepicker.ImagePicker;
@@ -93,7 +91,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Part;
 
 public class ClosedGuardDeliveryActivity extends CustomActivity {
     private static final int GALLERY_REQUEST_CODE = 123;

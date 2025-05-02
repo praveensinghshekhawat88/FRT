@@ -1,61 +1,47 @@
-package com.callmangement.ui.biometric_delivery.adapter;
+package com.callmangement.ui.biometric_delivery.adapter
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.databinding.ItemSensorDistributedListBinding
+import com.callmangement.ui.biometric_delivery.model.SensorDistributionDetailsListResp
 
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.callmangement.databinding.ItemSensorDistributedListBinding;
-import com.callmangement.ui.biometric_delivery.model.SensorDistributionDetailsListResp;
-
-import java.util.ArrayList;
-
-public class SensorDistributionListAdapter extends RecyclerView.Adapter<SensorDistributionListAdapter.MyViewHolder> {
-    private final ArrayList<SensorDistributionDetailsListResp.Data> sensorDistributionList;
-
-    public SensorDistributionListAdapter(ArrayList<SensorDistributionDetailsListResp.Data> weighInsDataArrayList) {
-        this.sensorDistributionList = weighInsDataArrayList;
+class SensorDistributionListAdapter(private val sensorDistributionList: ArrayList<SensorDistributionDetailsListResp.Data>) :
+    RecyclerView.Adapter<SensorDistributionListAdapter.MyViewHolder?>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val itemSensorDistributedListBinding = ItemSensorDistributedListBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return MyViewHolder(itemSensorDistributedListBinding)
     }
 
-    @Override
-    public SensorDistributionListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val model = sensorDistributionList[position]
 
-        ItemSensorDistributedListBinding itemSensorDistributedListBinding = ItemSensorDistributedListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new SensorDistributionListAdapter.MyViewHolder(itemSensorDistributedListBinding);
+
+
+        holder.binding.txtDistrictName.text = model.district
+        holder.binding.txtFpsCode.text = model.fpscode
+        //    holder.binding.txtMappedDate.setText(model.getBiometrictMappedOnStr());
+        holder.binding.txtDeviceCode.text = model.deviceCode
+        holder.binding.txtStatus.text = model.biometricSensorStatus
     }
 
-    @Override
-    public void onBindViewHolder(SensorDistributionListAdapter.MyViewHolder holder, int position) {
-
-        SensorDistributionDetailsListResp.Data model = sensorDistributionList.get(position);;
-
-        holder.binding.txtDistrictName.setText(model.getDistrict());
-        holder.binding.txtFpsCode.setText(model.getFpscode());
-    //    holder.binding.txtMappedDate.setText(model.getBiometrictMappedOnStr());
-        holder.binding.txtDeviceCode.setText(model.getDeviceCode());
-        holder.binding.txtStatus.setText(model.getBiometricSensorStatus());
-
+    override fun getItemCount(): Int {
+        return sensorDistributionList.size
     }
 
-    @Override
-    public int getItemCount() {
-        return sensorDistributionList.size();
-    }
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final ItemSensorDistributedListBinding binding;
-
-        public MyViewHolder(ItemSensorDistributedListBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-            binding.getRoot().setOnClickListener(v -> {
-            });
+    class MyViewHolder(val binding: ItemSensorDistributedListBinding) : RecyclerView.ViewHolder(
+        binding.root
+    ), View.OnClickListener {
+        init {
+            binding.root.setOnClickListener { v: View? -> }
         }
 
-        @Override
-        public void onClick(View v) {
+        override fun onClick(v: View) {
         }
     }
-
 }

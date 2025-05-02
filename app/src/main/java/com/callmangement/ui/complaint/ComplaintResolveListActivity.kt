@@ -1,230 +1,252 @@
-package com.callmangement.ui.complaint;
+package com.callmangement.ui.complaint
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Context
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.DatePicker
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.adapter.ComplaintResolveListActivityAdapter
+import com.callmangement.custom.CustomActivity
+import com.callmangement.databinding.ActivityAssignedToMeBinding
+import com.callmangement.model.complaints.ModelComplaint
+import com.callmangement.model.complaints.ModelComplaintList
+import com.callmangement.model.district.ModelDistrictList
+import com.callmangement.model.tehsil.ModelTehsilList
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance.retrofitInstance
+import com.callmangement.utils.PrefManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Collections
+import java.util.Locale
+import java.util.Objects
 
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.content.Context;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
+class ComplaintResolveListActivity : CustomActivity() {
+    private var binding: ActivityAssignedToMeBinding? = null
+    private var adapter: ComplaintResolveListActivityAdapter? = null
+    private var prefManager: PrefManager? = null
+    private val tehsilList: MutableList<ModelTehsilList?> = ArrayList()
+    private var tehsil_List_main: List<ModelTehsilList?>? = ArrayList()
+    private var districtList: List<ModelDistrictList>? = ArrayList()
+    private var checkTehsil = 0
+    private var checkDistrict = 0
+    private var tehsilNameEng: String? = ""
+    private var districtNameEng: String? = ""
+    private val modelComplaintList: MutableList<ModelComplaintList>? = ArrayList()
+    private var viewModel: ComplaintViewModel? = null
+    private var filterType: String? = ""
+    private val complainStatusId = "3"
+    private var districtId: String? = "0"
+    private val myFormat = "yyyy-MM-dd"
+    private var checkFilter = 0
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
-import com.callmangement.R;
-import com.callmangement.adapter.ComplaintResolveListActivityAdapter;
-import com.callmangement.custom.CustomActivity;
-import com.callmangement.databinding.ActivityAssignedToMeBinding;
-import com.callmangement.model.complaints.ModelChallanUploadComplaint;
-import com.callmangement.model.complaints.ModelComplaint;
-import com.callmangement.model.district.ModelDistrictList;
-import com.callmangement.model.tehsil.ModelTehsilList;
-import com.callmangement.model.complaints.ModelComplaintList;
-import com.callmangement.utils.PrefManager;
+    private var currentPage = 1
+    private val isPagination = "1"
+    private val pageSize = "200"
+    private var isLoading = false
+    private var isLastPage = false
+    var TotalItems: Int = 0
+    var fpscodee: String? = null
+    private val myCalendarFromDate: Calendar = Calendar.getInstance()
+    private val myCalendarToDate: Calendar = Calendar.getInstance()
+    private var fromDate: String? = ""
+    private var toDate: String? = ""
+    private val spinnerList: MutableList<String> = ArrayList()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_assigned_to_me)
+        binding!!.actionBar.ivThreeDot.visibility = View.GONE
+        binding!!.actionBar.ivBack.visibility = View.VISIBLE
+        binding!!.actionBar.layoutLanguage.visibility = View.GONE
+        binding!!.actionBar.buttonPDF.visibility = View.GONE
+        binding!!.actionBar.textToolbarTitle.text = resources.getString(R.string.complaint_resolve)
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+        viewModel = ViewModelProviders.of(this).get(
+            ComplaintViewModel::class.java
+        )
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+        districtId = intent.getStringExtra("districtId")
+        filterType = intent.getStringExtra("filter_type")
+        tehsil_List_main = intent.getSerializableExtra("tehsil_list") as List<ModelTehsilList?>?
+        districtList = intent.getSerializableExtra("district_list") as List<ModelDistrictList>?
+        prefManager = PrefManager(mContext!!)
+        tehsilNameEng = "--" + resources.getString(R.string.tehsil) + "--"
+        districtNameEng = "--" + resources.getString(R.string.district) + "--"
 
-public class ComplaintResolveListActivity extends CustomActivity {
-    private ActivityAssignedToMeBinding binding;
-    private ComplaintResolveListActivityAdapter adapter;
-    private PrefManager prefManager;
-    private final List<ModelTehsilList> tehsilList = new ArrayList<>();
-    private List<ModelTehsilList> tehsil_List_main = new ArrayList<>();
-    private List<ModelDistrictList> districtList = new ArrayList<>();
-    private int checkTehsil = 0;
-    private int checkDistrict = 0;
-    private String tehsilNameEng = "";
-    private String districtNameEng = "";
-    private List<ModelComplaintList> modelComplaintList = new ArrayList<>();
-    private ComplaintViewModel viewModel;
-    private String filterType = "";
-    private final String complainStatusId = "3";
-    private String districtId = "0";
-    private final String myFormat = "yyyy-MM-dd";
-    private int checkFilter = 0;
-
-    private int currentPage = 1;
-    private String isPagination = "1";
-    private String pageSize = "200";
-    private boolean isLoading = false;
-    private boolean isLastPage = false;
-    int  TotalItems;
-String fpscodee;
-    private final Calendar myCalendarFromDate = Calendar.getInstance();
-    private final Calendar myCalendarToDate = Calendar.getInstance();
-    private String fromDate = "";
-    private String toDate = "";
-    private final List<String> spinnerList = new ArrayList<>();
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_assigned_to_me);
-        binding.actionBar.ivThreeDot.setVisibility(View.GONE);
-        binding.actionBar.ivBack.setVisibility(View.VISIBLE);
-        binding.actionBar.layoutLanguage.setVisibility(View.GONE);
-        binding.actionBar.buttonPDF.setVisibility(View.GONE);
-        binding.actionBar.textToolbarTitle.setText(getResources().getString(R.string.complaint_resolve));
-
-        viewModel = ViewModelProviders.of(this).get(ComplaintViewModel.class);
-
-        districtId = getIntent().getStringExtra("districtId");
-        filterType = getIntent().getStringExtra("filter_type");
-        tehsil_List_main = (List<ModelTehsilList>) getIntent().getSerializableExtra("tehsil_list");
-        districtList = (List<ModelDistrictList>) getIntent().getSerializableExtra("district_list");
-        prefManager = new PrefManager(mContext);
-        tehsilNameEng = "--"+getResources().getString(R.string.tehsil)+"--";
-        districtNameEng = "--"+getResources().getString(R.string.district)+"--";
-
-        initView();
-        fetchDataByMainType();
-        DateRangeSpinner();
-
+        initView()
+        fetchDataByMainType()
+        DateRangeSpinner()
     }
 
 
     @SuppressLint("NotifyDataSetChanged")
-    private void initView() {
-        tehsilList.addAll(tehsil_List_main);
+    private fun initView() {
+        tehsilList.addAll(tehsil_List_main!!)
 
-        if (prefManager.getUSER_TYPE_ID().equals("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) { // for service engineer
-            binding.rlTehsil.setVisibility(View.VISIBLE);
-            binding.rlDistrict.setVisibility(View.GONE);
-            if (tehsilList.size() > 0) {
-                Collections.reverse(tehsilList);
-                ModelTehsilList l = new ModelTehsilList();
-                l.setTehsilId(String.valueOf(-1));
-                l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
-                tehsilList.add(l);
-                Collections.reverse(tehsilList);
-                ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, tehsilList);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                binding.spinnerTehsil.setAdapter(dataAdapter);
+        if (prefManager!!.uSER_TYPE_ID == "4" && prefManager!!.uSER_TYPE.equals(
+                "ServiceEngineer",
+                ignoreCase = true
+            )
+        ) { // for service engineer
+            binding!!.rlTehsil.visibility = View.VISIBLE
+            binding!!.rlDistrict.visibility = View.GONE
+            if (tehsilList.size > 0) {
+                Collections.reverse(tehsilList)
+                val l = ModelTehsilList()
+                l.tehsilId = (-1).toString()
+                l.tehsilNameEng = "--" + resources.getString(R.string.tehsil) + "--"
+                tehsilList.add(l)
+                Collections.reverse(tehsilList)
+                val dataAdapter = ArrayAdapter(
+                    mContext!!, R.layout.spinner_item, tehsilList
+                )
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding!!.spinnerTehsil.adapter = dataAdapter
             }
-        }else if (prefManager.getUSER_TYPE_ID().equalsIgnoreCase("6") && prefManager.getUSER_TYPE().equalsIgnoreCase("DSO")){ // for service dso
-            binding.rlTehsil.setVisibility(View.VISIBLE);
-            binding.rlDistrict.setVisibility(View.GONE);
-            if (tehsilList.size() != 0) {
-                Collections.reverse(tehsilList);
-                ModelTehsilList l = new ModelTehsilList();
-                l.setTehsilId(String.valueOf(-1));
-                l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
-                tehsilList.add(l);
-                Collections.reverse(tehsilList);
+        } else if (prefManager!!.uSER_TYPE_ID.equals(
+                "6",
+                ignoreCase = true
+            ) && prefManager!!.uSER_TYPE.equals("DSO", ignoreCase = true)
+        ) { // for service dso
+            binding!!.rlTehsil.visibility = View.VISIBLE
+            binding!!.rlDistrict.visibility = View.GONE
+            if (tehsilList.size != 0) {
+                Collections.reverse(tehsilList)
+                val l = ModelTehsilList()
+                l.tehsilId = (-1).toString()
+                l.tehsilNameEng = "--" + resources.getString(R.string.tehsil) + "--"
+                tehsilList.add(l)
+                Collections.reverse(tehsilList)
 
-                ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, tehsilList);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                binding.spinnerTehsil.setAdapter(dataAdapter);
+                val dataAdapter = ArrayAdapter(
+                    mContext!!, R.layout.spinner_item, tehsilList
+                )
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding!!.spinnerTehsil.adapter = dataAdapter
             }
+        } else if (prefManager!!.uSER_TYPE_ID == "2" && prefManager!!.uSER_TYPE.equals(
+                "Manager",
+                ignoreCase = true
+            )
+        ) { // for manager
+            binding!!.rlTehsil.visibility = View.VISIBLE
+            binding!!.rlDistrict.visibility = View.VISIBLE
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("2") && prefManager.getUSER_TYPE().equalsIgnoreCase("Manager")){ // for manager
-            binding.rlTehsil.setVisibility(View.VISIBLE);
-            binding.rlDistrict.setVisibility(View.VISIBLE);
+            updateTehsilByDistrictId(districtId)
 
-            updateTehsilByDistrictId(districtId);
+            if (districtList != null && districtList!!.size > 0) {
+                val dataAdapter = ArrayAdapter(
+                    mContext!!, R.layout.spinner_item, districtList!!
+                )
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding!!.spinnerDistrict.adapter = dataAdapter
 
-            if (districtList != null && districtList.size() > 0) {
-                ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, districtList);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                binding.spinnerDistrict.setAdapter(dataAdapter);
-
-                if (!districtId.equalsIgnoreCase("0")){
-                    for (int i=0; i<districtList.size(); i++){
-                        if (districtList.get(i).getDistrictId().equals(districtId)){
-                            binding.spinnerDistrict.setSelection(i);
+                if (!districtId.equals("0", ignoreCase = true)) {
+                    for (i in districtList!!.indices) {
+                        if (districtList!![i].districtId == districtId) {
+                            binding!!.spinnerDistrict.setSelection(i)
                         }
                     }
                 }
-
             }
-        }else if (prefManager.getUSER_TYPE_ID().equals("5") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceCentre")) { // for service center
-            binding.rlTehsil.setVisibility(View.VISIBLE);
-            binding.rlDistrict.setVisibility(View.VISIBLE);
+        } else if (prefManager!!.uSER_TYPE_ID == "5" && prefManager!!.uSER_TYPE.equals(
+                "ServiceCentre",
+                ignoreCase = true
+            )
+        ) { // for service center
+            binding!!.rlTehsil.visibility = View.VISIBLE
+            binding!!.rlDistrict.visibility = View.VISIBLE
 
-            updateTehsilByDistrictId(districtId);
+            updateTehsilByDistrictId(districtId)
 
-            if (districtList != null && districtList.size() > 0) {
-                ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, districtList);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                binding.spinnerDistrict.setAdapter(dataAdapter);
+            if (districtList != null && districtList!!.size > 0) {
+                val dataAdapter = ArrayAdapter(
+                    mContext!!, R.layout.spinner_item, districtList!!
+                )
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding!!.spinnerDistrict.adapter = dataAdapter
 
-               if (!districtId.equalsIgnoreCase("0")){
-                    for (int i=0; i<districtList.size(); i++){
-                        if (districtList.get(i).getDistrictId().equals(districtId)){
-                            binding.spinnerDistrict.setSelection(i);
+                if (!districtId.equals("0", ignoreCase = true)) {
+                    for (i in districtList!!.indices) {
+                        if (districtList!![i].districtId == districtId) {
+                            binding!!.spinnerDistrict.setSelection(i)
                         }
                     }
                 }
-
             }
-        }else if (prefManager.getUSER_TYPE_ID().equals("1") && prefManager.getUSER_TYPE().equalsIgnoreCase("Admin")) { // for Admin
-            binding.rlTehsil.setVisibility(View.VISIBLE);
-            binding.rlDistrict.setVisibility(View.VISIBLE);
-            updateTehsilByDistrictId(districtId);
-            if (districtList != null && districtList.size() > 0) {
-                ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, districtList);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                binding.spinnerDistrict.setAdapter(dataAdapter);
+        } else if (prefManager!!.uSER_TYPE_ID == "1" && prefManager!!.uSER_TYPE.equals(
+                "Admin",
+                ignoreCase = true
+            )
+        ) { // for Admin
+            binding!!.rlTehsil.visibility = View.VISIBLE
+            binding!!.rlDistrict.visibility = View.VISIBLE
+            updateTehsilByDistrictId(districtId)
+            if (districtList != null && districtList!!.size > 0) {
+                val dataAdapter = ArrayAdapter(
+                    mContext!!, R.layout.spinner_item, districtList!!
+                )
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding!!.spinnerDistrict.adapter = dataAdapter
 
-                if (!districtId.equalsIgnoreCase("0")) {
-                    for (int i = 0; i < districtList.size(); i++) {
-                        if (districtList.get(i).getDistrictId().equals(districtId)) {
-                            binding.spinnerDistrict.setSelection(i);
+                if (!districtId.equals("0", ignoreCase = true)) {
+                    for (i in districtList!!.indices) {
+                        if (districtList!![i].districtId == districtId) {
+                            binding!!.spinnerDistrict.setSelection(i)
                         }
                     }
                 }
-
             }
         }
 
-        adapter = new ComplaintResolveListActivityAdapter(ComplaintResolveListActivity.this);
-        adapter.notifyDataSetChanged();
-        binding.rvComplaintResolveList.setHasFixedSize(true);
-        binding.rvComplaintResolveList.setLayoutManager(new LinearLayoutManager(ComplaintResolveListActivity.this, LinearLayoutManager.VERTICAL, false));
-        binding.rvComplaintResolveList.setAdapter(adapter);
+        adapter = ComplaintResolveListActivityAdapter(this@ComplaintResolveListActivity)
+        adapter!!.notifyDataSetChanged()
+        binding!!.rvComplaintResolveList.setHasFixedSize(true)
+        binding!!.rvComplaintResolveList.layoutManager = LinearLayoutManager(
+            this@ComplaintResolveListActivity,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        binding!!.rvComplaintResolveList.adapter = adapter
 
 
 
-        binding.rvComplaintResolveList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int visibleItemCount = layoutManager.getChildCount();
-                int totalItemCount = layoutManager.getItemCount();
-                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+        binding!!.rvComplaintResolveList.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+                val visibleItemCount = layoutManager!!.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
-                if (!isLoading && !isLastPage && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
-                    isLoading = true;
-                    currentPage++;
-                    new Handler(Looper.getMainLooper()).post(() -> fetchComplaintList());
+                if (!isLoading && !isLastPage && visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
+                    isLoading = true
+                    currentPage++
+                    Handler(Looper.getMainLooper()).post { fetchComplaintList() }
                 }
             }
-        });
+        })
 
 
 
@@ -233,41 +255,46 @@ String fpscodee;
 
 
 
-        binding.spinnerTehsil.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(++checkTehsil > 1) {
-                    tehsilNameEng = tehsilList.get(i).tehsilNameEng;
-                    setDataIntoAdapterByTehsil(tehsilNameEng);
+        binding!!.spinnerTehsil.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View,
+                    i: Int,
+                    l: Long
+                ) {
+                    if (++checkTehsil > 1) {
+                        tehsilNameEng = tehsilList[i]!!.tehsilNameEng
+                        setDataIntoAdapterByTehsil(tehsilNameEng)
+                    }
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        binding.spinnerDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                checkTehsil = 0;
-                if (++checkDistrict > 1) {
-                    districtNameEng = districtList.get(i).districtNameEng;
-                    districtId = districtList.get(i).getDistrictId();
-                  //  setDataIntoAdapterByDistrict(districtNameEng);
-                   // updateTehsilByDistrict(districtNameEng);
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {
                 }
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+        binding!!.spinnerDistrict.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View,
+                    i: Int,
+                    l: Long
+                ) {
+                    checkTehsil = 0
+                    if (++checkDistrict > 1) {
+                        districtNameEng = districtList!![i].districtNameEng
+                        districtId = districtList!![i].districtId
+                        //  setDataIntoAdapterByDistrict(districtNameEng);
+                        // updateTehsilByDistrict(districtNameEng);
+                    }
+                }
 
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {
+                }
             }
 
-        });
-
-      /*  binding.inputSearch.addTextChangedListener(new TextWatcher() {
+        /*  binding.inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -283,533 +310,581 @@ String fpscodee;
 
             }
         });*/
-
-        binding.actionBar.ivBack.setOnClickListener(view -> onBackPressed());
-
-
-        binding.buttonSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vibrateDevice(view.getContext());
-                //fetchDataByType();
-                currentPage = 1;
-                fpscodee = binding.inputFPS.getText().toString();
-                fetchComplaintList();
+        binding!!.actionBar.ivBack.setOnClickListener { view: View? -> onBackPressed() }
 
 
-            }
-        });
-
-
-    }
-
-
-
-
-
-
-    private void isLoadingprogress(){
-        viewModel.getIsLoading().observe(this, aBoolean -> {
-            if (aBoolean){
-                showProgress(getResources().getString(R.string.please_wait));
-            }else {
-                hideProgress();
-            }
-        });
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void setDataIntoAdapter(List<ModelComplaintList> modelComplaintList){
-        if (modelComplaintList != null && modelComplaintList.size() > 0) {
-          //  binding.textTotalComplaint.setText(""+ modelComplaintList.size());
-            binding.textTotalComplaint.setText(""+ TotalItems);
-            binding.rvComplaintResolveList.setVisibility(View.VISIBLE);
-            binding.textNoComplaint.setVisibility(View.GONE);
-            adapter.setData(modelComplaintList);
-        } else {
-            binding.textTotalComplaint.setText("0");
-            binding.rvComplaintResolveList.setVisibility(View.GONE);
-            binding.textNoComplaint.setVisibility(View.VISIBLE);
+        binding!!.buttonSearch.setOnClickListener { view ->
+            vibrateDevice(view.context)
+            //fetchDataByType();
+            currentPage = 1
+            fpscodee = binding!!.inputFPS.text.toString()
+            fetchComplaintList()
         }
-        isLoading = false;
+    }
 
+
+    private val isLoadingprogress: Unit
+        get() {
+            viewModel!!.isLoading!!.observe(this) { aBoolean: Boolean? ->
+                if (aBoolean!!) {
+                    showProgress(resources.getString(R.string.please_wait))
+                } else {
+                    hideProgress()
+                }
+            }
+        }
+
+    @SuppressLint("SetTextI18n")
+    private fun setDataIntoAdapter(modelComplaintList: List<ModelComplaintList>?) {
+        if (modelComplaintList != null && modelComplaintList.size > 0) {
+            //  binding.textTotalComplaint.setText(""+ modelComplaintList.size());
+            binding!!.textTotalComplaint.text = "" + TotalItems
+            binding!!.rvComplaintResolveList.visibility = View.VISIBLE
+            binding!!.textNoComplaint.visibility = View.GONE
+            adapter!!.setData(modelComplaintList)
+        } else {
+            binding!!.textTotalComplaint.text = "0"
+            binding!!.rvComplaintResolveList.visibility = View.GONE
+            binding!!.textNoComplaint.visibility = View.VISIBLE
+        }
+        isLoading = false
     }
 
     @SuppressLint("SetTextI18n")
-    private void setDataIntoAdapterByTehsil(String tehsilNameEng) {
-        List<ModelComplaintList> complaintList = new ArrayList<>();
-        if (modelComplaintList != null && modelComplaintList.size() > 0) {
-            for (int i = 0; i < modelComplaintList.size(); i++) {
-                if (tehsilNameEng.equalsIgnoreCase("--" + getResources().getString(R.string.tehsil) + "--")) {
-                    if (districtNameEng.equalsIgnoreCase("--" + getResources().getString(R.string.district) + "--")) {
-                        complaintList.add(modelComplaintList.get(i));
+    private fun setDataIntoAdapterByTehsil(tehsilNameEng: String?) {
+        val complaintList: MutableList<ModelComplaintList> = ArrayList()
+        if (modelComplaintList != null && modelComplaintList.size > 0) {
+            for (i in modelComplaintList.indices) {
+                if (tehsilNameEng.equals(
+                        "--" + resources.getString(R.string.tehsil) + "--",
+                        ignoreCase = true
+                    )
+                ) {
+                    if (districtNameEng.equals(
+                            "--" + resources.getString(R.string.district) + "--",
+                            ignoreCase = true
+                        )
+                    ) {
+                        complaintList.add(modelComplaintList[i])
                     } else {
-                        if (modelComplaintList.get(i).district != null) {
-                            if (modelComplaintList.get(i).district.equalsIgnoreCase(districtNameEng)) {
-                                complaintList.add(modelComplaintList.get(i));
+                        if (modelComplaintList[i].district != null) {
+                            if (modelComplaintList[i].district.equals(
+                                    districtNameEng,
+                                    ignoreCase = true
+                                )
+                            ) {
+                                complaintList.add(modelComplaintList[i])
                             }
                         }
                     }
                 } else {
-                    if (modelComplaintList.get(i).tehsil != null) {
-                        if (modelComplaintList.get(i).tehsil.equalsIgnoreCase(tehsilNameEng)) {
-                            complaintList.add(modelComplaintList.get(i));
+                    if (modelComplaintList[i].tehsil != null) {
+                        if (modelComplaintList[i].tehsil.equals(tehsilNameEng, ignoreCase = true)) {
+                            complaintList.add(modelComplaintList[i])
                         }
                     }
                 }
             }
         }
 
-        if (complaintList.size() > 0) {
-            binding.textTotalComplaint.setText(""+complaintList.size());
-            binding.rvComplaintResolveList.setVisibility(View.VISIBLE);
-            binding.textNoComplaint.setVisibility(View.GONE);
-            adapter.setData(complaintList);
-        }else {
-            binding.textTotalComplaint.setText("0");
-            binding.rvComplaintResolveList.setVisibility(View.GONE);
-            binding.textNoComplaint.setVisibility(View.VISIBLE);
+        if (complaintList.size > 0) {
+            binding!!.textTotalComplaint.text = "" + complaintList.size
+            binding!!.rvComplaintResolveList.visibility = View.VISIBLE
+            binding!!.textNoComplaint.visibility = View.GONE
+            adapter!!.setData(complaintList)
+        } else {
+            binding!!.textTotalComplaint.text = "0"
+            binding!!.rvComplaintResolveList.visibility = View.GONE
+            binding!!.textNoComplaint.visibility = View.VISIBLE
         }
-        
     }
 
     @SuppressLint("SetTextI18n")
-    private void setDataIntoAdapterByDistrict(String districtNameEng) {
-        List<ModelComplaintList> complaintList = new ArrayList<>();
-        if (modelComplaintList != null && modelComplaintList.size() > 0) {
-            for (int i = 0; i < modelComplaintList.size(); i++) {
-                if (districtNameEng.equalsIgnoreCase("--" + getResources().getString(R.string.district) + "--")) {
-                    complaintList.add(modelComplaintList.get(i));
-//                    if (modelComplaintList.get(i).getComplainStatusId().equals("3")) {
+    private fun setDataIntoAdapterByDistrict(districtNameEng: String) {
+        val complaintList: MutableList<ModelComplaintList> = ArrayList()
+        if (modelComplaintList != null && modelComplaintList.size > 0) {
+            for (i in modelComplaintList.indices) {
+                if (districtNameEng.equals(
+                        "--" + resources.getString(R.string.district) + "--",
+                        ignoreCase = true
+                    )
+                ) {
+                    complaintList.add(modelComplaintList[i])
+                    //                    if (modelComplaintList.get(i).getComplainStatusId().equals("3")) {
 //                        complaintList.add(modelComplaintList.get(i));
 //                    }
                 } else {
-                    if (modelComplaintList.get(i).district != null) {
-                        if (modelComplaintList.get(i).district.equalsIgnoreCase(districtNameEng)) {
-                            complaintList.add(modelComplaintList.get(i));
+                    if (modelComplaintList[i].district != null) {
+                        if (modelComplaintList[i].district.equals(
+                                districtNameEng,
+                                ignoreCase = true
+                            )
+                        ) {
+                            complaintList.add(modelComplaintList[i])
                         }
                     }
                 }
             }
         }
 
-        if (complaintList.size() > 0) {
-            binding.textTotalComplaint.setText(""+complaintList.size());
-            binding.rvComplaintResolveList.setVisibility(View.VISIBLE);
-            binding.textNoComplaint.setVisibility(View.GONE);
-            adapter.setData(complaintList);
-        }else {
-            binding.textTotalComplaint.setText("0");
-            binding.rvComplaintResolveList.setVisibility(View.GONE);
-            binding.textNoComplaint.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void updateTehsilByDistrict(String district){
-        tehsilList.clear();
-        if (tehsil_List_main != null && tehsil_List_main.size() > 0) {
-            for (int i = 0; i < tehsil_List_main.size(); i++) {
-                if (district.equalsIgnoreCase("--" + getResources().getString(R.string.district) + "--")) {
-                    tehsilList.add(tehsil_List_main.get(i));
-                } else {
-                    if (tehsil_List_main.get(i).districtNameEng != null) {
-                        if (tehsil_List_main.get(i).districtNameEng.equalsIgnoreCase(district)) {
-                            tehsilList.add(tehsil_List_main.get(i));
-                        }
-                    }
-                }
-            }
-        }
-
-        if (tehsilList.size() > 0) {
-            Collections.reverse(tehsilList);
-            ModelTehsilList l = new ModelTehsilList();
-            l.setTehsilId(String.valueOf(-1));
-            l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
-            tehsilList.add(l);
-            Collections.reverse(tehsilList);
-
-            ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, tehsilList);
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            binding.spinnerTehsil.setAdapter(dataAdapter);
-        }
-    }
-
-    private void updateTehsilByDistrictId(String districtId){
-        tehsilList.clear();
-        if (tehsil_List_main != null && tehsil_List_main.size() > 0) {
-            for (int i = 0; i < tehsil_List_main.size(); i++) {
-                if (districtId.equalsIgnoreCase("0")) {
-                    tehsilList.add(tehsil_List_main.get(i));
-                } else {
-                    if (tehsil_List_main.get(i).fk_DistrictId != null) {
-                        if (tehsil_List_main.get(i).fk_DistrictId.equalsIgnoreCase(districtId)) {
-                            tehsilList.add(tehsil_List_main.get(i));
-                        }
-                    }
-                }
-            }
-        }
-        if (tehsilList.size() > 0) {
-            Collections.reverse(tehsilList);
-            ModelTehsilList l = new ModelTehsilList();
-            l.setTehsilId(String.valueOf(-1));
-            l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
-            tehsilList.add(l);
-            Collections.reverse(tehsilList);
-
-            ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, tehsilList);
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            binding.spinnerTehsil.setAdapter(dataAdapter);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-
-
-
-    private void updateLabelFromDate() {
-        String myFormat = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        binding.textFromDate.setText(sdf.format(myCalendarFromDate.getTime()));
-        Objects.requireNonNull(binding.textToDate.getText()).clear();
-        fromDate = Objects.requireNonNull(binding.textFromDate.getText()).toString().trim();
-    }
-
-    private void updateLabelToDate() {
-        String myFormat = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        binding.textToDate.setText(sdf.format(myCalendarToDate.getTime()));
-        toDate = Objects.requireNonNull(binding.textToDate.getText()).toString().trim();
-    }
-    private void vibrateDevice(Context context) {
-        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        if (vibrator != null && vibrator.hasVibrator()) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
-            } else {
-                vibrator.vibrate(100);
-            }
-        }
-    }
-
-
-
-
-    private void fetchDataByMainType(){
-        if (!filterType.equalsIgnoreCase("--"+getResources().getString(R.string.select_filter)+"--")) {
-            if (filterType.equalsIgnoreCase(getResources().getString(R.string.today))) {
-                filterType = getResources().getString(R.string.today);
-                binding.spinner.setSelection(1);
-
-                Calendar calendar = Calendar.getInstance();
-                Date today = calendar.getTime();
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                String todayDate = sdf.format(today);
-                fromDate = todayDate;
-                toDate = todayDate;
-
-
-
-
-            } else if (filterType.equalsIgnoreCase(getResources().getString(R.string.yesterday))) {
-                filterType = getResources().getString(R.string.yesterday);
-                binding.spinner.setSelection(2);
-
-                Calendar calendar = Calendar.getInstance();
-                calendar.add(Calendar.DAY_OF_YEAR, -1);
-                Date yesterday = calendar.getTime();
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                String yesterdayDate = sdf.format(yesterday);
-                fromDate = yesterdayDate;
-                toDate = yesterdayDate;
-
-            } else if (filterType.equalsIgnoreCase(getResources().getString(R.string.current_month))) {
-                filterType = getResources().getString(R.string.current_month);
-                binding.spinner.setSelection(3);
-
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
-                calendar.set(Calendar.HOUR_OF_DAY, 0);
-                calendar.set(Calendar.MINUTE, 0);
-                calendar.set(Calendar.SECOND, 0);
-                calendar.set(Calendar.MILLISECOND, 0);
-                Date firstDateOfCurrentMonth = calendar.getTime();
-                String date1 = sdf.format(firstDateOfCurrentMonth);
-
-                Calendar calendar1 = Calendar.getInstance();
-                Date currentDateOfCurrentMonth = calendar1.getTime();
-                String date2 = sdf.format(currentDateOfCurrentMonth);
-                fromDate = date1;
-                toDate = date2;
-            } else if (filterType.equalsIgnoreCase(getResources().getString(R.string.previous_month))) {
-
-
-                filterType = getResources().getString(R.string.previous_month);
-                binding.spinner.setSelection(4);
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                Calendar aCalendar = Calendar.getInstance();
-                aCalendar.add(Calendar.MONTH, -1);
-                aCalendar.set(Calendar.DATE, 1);
-                Date firstDateOfPreviousMonth = aCalendar.getTime();
-                String date1 = sdf.format(firstDateOfPreviousMonth);
-                aCalendar.set(Calendar.DATE,     aCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-                Date lastDateOfPreviousMonth = aCalendar.getTime();
-                String date2 = sdf.format(lastDateOfPreviousMonth);
-                fromDate = date1;
-                toDate = date2;
-
-
-
-            } else if (filterType.equalsIgnoreCase(getResources().getString(R.string.custom_filter))){
-
-
-
-                filterType = getResources().getString(R.string.custom_filter);
-                binding.spinner.setSelection(5);
-                fromDate = prefManager.getFROM_DATE();
-                toDate = prefManager.getTO_DATE();
-                binding.layoutDateRange.setVisibility(View.VISIBLE);
-                fromDate = prefManager.getFROM_DATE();
-                toDate = prefManager.getTO_DATE();
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                try {
-                    myCalendarFromDate.setTime(sdf.parse(fromDate));
-                    myCalendarToDate.setTime(sdf.parse(toDate));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-
-
-            }
-            fetchComplaintList();
-
+        if (complaintList.size > 0) {
+            binding!!.textTotalComplaint.text = "" + complaintList.size
+            binding!!.rvComplaintResolveList.visibility = View.VISIBLE
+            binding!!.textNoComplaint.visibility = View.GONE
+            adapter!!.setData(complaintList)
         } else {
-            filterType = "--"+getResources().getString(R.string.select_filter)+"--";
-            fromDate = "";
-            toDate = "";
-            fetchComplaintList();
+            binding!!.textTotalComplaint.text = "0"
+            binding!!.rvComplaintResolveList.visibility = View.GONE
+            binding!!.textNoComplaint.visibility = View.VISIBLE
+        }
+    }
+
+    private fun updateTehsilByDistrict(district: String) {
+        tehsilList.clear()
+        if (tehsil_List_main != null && tehsil_List_main!!.size > 0) {
+            for (i in tehsil_List_main!!.indices) {
+                if (district.equals(
+                        "--" + resources.getString(R.string.district) + "--",
+                        ignoreCase = true
+                    )
+                ) {
+                    tehsilList.add(tehsil_List_main!![i])
+                } else {
+                    if (tehsil_List_main!![i]!!.districtNameEng != null) {
+                        if (tehsil_List_main!![i]!!.districtNameEng.equals(
+                                district,
+                                ignoreCase = true
+                            )
+                        ) {
+                            tehsilList.add(tehsil_List_main!![i])
+                        }
+                    }
+                }
+            }
+        }
+
+        if (tehsilList.size > 0) {
+            Collections.reverse(tehsilList)
+            val l = ModelTehsilList()
+            l.tehsilId = (-1).toString()
+            l.tehsilNameEng = "--" + resources.getString(R.string.tehsil) + "--"
+            tehsilList.add(l)
+            Collections.reverse(tehsilList)
+
+            val dataAdapter = ArrayAdapter(
+                mContext!!, R.layout.spinner_item, tehsilList
+            )
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding!!.spinnerTehsil.adapter = dataAdapter
+        }
+    }
+
+    private fun updateTehsilByDistrictId(districtId: String?) {
+        tehsilList.clear()
+        if (tehsil_List_main != null && tehsil_List_main!!.size > 0) {
+            for (i in tehsil_List_main!!.indices) {
+                if (districtId.equals("0", ignoreCase = true)) {
+                    tehsilList.add(tehsil_List_main!![i])
+                } else {
+                    if (tehsil_List_main!![i]!!.fk_DistrictId != null) {
+                        if (tehsil_List_main!![i]!!.fk_DistrictId.equals(
+                                districtId,
+                                ignoreCase = true
+                            )
+                        ) {
+                            tehsilList.add(tehsil_List_main!![i])
+                        }
+                    }
+                }
+            }
+        }
+        if (tehsilList.size > 0) {
+            Collections.reverse(tehsilList)
+            val l = ModelTehsilList()
+            l.tehsilId = (-1).toString()
+            l.tehsilNameEng = "--" + resources.getString(R.string.tehsil) + "--"
+            tehsilList.add(l)
+            Collections.reverse(tehsilList)
+
+            val dataAdapter = ArrayAdapter(
+                mContext!!, R.layout.spinner_item, tehsilList
+            )
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding!!.spinnerTehsil.adapter = dataAdapter
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
+
+
+    private fun updateLabelFromDate() {
+        val myFormat = "yyyy-MM-dd"
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        binding!!.textFromDate.setText(sdf.format(myCalendarFromDate.time))
+        Objects.requireNonNull(binding!!.textToDate.text)!!.clear()
+        fromDate = Objects.requireNonNull(binding!!.textFromDate.text).toString().trim { it <= ' ' }
+    }
+
+    private fun updateLabelToDate() {
+        val myFormat = "yyyy-MM-dd"
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        binding!!.textToDate.setText(sdf.format(myCalendarToDate.time))
+        toDate = Objects.requireNonNull(binding!!.textToDate.text).toString().trim { it <= ' ' }
+    }
+
+    private fun vibrateDevice(context: Context) {
+        val vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
+        if (vibrator != null && vibrator.hasVibrator()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(
+                    VibrationEffect.createOneShot(
+                        100,
+                        VibrationEffect.DEFAULT_AMPLITUDE
+                    )
+                )
+            } else {
+                vibrator.vibrate(100)
+            }
         }
     }
 
 
-    private void DateRangeSpinner() {
-        spinnerList.add("--" + getResources().getString(R.string.select_filter) + "--");
-        spinnerList.add(getResources().getString(R.string.today));
-        spinnerList.add(getResources().getString(R.string.yesterday));
-        spinnerList.add(getResources().getString(R.string.current_month));
-        spinnerList.add(getResources().getString(R.string.previous_month));
-        spinnerList.add(getResources().getString(R.string.custom_filter));
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerList);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinner.setAdapter(dataAdapter);
+    private fun fetchDataByMainType() {
+        if (!filterType.equals(
+                "--" + resources.getString(R.string.select_filter) + "--",
+                ignoreCase = true
+            )
+        ) {
+            if (filterType.equals(resources.getString(R.string.today), ignoreCase = true)) {
+                filterType = resources.getString(R.string.today)
+                binding!!.spinner.setSelection(1)
+
+                val calendar = Calendar.getInstance()
+                val today = calendar.time
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                val todayDate = sdf.format(today)
+                fromDate = todayDate
+                toDate = todayDate
+            } else if (filterType.equals(
+                    resources.getString(R.string.yesterday),
+                    ignoreCase = true
+                )
+            ) {
+                filterType = resources.getString(R.string.yesterday)
+                binding!!.spinner.setSelection(2)
+
+                val calendar = Calendar.getInstance()
+                calendar.add(Calendar.DAY_OF_YEAR, -1)
+                val yesterday = calendar.time
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                val yesterdayDate = sdf.format(yesterday)
+                fromDate = yesterdayDate
+                toDate = yesterdayDate
+            } else if (filterType.equals(
+                    resources.getString(R.string.current_month),
+                    ignoreCase = true
+                )
+            ) {
+                filterType = resources.getString(R.string.current_month)
+                binding!!.spinner.setSelection(3)
+
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+
+                val calendar = Calendar.getInstance()
+                calendar[Calendar.DAY_OF_MONTH] = calendar.getActualMinimum(Calendar.DAY_OF_MONTH)
+                calendar[Calendar.HOUR_OF_DAY] = 0
+                calendar[Calendar.MINUTE] = 0
+                calendar[Calendar.SECOND] = 0
+                calendar[Calendar.MILLISECOND] = 0
+                val firstDateOfCurrentMonth = calendar.time
+                val date1 = sdf.format(firstDateOfCurrentMonth)
+
+                val calendar1 = Calendar.getInstance()
+                val currentDateOfCurrentMonth = calendar1.time
+                val date2 = sdf.format(currentDateOfCurrentMonth)
+                fromDate = date1
+                toDate = date2
+            } else if (filterType.equals(
+                    resources.getString(R.string.previous_month),
+                    ignoreCase = true
+                )
+            ) {
+                filterType = resources.getString(R.string.previous_month)
+                binding!!.spinner.setSelection(4)
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                val aCalendar = Calendar.getInstance()
+                aCalendar.add(Calendar.MONTH, -1)
+                aCalendar[Calendar.DATE] = 1
+                val firstDateOfPreviousMonth = aCalendar.time
+                val date1 = sdf.format(firstDateOfPreviousMonth)
+                aCalendar[Calendar.DATE] = aCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+                val lastDateOfPreviousMonth = aCalendar.time
+                val date2 = sdf.format(lastDateOfPreviousMonth)
+                fromDate = date1
+                toDate = date2
+            } else if (filterType.equals(
+                    resources.getString(R.string.custom_filter),
+                    ignoreCase = true
+                )
+            ) {
+                filterType = resources.getString(R.string.custom_filter)
+                binding!!.spinner.setSelection(5)
+                fromDate = prefManager!!.fROM_DATE
+                toDate = prefManager!!.tO_DATE
+                binding!!.layoutDateRange.visibility = View.VISIBLE
+                fromDate = prefManager!!.fROM_DATE
+                toDate = prefManager!!.tO_DATE
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                try {
+                    myCalendarFromDate.time = sdf.parse(fromDate)
+                    myCalendarToDate.time = sdf.parse(toDate)
+                } catch (e: ParseException) {
+                    e.printStackTrace()
+                }
+            }
+            fetchComplaintList()
+        } else {
+            filterType = "--" + resources.getString(R.string.select_filter) + "--"
+            fromDate = ""
+            toDate = ""
+            fetchComplaintList()
+        }
+    }
+
+
+    private fun DateRangeSpinner() {
+        spinnerList.add("--" + resources.getString(R.string.select_filter) + "--")
+        spinnerList.add(resources.getString(R.string.today))
+        spinnerList.add(resources.getString(R.string.yesterday))
+        spinnerList.add(resources.getString(R.string.current_month))
+        spinnerList.add(resources.getString(R.string.previous_month))
+        spinnerList.add(resources.getString(R.string.custom_filter))
+        val dataAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerList)
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding!!.spinner.adapter = dataAdapter
+
         // binding.spinner.setSelection(Integer.parseInt(value_selectedDay));
 
         //  binding.spinner.setSelection(1);
-
-        binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        binding!!.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 if (++checkFilter > 1) {
-                    String item = adapterView.getItemAtPosition(i).toString();
-                    if (!item.equalsIgnoreCase("--" + getResources().getString(R.string.select_filter) + "--")) {
-                        Objects.requireNonNull(binding.textFromDate.getText()).clear();
-                        Objects.requireNonNull(binding.textToDate.getText()).clear();
-                        if (item.equalsIgnoreCase(getResources().getString(R.string.today))) {
-                            binding.layoutDateRange.setVisibility(View.GONE);
-                            Calendar calendar = Calendar.getInstance();
-                            Date today = calendar.getTime();
-                            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                            String todayDate = sdf.format(today);
-                            fromDate = todayDate;
-                            toDate = todayDate;
+                    val item = adapterView.getItemAtPosition(i).toString()
+                    if (!item.equals(
+                            "--" + resources.getString(R.string.select_filter) + "--",
+                            ignoreCase = true
+                        )
+                    ) {
+                        Objects.requireNonNull(binding!!.textFromDate.text)!!.clear()
+                        Objects.requireNonNull(binding!!.textToDate.text)!!.clear()
+                        if (item.equals(resources.getString(R.string.today), ignoreCase = true)) {
+                            binding!!.layoutDateRange.visibility = View.GONE
+                            val calendar = Calendar.getInstance()
+                            val today = calendar.time
+                            val sdf = SimpleDateFormat(myFormat, Locale.US)
+                            val todayDate = sdf.format(today)
+                            fromDate = todayDate
+                            toDate = todayDate
+                        } else if (item.equals(
+                                resources.getString(R.string.yesterday),
+                                ignoreCase = true
+                            )
+                        ) {
+                            binding!!.layoutDateRange.visibility = View.GONE
+                            val calendar = Calendar.getInstance()
+                            calendar.add(Calendar.DAY_OF_YEAR, -1)
+                            val yesterday = calendar.time
+                            val sdf = SimpleDateFormat(myFormat, Locale.US)
+                            val yesterdayDate = sdf.format(yesterday)
+                            fromDate = yesterdayDate
+                            toDate = yesterdayDate
+                        } else if (item.equals(
+                                resources.getString(R.string.current_month),
+                                ignoreCase = true
+                            )
+                        ) {
+                            binding!!.layoutDateRange.visibility = View.GONE
+                            val sdf = SimpleDateFormat(myFormat, Locale.US)
 
-                        } else if (item.equalsIgnoreCase(getResources().getString(R.string.yesterday))) {
-                            binding.layoutDateRange.setVisibility(View.GONE);
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.add(Calendar.DAY_OF_YEAR, -1);
-                            Date yesterday = calendar.getTime();
-                            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                            String yesterdayDate = sdf.format(yesterday);
-                            fromDate = yesterdayDate;
-                            toDate = yesterdayDate;
+                            val calendar = Calendar.getInstance()
+                            calendar[Calendar.DAY_OF_MONTH] =
+                                calendar.getActualMinimum(Calendar.DAY_OF_MONTH)
+                            calendar[Calendar.HOUR_OF_DAY] = 0
+                            calendar[Calendar.MINUTE] = 0
+                            calendar[Calendar.SECOND] = 0
+                            calendar[Calendar.MILLISECOND] = 0
+                            val firstDateOfCurrentMonth = calendar.time
+                            val date1 = sdf.format(firstDateOfCurrentMonth)
 
-
-
-                        } else if (item.equalsIgnoreCase(getResources().getString(R.string.current_month))) {
-                            binding.layoutDateRange.setVisibility(View.GONE);
-                            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
-                            calendar.set(Calendar.HOUR_OF_DAY, 0);
-                            calendar.set(Calendar.MINUTE, 0);
-                            calendar.set(Calendar.SECOND, 0);
-                            calendar.set(Calendar.MILLISECOND, 0);
-                            Date firstDateOfCurrentMonth = calendar.getTime();
-                            String date1 = sdf.format(firstDateOfCurrentMonth);
-
-                            Calendar calendar1 = Calendar.getInstance();
-                            Date currentDateOfCurrentMonth = calendar1.getTime();
-                            String date2 = sdf.format(currentDateOfCurrentMonth);
-                            fromDate = date1;
-                            toDate = date2;
-
-
-
-                        } else if (item.equalsIgnoreCase(getResources().getString(R.string.previous_month))) {
-                            binding.layoutDateRange.setVisibility(View.GONE);
-                            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                            Calendar aCalendar = Calendar.getInstance();
-                            aCalendar.add(Calendar.MONTH, -1);
-                            aCalendar.set(Calendar.DATE, 1);
-                            Date firstDateOfPreviousMonth = aCalendar.getTime();
-                            String date1 = sdf.format(firstDateOfPreviousMonth);
-                            aCalendar.set(Calendar.DATE, aCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-                            Date lastDateOfPreviousMonth = aCalendar.getTime();
-                            String date2 = sdf.format(lastDateOfPreviousMonth);
-                            fromDate = date1;
-                            toDate = date2;
-
-                        } else if (item.equalsIgnoreCase(getResources().getString(R.string.custom_filter))) {
-                            binding.layoutDateRange.setVisibility(View.VISIBLE);
-
+                            val calendar1 = Calendar.getInstance()
+                            val currentDateOfCurrentMonth = calendar1.time
+                            val date2 = sdf.format(currentDateOfCurrentMonth)
+                            fromDate = date1
+                            toDate = date2
+                        } else if (item.equals(
+                                resources.getString(R.string.previous_month),
+                                ignoreCase = true
+                            )
+                        ) {
+                            binding!!.layoutDateRange.visibility = View.GONE
+                            val sdf = SimpleDateFormat(myFormat, Locale.US)
+                            val aCalendar = Calendar.getInstance()
+                            aCalendar.add(Calendar.MONTH, -1)
+                            aCalendar[Calendar.DATE] = 1
+                            val firstDateOfPreviousMonth = aCalendar.time
+                            val date1 = sdf.format(firstDateOfPreviousMonth)
+                            aCalendar[Calendar.DATE] =
+                                aCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+                            val lastDateOfPreviousMonth = aCalendar.time
+                            val date2 = sdf.format(lastDateOfPreviousMonth)
+                            fromDate = date1
+                            toDate = date2
+                        } else if (item.equals(
+                                resources.getString(R.string.custom_filter),
+                                ignoreCase = true
+                            )
+                        ) {
+                            binding!!.layoutDateRange.visibility = View.VISIBLE
                         }
                     } else {
-                        fromDate = "";
-                        toDate = "";
-                        Objects.requireNonNull(binding.textFromDate.getText()).clear();
-                        Objects.requireNonNull(binding.textToDate.getText()).clear();
-                        binding.layoutDateRange.setVisibility(View.GONE);
-
-
-
-
+                        fromDate = ""
+                        toDate = ""
+                        Objects.requireNonNull(binding!!.textFromDate.text)!!.clear()
+                        Objects.requireNonNull(binding!!.textToDate.text)!!.clear()
+                        binding!!.layoutDateRange.visibility = View.GONE
                     }
                 }
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
             }
-        });
+        }
 
 
-        binding.textFromDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog.OnDateSetListener dateFromDate = (view1, year, monthOfYear, dayOfMonth) -> {
-                    myCalendarFromDate.set(Calendar.YEAR, year);
-                    myCalendarFromDate.set(Calendar.MONTH, monthOfYear);
-                    myCalendarFromDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    updateLabelFromDate();
-                };
-                DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, dateFromDate, myCalendarFromDate
-                        .get(Calendar.YEAR), myCalendarFromDate.get(Calendar.MONTH),
-                        myCalendarFromDate.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                long minDateInMillis = myCalendarToDate.getTimeInMillis();
-                datePickerDialog.getDatePicker().setMaxDate(minDateInMillis);
-                datePickerDialog.show();
-
-            }
-        });
-
-
-        binding.textToDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog.OnDateSetListener dateToDate = (view1, year, monthOfYear, dayOfMonth) -> {
-                    myCalendarToDate.set(Calendar.YEAR, year);
-                    myCalendarToDate.set(Calendar.MONTH, monthOfYear);
-                    myCalendarToDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    updateLabelToDate();
-                };
-                DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, dateToDate, myCalendarToDate
-                        .get(Calendar.YEAR), myCalendarToDate.get(Calendar.MONTH),
-                        myCalendarToDate.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                long minDateInMillis = myCalendarFromDate.getTimeInMillis();
-                datePickerDialog.getDatePicker().setMinDate(minDateInMillis);
-                datePickerDialog.show();
-            }
-        });
+        binding!!.textFromDate.setOnClickListener {
+            val dateFromDate =
+                OnDateSetListener { view1: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                    myCalendarFromDate[Calendar.YEAR] = year
+                    myCalendarFromDate[Calendar.MONTH] = monthOfYear
+                    myCalendarFromDate[Calendar.DAY_OF_MONTH] = dayOfMonth
+                    updateLabelFromDate()
+                }
+            val datePickerDialog = DatePickerDialog(
+                mContext!!,
+                dateFromDate,
+                myCalendarFromDate[Calendar.YEAR],
+                myCalendarFromDate[Calendar.MONTH],
+                myCalendarFromDate[Calendar.DAY_OF_MONTH]
+            )
+            datePickerDialog.datePicker.maxDate = System.currentTimeMillis() - 1000
+            val minDateInMillis = myCalendarToDate.timeInMillis
+            datePickerDialog.datePicker.maxDate = minDateInMillis
+            datePickerDialog.show()
+        }
 
 
+        binding!!.textToDate.setOnClickListener {
+            val dateToDate =
+                OnDateSetListener { view1: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                    myCalendarToDate[Calendar.YEAR] = year
+                    myCalendarToDate[Calendar.MONTH] = monthOfYear
+                    myCalendarToDate[Calendar.DAY_OF_MONTH] = dayOfMonth
+                    updateLabelToDate()
+                }
+            val datePickerDialog = DatePickerDialog(
+                mContext!!,
+                dateToDate,
+                myCalendarToDate[Calendar.YEAR],
+                myCalendarToDate[Calendar.MONTH],
+                myCalendarToDate[Calendar.DAY_OF_MONTH]
+            )
+            datePickerDialog.datePicker.maxDate = System.currentTimeMillis() - 1000
+            val minDateInMillis = myCalendarFromDate.timeInMillis
+            datePickerDialog.datePicker.minDate = minDateInMillis
+            datePickerDialog.show()
+        }
     }
 
 
+    private fun fetchComplaintList() {
+        showProgress(resources.getString(R.string.please_wait))
 
-    private void fetchComplaintList() {
-        showProgress(getResources().getString(R.string.please_wait));
+        Log.d(
+            "Parameter--",
+            "UserId: " + prefManager!!.uSER_Id + " DistrictId: " + districtId + " StatusId: " + complainStatusId
+                    + " FPS: " + fpscodee + " From: " + fromDate + " To: " + toDate + " Pagination: " + isPagination
+                    + " Page: " + currentPage + " PageSize: " + pageSize
+        )
 
-        Log.d("Parameter--", "UserId: " + prefManager.getUSER_Id() + " DistrictId: " + districtId + " StatusId: " + complainStatusId
-                + " FPS: " + fpscodee + " From: " + fromDate + " To: " + toDate + " Pagination: " + isPagination
-                + " Page: " + currentPage + " PageSize: " + pageSize);
+        val service = retrofitInstance!!.create(APIService::class.java)
+        val call = service.getComplaintListDistStatusDateWiseNew(
+            prefManager!!.uSER_Id, districtId, complainStatusId, fromDate, toDate,
+            isPagination, currentPage.toString(), pageSize, fpscodee
+        )
 
-        APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-        Call<ModelComplaint> call = service.getComplaintListDistStatusDateWiseNew(
-                prefManager.getUSER_Id(), districtId, complainStatusId, fromDate, toDate,
-                isPagination, String.valueOf(currentPage), pageSize, fpscodee
-        );
+        call!!.enqueue(object : Callback<ModelComplaint?> {
+            override fun onResponse(
+                call: Call<ModelComplaint?>,
+                response: Response<ModelComplaint?>
+            ) {
+                hideProgress()
+                if (response.isSuccessful) {
+                    val model = response.body()
+                    if (model != null && model.status == "200") {
+                        val totalPage = model.totalPages
+                        val CurrentPage = model.currentPage
+                        TotalItems = model.totalItems
 
-        call.enqueue(new Callback<ModelComplaint>() {
-            @Override
-            public void onResponse(@NonNull Call<ModelComplaint> call, @NonNull Response<ModelComplaint> response) {
-                hideProgress();
-                if (response.isSuccessful()) {
-                    ModelComplaint model = response.body();
-                    if (model != null && model.status.equals("200")) {
-                        int totalPage = model.totalPages;
-                        int CurrentPage = model.currentPage;
-                        TotalItems = model.totalItems;
-
-                        Log.d("CheckNow--", totalPage + " " + CurrentPage + " " + TotalItems);
+                        Log.d("CheckNow--", "$totalPage $CurrentPage $TotalItems")
 
                         if (currentPage == 1) {
                             // Fresh search: Clear and set new data
-                            modelComplaintList.clear();
-                            modelComplaintList.addAll(model.getComplaint_List());
-                            setDataIntoAdapter(modelComplaintList);
+                            modelComplaintList!!.clear()
+                            modelComplaintList.addAll(model.complaint_List!!)
+                            setDataIntoAdapter(modelComplaintList)
                         } else {
                             // Scrolling: Add more data
-                            adapter.addData(model.getComplaint_List());
+                            adapter!!.addData(model.complaint_List!!)
                         }
 
                         if (currentPage == totalPage) {
-                            isLastPage = true;
+                            isLastPage = true
                         }
 
-                        isLoading = false;
+                        isLoading = false
                     } else {
-                        modelComplaintList.clear();
-                        setDataIntoAdapter(modelComplaintList);
-                        isLoading = false;
-                        Toast.makeText(mContext, model != null ? model.message : "No data", Toast.LENGTH_SHORT).show();
+                        modelComplaintList!!.clear()
+                        setDataIntoAdapter(modelComplaintList)
+                        isLoading = false
+                        Toast.makeText(
+                            mContext,
+                            if (model != null) model.message else "No data",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } else {
-                    hideProgress();
-                    isLoading = false;
-                    Toast.makeText(mContext, mContext.getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
+                    hideProgress()
+                    isLoading = false
+                    Toast.makeText(
+                        mContext,
+                        mContext!!.resources.getString(R.string.error),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
-            @Override
-            public void onFailure(@NonNull Call<ModelComplaint> call, @NonNull Throwable t) {
-                hideProgress();
-                isLoading = false;
-                Toast.makeText(mContext, mContext.getResources().getString(R.string.error_message), Toast.LENGTH_SHORT).show();
-                Log.d("error----", "is" + t.getMessage());
+            override fun onFailure(call: Call<ModelComplaint?>, t: Throwable) {
+                hideProgress()
+                isLoading = false
+                Toast.makeText(
+                    mContext,
+                    mContext!!.resources.getString(R.string.error_message),
+                    Toast.LENGTH_SHORT
+                ).show()
+                Log.d("error----", "is" + t.message)
             }
-        });
+        })
     }
-
 }

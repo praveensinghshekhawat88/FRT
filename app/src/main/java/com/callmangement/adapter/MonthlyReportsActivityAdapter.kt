@@ -96,8 +96,8 @@ class MonthlyReportsActivityAdapter(private val context: Context) :
             if (totalList != null) {
                 if (totalList.size > 0) {
                     for (model in totalList) {
-                        if (model.complainStatusId == "3" && DateTimeUtils.getTimeStamp(date) == DateTimeUtils.getTimeStamp(
-                                model.sermarkDateStr
+                        if (model.complainStatusId == "3" && DateTimeUtils.getTimeStamp(date!!) == DateTimeUtils.getTimeStamp(
+                                model.sermarkDateStr!!
                             )
                         ) resolvedList.add(model)
                         else notResolvedList.add(model)

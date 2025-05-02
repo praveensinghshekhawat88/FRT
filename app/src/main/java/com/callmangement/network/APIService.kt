@@ -1,92 +1,95 @@
-package com.callmangement.Network;
+package com.callmangement.network
 
-import com.callmangement.EHR.models.FeedbackDetailByFpsRoot;
-import com.callmangement.EHR.models.FeedbackbyDCListRoot;
-import com.callmangement.EHR.models.SaveFeedbackbyDCRoot;
-import com.callmangement.model.ModelResponse;
-import com.callmangement.model.weighingDeliveryDetail.weighingDelieryRoot;
-import com.callmangement.model.attendance.ModelAddLocationList;
-import com.callmangement.model.attendance.ModelAttendance;
-import com.callmangement.model.attendance.ModelAttendanceList;
-import com.callmangement.model.complaints.ModelChallanUploadComplaint;
-import com.callmangement.model.complaints.ModelComplaintsCount;
-import com.callmangement.model.district.ModelDistrict;
-import com.callmangement.model.ModelMobileVersion;
-import com.callmangement.model.fps_wise_complaints.ModelFPSComplaint;
-import com.callmangement.model.fps_wise_complaints.ModelFPSDistTehWise;
-import com.callmangement.model.inventrory.ModelDispatchInvoice;
-import com.callmangement.model.inventrory.ModelDisputeParts;
-import com.callmangement.model.inventrory.ModelInventoryResponse;
-import com.callmangement.model.inventrory.ModelParts;
-import com.callmangement.model.inventrory.ModelSEUsers;
-import com.callmangement.model.inventrory.ModelSavePartsDispatchDetails;
-import com.callmangement.model.logout.ModelLogout;
-import com.callmangement.model.reports.ModelSLAReport;
-import com.callmangement.model.reports.ModelSLAReportDetails;
-import com.callmangement.model.reset_device.ModelResetDevice;
-import com.callmangement.model.tehsil.ModelTehsil;
-import com.callmangement.model.complaints.ModelComplaint;
-import com.callmangement.model.complaints.ModelResolveComplaint;
-import com.callmangement.model.login.ModelLogin;
-import com.callmangement.model.training_schedule.ModelCreateTrainingSchedule;
-import com.callmangement.model.training_schedule.ModelTrainingSchedule;
-import com.callmangement.model.training_schedule.ModelUpdateTrainingSchedule;
-import com.callmangement.ui.biometric_delivery.model.BiometricDashboardResponse;
-import com.callmangement.ui.biometric_delivery.model.DetailsByFPSForSensorRoot;
-import com.callmangement.ui.biometric_delivery.model.DeviceCodeByFPSResponse;
-import com.callmangement.ui.biometric_delivery.model.SaveBiometricDeliverResponse;
-import com.callmangement.ui.biometric_delivery.model.SensorDistributionDetailsListResp;
-import com.callmangement.ui.biometric_delivery.model.SensorSummaryResponse;
-import com.callmangement.ui.biometric_delivery.model.UpdateDeviceTypeToChangeFSensorResp;
-import com.callmangement.ui.closed_guard_delivery.model.ClosedGuardDeliveryListResponse;
-import com.callmangement.ui.errors.model.GetErrorImagesRoot;
-import com.callmangement.ui.errors.model.GetErrorTypesRoot;
-import com.callmangement.ui.errors.model.GetPosDeviceErrorsRoot;
-import com.callmangement.ui.errors.model.GetRemarkRoot;
-import com.callmangement.ui.errors.model.SaveErroeReqRoot;
-import com.callmangement.ui.errors.model.UpdateErroeReqRoot;
-import com.callmangement.ui.errors.model.UpdateErrorStatusRoot;
-import com.callmangement.ui.ins_weighing_scale.model.Count.CountRoot;
-import com.callmangement.ui.ins_weighing_scale.model.DeliveredWeightInstal.WeightInsRoot;
-import com.callmangement.ui.ins_weighing_scale.model.Installed.InstalledRoot;
-import com.callmangement.ui.ins_weighing_scale.model.InstalledDetailed.InstalledDetailedRoot;
-import com.callmangement.ui.ins_weighing_scale.model.SaveInstall.SaveRoot;
-import com.callmangement.ui.ins_weighing_scale.model.challan.challanRoot;
-import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrict_w;
-import com.callmangement.ui.ins_weighing_scale.model.fps.DetailByFpsRoot;
-import com.callmangement.ui.iris_derivery_installation.Model.CheckIrisSerialNoResponse;
-import com.callmangement.ui.iris_derivery_installation.Model.InstalledDetailedResponse;
-import com.callmangement.ui.iris_derivery_installation.Model.IrisDashboardResponse;
-import com.callmangement.ui.iris_derivery_installation.Model.IrisDeliveryListResponse;
-import com.callmangement.ui.iris_derivery_installation.Model.IrisInstallationPendingListResp;
-import com.callmangement.ui.iris_derivery_installation.Model.ReplacementTypesResponse;
-import com.callmangement.ui.iris_derivery_installation.Model.SaveIRISDeliverResponse;
+import com.callmangement.EHR.models.FeedbackDetailByFpsRoot
+import com.callmangement.EHR.models.FeedbackbyDCListRoot
+import com.callmangement.EHR.models.SaveFeedbackbyDCRoot
+import com.callmangement.model.ModelMobileVersion
+import com.callmangement.model.ModelResponse
+import com.callmangement.model.attendance.ModelAddLocationList
+import com.callmangement.model.attendance.ModelAttendance
+import com.callmangement.model.attendance.ModelAttendanceList
+import com.callmangement.model.complaints.ModelChallanUploadComplaint
+import com.callmangement.model.complaints.ModelComplaint
+import com.callmangement.model.complaints.ModelComplaintsCount
+import com.callmangement.model.complaints.ModelResolveComplaint
+import com.callmangement.model.district.ModelDistrict
+import com.callmangement.model.fps_wise_complaints.ModelFPSComplaint
+import com.callmangement.model.fps_wise_complaints.ModelFPSDistTehWise
+import com.callmangement.model.inventrory.ModelDispatchInvoice
+import com.callmangement.model.inventrory.ModelDisputeParts
+import com.callmangement.model.inventrory.ModelInventoryResponse
+import com.callmangement.model.inventrory.ModelParts
+import com.callmangement.model.inventrory.ModelSEUsers
+import com.callmangement.model.inventrory.ModelSavePartsDispatchDetails
+import com.callmangement.model.login.ModelLogin
+import com.callmangement.model.logout.ModelLogout
+import com.callmangement.model.reports.ModelSLAReport
+import com.callmangement.model.reports.ModelSLAReportDetails
+import com.callmangement.model.reset_device.ModelResetDevice
+import com.callmangement.model.tehsil.ModelTehsil
+import com.callmangement.model.training_schedule.ModelCreateTrainingSchedule
+import com.callmangement.model.training_schedule.ModelTrainingSchedule
+import com.callmangement.model.training_schedule.ModelUpdateTrainingSchedule
+import com.callmangement.model.weighingDeliveryDetail.weighingDelieryRoot
+import com.callmangement.ui.biometric_delivery.model.BiometricDashboardResponse
+import com.callmangement.ui.biometric_delivery.model.DetailsByFPSForSensorRoot
+import com.callmangement.ui.biometric_delivery.model.DeviceCodeByFPSResponse
+import com.callmangement.ui.biometric_delivery.model.SaveBiometricDeliverResponse
+import com.callmangement.ui.biometric_delivery.model.SensorDistributionDetailsListResp
+import com.callmangement.ui.biometric_delivery.model.SensorSummaryResponse
+import com.callmangement.ui.biometric_delivery.model.UpdateDeviceTypeToChangeFSensorResp
+import com.callmangement.ui.closed_guard_delivery.model.ClosedGuardDeliveryListResponse
+import com.callmangement.ui.errors.model.GetErrorImagesRoot
+import com.callmangement.ui.errors.model.GetErrorTypesRoot
+import com.callmangement.ui.errors.model.GetPosDeviceErrorsRoot
+import com.callmangement.ui.errors.model.GetRemarkRoot
+import com.callmangement.ui.errors.model.SaveErroeReqRoot
+import com.callmangement.ui.errors.model.UpdateErroeReqRoot
+import com.callmangement.ui.errors.model.UpdateErrorStatusRoot
+import com.callmangement.ui.ins_weighing_scale.model.Count.CountRoot
+import com.callmangement.ui.ins_weighing_scale.model.DeliveredWeightInstal.WeightInsRoot
+import com.callmangement.ui.ins_weighing_scale.model.Installed.InstalledRoot
+import com.callmangement.ui.ins_weighing_scale.model.InstalledDetailed.InstalledDetailedRoot
+import com.callmangement.ui.ins_weighing_scale.model.SaveInstall.SaveRoot
+import com.callmangement.ui.ins_weighing_scale.model.challan.challanRoot
+import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrict_w
+import com.callmangement.ui.ins_weighing_scale.model.fps.DetailByFpsRoot
+import com.callmangement.ui.iris_derivery_installation.Model.CheckIrisSerialNoResponse
+import com.callmangement.ui.iris_derivery_installation.Model.InstalledDetailedResponse
+import com.callmangement.ui.iris_derivery_installation.Model.IrisDashboardResponse
+import com.callmangement.ui.iris_derivery_installation.Model.IrisDeliveryListResponse
+import com.callmangement.ui.iris_derivery_installation.Model.IrisInstallationPendingListResp
+import com.callmangement.ui.iris_derivery_installation.Model.ReplacementTypesResponse
+import com.callmangement.ui.iris_derivery_installation.Model.SaveIRISDeliverResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.http.Body
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.Query
 
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.Multipart;
-import retrofit2.http.POST;
-import retrofit2.http.Part;
-import retrofit2.http.Query;
-
-public interface APIService {
+interface APIService {
     @FormUrlEncoded
     @POST("rest/getUserLoginDetails_V20")
-    Call<ModelLogin> login(@Field("emailId") String email,
-                           @Field("password") String password,
-                           @Field("deviceId") String deviceId,
-                           @Field("deviceTocken") String deviceTocken);
+    fun login(
+        @Field("emailId") email: String?,
+        @Field("password") password: String?,
+        @Field("deviceId") deviceId: String?,
+        @Field("deviceTocken") deviceTocken: String?
+    ): Call<ModelLogin?>?
 
     @FormUrlEncoded
     @POST("rest/logOutApp")
-    Call<ModelLogout> logOutApp(@Field("userId") String userId,
-                                @Field("emailId") String emailId);
+    fun logOutApp(
+        @Field("userId") userId: String?,
+        @Field("emailId") emailId: String?
+    ): Call<ModelLogout?>?
 
     // login api with any user
     /*@FormUrlEncoded
@@ -95,187 +98,195 @@ public interface APIService {
                            @Field("password") String password,
                            @Field("deviceId") String deviceId,
                            @Field("deviceTocken") String deviceTocken);*/
-
     // logout api with any user
     /*@FormUrlEncoded
     @POST("rest/logOutAppAnyUser")
     Call<ModelLogout> logOutApp(@Field("userId") String userId,
                                 @Field("emailId") String emailId);*/
-
     @FormUrlEncoded
     @POST("rest/getComplaintListDateWise")
-    Call<ModelComplaint> complaint_list(@Field("userId") String userId,
-                                        @Field("fromDate") String fromDate,
-                                        @Field("toDate") String toDate);
+    fun complaint_list(
+        @Field("userId") userId: String?,
+        @Field("fromDate") fromDate: String?,
+        @Field("toDate") toDate: String?
+    ): Call<ModelComplaint?>?
 
     @FormUrlEncoded
     @POST("Report/getSLAReportCount")
-    Call<ModelSLAReport> sla_report_list(@Field("userId") String userId,
-                                         @Field("fromDate") String fromDate,
-                                         @Field("toDate") String toDate,
-                                         @Field("ResolveInDays") Integer ResolveInDays,
-                                         @Field("DistrictId") String DistrictId);
+    fun sla_report_list(
+        @Field("userId") userId: String?,
+        @Field("fromDate") fromDate: String?,
+        @Field("toDate") toDate: String?,
+        @Field("ResolveInDays") ResolveInDays: Int?,
+        @Field("DistrictId") DistrictId: String?
+    ): Call<ModelSLAReport?>?
 
     @FormUrlEncoded
     @POST("Report/getSLAReportCountDetail")
-    Call<ModelSLAReportDetails> getSLAReportCountDetail(@Field("userId") String userId,
-                                                        @Field("fromDate") String fromDate,
-                                                        @Field("toDate") String toDate,
-                                                        @Field("ResolveInDays") Integer ResolveInDays,
-                                                        @Field("DistrictId") String DistrictId);
+    fun getSLAReportCountDetail(
+        @Field("userId") userId: String?,
+        @Field("fromDate") fromDate: String?,
+        @Field("toDate") toDate: String?,
+        @Field("ResolveInDays") ResolveInDays: Int?,
+        @Field("DistrictId") DistrictId: String?
+    ): Call<ModelSLAReportDetails?>?
 
     @Multipart
     @POST("rest/resolveApiComplaint_V8")
-    Call<ModelResolveComplaint> resolveComplaint(@Part("userId") RequestBody userId,
-                                                 @Part("IsPhysicalDamage") RequestBody IsPhysicalDamage,
-                                                 @Part("seRemark") RequestBody seRemark,
-                                                 @Part("complaintRegNo") RequestBody complaintRegNo,
-                                                 @Part("getStatus") RequestBody getStatus,
-                                                 @Part("replacePartName") RequestBody replacePartName,
-                                                 @Part("caurierDetails") RequestBody caurierDetails,
-                                                 @Part("ChallanNo") RequestBody ChallanNo,
-                                                 @Part("seRemarkDate") RequestBody seRemarkDate,
-                                                 @Part("ReplacedPartsIds") RequestBody ReplacedPartsIds,
-                                                 @Part MultipartBody.Part se_image,
-                                                 @Part MultipartBody.Part damageApprovalLetter);
+    fun resolveComplaint(
+        @Part("userId") userId: RequestBody?,
+        @Part("IsPhysicalDamage") IsPhysicalDamage: RequestBody?,
+        @Part("seRemark") seRemark: RequestBody?,
+        @Part("complaintRegNo") complaintRegNo: RequestBody?,
+        @Part("getStatus") getStatus: RequestBody?,
+        @Part("replacePartName") replacePartName: RequestBody?,
+        @Part("caurierDetails") caurierDetails: RequestBody?,
+        @Part("ChallanNo") ChallanNo: RequestBody?,
+        @Part("seRemarkDate") seRemarkDate: RequestBody?,
+        @Part("ReplacedPartsIds") ReplacedPartsIds: RequestBody?,
+        @Part se_image: MultipartBody.Part?,
+        @Part damageApprovalLetter: MultipartBody.Part?
+    ): Call<ModelResolveComplaint?>?
 
     @Multipart
     @POST("challan/UploadChallan")
-    Call<ModelResolveComplaint> challanUpload(@Part("userId") RequestBody userId,
-                                              @Part("ComplainId") RequestBody IsPhysicalDamage,
-                                              @Part("ComplainRegNo") RequestBody seRemark,
-                                              @Part("ChallanNo") RequestBody complaintRegNo,
-                                              @Part MultipartBody.Part chllanImage);
+    fun challanUpload(
+        @Part("userId") userId: RequestBody?,
+        @Part("ComplainId") IsPhysicalDamage: RequestBody?,
+        @Part("ComplainRegNo") seRemark: RequestBody?,
+        @Part("ChallanNo") complaintRegNo: RequestBody?,
+        @Part chllanImage: MultipartBody.Part?
+    ): Call<ModelResolveComplaint?>?
 
     @FormUrlEncoded
     @POST("rest/apiGetTehsilByDistict")
-    Call<ModelTehsil> apiGetTehsilByDistict(@Field("districtId") String districtId);
+    fun apiGetTehsilByDistict(@Field("districtId") districtId: String?): Call<ModelTehsil?>?
 
     @GET("rest/apiGetDistictList")
-    Call<ModelDistrict> apiGetDistictList();
+    fun apiGetDistictList(): Call<ModelDistrict?>?
 
     @FormUrlEncoded
     @POST("rest/getMobileAppVersion")
-    Call<ModelMobileVersion> getMobileAppVersion(@Field("version_code") int version_code);
+    fun getMobileAppVersion(@Field("version_code") version_code: Int): Call<ModelMobileVersion?>?
 
     @FormUrlEncoded
     @POST("rest/getComplaintsCountDateDistrictIdWise")
-    Call<ModelComplaintsCount> getComplaintsCountDateDistrictIdWise(@Field("userId") String userId,
-                                                                    @Field("DistrictId") String DistrictId,
-                                                                    @Field("fromDate") String fromDate,
-                                                                    @Field("toDate") String toDate);
-
+    fun getComplaintsCountDateDistrictIdWise(
+        @Field("userId") userId: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("fromDate") fromDate: String?,
+        @Field("toDate") toDate: String?
+    ): Call<ModelComplaintsCount?>?
 
 
     //
+    @FormUrlEncoded
+    @POST("rest/getComplaintListDistStatusDateWise")
+    fun getComplaintListDistStatusDateWise(
+        @Field("userId") userId: String?,
+        @Field("districtId") districtId: String?,
+        @Field("complainStatusId") complainStatusId: String?,
+        @Field("fromDate") fromDate: String?,
+        @Field("toDate") toDate: String?,
+        @Field("IsPagination") IsPagination: String?,
+        @Field("PageNo") PageNo: String?,
+        @Field("PageSize") PageSize: String?,
+        @Field("FPSCode") FPSCode: String?
+    ): Call<ModelComplaint?>?
 
 
     @FormUrlEncoded
     @POST("rest/getComplaintListDistStatusDateWise")
-    Call<ModelComplaint> getComplaintListDistStatusDateWise(@Field("userId") String userId,
-                                                            @Field("districtId") String districtId,
-                                                            @Field("complainStatusId") String complainStatusId,
-                                                            @Field("fromDate") String fromDate,
-                                                            @Field("toDate") String toDate,
-                                                            @Field("IsPagination") String IsPagination,
-                                                            @Field("PageNo") String PageNo,
-                                                            @Field("PageSize") String PageSize,
-                                                            @Field("FPSCode") String FPSCode);
-
-
-
-
-
-
-
-    @FormUrlEncoded
-    @POST("rest/getComplaintListDistStatusDateWise")
-    Call<ModelComplaint> getComplaintListDistStatusDateWiseNew(@Field("userId") String userId,
-                                                               @Field("districtId") String districtId,
-                                                               @Field("complainStatusId") String complainStatusId,
-                                                               @Field("fromDate") String fromDate,
-                                                               @Field("toDate") String toDate,
-                                                               @Field("IsPagination") String IsPagination,
-                                                               @Field("PageNo") String PageNo,
-                                                               @Field("PageSize") String PageSize,
-                                                               @Field("FPSCode") String FPSCode);
+    fun getComplaintListDistStatusDateWiseNew(
+        @Field("userId") userId: String?,
+        @Field("districtId") districtId: String?,
+        @Field("complainStatusId") complainStatusId: String?,
+        @Field("fromDate") fromDate: String?,
+        @Field("toDate") toDate: String?,
+        @Field("IsPagination") IsPagination: String?,
+        @Field("PageNo") PageNo: String?,
+        @Field("PageSize") PageSize: String?,
+        @Field("FPSCode") FPSCode: String?
+    ): Call<ModelComplaint?>?
 
     @FormUrlEncoded
     @POST("challan/ChallanUploadPendingComplaintList")
-    Call<ModelChallanUploadComplaint> getModelChallanUploadComplaintListData(@Field("userId") String userId,
-                                                                             @Field("districtId") String districtId,
-                                                                             @Field("ComplainRegNo") String ComplainRegNo,
-                                                                             @Field("FPSCode") String FPSCode,
-                                                                             @Field("fromDate") String fromDate,
-                                                                             @Field("toDate") String toDate,
-                                                                             @Field("IsPagination") String IsPagination,
-                                                                             @Field("PageNo") String PageNo,
-                                                                             @Field("PageSize") String PageSize);
-
+    fun getModelChallanUploadComplaintListData(
+        @Field("userId") userId: String?,
+        @Field("districtId") districtId: String?,
+        @Field("ComplainRegNo") ComplainRegNo: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("fromDate") fromDate: String?,
+        @Field("toDate") toDate: String?,
+        @Field("IsPagination") IsPagination: String?,
+        @Field("PageNo") PageNo: String?,
+        @Field("PageSize") PageSize: String?
+    ): Call<ModelChallanUploadComplaint?>?
 
 
     ///
-
-
-
-
-
-
-
-
     @FormUrlEncoded
     @POST("challan/ChallanEditComplaintList")
-    Call<ModelChallanUploadComplaint> getModelEditChallanComplaintListData(@Field("userId") String userId,
-                                                                           @Field("districtId") String districtId,
-                                                                           @Field("ComplainRegNo") String ComplainRegNo,
-                                                                           @Field("FPSCode") String FPSCode);
-    /*attendance and location apis*/
+    fun getModelEditChallanComplaintListData(
+        @Field("userId") userId: String?,
+        @Field("districtId") districtId: String?,
+        @Field("ComplainRegNo") ComplainRegNo: String?,
+        @Field("FPSCode") FPSCode: String?
+    ): Call<ModelChallanUploadComplaint?>?
 
+    /*attendance and location apis*/
     @FormUrlEncoded
     @POST("addAttendanceRecord")
-    Call<ModelAttendance> addAttendanceRecord(@Field("User_Id") String User_Id,
-                                              @Field("Latitude") String Latitude,
-                                              @Field("Longitude") String Longitude,
-                                              @Field("Address") String Address,
-                                              @Field("Punch_In_Date") String Punch_In_Date,
-                                              @Field("Punch_In_Time") String Punch_In_Time,
-                                              @Field("Latitude_Out") String Latitude_Out,
-                                              @Field("Longitude_Out") String Longitude_Out,
-                                              @Field("Address_Out") String Address_Out,
-                                              @Field("Punch_Out_Date") String Punch_Out_Date,
-                                              @Field("Punch_Out_Time") String Punch_Out_Time);
+    fun addAttendanceRecord(
+        @Field("User_Id") User_Id: String?,
+        @Field("Latitude") Latitude: String?,
+        @Field("Longitude") Longitude: String?,
+        @Field("Address") Address: String?,
+        @Field("Punch_In_Date") Punch_In_Date: String?,
+        @Field("Punch_In_Time") Punch_In_Time: String?,
+        @Field("Latitude_Out") Latitude_Out: String?,
+        @Field("Longitude_Out") Longitude_Out: String?,
+        @Field("Address_Out") Address_Out: String?,
+        @Field("Punch_Out_Date") Punch_Out_Date: String?,
+        @Field("Punch_Out_Time") Punch_Out_Time: String?
+    ): Call<ModelAttendance?>?
 
     @FormUrlEncoded
     @POST("getCheckedAttendance")
-    Call<ModelAttendance> getCheckedAttendance(@Field("User_Id") String User_Id,
-                                               @Field("Punch_In_Date") String Punch_In_Date);
+    fun getCheckedAttendance(
+        @Field("User_Id") User_Id: String?,
+        @Field("Punch_In_Date") Punch_In_Date: String?
+    ): Call<ModelAttendance?>?
 
     @FormUrlEncoded
     @POST("getAttendanceRecord")
-    Call<ModelAttendanceList> getAttendanceRecord(@Field("User_Id") String User_Id,
-                                                  @Field("District_Id") String District_Id,
-                                                  @Field("DateFrom") String DateFrom,
-                                                  @Field("DateTo") String DateTo);
+    fun getAttendanceRecord(
+        @Field("User_Id") User_Id: String?,
+        @Field("District_Id") District_Id: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?
+    ): Call<ModelAttendanceList?>?
 
     @FormUrlEncoded
     @POST("Location/getLocationRecord")
-    Call<ModelAddLocationList> getLocationRecord(@Field("User_Id") String User_Id,
-                                                 @Field("District_Id") String District_Id);
+    fun getLocationRecord(
+        @Field("User_Id") User_Id: String?,
+        @Field("District_Id") District_Id: String?
+    ): Call<ModelAddLocationList?>?
 
     @POST("Location/saveSELocations")
-    Call<ResponseBody> saveSELocations(@Query("userId") String userId,
-                                       @Query("districtId") String districtId,
-                                       @Query("deviceId") String deviceId,
-                                       @Body RequestBody requestBody);
-    /*attendance and location apis*/
+    fun saveSELocations(
+        @Query("userId") userId: String?,
+        @Query("districtId") districtId: String?,
+        @Query("deviceId") deviceId: String?,
+        @Body requestBody: RequestBody?
+    ): Call<ResponseBody?>?
 
-    /*inventory apis*/
-    @GET("stock/getPartsList")
-    Call<ModelParts> getPartsList();
+
 
     @FormUrlEncoded
     @POST("stock/getSEUserList")
-    Call<ModelSEUsers> getSEUserList(@Field("districtId") String districtId);
+    fun getSEUserList(@Field("districtId") districtId: String?): Call<ModelSEUsers?>?
 
     /*@POST("stock/savePartsDispatchDetails")
     Call<ResponseBody> savePartsDispatchDetails(@Query("InvoiceId") String InvoiceId,
@@ -286,56 +297,67 @@ public interface APIService {
                                                 @Query("DispatcherRemarks") String DispatcherRemarks,
                                                 @Query("StockStatusId") String StockStatusId,
                                                 @Body RequestBody requestBody);*/
-
     @Multipart
     @POST("stock/savePartsDispatchDetails")
-    Call<ModelSavePartsDispatchDetails> savePartsDispatchDetails(@Part("InvoiceId") RequestBody InvoiceId,
-                                                                 @Part("DispatchFrom") RequestBody DispatchFrom,
-                                                                 @Part("DispatchTo") RequestBody DispatchTo,
-                                                                 @Part("DistrictId") RequestBody DistrictId,
-                                                                 @Part("DispatchChallanImage") RequestBody DispatchChallanImage,
-                                                                 @Part("DispatcherRemarks") RequestBody DispatcherRemarks,
-                                                                 @Part("StockStatusId") RequestBody StockStatusId,
-                                                                 @Part("courierName") RequestBody courierName,
-                                                                 @Part("courierTrackingNo") RequestBody courierTrackingNo,
-                                                                 @Part("dispatchItems") RequestBody dispatchItems,
-                                                                 @Part MultipartBody.Part challanImage,
-                                                                 @Part MultipartBody.Part partsImage1,
-                                                                 @Part MultipartBody.Part partsImage2);
+    fun savePartsDispatchDetails(
+        @Part("InvoiceId") InvoiceId: RequestBody?,
+        @Part("DispatchFrom") DispatchFrom: RequestBody?,
+        @Part("DispatchTo") DispatchTo: RequestBody?,
+        @Part("DistrictId") DistrictId: RequestBody?,
+        @Part("DispatchChallanImage") DispatchChallanImage: RequestBody?,
+        @Part("DispatcherRemarks") DispatcherRemarks: RequestBody?,
+        @Part("StockStatusId") StockStatusId: RequestBody?,
+        @Part("courierName") courierName: RequestBody?,
+        @Part("courierTrackingNo") courierTrackingNo: RequestBody?,
+        @Part("dispatchItems") dispatchItems: RequestBody?,
+        @Part challanImage: MultipartBody.Part?,
+        @Part partsImage1: MultipartBody.Part?,
+        @Part partsImage2: MultipartBody.Part?
+    ): Call<ModelSavePartsDispatchDetails?>?
 
     @FormUrlEncoded
     @POST("stock/submitDispatchParts")
-    Call<ModelSavePartsDispatchDetails> submitDispatchParts(@Field("UserId") String UserId,
-                                                            @Field("InvoiceId") String InvoiceId,
-                                                            @Field("DispatcherRemarks") String DispatcherRemarks);
+    fun submitDispatchParts(
+        @Field("UserId") UserId: String?,
+        @Field("InvoiceId") InvoiceId: String?,
+        @Field("DispatcherRemarks") DispatcherRemarks: String?
+    ): Call<ModelSavePartsDispatchDetails?>?
 
     @FormUrlEncoded
     @POST("stock/getPartsDispatcherInvoices")
-    Call<ModelDispatchInvoice> getPartsDispatcherInvoices(@Field("InvoiceId") String InvoiceId,
-                                                          @Field("UserId") String UserId,
-                                                          @Field("DistrictId") String DistrictId,
-                                                          @Field("fromDate") String fromDate,
-                                                          @Field("toDate") String toDate);
+    fun getPartsDispatcherInvoices(
+        @Field("InvoiceId") InvoiceId: String?,
+        @Field("UserId") UserId: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("fromDate") fromDate: String?,
+        @Field("toDate") toDate: String?
+    ): Call<ModelDispatchInvoice?>?
 
     @FormUrlEncoded
     @POST("stock/getDispatchInvoiceParts")
-    Call<ModelDispatchInvoice> getDispatchInvoiceParts(@Field("InvoiceId") String InvoiceId,
-                                                       @Field("UserId") String UserId,
-                                                       @Field("DispatchId") String DispatchId);
+    fun getDispatchInvoiceParts(
+        @Field("InvoiceId") InvoiceId: String?,
+        @Field("UserId") UserId: String?,
+        @Field("DispatchId") DispatchId: String?
+    ): Call<ModelDispatchInvoice?>?
 
     @FormUrlEncoded
     @POST("stock/getPartsReciverInvoices")
-    Call<ModelDispatchInvoice> getPartsReciverInvoices(@Field("InvoiceId") String invoiceId,
-                                                       @Field("UserId") String userId,
-                                                       @Field("DistrictId") String districtId,
-                                                       @Field("fromDate") String fromDate,
-                                                       @Field("toDate") String toDate);
+    fun getPartsReciverInvoices(
+        @Field("InvoiceId") invoiceId: String?,
+        @Field("UserId") userId: String?,
+        @Field("DistrictId") districtId: String?,
+        @Field("fromDate") fromDate: String?,
+        @Field("toDate") toDate: String?
+    ): Call<ModelDispatchInvoice?>?
 
     @FormUrlEncoded
     @POST("stock/getReciveInvoiceParts")
-    Call<ResponseBody> getReciveInvoiceParts(@Field("InvoiceId") String invoiceId,
-                                             @Field("UserId") String userId,
-                                             @Field("DispatchId") String dispatchedId);
+    fun getReciveInvoiceParts(
+        @Field("InvoiceId") invoiceId: String?,
+        @Field("UserId") userId: String?,
+        @Field("DispatchId") dispatchedId: String?
+    ): Call<ResponseBody?>?
 
     /*@POST("stock/saveRecivePartsDetails")
     Call<ResponseBody> savePartsReceive(@Query("InvoiceId") String InvoiceId,
@@ -343,679 +365,798 @@ public interface APIService {
                                         @Query("IsReceived") boolean isReceived,
                                         @Query("ReciverRemarks") String remark,
                                         @Body RequestBody requestBody);*/
-
     @Multipart
     @POST("stock/saveRecivePartsDetails")
-    Call<ResponseBody> savePartsReceive(@Part("InvoiceId") RequestBody InvoiceId,
-                                        @Part("UserId") RequestBody userId,
-                                        @Part("IsReceived") RequestBody isReceived,
-                                        @Part("ReciverRemarks") RequestBody remark,
-                                        @Part("recivedItemsReq") RequestBody recivedItemsReq,
-                                        @Part MultipartBody.Part image);
+    fun savePartsReceive(
+        @Part("InvoiceId") InvoiceId: RequestBody?,
+        @Part("UserId") userId: RequestBody?,
+        @Part("IsReceived") isReceived: RequestBody?,
+        @Part("ReciverRemarks") remark: RequestBody?,
+        @Part("recivedItemsReq") recivedItemsReq: RequestBody?,
+        @Part image: MultipartBody.Part?
+    ): Call<ResponseBody?>?
 
     @GET("mStock/getAvlinStockPartsList")
-    Call<ModelParts> getAvailableStockPartsList(@Query("UserId") String UserId,
-                                                @Query("ItemId") String ItemId);
+    fun getAvailableStockPartsList(
+        @Query("UserId") UserId: String?,
+        @Query("ItemId") ItemId: String?
+    ): Call<ModelParts?>?
 
     @GET("mStock/getPartsCurrentStockList")
-    Call<ModelParts> getPartsCurrentStockList(@Query("UserId") String UserId,
-                                              @Query("ItemId") String ItemId);
+    fun getPartsCurrentStockList(
+        @Query("UserId") UserId: String?,
+        @Query("ItemId") ItemId: String?
+    ): Call<ModelParts?>?
 
     @FormUrlEncoded
     @POST("mStock/getDisputePartsList")
-    Call<ModelDisputeParts> getDisputePartsList(@Field("UserId") String UserId,
-                                                @Field("InvoiceId") String InvoiceId);
+    fun getDisputePartsList(
+        @Field("UserId") UserId: String?,
+        @Field("InvoiceId") InvoiceId: String?
+    ): Call<ModelDisputeParts?>?
 
     @POST("mStock/updatePartsStock")
-    Call<ResponseBody> updatePartsStock(@Query("InvoiceId") String InvoiceId,
-                                        @Query("UserId") String UserId,
-                                        @Query("ItemStockStatusId") String ItemStockStatusId,
-                                        @Query("Remarks") String Remarks,
-                                        @Body RequestBody requestBody);
+    fun updatePartsStock(
+        @Query("InvoiceId") InvoiceId: String?,
+        @Query("UserId") UserId: String?,
+        @Query("ItemStockStatusId") ItemStockStatusId: String?,
+        @Query("Remarks") Remarks: String?,
+        @Body requestBody: RequestBody?
+    ): Call<ResponseBody?>?
 
     @GET("stock/getSE_AvlStockPartsList")
-    Call<ModelParts> getSE_AvlStockPartsList(@Query("UserId") String UserId,
-                                             @Query("ItemId") String ItemId);
+    fun getSE_AvlStockPartsList(
+        @Query("UserId") UserId: String?,
+        @Query("ItemId") ItemId: String?
+    ): Call<ModelParts?>?
 
     @GET("stock/getAllSE_AvlStockPartsList")
-    Call<ModelParts> getAllSE_AvlStockPartsList(@Query("UserId") String UserId,
-                                                @Query("ItemId") String ItemId);
+    fun getAllSE_AvlStockPartsList(
+        @Query("UserId") UserId: String?,
+        @Query("ItemId") ItemId: String?
+    ): Call<ModelParts?>?
 
     @POST("stock/deleteInvoice")
-    Call<ModelInventoryResponse> deleteInvoice(@Query("UserId") String UserId,
-                                               @Query("InvoiceId") String InvoiceId,
-                                               @Query("DeleteRemarks") String DeleteRemarks);
-    /*inventory apis*/
+    fun deleteInvoice(
+        @Query("UserId") UserId: String?,
+        @Query("InvoiceId") InvoiceId: String?,
+        @Query("DeleteRemarks") DeleteRemarks: String?
+    ): Call<ModelInventoryResponse?>?
 
-    /*training schedule*/
+    /*inventory apis*/ /*training schedule*/
     @FormUrlEncoded
     @POST("training/saveTraining")
-    Call<ModelCreateTrainingSchedule> saveTraining(@Field("UserID") String UserID,
-                                                   @Field("DistrictID") String DistrictID,
-                                                   @Field("TehsilID") String TehsilID,
-                                                   @Field("StartedDate") String StartedDate,
-                                                   @Field("EndDate") String EndDate,
-                                                   @Field("Address") String Address,
-                                                   @Field("Description") String Description,
-                                                   @Field("Title") String Title);
+    fun saveTraining(
+        @Field("UserID") UserID: String?,
+        @Field("DistrictID") DistrictID: String?,
+        @Field("TehsilID") TehsilID: String?,
+        @Field("StartedDate") StartedDate: String?,
+        @Field("EndDate") EndDate: String?,
+        @Field("Address") Address: String?,
+        @Field("Description") Description: String?,
+        @Field("Title") Title: String?
+    ): Call<ModelCreateTrainingSchedule?>?
 
     @FormUrlEncoded
     @POST("training/getTrainigList")
-    Call<ModelTrainingSchedule> getTrainigList(@Field("UserID") String UserID,
-                                               @Field("DistrictID") String DistrictID,
-                                               @Field("TehsilID") String TehsilID,
-                                               @Field("TrainingNo") String TrainingNo,
-                                               @Field("StartedDate") String StartedDate,
-                                               @Field("EndDate") String EndDate);
+    fun getTrainigList(
+        @Field("UserID") UserID: String?,
+        @Field("DistrictID") DistrictID: String?,
+        @Field("TehsilID") TehsilID: String?,
+        @Field("TrainingNo") TrainingNo: String?,
+        @Field("StartedDate") StartedDate: String?,
+        @Field("EndDate") EndDate: String?
+    ): Call<ModelTrainingSchedule?>?
 
     @FormUrlEncoded
     @POST("training/updateTraining")
-    Call<ModelUpdateTrainingSchedule> updateTraining(@Field("UserID") String UserID,
-                                                     @Field("DistrictID") String DistrictID,
-                                                     @Field("TehsilID") String TehsilID,
-                                                     @Field("TrainingId") String TrainingId,
-                                                     @Field("StartedDate") String StartedDate,
-                                                     @Field("EndDate") String EndDate,
-                                                     @Field("TrainingNo") String TrainingNo,
-                                                     @Field("Address") String Address,
-                                                     @Field("Description") String Description,
-                                                     @Field("Title") String Title);
-    /*training schedule*/
+    fun updateTraining(
+        @Field("UserID") UserID: String?,
+        @Field("DistrictID") DistrictID: String?,
+        @Field("TehsilID") TehsilID: String?,
+        @Field("TrainingId") TrainingId: String?,
+        @Field("StartedDate") StartedDate: String?,
+        @Field("EndDate") EndDate: String?,
+        @Field("TrainingNo") TrainingNo: String?,
+        @Field("Address") Address: String?,
+        @Field("Description") Description: String?,
+        @Field("Title") Title: String?
+    ): Call<ModelUpdateTrainingSchedule?>?
 
+    /*training schedule*/
     @GET("fpsCompHis/getFPSListDisTehWise?")
-    Call<ModelFPSDistTehWise> getFPSListDisTehWise(@Query("FPSCode") String FPSCode,
-                                                   @Query("districtId") String districtId,
-                                                   @Query("TehsilId") String TehsilId);
+    fun getFPSListDisTehWise(
+        @Query("FPSCode") FPSCode: String?,
+        @Query("districtId") districtId: String?,
+        @Query("TehsilId") TehsilId: String?
+    ): Call<ModelFPSDistTehWise?>?
 
     @GET("fpsCompHis/getFPSComplainsList?")
-    Call<ModelFPSComplaint> getFPSComplainsList(@Query("FPSCode") String FPSCode);
+    fun getFPSComplainsList(@Query("FPSCode") FPSCode: String?): Call<ModelFPSComplaint?>?
 
     @FormUrlEncoded
     @POST("rest/resetDeviceIdTokenID")
-    Call<ModelResetDevice> resetDeviceIdTokenID(@Field("seUserId") String seUserId,
-                                                @Field("DistrictId") String DistrictId);
+    fun resetDeviceIdTokenID(
+        @Field("seUserId") seUserId: String?,
+        @Field("DistrictId") DistrictId: String?
+    ): Call<ModelResetDevice?>?
 
     @FormUrlEncoded
     @POST("Location/updateDToken")
-    Call<ResponseBody> updateDToken(@Field("device_id") String device_id,
-                                    @Field("device_token") String device_token);
+    fun updateDToken(
+        @Field("device_id") device_id: String?,
+        @Field("device_token") device_token: String?
+    ): Call<ResponseBody?>?
 
     /*pos distribution report apis*/
     @FormUrlEncoded
     @POST("disb/GetOldMachineDetailsByFPSAPI")
-    Call<ResponseBody> GetOldMachineDetailsByFPSAPI(@Field("districtId") String districtId,
-                                                    @Field("userId") String userId,
-                                                    @Field("FPSCode") String FPSCode);
+    fun GetOldMachineDetailsByFPSAPI(
+        @Field("districtId") districtId: String?,
+        @Field("userId") userId: String?,
+        @Field("FPSCode") FPSCode: String?
+    ): Call<ResponseBody?>?
 
     @FormUrlEncoded
     @POST("disb/GetNewMachineDetailsByOrdNoAPI")
-    Call<ResponseBody> GetNewMachineDetailsByOrdNoAPI(@Field("districtId") String districtId,
-                                                      @Field("userId") String userId,
-                                                      @Field("newMachineOrderNo") String newMachineOrderNo);
+    fun GetNewMachineDetailsByOrdNoAPI(
+        @Field("districtId") districtId: String?,
+        @Field("userId") userId: String?,
+        @Field("newMachineOrderNo") newMachineOrderNo: String?
+    ): Call<ResponseBody?>?
 
     @GET("disb/GetDeviceVendorListAPI")
-    Call<ResponseBody> GetDeviceVendorListAPI();
+    fun GetDeviceVendorListAPI(): Call<ResponseBody?>?
 
     @FormUrlEncoded
     @POST("disb/getPosDistributionListAPI")
-    Call<ResponseBody> getPosDistributionListAPI(@Field("districtId") String districtId,
-                                                 @Field("userId") String userId,
-                                                 @Field("tranId") String tranId,
-                                                 @Field("FPSCode") String FPSCode,
-                                                 @Field("ticketNo") String ticketNo,
-                                                 @Field("fromDate") String fromDate,
-                                                 @Field("toDate") String toDate);
+    fun getPosDistributionListAPI(
+        @Field("districtId") districtId: String?,
+        @Field("userId") userId: String?,
+        @Field("tranId") tranId: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("ticketNo") ticketNo: String?,
+        @Field("fromDate") fromDate: String?,
+        @Field("toDate") toDate: String?
+    ): Call<ResponseBody?>?
 
     @FormUrlEncoded
     @POST("disb/getPosDistributionListSEAPI")
-    Call<ResponseBody> getPosDistributionListSEAPI(@Field("districtId") String districtId,
-                                                   @Field("userId") String userId,
-                                                   @Field("tranId") String tranId,
-                                                   @Field("FPSCode") String FPSCode,
-                                                   @Field("ticketNo") String ticketNo,
-                                                   @Field("fromDate") String fromDate,
-                                                   @Field("toDate") String toDate);
+    fun getPosDistributionListSEAPI(
+        @Field("districtId") districtId: String?,
+        @Field("userId") userId: String?,
+        @Field("tranId") tranId: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("ticketNo") ticketNo: String?,
+        @Field("fromDate") fromDate: String?,
+        @Field("toDate") toDate: String?
+    ): Call<ResponseBody?>?
 
     @FormUrlEncoded
     @POST("disb/getPosDistributionDetailByTIDAPI")
-    Call<ResponseBody> getPosDistributionDetailByTIDAPI(@Field("userId") String userId,
-                                                        @Field("tranId") String tranId);
+    fun getPosDistributionDetailByTIDAPI(
+        @Field("userId") userId: String?,
+        @Field("tranId") tranId: String?
+    ): Call<ResponseBody?>?
 
     @Multipart
     @POST("disb/saveNewPosDistributionAPI")
-    Call<ResponseBody> saveNewPosDistributionAPI(@Part("userId") RequestBody userId,
-                                                 @Part("tranId") RequestBody tranId,
-                                                 @Part("districtId") RequestBody districtId,
-                                                 @Part("EquipmentModelId") RequestBody EquipmentModelId,
-                                                 @Part("oldMachineVenderid") RequestBody oldMachineVenderid,
-                                                 @Part("newMachineVenderid") RequestBody newMachineVenderid,
-                                                 @Part("newMachineOrderNo") RequestBody newMachineOrderNo,
-                                                 @Part("FPSCode") RequestBody FPSCode,
-                                                 @Part("ticketNo") RequestBody ticketNo,
-                                                 @Part("tranDateStr") RequestBody tranDateStr,
-                                                 @Part("oldMachine_SerialNo") RequestBody oldMachine_SerialNo,
-                                                 @Part("oldMachine_Biometric_SeriallNo") RequestBody oldMachine_Biometric_SeriallNo,
-                                                 @Part("oldMachineWorkingStatus") RequestBody oldMachineWorkingStatus,
-                                                 @Part("accessoriesProvided") RequestBody accessoriesProvided,
-                                                 @Part("remarks") RequestBody remarks,
-                                                 @Part("dealerName") RequestBody dealerName,
-                                                 @Part("mobileNo") RequestBody mobileNo,
-                                                 @Part("blockName") RequestBody blockName,
-                                                 @Part("ipAddress") RequestBody ipAddress,
-                                                 @Part("WhetherOldMachProvdedForReplacmnt") RequestBody WhetherOldMachProvdedForReplacmnt,
-                                                 @Part("isCompleteWithSatisfactorily") RequestBody isCompleteWithSatisfactorily,
-                                                 @Part MultipartBody.Part dealerImage);
+    fun saveNewPosDistributionAPI(
+        @Part("userId") userId: RequestBody?,
+        @Part("tranId") tranId: RequestBody?,
+        @Part("districtId") districtId: RequestBody?,
+        @Part("EquipmentModelId") EquipmentModelId: RequestBody?,
+        @Part("oldMachineVenderid") oldMachineVenderid: RequestBody?,
+        @Part("newMachineVenderid") newMachineVenderid: RequestBody?,
+        @Part("newMachineOrderNo") newMachineOrderNo: RequestBody?,
+        @Part("FPSCode") FPSCode: RequestBody?,
+        @Part("ticketNo") ticketNo: RequestBody?,
+        @Part("tranDateStr") tranDateStr: RequestBody?,
+        @Part("oldMachine_SerialNo") oldMachine_SerialNo: RequestBody?,
+        @Part("oldMachine_Biometric_SeriallNo") oldMachine_Biometric_SeriallNo: RequestBody?,
+        @Part("oldMachineWorkingStatus") oldMachineWorkingStatus: RequestBody?,
+        @Part("accessoriesProvided") accessoriesProvided: RequestBody?,
+        @Part("remarks") remarks: RequestBody?,
+        @Part("dealerName") dealerName: RequestBody?,
+        @Part("mobileNo") mobileNo: RequestBody?,
+        @Part("blockName") blockName: RequestBody?,
+        @Part("ipAddress") ipAddress: RequestBody?,
+        @Part("WhetherOldMachProvdedForReplacmnt") WhetherOldMachProvdedForReplacmnt: RequestBody?,
+        @Part("isCompleteWithSatisfactorily") isCompleteWithSatisfactorily: RequestBody?,
+        @Part dealerImage: MultipartBody.Part?
+    ): Call<ResponseBody?>?
 
     //gagandeep
     @Multipart
     @POST("posError/saveErroeReq")
-    Call<SaveErroeReqRoot> saveErroeReqApi(@Part("UserID") RequestBody UserID,
-                                           @Part("FPSCode") RequestBody FPSCode,
-                                           @Part("DeviceCode") RequestBody DeviceCode,
-                                           @Part("DealerMobileNo") RequestBody DealerMobileNo,
-                                           @Part("ErrorTypeId") RequestBody ErrorTypeId,
-                                           @Part("ErrorStatusId") RequestBody ErrorStatusId,
-                                           @Part("Remark") RequestBody Remark,
-                                           @Part MultipartBody.Part[] campDocumentsParts);
+    fun saveErroeReqApi(
+        @Part("UserID") UserID: RequestBody?,
+        @Part("FPSCode") FPSCode: RequestBody?,
+        @Part("DeviceCode") DeviceCode: RequestBody?,
+        @Part("DealerMobileNo") DealerMobileNo: RequestBody?,
+        @Part("ErrorTypeId") ErrorTypeId: RequestBody?,
+        @Part("ErrorStatusId") ErrorStatusId: RequestBody?,
+        @Part("Remark") Remark: RequestBody?,
+        @Part campDocumentsParts: Array<MultipartBody.Part?>?
+    ): Call<SaveErroeReqRoot?>?
 
     @Multipart
     @POST("posError/UpdateErroeReq")
-    Call<UpdateErroeReqRoot> UpdateErroeReqApi(@Part("ErrorId") RequestBody ErrorId,
-                                               @Part("UserID") RequestBody UserID,
-                                               @Part("FPSCode") RequestBody FPSCode,
-                                               @Part("DeviceCode") RequestBody DeviceCode,
-                                               @Part("DealerMobileNo") RequestBody DealerMobileNo,
-                                               @Part("ErrorTypeId") RequestBody ErrorTypeId,
-                                               @Part("ErrorStatusId") RequestBody ErrorStatusId,
-                                               @Part("Remark") RequestBody Remark,
-                                               @Part MultipartBody.Part[] campDocumentsParts);
+    fun UpdateErroeReqApi(
+        @Part("ErrorId") ErrorId: RequestBody?,
+        @Part("UserID") UserID: RequestBody?,
+        @Part("FPSCode") FPSCode: RequestBody?,
+        @Part("DeviceCode") DeviceCode: RequestBody?,
+        @Part("DealerMobileNo") DealerMobileNo: RequestBody?,
+        @Part("ErrorTypeId") ErrorTypeId: RequestBody?,
+        @Part("ErrorStatusId") ErrorStatusId: RequestBody?,
+        @Part("Remark") Remark: RequestBody?,
+        @Part campDocumentsParts: Array<MultipartBody.Part?>?
+    ): Call<UpdateErroeReqRoot?>?
 
-    //  String JSONURL = "https://demonuts.com/Demonuts/JsonTest/Tennis/";
+    @get:GET("json_parsing.php")
+    val jSONString: Call<String?>?
 
-    @GET("json_parsing.php")
-    Call<String> getJSONString();
-
-//gagandeep
-
+    //gagandeep
     @POST("disb/uploadDistributerPhoto")
-    Call<ResponseBody> uploadDistributerPhoto(@Body RequestBody requestBody);
+    fun uploadDistributerPhoto(@Body requestBody: RequestBody?): Call<ResponseBody?>?
 
     @FormUrlEncoded
     @POST("disb/getPosDistributionListAPIAllUpld")
-    Call<ResponseBody> getPosDistributionListAPIAllUpld(@Field("districtId") String districtId,
-                                                        @Field("userId") String userId,
-                                                        @Field("tranId") String tranId,
-                                                        @Field("FPSCode") String FPSCode,
-                                                        @Field("ticketNo") String ticketNo,
-                                                        @Field("fromDate") String fromDate,
-                                                        @Field("toDate") String toDate);
-    /*pos distribution report apis*/
+    fun getPosDistributionListAPIAllUpld(
+        @Field("districtId") districtId: String?,
+        @Field("userId") userId: String?,
+        @Field("tranId") tranId: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("ticketNo") ticketNo: String?,
+        @Field("fromDate") fromDate: String?,
+        @Field("toDate") toDate: String?
+    ): Call<ResponseBody?>?
 
+    /*pos distribution report apis*/
     @FormUrlEncoded
     @POST("Report/RepaetFPSComplainsOnSC")
-    Call<ResponseBody> getFpsRepeatOnServiceCenter(@Field("userId") String userId,
-                                                   @Field("fromDate") String fromDate,
-                                                   @Field("toDate") String toDate,
-                                                   @Field("DistrictId") String DistrictId,
-                                                   @Field("FPSCode") String FPSCode);
+    fun getFpsRepeatOnServiceCenter(
+        @Field("userId") userId: String?,
+        @Field("fromDate") fromDate: String?,
+        @Field("toDate") toDate: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("FPSCode") FPSCode: String?
+    ): Call<ResponseBody?>?
 
     @FormUrlEncoded
     @POST("Report/RepaetFPSComplainsOnSCList")
-    Call<ResponseBody> RepaetFPSComplainsOnSCList(@Field("userId") String userId,
-                                                  @Field("fromDate") String fromDate,
-                                                  @Field("toDate") String toDate,
-                                                  @Field("DistrictId") String DistrictId,
-                                                  @Field("FPSCode") String FPSCode);
+    fun RepaetFPSComplainsOnSCList(
+        @Field("userId") userId: String?,
+        @Field("fromDate") fromDate: String?,
+        @Field("toDate") toDate: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("FPSCode") FPSCode: String?
+    ): Call<ResponseBody?>?
 
     @FormUrlEncoded
     @POST("rest/AcceptBySE")
-    Call<ModelResponse> AcceptBySE(@Field("userId") String userId,
-                                   @Field("complaintRegNo") String complaintRegNo);
+    fun AcceptBySE(
+        @Field("userId") userId: String?,
+        @Field("complaintRegNo") complaintRegNo: String?
+    ): Call<ModelResponse?>?
 
     @FormUrlEncoded
     @POST("stock/saveReturnPartsFromUserSide")
-    Call<ModelResponse> saveReturnPartsFromUserSide(@Field("UserId") String UserId,
-                                                    @Field("SeUserId") String SeUserId,
-                                                    @Field("dispatchItems") String dispatchItems);
+    fun saveReturnPartsFromUserSide(
+        @Field("UserId") UserId: String?,
+        @Field("SeUserId") SeUserId: String?,
+        @Field("dispatchItems") dispatchItems: String?
+    ): Call<ModelResponse?>?
 
     @Multipart
     @POST("expense/saveExpenses")
-    Call<ResponseBody> saveExpenses(@Part("UserId") RequestBody UserId,
-                                    @Part("TotalExAmount") RequestBody TotalExAmount,
-                                    @Part("Remark") RequestBody Remark,
-                                    @Part("DocketNo") RequestBody DocketNo,
-                                    @Part("CourierName") RequestBody CourierName,
-                                    @Part MultipartBody.Part ExChallanCopy);
+    fun saveExpenses(
+        @Part("UserId") UserId: RequestBody?,
+        @Part("TotalExAmount") TotalExAmount: RequestBody?,
+        @Part("Remark") Remark: RequestBody?,
+        @Part("DocketNo") DocketNo: RequestBody?,
+        @Part("CourierName") CourierName: RequestBody?,
+        @Part ExChallanCopy: MultipartBody.Part?
+    ): Call<ResponseBody?>?
 
     @FormUrlEncoded
     @POST("expense/getExpensesList")
-    Call<ResponseBody> getExpensesList(@Field("UserId") String UserId,
-                                       @Field("ExpenseStatusID") String ExpenseStatusID,
-                                       @Field("DistrictId") String DistrictId,
-                                       @Field("DateFrom") String DateFrom,
-                                       @Field("DateTo") String DateTo);
+    fun getExpensesList(
+        @Field("UserId") UserId: String?,
+        @Field("ExpenseStatusID") ExpenseStatusID: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?
+    ): Call<ResponseBody?>?
 
     @FormUrlEncoded
     @POST("expense/completeExpenses")
-    Call<ResponseBody> completeExpenses(@Field("User" + "Id") String UserId,
-                                        @Field("ExpenseId") String ExpenseId);
+    fun completeExpenses(
+        @Field("User" + "Id") UserId: String?,
+        @Field("ExpenseId") ExpenseId: String?
+    ): Call<ResponseBody?>?
 
     @FormUrlEncoded
     @POST("posError/GetErrorTypes")
-    Call<GetErrorTypesRoot> GetErrorTypes(@Field("UserID") String UserID,
-                                          @Field("ErrorTypeId") String ErrorTypeId);
+    fun GetErrorTypes(
+        @Field("UserID") UserID: String?,
+        @Field("ErrorTypeId") ErrorTypeId: String?
+    ): Call<GetErrorTypesRoot?>?
 
     @FormUrlEncoded
     @POST("posError/GetPOSDeviceErrors")
-    Call<GetPosDeviceErrorsRoot> GetPOSDeviceErrors(@Field("ErrorId") String ErrorId,
-                                                    @Field("UserID") String UserID,
-                                                    @Field("FPSCode") String FPSCode,
-                                                    @Field("DistrictId") String DistrictId,
-                                                    @Field("ErrorRegNo") String ErrorRegNo,
-                                                    @Field("ErrorStatusId") String ErrorStatusId,
-                                                    @Field("DateFrom") String DateFrom,
-                                                    @Field("DateTo") String DateTo,
-                                                    @Field("ErrorTypeId") String ErrorTypeId);
+    fun GetPOSDeviceErrors(
+        @Field("ErrorId") ErrorId: String?,
+        @Field("UserID") UserID: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("ErrorRegNo") ErrorRegNo: String?,
+        @Field("ErrorStatusId") ErrorStatusId: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?,
+        @Field("ErrorTypeId") ErrorTypeId: String?
+    ): Call<GetPosDeviceErrorsRoot?>?
 
     @FormUrlEncoded
     @POST("posError/GetErrorImages")
-    Call<GetErrorImagesRoot> GetErrorImages(@Field("ErrorId") String ErrorId,
-                                            @Field("UserID") String UserID,
-                                            @Field("ErrorRegNo") String ErrorRegNo);
+    fun GetErrorImages(
+        @Field("ErrorId") ErrorId: String?,
+        @Field("UserID") UserID: String?,
+        @Field("ErrorRegNo") ErrorRegNo: String?
+    ): Call<GetErrorImagesRoot?>?
 
     @FormUrlEncoded
     @POST("posError/UpdateErrorStatus")
-    Call<UpdateErrorStatusRoot> UpdateErrorStatus(@Field("ErrorId") String ErrorId,
-                                                  @Field("UserID") String UserID,
-                                                  @Field("ErrorRegNo") String ErrorRegNo,
-                                                  @Field("ErrorStatusId") String ErrorStatusId,
-                                                  @Field("Remark") String Remark);
+    fun UpdateErrorStatus(
+        @Field("ErrorId") ErrorId: String?,
+        @Field("UserID") UserID: String?,
+        @Field("ErrorRegNo") ErrorRegNo: String?,
+        @Field("ErrorStatusId") ErrorStatusId: String?,
+        @Field("Remark") Remark: String?
+    ): Call<UpdateErrorStatusRoot?>?
 
     @FormUrlEncoded
     @POST("posError/GetErrorRemarks")
-    Call<GetRemarkRoot> GetErrorRemarks(@Field("ErrorId") String ErrorId,
-                                        @Field("UserID") String UserID,
-                                        @Field("ErrorRegNo") String ErrorRegNo);
+    fun GetErrorRemarks(
+        @Field("ErrorId") ErrorId: String?,
+        @Field("UserID") UserID: String?,
+        @Field("ErrorRegNo") ErrorRegNo: String?
+    ): Call<GetRemarkRoot?>?
 
-//Ins Weinghing scale
-
+    //Ins Weinghing scale
     @FormUrlEncoded
     @POST("WeigIris/getIrisWeighInstallationCnt")
-    Call<CountRoot> appWeightCountApi(@Field("UserID") String UserID,
-                                      @Field("FPSCode") String FPSCode,
-                                      @Field("DistrictId") String DistrictId,
-                                      @Field("TicketNo") String TicketNo,
-                                      @Field("StatusId") String StatusId,
-                                      @Field("DateFrom") String DateFrom,
-                                      @Field("DateTo") String DateTo);
+    fun appWeightCountApi(
+        @Field("UserID") UserID: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("TicketNo") TicketNo: String?,
+        @Field("StatusId") StatusId: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?
+    ): Call<CountRoot?>?
 
     @FormUrlEncoded
     @POST("WeigIrisInstall/WeinghIRISDeliveryInstallCnt")
-    Call<CountRoot> appWeightCountApiiris(@Field("UserID") String UserID,
-                                          @Field("DistrictId") String DistrictId,
-                                          @Field("DeviceTypeId") String DeviceTypeId,
-                                          @Field("DeviceModelId") String DeviceModelId,
-                                          @Field("DateFrom") String DateFrom,
-                                          @Field("DateTo") String DateTo,
-                                          @Field("ToUserId") String ToUserId);
+    fun appWeightCountApiiris(
+        @Field("UserID") UserID: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("DeviceTypeId") DeviceTypeId: String?,
+        @Field("DeviceModelId") DeviceModelId: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?,
+        @Field("ToUserId") ToUserId: String?
+    ): Call<CountRoot?>?
 
     @FormUrlEncoded
     @POST("WeigIrisInstall/WeinghIRISDeliveryInstallCnt")
-    Call<IrisDashboardResponse> getIrisDashboardData(@Field("UserID") String UserID,
-                                                     @Field("DistrictId") String DistrictId,
-                                                     @Field("DeviceTypeId") String DeviceTypeId,
-                                                     @Field("DeviceModelId") String DeviceModelId,
-                                                     @Field("DateFrom") String DateFrom,
-                                                     @Field("DateTo") String DateTo,
-                                                     @Field("ToUserId") String ToUserId);
+    fun getIrisDashboardData(
+        @Field("UserID") UserID: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("DeviceTypeId") DeviceTypeId: String?,
+        @Field("DeviceModelId") DeviceModelId: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?,
+        @Field("ToUserId") ToUserId: String?
+    ): Call<IrisDashboardResponse?>?
 
     @FormUrlEncoded
     @POST("SensorInstall/SensorDisbnDashbordCnt")
-    Call<BiometricDashboardResponse> getBiometricSensorDashboardData(@Field("UserID") String UserID,
-                                                                     @Field("DistrictId") String DistrictId,
-                                                                     @Field("FPSCode") String FPSCode,
-                                                                     @Field("DateFrom") String DateFrom,
-                                                                     @Field("DateTo") String DateTo,
-                                                                     @Field("ToUserId") String ToUserId);
+    fun getBiometricSensorDashboardData(
+        @Field("UserID") UserID: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?,
+        @Field("ToUserId") ToUserId: String?
+    ): Call<BiometricDashboardResponse?>?
 
     @GET("rest/apiGetDistictList")
-    Call<ModelDistrict_w> apiGetDistictList_w();
+    fun apiGetDistictList_w(): Call<ModelDistrict_w?>?
 
     @FormUrlEncoded
     @POST("WeigIris/GetCustomerDetailsByFPS")
-    Call<DetailByFpsRoot> apiDetailsByFPS(@Field("FPSCode") String FPSCode,
-                                          @Field("UserID") String UserID,
-                                          @Field("DistrictId") String DistrictId);
+    fun apiDetailsByFPS(
+        @Field("FPSCode") FPSCode: String?,
+        @Field("UserID") UserID: String?,
+        @Field("DistrictId") DistrictId: String?
+    ): Call<DetailByFpsRoot?>?
 
     @FormUrlEncoded
     @POST("CloseGuard/GetCustomerDetailsByFPSForCloseGuard")
-    Call<DetailByFpsRoot> getCustomerDetailsByFPSForCloseGuard(@Field("FPSCode") String FPSCode,
-                                                               @Field("UserID") String UserID,
-                                                               @Field("DistrictId") String DistrictId);
+    fun getCustomerDetailsByFPSForCloseGuard(
+        @Field("FPSCode") FPSCode: String?,
+        @Field("UserID") UserID: String?,
+        @Field("DistrictId") DistrictId: String?
+    ): Call<DetailByFpsRoot?>?
 
     @FormUrlEncoded
     @POST("SensorInstall/GetCustomerDetailsByFPSForSensorDistribution")
-    Call<DetailsByFPSForSensorRoot> getCustomerDetailsByFPSForSensorDistribution(@Field("FPSCode") String FPSCode,
-                                                                                 @Field("UserID") String UserID,
-                                                                                 @Field("DistrictId") String DistrictId);
+    fun getCustomerDetailsByFPSForSensorDistribution(
+        @Field("FPSCode") FPSCode: String?,
+        @Field("UserID") UserID: String?,
+        @Field("DistrictId") DistrictId: String?
+    ): Call<DetailsByFPSForSensorRoot?>?
 
     @FormUrlEncoded
     @POST("WeigIris/getIrisWeighInstallation")
-    Call<WeightInsRoot> apiIrisWeighInstallation(
-            @Field("UserID") String UserID,
-            @Field("FPSCode") String FPSCode,
-            @Field("DistrictId") String DistrictId,
-            @Field("TicketNo") String TicketNo,
-            @Field("StatusId") String StatusId,
-            @Field("DateFrom") String DateFrom,
-            @Field("DateTo") String DateTo);
+    fun apiIrisWeighInstallation(
+        @Field("UserID") UserID: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("TicketNo") TicketNo: String?,
+        @Field("StatusId") StatusId: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?
+    ): Call<WeightInsRoot?>?
 
     @FormUrlEncoded
     @POST("SensorInstall/SensorDisbnSummaryCnt")
-    Call<SensorSummaryResponse> getSensorDisbnSummaryCnt(
-            @Field("UserID") String UserID,
-            @Field("FPSCode") String FPSCode,
-            @Field("DistrictId") String DistrictId,
-            @Field("ToUserId") String ToUserId,
-            @Field("DateFrom") String DateFrom,
-            @Field("DateTo") String DateTo);
+    fun getSensorDisbnSummaryCnt(
+        @Field("UserID") UserID: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("ToUserId") ToUserId: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?
+    ): Call<SensorSummaryResponse?>?
 
     @FormUrlEncoded
     @POST("SensorInstall/SensorDistributionDetailsList")
-    Call<SensorDistributionDetailsListResp> getSensorDistributionDetailsList(
-            @Field("UserID") String UserID,
-            @Field("FPSCode") String FPSCode,
-            @Field("DistrictId") String DistrictId,
-            @Field("DeviceCode") String DeviceCode,
-            @Field("BiometricSerialNo") String BiometricSerialNo,
-            @Field("FilterTypeId") String FilterTypeId,
-            @Field("IsPagination") String IsPagination,
-            @Field("PageNo") String PageNo,
-            @Field("PageSize") String PageSize,
-            @Field("ToUserId") String ToUserId,
-            @Field("DateFrom") String DateFrom,
-            @Field("DateTo") String DateTo);
+    fun getSensorDistributionDetailsList(
+        @Field("UserID") UserID: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("DeviceCode") DeviceCode: String?,
+        @Field("BiometricSerialNo") BiometricSerialNo: String?,
+        @Field("FilterTypeId") FilterTypeId: String?,
+        @Field("IsPagination") IsPagination: String?,
+        @Field("PageNo") PageNo: String?,
+        @Field("PageSize") PageSize: String?,
+        @Field("ToUserId") ToUserId: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?
+    ): Call<SensorDistributionDetailsListResp?>?
 
     @Multipart
     @POST("WeigIrisInstall/saveInstallationReq")
-    Call<SaveRoot> saveInstallationRe(@Part("UserID") RequestBody UserID,
-                                      @Part("DeliveryId") RequestBody DeliveryId,
-                                      @Part("IrisScannerModelId") RequestBody IrisScannerModelId,
-                                      @Part("IrisScannerSerialNo") RequestBody IrisScannerSerialNo,
-                                      @Part("ShopAddress") RequestBody ShopAddress,
-                                      @Part("Latitude") RequestBody Latitude,
-                                      @Part("Longitude") RequestBody Longitude,
-                                      @Part("Remarks") RequestBody Remarks,
-                                      @Part("DeliveredOn") RequestBody DeliveredOn,
-                                      @Part("FPSCode") RequestBody FPSCode,
-                                      @Part("DealerMobileNo") RequestBody DealerMobileNo,
-                                      @Part MultipartBody.Part InstallationWeinghingImage,
-                                      @Part MultipartBody.Part InstallationIRISScannerImage,
-                                      @Part MultipartBody.Part InstallationDealerPhoto,
-                                      @Part MultipartBody.Part InstallationDealerSignature,
-                                      @Part MultipartBody.Part InstallationChallan);
+    fun saveInstallationRe(
+        @Part("UserID") UserID: RequestBody?,
+        @Part("DeliveryId") DeliveryId: RequestBody?,
+        @Part("IrisScannerModelId") IrisScannerModelId: RequestBody?,
+        @Part("IrisScannerSerialNo") IrisScannerSerialNo: RequestBody?,
+        @Part("ShopAddress") ShopAddress: RequestBody?,
+        @Part("Latitude") Latitude: RequestBody?,
+        @Part("Longitude") Longitude: RequestBody?,
+        @Part("Remarks") Remarks: RequestBody?,
+        @Part("DeliveredOn") DeliveredOn: RequestBody?,
+        @Part("FPSCode") FPSCode: RequestBody?,
+        @Part("DealerMobileNo") DealerMobileNo: RequestBody?,
+        @Part InstallationWeinghingImage: MultipartBody.Part?,
+        @Part InstallationIRISScannerImage: MultipartBody.Part?,
+        @Part InstallationDealerPhoto: MultipartBody.Part?,
+        @Part InstallationDealerSignature: MultipartBody.Part?,
+        @Part InstallationChallan: MultipartBody.Part?
+    ): Call<SaveRoot?>?
 
     @Multipart
     @POST("WeigIrisInstall/saveIRISDeliverInstallationReq")
-    Call<SaveIRISDeliverResponse> saveInstallationRq(@Part("UserID") RequestBody UserID,
-                                                     @Part("FPSCode") RequestBody FPSCode,
-                                                     @Part("DealerMobileNo") RequestBody DealerMobileNo,
-                                                     @Part("IrisScannerModelId") RequestBody IrisScannerModelId,
-                                                     @Part("IrisScannerSerialNo") RequestBody IrisScannerSerialNo,
-                                                     @Part("ShopAddress") RequestBody ShopAddress,
-                                                     @Part("Latitude") RequestBody Latitude,
-                                                     @Part("Longitude") RequestBody Longitude,
-                                                     @Part("Remarks") RequestBody Remark,
-                                                     @Part("DeliveredOn") RequestBody DeliveredOn,
-                                                     @Part MultipartBody.Part IRISSerialNoImage,
-                                                     @Part MultipartBody.Part DealerImageWithIRIS,
-                                                     @Part MultipartBody.Part DealerSignatureIRIS,
-                                                     @Part MultipartBody.Part DealerPhotIdProof);
+    fun saveInstallationRq(
+        @Part("UserID") UserID: RequestBody?,
+        @Part("FPSCode") FPSCode: RequestBody?,
+        @Part("DealerMobileNo") DealerMobileNo: RequestBody?,
+        @Part("IrisScannerModelId") IrisScannerModelId: RequestBody?,
+        @Part("IrisScannerSerialNo") IrisScannerSerialNo: RequestBody?,
+        @Part("ShopAddress") ShopAddress: RequestBody?,
+        @Part("Latitude") Latitude: RequestBody?,
+        @Part("Longitude") Longitude: RequestBody?,
+        @Part("Remarks") Remark: RequestBody?,
+        @Part("DeliveredOn") DeliveredOn: RequestBody?,
+        @Part IRISSerialNoImage: MultipartBody.Part?,
+        @Part DealerImageWithIRIS: MultipartBody.Part?,
+        @Part DealerSignatureIRIS: MultipartBody.Part?,
+        @Part DealerPhotIdProof: MultipartBody.Part?
+    ): Call<SaveIRISDeliverResponse?>?
 
     @Multipart
     @POST("SensorInstall/saveSensorDistribution")
-    Call<SaveBiometricDeliverResponse> saveSensorDistribution(@Part("UserID") RequestBody UserID,
-                                                              @Part("TranId") RequestBody TranId,
-                                                              @Part("DeviceCode") RequestBody DeviceCode,
-                                                              @Part("BiometricSerialNo") RequestBody BiometricSerialNo,
-                                                              @Part("FPSCode") RequestBody FPSCode,
-                                                              @Part("DealerMobileNo") RequestBody DealerMobileNo,
-                                                              @Part("ShopAddress") RequestBody ShopAddress,
-                                                              @Part("Latitude") RequestBody Latitude,
-                                                              @Part("Longitude") RequestBody Longitude,
-                                                              @Part("Remarks") RequestBody Remark,
-                                                              @Part("DeliveredOn") RequestBody DeliveredOn,
-                                                              @Part MultipartBody.Part BiometricSerialNoImage,
-                                                              @Part MultipartBody.Part DealerImageWithBiometric,
-                                                              @Part MultipartBody.Part DealerSignature,
-                                                              @Part MultipartBody.Part DealerPhotoIDProof);
+    fun saveSensorDistribution(
+        @Part("UserID") UserID: RequestBody?,
+        @Part("TranId") TranId: RequestBody?,
+        @Part("DeviceCode") DeviceCode: RequestBody?,
+        @Part("BiometricSerialNo") BiometricSerialNo: RequestBody?,
+        @Part("FPSCode") FPSCode: RequestBody?,
+        @Part("DealerMobileNo") DealerMobileNo: RequestBody?,
+        @Part("ShopAddress") ShopAddress: RequestBody?,
+        @Part("Latitude") Latitude: RequestBody?,
+        @Part("Longitude") Longitude: RequestBody?,
+        @Part("Remarks") Remark: RequestBody?,
+        @Part("DeliveredOn") DeliveredOn: RequestBody?,
+        @Part BiometricSerialNoImage: MultipartBody.Part?,
+        @Part DealerImageWithBiometric: MultipartBody.Part?,
+        @Part DealerSignature: MultipartBody.Part?,
+        @Part DealerPhotoIDProof: MultipartBody.Part?
+    ): Call<SaveBiometricDeliverResponse?>?
 
     @Multipart
     @POST("WeigIrisReplacement/saveIRISReplacementReq")
-    Call<SaveIRISDeliverResponse> saveIRISReplacementReqpr(@Part("UserID") RequestBody UserID,
-                                                           @Part("DeliveryId") RequestBody DeliveryId,
-                                                           @Part("FPSCode") RequestBody FPSCode,
-                                                           @Part("DealerMobileNo") RequestBody DealerMobileNo,
-                                                           @Part("IrisScannerModelId") RequestBody IrisScannerModelId,
-                                                           @Part("IrisScannerSerialNo") RequestBody IrisScannerSerialNo,
-                                                           @Part("ShopAddress") RequestBody ShopAddress,
-                                                           @Part("Latitude") RequestBody Latitude,
-                                                           @Part("Longitude") RequestBody Longitude,
-                                                           @Part("Remarks") RequestBody Remark,
-                                                           @Part("DeliveredOn") RequestBody DeliveredOn,
-                                                           @Part("ReplaceTypeId") RequestBody ReplaceTypeId,
-                                                           @Part MultipartBody.Part IRISSerialNoImage,
-                                                           @Part MultipartBody.Part DealerImageWithIRIS,
-                                                           @Part MultipartBody.Part DealerSignatureIRIS,
-                                                           @Part MultipartBody.Part DealerPhotIdProof);
+    fun saveIRISReplacementReqpr(
+        @Part("UserID") UserID: RequestBody?,
+        @Part("DeliveryId") DeliveryId: RequestBody?,
+        @Part("FPSCode") FPSCode: RequestBody?,
+        @Part("DealerMobileNo") DealerMobileNo: RequestBody?,
+        @Part("IrisScannerModelId") IrisScannerModelId: RequestBody?,
+        @Part("IrisScannerSerialNo") IrisScannerSerialNo: RequestBody?,
+        @Part("ShopAddress") ShopAddress: RequestBody?,
+        @Part("Latitude") Latitude: RequestBody?,
+        @Part("Longitude") Longitude: RequestBody?,
+        @Part("Remarks") Remark: RequestBody?,
+        @Part("DeliveredOn") DeliveredOn: RequestBody?,
+        @Part("ReplaceTypeId") ReplaceTypeId: RequestBody?,
+        @Part IRISSerialNoImage: MultipartBody.Part?,
+        @Part DealerImageWithIRIS: MultipartBody.Part?,
+        @Part DealerSignatureIRIS: MultipartBody.Part?,
+        @Part DealerPhotIdProof: MultipartBody.Part?
+    ): Call<SaveIRISDeliverResponse?>?
 
     // @Part MultipartBody.Part[] campDocumentsParts);
-
     @Multipart
     @POST("CloseGuard/saveIRISCloseGuardDelivery")
-    Call<SaveIRISDeliverResponse> saveIRISCloseGuardDelivery(@Part("UserID") RequestBody UserID,
-                                                             @Part("FPSCode") RequestBody FPSCode,
-                                                             @Part("ShopAddress") RequestBody ShopAddress,
-                                                             @Part("Latitude") RequestBody Latitude,
-                                                             @Part("Longitude") RequestBody Longitude,
-                                                             @Part MultipartBody.Part DealerImageWithIRIS,
-                                                             @Part MultipartBody.Part DealerSignatureIRIS);
+    fun saveIRISCloseGuardDelivery(
+        @Part("UserID") UserID: RequestBody?,
+        @Part("FPSCode") FPSCode: RequestBody?,
+        @Part("ShopAddress") ShopAddress: RequestBody?,
+        @Part("Latitude") Latitude: RequestBody?,
+        @Part("Longitude") Longitude: RequestBody?,
+        @Part DealerImageWithIRIS: MultipartBody.Part?,
+        @Part DealerSignatureIRIS: MultipartBody.Part?
+    ): Call<SaveIRISDeliverResponse?>?
 
     @FormUrlEncoded
     @POST("WeigIris/IrisWeighDeliveryDtl")
-    Call<weighingDelieryRoot> apiWeigDeliveryDetail(
-            @Field("UserID") String UserID,
-            @Field("FPSCode") String FPSCode,
-            @Field("DistrictId") String DistrictId,
-            @Field("TicketNo") String TicketNo);
+    fun apiWeigDeliveryDetail(
+        @Field("UserID") UserID: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("TicketNo") TicketNo: String?
+    ): Call<weighingDelieryRoot?>?
 
     @FormUrlEncoded
     @POST("WeigIrisInstall/IrisWeighInstallation")
-    Call<InstalledRoot> IrisWeighInstallation(
-            @Field("UserID") String UserID,
-            @Field("FPSCode") String FPSCode,
-            @Field("DistrictId") String DistrictId,
-            @Field("TicketNo") String TicketNo,
-            @Field("StatusId") String StatusId,
-            @Field("DateFrom") String DateFrom,
-            @Field("DateTo") String DateTo,
-            @Field("DeliveryId") String DeliveryId);
+    fun IrisWeighInstallation(
+        @Field("UserID") UserID: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("TicketNo") TicketNo: String?,
+        @Field("StatusId") StatusId: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?,
+        @Field("DeliveryId") DeliveryId: String?
+    ): Call<InstalledRoot?>?
 
     @FormUrlEncoded
     @POST("WeigIrisInstall/IrisDeliveryInstallationL")
-    Call<IrisDeliveryListResponse> IrisDeliveryInstallationL(
-            @Field("UserID") String UserID,
-            @Field("ToUserId") String ToUserId,
-            @Field("FPSCode") String FPSCode,
-            @Field("DistrictId") String DistrictId,
-            @Field("TicketNo") String TicketNo,
-            @Field("BlockId") String BlockId,
-            @Field("DateFrom") String DateFrom,
-            @Field("DateTo") String DateTo,
-            @Field("DeliveryId") String DeliveryId,
-            @Field("DSerialNo") String DSerialNo,
-            @Field("DeviceTypeId") String DeviceTypeId,
-            @Field("DeviceModelId") String DeviceModelId,
-            @Field("IsPagination") String IsPagination,
-            @Field("PageNo") String PageNo,
-            @Field("PageSize") String PageSize);
+    fun IrisDeliveryInstallationL(
+        @Field("UserID") UserID: String?,
+        @Field("ToUserId") ToUserId: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("TicketNo") TicketNo: String?,
+        @Field("BlockId") BlockId: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?,
+        @Field("DeliveryId") DeliveryId: String?,
+        @Field("DSerialNo") DSerialNo: String?,
+        @Field("DeviceTypeId") DeviceTypeId: String?,
+        @Field("DeviceModelId") DeviceModelId: String?,
+        @Field("IsPagination") IsPagination: String?,
+        @Field("PageNo") PageNo: String?,
+        @Field("PageSize") PageSize: String?
+    ): Call<IrisDeliveryListResponse?>?
 
     @FormUrlEncoded
     @POST("WeigIrisInstall/IrisDeliveryInstallationLForReplacement")
-    Call<IrisDeliveryListResponse> IrisDeliveryInstallationLForReplacement(
-            @Field("UserID") String UserID,
-            @Field("FPSCode") String FPSCode,
-            @Field("DistrictId") String DistrictId,
-            @Field("TicketNo") String TicketNo,
-            @Field("BlockId") String BlockId,
-            @Field("DateFrom") String DateFrom,
-            @Field("DateTo") String DateTo,
-            @Field("DeliveryId") String DeliveryId,
-            @Field("DSerialNo") String DSerialNo,
-            @Field("DeviceTypeId") String DeviceTypeId,
-            @Field("DeviceModelId") String DeviceModelId,
-            @Field("IsPagination") String IsPagination,
-            @Field("PageNo") String PageNo,
-            @Field("PageSize") String PageSize);
+    fun IrisDeliveryInstallationLForReplacement(
+        @Field("UserID") UserID: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("TicketNo") TicketNo: String?,
+        @Field("BlockId") BlockId: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?,
+        @Field("DeliveryId") DeliveryId: String?,
+        @Field("DSerialNo") DSerialNo: String?,
+        @Field("DeviceTypeId") DeviceTypeId: String?,
+        @Field("DeviceModelId") DeviceModelId: String?,
+        @Field("IsPagination") IsPagination: String?,
+        @Field("PageNo") PageNo: String?,
+        @Field("PageSize") PageSize: String?
+    ): Call<IrisDeliveryListResponse?>?
 
     @FormUrlEncoded
     @POST("CloseGuard/IrisCloseGuardDeliveryList")
-    Call<ClosedGuardDeliveryListResponse> getCloseGuardDeliveryList(
-            @Field("UserID") String UserID,
-            @Field("FPSCode") String FPSCode,
-            @Field("DistrictId") String DistrictId,
-            @Field("ToUserId") String ToUserId,
-            @Field("DateFrom") String DateFrom,
-            @Field("DateTo") String DateTo,
-            @Field("IsPagination") String DeliveryId,
-            @Field("PageNo") String DSerialNo,
-            @Field("PageSize") String DeviceTypeId);
+    fun getCloseGuardDeliveryList(
+        @Field("UserID") UserID: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("ToUserId") ToUserId: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?,
+        @Field("IsPagination") DeliveryId: String?,
+        @Field("PageNo") DSerialNo: String?,
+        @Field("PageSize") DeviceTypeId: String?
+    ): Call<ClosedGuardDeliveryListResponse?>?
 
     @FormUrlEncoded
     @POST("WeigIrisInstall/IrisWeighInstallationDtl")
-    Call<InstalledDetailedRoot> IrisWeighInstallationDtl(
-            @Field("UserID") String UserID,
-            @Field("FPSCode") String FPSCode,
-            @Field("DistrictId") String DistrictId,
-            @Field("TicketNo") String TicketNo,
-            @Field("DeliveryId") String DeliveryId);
+    fun IrisWeighInstallationDtl(
+        @Field("UserID") UserID: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("TicketNo") TicketNo: String?,
+        @Field("DeliveryId") DeliveryId: String?
+    ): Call<InstalledDetailedRoot?>?
 
     @FormUrlEncoded
     @POST("WeigIrisInstall/IrisDeliveryInstallationDtl")
-    Call<InstalledDetailedResponse> IrisDeliveryInstallationDtl(
-            @Field("UserID") String UserID,
-            @Field("FPSCode") String FPSCode,
-            @Field("DistrictId") String DistrictId,
-            @Field("TicketNo") String TicketNo,
-            @Field("DeliveryId") String DeliveryId);
+    fun IrisDeliveryInstallationDtl(
+        @Field("UserID") UserID: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("TicketNo") TicketNo: String?,
+        @Field("DeliveryId") DeliveryId: String?
+    ): Call<InstalledDetailedResponse?>?
 
     @FormUrlEncoded
     @POST("WeigIris/DownloadAPIChallanPDF")
-    Call<challanRoot> DownloadAPIChallanPDF(
-            @Field("UserID") String UserID,
-            @Field("FPSCode") String FPSCode,
-            @Field("DeviceTypeId") String DeviceTypeId,
-            @Field("ChallanTypeId") String ChallanTypeId,
-            @Field("DistrictId") String DistrictId);
+    fun DownloadAPIChallanPDF(
+        @Field("UserID") UserID: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DeviceTypeId") DeviceTypeId: String?,
+        @Field("ChallanTypeId") ChallanTypeId: String?,
+        @Field("DistrictId") DistrictId: String?
+    ): Call<challanRoot?>?
 
     @FormUrlEncoded
     @POST("WeigIrisInstall/VerifyDeliveryInst")
-    Call<ModelLogout> verifyDelivery(
-            @Field("UserID") String userId,
-            @Field("DeliveryId") String DeliveryId,
-            @Field("FPSCode") String FPSCode,
-            @Field("DeviceSerialNo") String DeviceSerialNo);
+    fun verifyDelivery(
+        @Field("UserID") userId: String?,
+        @Field("DeliveryId") DeliveryId: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DeviceSerialNo") DeviceSerialNo: String?
+    ): Call<ModelLogout?>?
 
     @Multipart
     @POST("WeigIris/updateDelivery")
-    Call<SaveRoot> updateDelivery(
-            @Part("UserID") RequestBody UserID,
-            @Part("DeliveryId") RequestBody DeliveryId,
-            @Part("WeighingScaleSerialNo") RequestBody FPSCode,
-            @Part("Remarks") RequestBody DeviceSerialNo,
-            @Part MultipartBody.Part WeighingImage,
-            @Part MultipartBody.Part DealerImage,
-            @Part MultipartBody.Part ChallanImage);
+    fun updateDelivery(
+        @Part("UserID") UserID: RequestBody?,
+        @Part("DeliveryId") DeliveryId: RequestBody?,
+        @Part("WeighingScaleSerialNo") FPSCode: RequestBody?,
+        @Part("Remarks") DeviceSerialNo: RequestBody?,
+        @Part WeighingImage: MultipartBody.Part?,
+        @Part DealerImage: MultipartBody.Part?,
+        @Part ChallanImage: MultipartBody.Part?
+    ): Call<SaveRoot?>?
 
     @FormUrlEncoded
     @POST("WeigIrisInstall/checkIRISSerialNoDeliveredOrNot")
-    Call<CheckIrisSerialNoResponse> checkIrisSerialNo(@Field("UserID") String UserID,
-                                                      @Field("IrisScannerModelId") String IrisScannerModelId,
-                                                      @Field("IrisScannerSerialNo") String IrisScannerSerialNo);
+    fun checkIrisSerialNo(
+        @Field("UserID") UserID: String?,
+        @Field("IrisScannerModelId") IrisScannerModelId: String?,
+        @Field("IrisScannerSerialNo") IrisScannerSerialNo: String?
+    ): Call<CheckIrisSerialNoResponse?>?
 
     @FormUrlEncoded
     @POST("SensorInstall/getL0DeviceCodeByFPS")
-    Call<DeviceCodeByFPSResponse> getL0DeviceCodeByFPS(@Field("UserID") String UserID,
-                                                       @Field("FPSCode") String FPSCode);
+    fun getL0DeviceCodeByFPS(
+        @Field("UserID") UserID: String?,
+        @Field("FPSCode") FPSCode: String?
+    ): Call<DeviceCodeByFPSResponse?>?
 
     @FormUrlEncoded
     @POST("SensorInstall/UpdateDeviceTypeToChangeFSensor")
-    Call<UpdateDeviceTypeToChangeFSensorResp> updateDeviceTypeToChangeFSensor(@Field("UserID") String UserID,
-                                                                              @Field("DeviceCode") String DeviceCode);
+    fun updateDeviceTypeToChangeFSensor(
+        @Field("UserID") UserID: String?,
+        @Field("DeviceCode") DeviceCode: String?
+    ): Call<UpdateDeviceTypeToChangeFSensorResp?>?
 
-    @GET("WeigIrisReplacement/getReplacementTypes")
-    Call<ReplacementTypesResponse> getReplacementTypes();
+
 
     @FormUrlEncoded
     @POST("WeigIris/getCombinedIRISWehingDetailReport")
-    Call<IrisInstallationPendingListResp> getCombinedIRISWehingDetailReport(
-            @Field("UserID") String UserID,
-            @Field("DistrictId") String DistrictId,
-            @Field("DeviceTypeId") String DeviceTypeId,
-            @Field("DeviceModelId") String DeviceModelId,
-            @Field("DateFrom") String DateFrom,
-            @Field("DateTo") String DateTo,
-            @Field("ToUserId") String ToUserId);
+    fun getCombinedIRISWehingDetailReport(
+        @Field("UserID") UserID: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("DeviceTypeId") DeviceTypeId: String?,
+        @Field("DeviceModelId") DeviceModelId: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?,
+        @Field("ToUserId") ToUserId: String?
+    ): Call<IrisInstallationPendingListResp?>?
 
     @Multipart
     @POST("WeigIrisReplacement/saveWeigReplacementReq")
-    Call<SaveIRISDeliverResponse> saveWeigReplacementReq(@Part("UserID") RequestBody UserID,
-                                                         @Part("DeliveryId") RequestBody DeliveryId,
-                                                         @Part("FPSCode") RequestBody FPSCode,
-                                                         @Part("DealerMobileNo") RequestBody DealerMobileNo,
-                                                         @Part("DeviceModelId") RequestBody DeviceModelId,
-                                                         @Part("SerialNo") RequestBody SerialNo,
-                                                         @Part("ShopAddress") RequestBody ShopAddress,
-                                                         @Part("Latitude") RequestBody Latitude,
-                                                         @Part("Longitude") RequestBody Longitude,
-                                                         @Part("Remarks") RequestBody Remark,
-                                                         @Part("DeliveredOn") RequestBody DeliveredOn,
-                                                         @Part MultipartBody.Part DeviceSerialNoImage,
-                                                         @Part MultipartBody.Part DealerImageWithDevice,
-                                                         @Part MultipartBody.Part DealerSignature,
-                                                         @Part MultipartBody.Part DealerPhotoIdProof);
+    fun saveWeigReplacementReq(
+        @Part("UserID") UserID: RequestBody?,
+        @Part("DeliveryId") DeliveryId: RequestBody?,
+        @Part("FPSCode") FPSCode: RequestBody?,
+        @Part("DealerMobileNo") DealerMobileNo: RequestBody?,
+        @Part("DeviceModelId") DeviceModelId: RequestBody?,
+        @Part("SerialNo") SerialNo: RequestBody?,
+        @Part("ShopAddress") ShopAddress: RequestBody?,
+        @Part("Latitude") Latitude: RequestBody?,
+        @Part("Longitude") Longitude: RequestBody?,
+        @Part("Remarks") Remark: RequestBody?,
+        @Part("DeliveredOn") DeliveredOn: RequestBody?,
+        @Part DeviceSerialNoImage: MultipartBody.Part?,
+        @Part DealerImageWithDevice: MultipartBody.Part?,
+        @Part DealerSignature: MultipartBody.Part?,
+        @Part DealerPhotoIdProof: MultipartBody.Part?
+    ): Call<SaveIRISDeliverResponse?>?
 
-//Feedback
-
+    //Feedback
     @FormUrlEncoded
     @POST("feedback/GetCustomerDetailsByFPSToFeedback")
-    Call<FeedbackDetailByFpsRoot> apiDetailsByFPSToFeedback(@Field("FPSCode") String FPSCode,
-                                                            @Field("UserID") String UserID,
-                                                            @Field("DistrictId") String DistrictId);
+    fun apiDetailsByFPSToFeedback(
+        @Field("FPSCode") FPSCode: String?,
+        @Field("UserID") UserID: String?,
+        @Field("DistrictId") DistrictId: String?
+    ): Call<FeedbackDetailByFpsRoot?>?
 
     @Multipart
     @POST("feedback/saveVisitFeedbackbyDC")
-    Call<SaveFeedbackbyDCRoot> saveVisitFeedbackbyDC(@Part("UserID") RequestBody UserID,
-                                                     @Part("FPSCode") RequestBody FPSCode,
-                                                     @Part("ShopAddress") RequestBody ShopAddress,
-                                                     @Part("Latitude") RequestBody Latitude,
-                                                     @Part("Longitude") RequestBody Longitude,
-                                                     @Part("Remarks") RequestBody Remark,
-                                                     @Part("LogInTime") RequestBody LogInTime,
-                                                     @Part MultipartBody.Part SelpiheWithFPSNoAndDealer,
-                                                     @Part MultipartBody.Part DCVisitingChallan,
-                                                     @Part MultipartBody.Part DCVisitingFeedbackDealerSignature);
+    fun saveVisitFeedbackbyDC(
+        @Part("UserID") UserID: RequestBody?,
+        @Part("FPSCode") FPSCode: RequestBody?,
+        @Part("ShopAddress") ShopAddress: RequestBody?,
+        @Part("Latitude") Latitude: RequestBody?,
+        @Part("Longitude") Longitude: RequestBody?,
+        @Part("Remarks") Remark: RequestBody?,
+        @Part("LogInTime") LogInTime: RequestBody?,
+        @Part SelpiheWithFPSNoAndDealer: MultipartBody.Part?,
+        @Part DCVisitingChallan: MultipartBody.Part?,
+        @Part DCVisitingFeedbackDealerSignature: MultipartBody.Part?
+    ): Call<SaveFeedbackbyDCRoot?>?
 
     @FormUrlEncoded
     @POST("feedback/getVisitFeedbackbyDCList")
-    Call<FeedbackbyDCListRoot> getVisitFeedbackbyDCList(
-            @Field("UserID") String UserID,
-            @Field("FeedBackId") String FeedBackId,
-            @Field("FPSCode") String FPSCode,
-            @Field("DistrictId") String DistrictId,
-            @Field("DateFrom") String DateFrom,
-            @Field("DateTo") String DateTo,
-            @Field("ToUserId") String ToUserId);
+    fun getVisitFeedbackDCList(
+        @Field("UserID") UserID: String?,
+        @Field("FeedBackId") FeedBackId: String?,
+        @Field("FPSCode") FPSCode: String?,
+        @Field("DistrictId") DistrictId: String?,
+        @Field("DateFrom") DateFrom: String?,
+        @Field("DateTo") DateTo: String?,
+        @Field("ToUserId") ToUserId: String?
+    ): Call<FeedbackbyDCListRoot?>?
+
+    @GET("stock/getPartsList")
+    fun getPartsList(): Call<ModelParts>
+
+
+    @GET("WeigIrisReplacement/getReplacementTypes")
+    fun getReplacementTypes(): Call<ReplacementTypesResponse>
 
 }
 
