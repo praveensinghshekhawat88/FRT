@@ -342,8 +342,8 @@ public class CloseGuardDeliveryListActivity extends CustomActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (++checkSEUsers > 1) {
-                    seUserName = modelSEUsersList.get(i).getUserName();
-                    seUserId = modelSEUsersList.get(i).getUserId();
+                    seUserName = modelSEUsersList.get(i).userName;
+                    seUserId = modelSEUsersList.get(i).userId;
                     if (seUserName.equalsIgnoreCase("--" + getResources().getString(R.string.username) + "--")) {
                         seUserId = "0";
                     }
@@ -1043,13 +1043,13 @@ public class CloseGuardDeliveryListActivity extends CustomActivity {
             public void onResponse(@NonNull Call<ModelSEUsers> call, @NonNull Response<ModelSEUsers> response) {
                 if (response.isSuccessful()) {
                     ModelSEUsers modelSEUsers = response.body();
-                    if (Objects.requireNonNull(modelSEUsers).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(modelSEUsers).status.equals("200")) {
                         modelSEUsersList = modelSEUsers.getSEUsersList();
                         if (modelSEUsersList != null && modelSEUsersList.size() > 0) {
                             Collections.reverse(modelSEUsersList);
                             ModelSEUsersList l = new ModelSEUsersList();
-                            l.setUserId(String.valueOf(-1));
-                            l.setUserName("--" + getResources().getString(R.string.username) + "--");
+                            l.userId = String.valueOf(-1);
+                            l.userName = "--" + getResources().getString(R.string.username) + "--";
                             modelSEUsersList.add(l);
                             Collections.reverse(modelSEUsersList);
 
@@ -1058,7 +1058,7 @@ public class CloseGuardDeliveryListActivity extends CustomActivity {
                             binding.spinnerServiceEngineer.setAdapter(dataAdapter);
                         }
                     } else {
-                        makeToast(modelSEUsers.getMessage());
+                        makeToast(modelSEUsers.message);
                     }
                 } else {
                     makeToast(getResources().getString(R.string.error));
@@ -1076,8 +1076,8 @@ public class CloseGuardDeliveryListActivity extends CustomActivity {
 
         Collections.reverse(modelSEUsersList);
         ModelSEUsersList l = new ModelSEUsersList();
-        l.setUserId(String.valueOf(-1));
-        l.setUserName("--" + getResources().getString(R.string.username) + "--");
+        l.userId = String.valueOf(-1);
+        l.userName = "--" + getResources().getString(R.string.username) + "--";
         modelSEUsersList.add(l);
         Collections.reverse(modelSEUsersList);
 

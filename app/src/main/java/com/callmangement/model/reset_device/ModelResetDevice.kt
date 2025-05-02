@@ -1,24 +1,12 @@
-package com.callmangement.model.reset_device;
+package com.callmangement.model.reset_device
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-public class ModelResetDevice {
-    @SerializedName("status") private String status;
-    @SerializedName("message") private String message;
+class ModelResetDevice {
+    @kotlin.jvm.JvmField
+    @SerializedName("status")
+    var status: String? = null
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    @SerializedName("message")
+    var message: String? = null
 }

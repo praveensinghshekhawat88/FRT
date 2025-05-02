@@ -126,7 +126,7 @@ public class SplashActivity extends CustomActivity implements View.OnClickListen
                 public void onResponse(@NonNull Call<ModelMobileVersion> call, @NonNull Response<ModelMobileVersion> response) {
                     if (response.isSuccessful()) {
                         ModelMobileVersion model = response.body();
-                        if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                        if (Objects.requireNonNull(model).status.equals("200")) {
                             if (AppConfig.VERSION_CODE >= model.getVersion_Code()) {
                                 new Handler().postDelayed(() -> {
                                     if (prefManager.getUserLoginStatus().equals("true")) {
@@ -176,7 +176,7 @@ public class SplashActivity extends CustomActivity implements View.OnClickListen
                                 }
                             }
                         } else {
-                            makeToast(model.getMessage());
+                            makeToast(model.message);
                             binding.progressBar.setVisibility(View.GONE);
                             binding.textCheckingForUpdate.setVisibility(View.GONE);
                             binding.buttonRetry.setVisibility(View.VISIBLE);
@@ -214,7 +214,7 @@ public class SplashActivity extends CustomActivity implements View.OnClickListen
             public void onResponse(@NonNull Call<ModelAttendance> call, @NonNull Response<ModelAttendance> response) {
                 if (response.isSuccessful()) {
                     ModelAttendance model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         startActivity(MainActivity.class);
                     } else {
                         startActivity(AttendanceActivity.class);

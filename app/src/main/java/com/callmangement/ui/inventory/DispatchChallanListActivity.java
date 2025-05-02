@@ -273,9 +273,9 @@ public class DispatchChallanListActivity extends CustomActivity implements View.
                     hideProgress();
                     if (response.isSuccessful()){
                         ModelDispatchInvoice model = response.body();
-                        if (Objects.requireNonNull(model).getStatus().equals("200")){
+                        if (Objects.requireNonNull(model).status.equals("200")){
                             list.clear();
-                            list = model.getPartsDispatchInvoiceList();
+                            list = model.partsDispatchInvoiceList;
                             if (list.size() > 0) {
                                 binding.rvDispatchChallanList.setVisibility(View.VISIBLE);
                                 binding.textNoDispatchChallan.setVisibility(View.GONE);

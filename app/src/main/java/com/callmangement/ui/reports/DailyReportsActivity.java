@@ -103,7 +103,7 @@ public class DailyReportsActivity extends CustomActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(++checkDistrict > 1) {
-                    districtNameEng = district_List.get(i).getDistrictNameEng();
+                    districtNameEng = district_List.get(i).districtNameEng;
                     districtId = district_List.get(i).getDistrictId();
                     if (districtNameEng.equalsIgnoreCase("--"+getResources().getString(R.string.district)+"--")) {
                         fetchComplaintListByDistrictWise("0");
@@ -211,7 +211,7 @@ public class DailyReportsActivity extends CustomActivity {
         isLoading();
         viewModel.getComplaintsDistStatusDateWise(String.valueOf(prefManager.getUSER_Id()), districtId, complainStatusId, toDate, toDate,"","","","").observe(this, modelComplaint -> {
             isLoading();
-            if (modelComplaint.getStatus().equals("200")) {
+            if (modelComplaint.status.equals("200")) {
                 modelComplaintLists = modelComplaint.getComplaint_List();
                 setUpData();
             }
@@ -223,7 +223,7 @@ public class DailyReportsActivity extends CustomActivity {
         isLoading();
         viewModel.getComplaintsDistStatusDateWise(String.valueOf(prefManager.getUSER_Id()), districtId, complainStatusId, toDate, toDate,"","","","").observe(this, modelComplaint -> {
             isLoading();
-            if (modelComplaint.getStatus().equals("200")) {
+            if (modelComplaint.status.equals("200")) {
                 modelComplaintLists = modelComplaint.getComplaint_List();
                 setUpData();
             }
@@ -234,7 +234,7 @@ public class DailyReportsActivity extends CustomActivity {
         isLoading();
         viewModel.getComplaintsDistStatusDateWise(String.valueOf(prefManager.getUSER_Id()), districtId, complainStatusId, toDate, toDate,"","","","").observe(this, modelComplaint -> {
             isLoading();
-            if (modelComplaint.getStatus().equals("200")) {
+            if (modelComplaint.status.equals("200")) {
                 modelComplaintLists = modelComplaint.getComplaint_List();
                 setUpData();
             }
@@ -261,7 +261,7 @@ public class DailyReportsActivity extends CustomActivity {
             if (totalList != null) {
                 if (totalList.size() > 0) {
                     for (ModelComplaintList model : totalList) {
-                        if (model.getComplainStatusId().equals("3") && DateTimeUtils.getTimeStamp(formattedFilterDate()) == DateTimeUtils.getTimeStamp(model.getSermarkDateStr()))
+                        if (model.getComplainStatusId().equals("3") && DateTimeUtils.getTimeStamp(formattedFilterDate()) == DateTimeUtils.getTimeStamp(model.sermarkDateStr))
                             resolvedList.add(model);
                         else notResolvedList.add(model);
                     }
@@ -286,14 +286,14 @@ public class DailyReportsActivity extends CustomActivity {
 
     private void districtList(){
         viewModel.getDistrict().observe(this, modelDistrict -> {
-            if (modelDistrict.getStatus().equals("200")){
-                district_List = modelDistrict.getDistrict_List();
+            if (modelDistrict.status.equals("200")){
+                district_List = modelDistrict.district_List;
 
                 if (district_List != null && district_List.size() > 0) {
                     Collections.reverse(district_List);
                     ModelDistrictList l = new ModelDistrictList();
                     l.setDistrictId(String.valueOf(-1));
-                    l.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
+                    l.districtNameEng = "--" + getResources().getString(R.string.district) + "--";
                     district_List.add(l);
                     Collections.reverse(district_List);
 
@@ -319,8 +319,8 @@ public class DailyReportsActivity extends CustomActivity {
         @Override
         public int compare(Monthly_Reports_Info o1, Monthly_Reports_Info o2) {
 
-            if (o1.getDate() != null && o2.getDate() != null) {
-                return o1.getDate().compareTo(o2.getDate());
+            if (o1.date != null && o2.date != null) {
+                return o1.date.compareTo(o2.date);
             }
 
             return 0;

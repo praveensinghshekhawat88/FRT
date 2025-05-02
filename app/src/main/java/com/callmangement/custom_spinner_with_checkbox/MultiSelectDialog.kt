@@ -1,261 +1,268 @@
-package com.callmangement.custom_spinner_with_checkbox;
+package com.callmangement.custom_spinner_with_checkbox
 
-import android.app.Dialog;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.app.Dialog
+import android.os.Bundle
+import android.view.View
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.model.inventrory.ModelPartsList
+import java.util.Locale
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDialogFragment;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class MultiSelectDialog : AppCompatDialogFragment(), SearchView.OnQueryTextListener,
+    View.OnClickListener {
+    var mainListOfAdapter: List<ModelPartsList> = ArrayList()
+    private var mutliSelectAdapter: MutliSelectAdapter? = null
+    private var title: String? = null
+    private var titleSize = 25.0f
+    private var positiveText = "DONE"
+    private var negativeText = "CANCEL"
+    private var dialogTitle: TextView? = null
+    private var dialogSubmit: TextView? = null
+    private var dialogCancel: TextView? = null
+    private var previouslySelectedIdsList: MutableList<String?> = ArrayList()
+    private var tempPreviouslySelectedIdsList: List<String?> = ArrayList()
+    private var tempMainListOfAdapter: List<ModelPartsList> = ArrayList()
+    private var submitCallbackListener: SubmitCallbackListener? = null
+    private var maxSelectionLimit = 0
+    private var minSelectionLimit = 1
 
-import com.callmangement.R;
-import com.callmangement.model.inventrory.ModelPartsList;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class MultiSelectDialog extends AppCompatDialogFragment implements SearchView.OnQueryTextListener, View.OnClickListener {
-    public static List<String> selectedIdsForCallback = new ArrayList<>();
-    public List<ModelPartsList> mainListOfAdapter = new ArrayList<>();
-    private MutliSelectAdapter mutliSelectAdapter;
-    private String title;
-    private float titleSize = 25.0F;
-    private String positiveText = "DONE";
-    private String negativeText = "CANCEL";
-    private TextView dialogTitle;
-    private TextView dialogSubmit;
-    private TextView dialogCancel;
-    private List<String> previouslySelectedIdsList = new ArrayList<>();
-    private List<String> tempPreviouslySelectedIdsList = new ArrayList<>();
-    private List<ModelPartsList> tempMainListOfAdapter = new ArrayList<>();
-    private SubmitCallbackListener submitCallbackListener;
-    private int maxSelectionLimit = 0;
-    private int minSelectionLimit = 1;
-
-    public MultiSelectDialog() {
-
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = Dialog(requireActivity())
+        dialog.window!!.requestFeature(1)
+        dialog.window!!.setFlags(32, 1024)
+        dialog.setContentView(R.layout.custom_multi_select)
+        dialog.window!!.setLayout(-1, -1)
+        val mrecyclerView = dialog.findViewById<RecyclerViewEmptySupport>(R.id.recycler_view)
+        val searchView = dialog.findViewById<SearchView>(R.id.search_view)
+        dialogTitle = dialog.findViewById(R.id.title)
+        dialogSubmit = dialog.findViewById(R.id.done)
+        dialogCancel = dialog.findViewById(R.id.cancel)
+        mrecyclerView.setEmptyView(dialog.findViewById(R.id.list_empty1))
+        val layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        mrecyclerView.layoutManager = layoutManager
+        dialogSubmit!!.setOnClickListener(this)
+        dialogCancel!!.setOnClickListener(this)
+        settingValues()
+        mainListOfAdapter = setCheckedIDS(mainListOfAdapter, previouslySelectedIdsList)
+        mutliSelectAdapter = MutliSelectAdapter(mainListOfAdapter, context)
+        mrecyclerView.adapter = mutliSelectAdapter
+        searchView.setOnQueryTextListener(this)
+        searchView.onActionViewExpanded()
+        searchView.clearFocus()
+        return dialog
     }
 
-    @NonNull
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = new Dialog(getActivity());
-        dialog.getWindow().requestFeature(1);
-        dialog.getWindow().setFlags(32, 1024);
-        dialog.setContentView(R.layout.custom_multi_select);
-        dialog.getWindow().setLayout(-1, -1);
-        RecyclerViewEmptySupport mrecyclerView = dialog.findViewById(R.id.recycler_view);
-        SearchView searchView = dialog.findViewById(R.id.search_view);
-        dialogTitle = dialog.findViewById(R.id.title);
-        dialogSubmit = dialog.findViewById(R.id.done);
-        dialogCancel = dialog.findViewById(R.id.cancel);
-        mrecyclerView.setEmptyView(dialog.findViewById(R.id.list_empty1));
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
-        mrecyclerView.setLayoutManager(layoutManager);
-        dialogSubmit.setOnClickListener(this);
-        dialogCancel.setOnClickListener(this);
-        settingValues();
-        mainListOfAdapter = setCheckedIDS(mainListOfAdapter, previouslySelectedIdsList);
-        mutliSelectAdapter = new MutliSelectAdapter(mainListOfAdapter, getContext());
-        mrecyclerView.setAdapter(mutliSelectAdapter);
-        searchView.setOnQueryTextListener(this);
-        searchView.onActionViewExpanded();
-        searchView.clearFocus();
-        return dialog;
+    fun title(title: String?): MultiSelectDialog {
+        this.title = title
+        return this
     }
 
-    public MultiSelectDialog title(String title) {
-        this.title = title;
-        return this;
+    fun titleSize(titleSize: Float): MultiSelectDialog {
+        this.titleSize = titleSize
+        return this
     }
 
-    public MultiSelectDialog titleSize(float titleSize) {
-        this.titleSize = titleSize;
-        return this;
+    fun positiveText(message: String): MultiSelectDialog {
+        positiveText = message
+        return this
     }
 
-    public MultiSelectDialog positiveText(@NonNull String message) {
-        positiveText = message;
-        return this;
+    fun negativeText(message: String): MultiSelectDialog {
+        negativeText = message
+        return this
     }
 
-    public MultiSelectDialog negativeText(@NonNull String message) {
-        negativeText = message;
-        return this;
+    fun preSelectIDsList(list: MutableList<String?>): MultiSelectDialog {
+        previouslySelectedIdsList = list
+        tempPreviouslySelectedIdsList = ArrayList(previouslySelectedIdsList)
+        return this
     }
 
-    public MultiSelectDialog preSelectIDsList(List<String> list) {
-        previouslySelectedIdsList = list;
-        tempPreviouslySelectedIdsList = new ArrayList<>(previouslySelectedIdsList);
-        return this;
-    }
-
-    public MultiSelectDialog multiSelectList(List<ModelPartsList> list) {
-        mainListOfAdapter = list;
-        tempMainListOfAdapter = new ArrayList<>(mainListOfAdapter);
+    fun multiSelectList(list: List<ModelPartsList>): MultiSelectDialog {
+        mainListOfAdapter = list
+        tempMainListOfAdapter = ArrayList(mainListOfAdapter)
         if (maxSelectionLimit == 0) {
-            maxSelectionLimit = list.size();
+            maxSelectionLimit = list.size
         }
-        return this;
+        return this
     }
 
-    public MultiSelectDialog setMaxSelectionLimit(int limit) {
-        maxSelectionLimit = limit;
-        return this;
+    fun setMaxSelectionLimit(limit: Int): MultiSelectDialog {
+        maxSelectionLimit = limit
+        return this
     }
 
-    public MultiSelectDialog setMinSelectionLimit(int limit) {
-        minSelectionLimit = limit;
-        return this;
+    fun setMinSelectionLimit(limit: Int): MultiSelectDialog {
+        minSelectionLimit = limit
+        return this
     }
 
-    public MultiSelectDialog onSubmit(@NonNull SubmitCallbackListener callback) {
-        submitCallbackListener = callback;
-        return this;
+    fun onSubmit(callback: SubmitCallbackListener): MultiSelectDialog {
+        submitCallbackListener = callback
+        return this
     }
 
-    private void settingValues() {
-        dialogTitle.setText(title);
-        dialogTitle.setTextSize(2, titleSize);
-        dialogSubmit.setText(positiveText.toUpperCase());
-        dialogCancel.setText(negativeText.toUpperCase());
+    private fun settingValues() {
+        dialogTitle!!.text = title
+        dialogTitle!!.setTextSize(2, titleSize)
+        dialogSubmit!!.text = positiveText.uppercase(Locale.getDefault())
+        dialogCancel!!.text = negativeText.uppercase(Locale.getDefault())
     }
 
-    private List<ModelPartsList> setCheckedIDS(List<ModelPartsList> multiselectdata, List<String> listOfIdsSelected) {
-        for(int i = 0; i < multiselectdata.size(); i++) {
-            multiselectdata.get(i).setSelectFlag(false);
-            for(int j = 0; j < listOfIdsSelected.size(); j++) {
-                if (multiselectdata.get(i).getItemId().equals(listOfIdsSelected.get(j)))
-                    multiselectdata.get(i).setSelectFlag(true);
+    private fun setCheckedIDS(
+        multiselectdata: List<ModelPartsList>,
+        listOfIdsSelected: List<String?>
+    ): List<ModelPartsList> {
+        for (i in multiselectdata.indices) {
+            multiselectdata[i].isSelectFlag = false
+            for (j in listOfIdsSelected.indices) {
+                if (multiselectdata[i].itemId == listOfIdsSelected[j]) multiselectdata[i].isSelectFlag =
+                    true
             }
         }
-        return multiselectdata;
+        return multiselectdata
     }
 
-    private ArrayList<ModelPartsList> filter(List<ModelPartsList> models, String query) {
-        query = query.toLowerCase();
-        ArrayList<ModelPartsList> filteredModelList = new ArrayList<>();
-        if (query.equals("") | query.isEmpty()) {
-            filteredModelList.addAll(models);
+    private fun filter(models: List<ModelPartsList>, query: String): ArrayList<ModelPartsList> {
+        var query = query
+        query = query.lowercase(Locale.getDefault())
+        val filteredModelList = ArrayList<ModelPartsList>()
+        if ((query == "") or query.isEmpty()) {
+            filteredModelList.addAll(models)
         } else {
-            for (ModelPartsList model : models) {
-                String name = model.getItemName().toLowerCase();
+            for (model in models) {
+                val name = model.itemName!!.lowercase(Locale.getDefault())
                 if (name.contains(query)) {
-                    filteredModelList.add(model);
+                    filteredModelList.add(model)
                 }
             }
         }
-        return filteredModelList;
+        return filteredModelList
     }
 
-    public boolean onQueryTextSubmit(String query) {
-        return false;
+    override fun onQueryTextSubmit(query: String): Boolean {
+        return false
     }
 
-    public boolean onQueryTextChange(String newText) {
-        selectedIdsForCallback = previouslySelectedIdsList;
-        mainListOfAdapter = setCheckedIDS(mainListOfAdapter, selectedIdsForCallback);
-        List<ModelPartsList> filteredlist = filter(mainListOfAdapter, newText);
-        mutliSelectAdapter.setData(filteredlist, newText.toLowerCase(), mutliSelectAdapter);
-        return false;
+    override fun onQueryTextChange(newText: String): Boolean {
+        selectedIdsForCallback = previouslySelectedIdsList
+        mainListOfAdapter = setCheckedIDS(mainListOfAdapter, selectedIdsForCallback)
+        val filteredlist: List<ModelPartsList> = filter(mainListOfAdapter, newText)
+        mutliSelectAdapter!!.setData(
+            filteredlist,
+            newText.lowercase(Locale.getDefault()),
+            mutliSelectAdapter
+        )
+        return false
     }
 
-    public void onClick(View view) {
-        if (view.getId() == R.id.done) {
-            List<String> callBackListOfIds = selectedIdsForCallback;
-            String youCan;
-            String options;
-            String option;
-            String message;
-            if (callBackListOfIds.size() >= minSelectionLimit) {
-                if (callBackListOfIds.size() <= maxSelectionLimit) {
-                    tempPreviouslySelectedIdsList = new ArrayList<>(callBackListOfIds);
+    override fun onClick(view: View) {
+        if (view.id == R.id.done) {
+            val callBackListOfIds: List<String?> = selectedIdsForCallback
+            val youCan: String
+            val options: String
+            val option: String
+            var message: String
+            if (callBackListOfIds.size >= minSelectionLimit) {
+                if (callBackListOfIds.size <= maxSelectionLimit) {
+                    tempPreviouslySelectedIdsList = ArrayList(callBackListOfIds)
                     if (submitCallbackListener != null) {
-                        submitCallbackListener.onSelected(callBackListOfIds, getSelectNameList(), getSelectedDataString());
+                        submitCallbackListener!!.onSelected(
+                            callBackListOfIds,
+                            selectNameList,
+                            selectedDataString
+                        )
                     }
-                    dismiss();
+                    dismiss()
                 } else {
-                    youCan = getResources().getString(R.string.you_can_only_select_upto);
-                    options = getResources().getString(R.string.options);
-                    option = getResources().getString(R.string.option);
-                    message = "";
-                    if (maxSelectionLimit > 1) {
-                        message = youCan + " " + maxSelectionLimit + " " + options;
+                    youCan = resources.getString(R.string.you_can_only_select_upto)
+                    options = resources.getString(R.string.options)
+                    option = resources.getString(R.string.option)
+                    message = ""
+                    message = if (maxSelectionLimit > 1) {
+                        "$youCan $maxSelectionLimit $options"
                     } else {
-                        message = youCan + " " + maxSelectionLimit + " " + option;
+                        "$youCan $maxSelectionLimit $option"
                     }
 
-                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
                 }
             } else {
-                youCan = getResources().getString(R.string.please_select_atleast);
-                options = getResources().getString(R.string.options);
-                option = getResources().getString(R.string.option);
-                message = "";
-                if (minSelectionLimit > 1) {
-                    message = youCan + " " + minSelectionLimit + " " + options;
+                youCan = resources.getString(R.string.please_select_atleast)
+                options = resources.getString(R.string.options)
+                option = resources.getString(R.string.option)
+                message = ""
+                message = if (minSelectionLimit > 1) {
+                    "$youCan $minSelectionLimit $options"
                 } else {
-                    message = youCan + " " + minSelectionLimit + " " + option;
+                    "$youCan $minSelectionLimit $option"
                 }
 
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
             }
         }
 
-        if (view.getId() == R.id.cancel) {
+        if (view.id == R.id.cancel) {
             if (submitCallbackListener != null) {
-                selectedIdsForCallback.clear();
-                selectedIdsForCallback.addAll(tempPreviouslySelectedIdsList);
-                submitCallbackListener.onCancel();
+                selectedIdsForCallback.clear()
+                selectedIdsForCallback.addAll(tempPreviouslySelectedIdsList)
+                submitCallbackListener!!.onCancel()
             }
-            dismiss();
-        }
-
-    }
-
-    private String getSelectedDataString() {
-        String data = "";
-        for(int i = 0; i < tempMainListOfAdapter.size(); ++i) {
-            if (this.checkForSelection(tempMainListOfAdapter.get(i).getItemId())) {
-                data = data + ", " + tempMainListOfAdapter.get(i).getItemName();
-            }
-        }
-
-        if (data.length() > 0) {
-            return data.substring(1);
-        } else {
-            return "";
+            dismiss()
         }
     }
 
-    private List<String> getSelectNameList() {
-        List<String> names = new ArrayList<>();
+    private val selectedDataString: String
+        get() {
+            var data = ""
+            for (i in tempMainListOfAdapter.indices) {
+                if (this.checkForSelection(tempMainListOfAdapter[i].itemId)) {
+                    data = data + ", " + tempMainListOfAdapter[i].itemName
+                }
+            }
 
-        for(int i = 0; i < tempMainListOfAdapter.size(); ++i) {
-            if (this.checkForSelection(tempMainListOfAdapter.get(i).getItemId())) {
-                names.add(tempMainListOfAdapter.get(i).getItemName());
+            return if (data.length > 0) {
+                data.substring(1)
+            } else {
+                ""
             }
         }
 
-        return names;
-    }
+    private val selectNameList: List<String?>
+        get() {
+            val names: MutableList<String?> = ArrayList()
 
-    private boolean checkForSelection(String id) {
-        for(int i = 0; i < selectedIdsForCallback.size(); ++i) {
-            if (id.equals(selectedIdsForCallback.get(i))) {
-                return true;
+            for (i in tempMainListOfAdapter.indices) {
+                if (this.checkForSelection(tempMainListOfAdapter[i].itemId)) {
+                    names.add(tempMainListOfAdapter[i].itemName)
+                }
+            }
+
+            return names
+        }
+
+    private fun checkForSelection(id: String?): Boolean {
+        for (i in selectedIdsForCallback.indices) {
+            if (id == selectedIdsForCallback[i]) {
+                return true
             }
         }
 
-        return false;
+        return false
     }
 
-    public interface SubmitCallbackListener {
-        void onSelected(List<String> var1, List<String> var2, String var3);
+    interface SubmitCallbackListener {
+        fun onSelected(var1: List<String?>?, var2: List<String?>?, var3: String?)
 
-        void onCancel();
+        fun onCancel()
+    }
+
+    companion object {
+        var selectedIdsForCallback: MutableList<String?> = ArrayList()
     }
 }

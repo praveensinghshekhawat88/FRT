@@ -1,21 +1,10 @@
-package com.callmangement.custom;
+package com.callmangement.custom
 
-import android.util.SparseBooleanArray;
+import android.util.SparseBooleanArray
+import androidx.recyclerview.widget.RecyclerView
 
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
-    @SuppressWarnings("unused")
-    private static final String TAG = SelectableAdapter.class.getSimpleName();
-
-    private final SparseBooleanArray selectedItems;
-
-    public SelectableAdapter() {
-        selectedItems = new SparseBooleanArray();
-    }
+abstract class SelectableAdapter<VH : RecyclerView.ViewHolder?> : RecyclerView.Adapter<VH>() {
+    private val selectedItems = SparseBooleanArray()
 
     /**
      * Indicates if the item at position position is selected
@@ -23,8 +12,8 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
      * @param position Position of the item receiver check
      * @return true if the item is selected, false otherwise
      */
-    public boolean isSelected(int position) {
-        return getSelectedItems().contains(position);
+    fun isSelected(position: Int): Boolean {
+        return getSelectedItems().contains(position)
     }
 
     /**
@@ -32,50 +21,55 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
      *
      * @param position Position of the item receiver toggle the selection status for
      */
-    public void toggleSelection(int position) {
-        if (selectedItems.get(position, false)) {
-            selectedItems.delete(position);
+    fun toggleSelection(position: Int) {
+        if (selectedItems[position, false]) {
+            selectedItems.delete(position)
         } else {
-            selectedItems.put(position, true);
+            selectedItems.put(position, true)
         }
-        notifyItemChanged(position);
+        notifyItemChanged(position)
     }
 
-    public void selection(int position) {
-            selectedItems.delete(position);
-            selectedItems.put(position, true);
-            notifyItemChanged(position);
+    fun selection(position: Int) {
+        selectedItems.delete(position)
+        selectedItems.put(position, true)
+        notifyItemChanged(position)
     }
+
     /**
      * Clear the selection status for all items
      */
-    public void clearSelection() {
-        List<Integer> selection = getSelectedItems();
-        selectedItems.clear();
-        for (Integer i : selection) {
-            notifyItemChanged(i);
+    fun clearSelection() {
+        val selection = getSelectedItems()
+        selectedItems.clear()
+        for (i in selection) {
+            notifyItemChanged(i)
         }
     }
 
-    /**
-     * Count the selected items
-     *
-     * @return Selected items count
-     */
-    public int getSelectedItemCount() {
-        return selectedItems.size();
-    }
+    val selectedItemCount: Int
+        /**
+         * Count the selected items
+         *
+         * @return Selected items count
+         */
+        get() = selectedItems.size()
 
     /**
      * Indicates the list of selected items
      *
      * @return List of selected items ids
      */
-    public List<Integer> getSelectedItems() {
-        List<Integer> items = new ArrayList<>(selectedItems.size());
-        for (int i = 0; i < selectedItems.size(); ++i) {
-            items.add(selectedItems.keyAt(i));
+    fun getSelectedItems(): List<Int> {
+        val items: MutableList<Int> = ArrayList(selectedItems.size())
+        for (i in 0 until selectedItems.size()) {
+            items.add(selectedItems.keyAt(i))
         }
-        return items;
+        return items
+    }
+
+    companion object {
+        @Suppress("unused")
+        private val TAG: String = SelectableAdapter::class.java.simpleName
     }
 }

@@ -1,164 +1,64 @@
-package com.callmangement.model.inventrory;
+package com.callmangement.model.inventrory
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-public class ModelSEUsersList {
-    @SerializedName("userTypeId") private String userTypeId;
-    @SerializedName("password") private String password;
-    @SerializedName("check_csrf") private String check_csrf;
-    @SerializedName("userName") private String userName;
-    @SerializedName("createdBy") private String createdBy;
-    @SerializedName("createdOn") private String createdOn;
-    @SerializedName("updatedOn") private String updatedOn;
-    @SerializedName("districtId") private String districtId;
-    @SerializedName("isActive") private String isActive;
-    @SerializedName("updatedBy") private String updatedBy;
-    @SerializedName("loginMessage") private String loginMessage;
-    @SerializedName("loginStatus") private String loginStatus;
-    @SerializedName("userId") private String userId;
-    @SerializedName("userTypeName") private String userTypeName;
-    @SerializedName("emailId") private String emailId;
-    @SerializedName("mobileNo") private String mobileNo;
-    @SerializedName("district") private String district;
+class ModelSEUsersList {
+    @SerializedName("userTypeId")
+    var userTypeId: String? = null
 
-    public String getUserTypeId() {
-        return userTypeId;
-    }
+    @SerializedName("password")
+    var password: String? = null
 
-    public void setUserTypeId(String userTypeId) {
-        this.userTypeId = userTypeId;
-    }
+    @SerializedName("check_csrf")
+    var check_csrf: String? = null
 
-    public String getPassword() {
-        return password;
-    }
+    @JvmField
+    @SerializedName("userName")
+    var userName: String? = null
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    @SerializedName("createdBy")
+    var createdBy: String? = null
 
-    public String getCheck_csrf() {
-        return check_csrf;
-    }
+    @SerializedName("createdOn")
+    var createdOn: String? = null
 
-    public void setCheck_csrf(String check_csrf) {
-        this.check_csrf = check_csrf;
-    }
+    @SerializedName("updatedOn")
+    var updatedOn: String? = null
 
-    public String getUserName() {
-        return userName;
-    }
+    @SerializedName("districtId")
+    var districtId: String? = null
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+    @SerializedName("isActive")
+    var isActive: String? = null
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
+    @SerializedName("updatedBy")
+    var updatedBy: String? = null
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
+    @SerializedName("loginMessage")
+    var loginMessage: String? = null
 
-    public String getCreatedOn() {
-        return createdOn;
-    }
+    @SerializedName("loginStatus")
+    var loginStatus: String? = null
 
-    public void setCreatedOn(String createdOn) {
-        this.createdOn = createdOn;
-    }
+    @JvmField
+    @SerializedName("userId")
+    var userId: String? = null
 
-    public String getUpdatedOn() {
-        return updatedOn;
-    }
+    @JvmField
+    @SerializedName("userTypeName")
+    var userTypeName: String? = null
 
-    public void setUpdatedOn(String updatedOn) {
-        this.updatedOn = updatedOn;
-    }
+    @SerializedName("emailId")
+    var emailId: String? = null
 
-    public String getDistrictId() {
-        return districtId;
-    }
+    @JvmField
+    @SerializedName("mobileNo")
+    var mobileNo: String? = null
 
-    public void setDistrictId(String districtId) {
-        this.districtId = districtId;
-    }
+    @SerializedName("district")
+    var district: String? = null
 
-    public String getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(String isActive) {
-        this.isActive = isActive;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public String getLoginMessage() {
-        return loginMessage;
-    }
-
-    public void setLoginMessage(String loginMessage) {
-        this.loginMessage = loginMessage;
-    }
-
-    public String getLoginStatus() {
-        return loginStatus;
-    }
-
-    public void setLoginStatus(String loginStatus) {
-        this.loginStatus = loginStatus;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getUserTypeName() {
-        return userTypeName;
-    }
-
-    public void setUserTypeName(String userTypeName) {
-        this.userTypeName = userTypeName;
-    }
-
-    public String getEmailId() {
-        return emailId;
-    }
-
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
-    }
-
-    public String getMobileNo() {
-        return mobileNo;
-    }
-
-    public void setMobileNo(String mobileNo) {
-        this.mobileNo = mobileNo;
-    }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    @Override
-    public String toString() {
-        return userName;
+    override fun toString(): String {
+        return userName!!
     }
 }

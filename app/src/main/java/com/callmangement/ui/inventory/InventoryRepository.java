@@ -54,10 +54,10 @@ public class InventoryRepository {
                 if (response.isSuccessful()){
                     isLoading.setValue(false);
                     ModelParts model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         modelPartsMutableLiveData.setValue(model);
                     }else {
-                        Toast.makeText(context, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, model.message, Toast.LENGTH_SHORT).show();
                     }
 
                 }else {
@@ -86,10 +86,10 @@ public class InventoryRepository {
                 if (response.isSuccessful()){
                     isLoading.setValue(false);
                     ModelParts model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         modelPartsMutableLiveData.setValue(model);
                     }else {
-                        Toast.makeText(context, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, model.message, Toast.LENGTH_SHORT).show();
                     }
 
                 }else {
@@ -118,10 +118,10 @@ public class InventoryRepository {
                 if (response.isSuccessful()){
                     isLoading.setValue(false);
                     ModelParts model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         modelPartsMutableLiveData.setValue(model);
                     } else {
-                        Toast.makeText(context, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, model.message, Toast.LENGTH_SHORT).show();
                     }
 
                 }else {
@@ -150,10 +150,10 @@ public class InventoryRepository {
                 if (response.isSuccessful()){
                     isLoading.setValue(false);
                     ModelParts model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         modelPartsMutableLiveData.setValue(model);
                     } else {
-                        Toast.makeText(context, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, model.message, Toast.LENGTH_SHORT).show();
                     }
 
                 }else {
@@ -182,10 +182,10 @@ public class InventoryRepository {
                 if (response.isSuccessful()){
                     isLoading.setValue(false);
                     ModelParts model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         modelPartsMutableLiveData.setValue(model);
                     } else {
-                        Toast.makeText(context, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, model.message, Toast.LENGTH_SHORT).show();
                     }
 
                 }else {
@@ -214,10 +214,10 @@ public class InventoryRepository {
                 if (response.isSuccessful()){
                     isLoading.setValue(false);
                     ModelSEUsers model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         modelSEUsersMutableLiveData.setValue(model);
                     }else {
-                        Toast.makeText(context, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, model.message, Toast.LENGTH_SHORT).show();
                     }
 
                 }else {
@@ -246,10 +246,10 @@ public class InventoryRepository {
                 if (response.isSuccessful()){
                     isLoading.setValue(false);
                     ModelSavePartsDispatchDetails model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         submitDispatchParts.setValue(model);
                     }else {
-                        Toast.makeText(context, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, model.message, Toast.LENGTH_SHORT).show();
                     }
 
                 }else {

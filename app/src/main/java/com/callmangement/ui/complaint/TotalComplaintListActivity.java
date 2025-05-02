@@ -117,7 +117,7 @@ public class TotalComplaintListActivity extends CustomActivity {
                 Collections.reverse(tehsilList);
                 ModelTehsilList l = new ModelTehsilList();
                 l.setTehsilId(String.valueOf(-1));
-                l.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+                l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
                 tehsilList.add(l);
                 Collections.reverse(tehsilList);
                 ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, tehsilList);
@@ -132,7 +132,7 @@ public class TotalComplaintListActivity extends CustomActivity {
                 Collections.reverse(tehsilList);
                 ModelTehsilList l = new ModelTehsilList();
                 l.setTehsilId(String.valueOf(-1));
-                l.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+                l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
                 tehsilList.add(l);
                 Collections.reverse(tehsilList);
 
@@ -227,7 +227,7 @@ public class TotalComplaintListActivity extends CustomActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (++checkTehsil > 1) {
-                    tehsilNameEng = tehsilList.get(i).getTehsilNameEng();
+                    tehsilNameEng = tehsilList.get(i).tehsilNameEng;
                     setDataIntoAdapterByTehsil(tehsilNameEng);
                 }
             }
@@ -243,7 +243,7 @@ public class TotalComplaintListActivity extends CustomActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 checkTehsil = 0;
                 if (++checkDistrict > 1) {
-                    districtNameEng = districtList.get(i).getDistrictNameEng();
+                    districtNameEng = districtList.get(i).districtNameEng;
                     districtId = districtList.get(i).getDistrictId();
 
                   //  updateTehsilByDistrict(districtNameEng);
@@ -328,8 +328,8 @@ public class TotalComplaintListActivity extends CustomActivity {
                    // complaintList.add(modelComplaintList.get(i));
                     complaintList.add(modelComplaintList.get(i));
                 } else {
-                    if (modelComplaintList.get(i).getTehsil() != null) {
-                        if (modelComplaintList.get(i).getTehsil().equalsIgnoreCase(tehsilNameEng)) {
+                    if (modelComplaintList.get(i).tehsil != null) {
+                        if (modelComplaintList.get(i).tehsil.equalsIgnoreCase(tehsilNameEng)) {
                             complaintList.add(modelComplaintList.get(i));
                         }
                     }
@@ -358,8 +358,8 @@ public class TotalComplaintListActivity extends CustomActivity {
                 if (districtNameEng.equalsIgnoreCase("--" + getResources().getString(R.string.district) + "--")) {
                     complaintList.add(modelComplaintList.get(i));
                 } else {
-                    if (modelComplaintList.get(i).getDistrict() != null) {
-                        if (modelComplaintList.get(i).getDistrict().equalsIgnoreCase(districtNameEng)) {
+                    if (modelComplaintList.get(i).district != null) {
+                        if (modelComplaintList.get(i).district.equalsIgnoreCase(districtNameEng)) {
                             //     Log.e("district", modelComplaintList.get(i).getTehsil());
                             complaintList.add(modelComplaintList.get(i));
                         }
@@ -388,8 +388,8 @@ public class TotalComplaintListActivity extends CustomActivity {
                 if (district.equalsIgnoreCase("--" + getResources().getString(R.string.district) + "--")) {
                     tehsilList.add(tehsil_List_main.get(i));
                 } else {
-                    if (tehsil_List_main.get(i).getDistrictNameEng() != null) {
-                        if (tehsil_List_main.get(i).getDistrictNameEng().equalsIgnoreCase(district)) {
+                    if (tehsil_List_main.get(i).districtNameEng != null) {
+                        if (tehsil_List_main.get(i).districtNameEng.equalsIgnoreCase(district)) {
                             tehsilList.add(tehsil_List_main.get(i));
                         }
                     }
@@ -400,7 +400,7 @@ public class TotalComplaintListActivity extends CustomActivity {
             Collections.reverse(tehsilList);
             ModelTehsilList l = new ModelTehsilList();
             l.setTehsilId(String.valueOf(-1));
-            l.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+            l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
             tehsilList.add(l);
             Collections.reverse(tehsilList);
 
@@ -417,8 +417,8 @@ public class TotalComplaintListActivity extends CustomActivity {
                 if (districtId.equalsIgnoreCase("0")) {
                     tehsilList.add(tehsil_List_main.get(i));
                 } else {
-                    if (tehsil_List_main.get(i).getFk_DistrictId() != null) {
-                        if (tehsil_List_main.get(i).getFk_DistrictId().equalsIgnoreCase(districtId)) {
+                    if (tehsil_List_main.get(i).fk_DistrictId != null) {
+                        if (tehsil_List_main.get(i).fk_DistrictId.equalsIgnoreCase(districtId)) {
                             tehsilList.add(tehsil_List_main.get(i));
                         }
                     }
@@ -429,7 +429,7 @@ public class TotalComplaintListActivity extends CustomActivity {
             Collections.reverse(tehsilList);
             ModelTehsilList l = new ModelTehsilList();
             l.setTehsilId(String.valueOf(-1));
-            l.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+            l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
             tehsilList.add(l);
             Collections.reverse(tehsilList);
             ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, tehsilList);
@@ -447,7 +447,7 @@ public class TotalComplaintListActivity extends CustomActivity {
     public class CustomComparator implements Comparator<ModelComplaintList> {
         @Override
         public int compare(ModelComplaintList o1, ModelComplaintList o2) {
-            return o1.getComplainRegDateStr().compareTo(o2.getComplainRegDateStr());
+            return o1.complainRegDateStr.compareTo(o2.complainRegDateStr);
         }
     }
 
@@ -757,10 +757,10 @@ public class TotalComplaintListActivity extends CustomActivity {
                 hideProgress();
                 if (response.isSuccessful()) {
                     ModelComplaint model = response.body();
-                    if (model != null && model.getStatus().equals("200")) {
-                        int totalPage = model.getTotalPages();
-                        int CurrentPage = model.getCurrentPage();
-                        TotalItems = model.getTotalItems();
+                    if (model != null && model.status.equals("200")) {
+                        int totalPage = model.totalPages;
+                        int CurrentPage = model.currentPage;
+                        TotalItems = model.totalItems;
 
                         Log.d("CheckNow--", totalPage + " " + CurrentPage + " " + TotalItems);
 
@@ -783,7 +783,7 @@ public class TotalComplaintListActivity extends CustomActivity {
                         modelComplaintList.clear();
                         setDataIntoAdapter(modelComplaintList);
                         isLoading = false;
-                        Toast.makeText(mContext, model != null ? model.getMessage() : "No data", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, model != null ? model.message : "No data", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     hideProgress();

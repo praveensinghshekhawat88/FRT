@@ -287,7 +287,7 @@ public class DistributorMainActivity extends CustomActivity implements View.OnCl
                 if (response.isSuccessful()) {
                     if (response.code() == 200) {
                         ModelLogin model = response.body();
-                        if (!Objects.requireNonNull(model).getStatus().equals("200")) {
+                        if (!Objects.requireNonNull(model).status.equals("200")) {
                             logout();
                         }
                     } else {
@@ -316,7 +316,7 @@ public class DistributorMainActivity extends CustomActivity implements View.OnCl
                 if (response.isSuccessful()) {
                     if (response.code() == 200) {
                         ModelLogout model = response.body();
-                        if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                        if (Objects.requireNonNull(model).status.equals("200")) {
                             FirebaseUtils.unregisterTopic("all");
                             prefManager.clear();
                             prefManager.setUSER_PunchIn(IsSE_PunchIN);
@@ -327,7 +327,7 @@ public class DistributorMainActivity extends CustomActivity implements View.OnCl
                             startActivity(new Intent(mContext, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                             finish();
                         } else {
-                            makeToast(model.getMessage());
+                            makeToast(model.message);
                         }
                     } else {
                         makeToast(getResources().getString(R.string.error));

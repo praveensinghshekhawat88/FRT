@@ -90,7 +90,7 @@ public class AddStockActivity extends CustomActivity implements View.OnClickList
 
     private void getPartsList(){
         inventoryViewModel.getPartsList().observe(this, modelParts -> {
-            if (modelParts.getStatus().equals("200")){
+            if (modelParts.status.equals("200")){
                 List<ModelPartsList> modelProductsList = modelParts.getParts();
                 if (modelProductsList != null && modelProductsList.size() > 0) {
                     Collections.reverse(modelProductsList);
@@ -130,13 +130,13 @@ public class AddStockActivity extends CustomActivity implements View.OnClickList
                 spinnerItemName.setVisibility(View.GONE);
             else spinnerItemName.setVisibility(View.VISIBLE);
 
-            tvSpinner.setText(list.get(i).getItemName());
-            list.get(i).setRelativeLayout(topLay);
+            tvSpinner.setText(list.get(i).itemName);
+            list.get(i).relativeLayout = topLay;
             spinnerItemName.setAdapter(new SpinnerAdapter(mContext,list.get(i).getSpinnerItemList()));
-            spinnerItemName.setSelection(list.get(i).getSpinnerSelectedIndex());
+            spinnerItemName.setSelection(list.get(i).spinnerSelectedIndex);
 
             if (list.get(i).isItemSelectFlag()) {
-                inputItemQuantity.setText(list.get(i).getQty());
+                inputItemQuantity.setText(list.get(i).qty);
                 inputItemQuantity.setEnabled(true);
             }
 
@@ -155,13 +155,13 @@ public class AddStockActivity extends CustomActivity implements View.OnClickList
                     final int tag = (Integer) spinnerItemName.getTag() - 1000;
                     if (spinnerPosition != 0){
                         list.get(tag).setItemSelectFlag(true);
-                        list.get(tag).setSpinnerSelectedIndex(spinnerPosition);
-                        list.get(tag).setId(list.get(tag).getSpinnerItemList().get(spinnerPosition).getItemId());
-                        list.get(tag).setItemName(list.get(tag).getSpinnerItemList().get(spinnerPosition).getItemName());
+                        list.get(tag).spinnerSelectedIndex = spinnerPosition;
+                        list.get(tag).id = list.get(tag).getSpinnerItemList().get(spinnerPosition).getItemId();
+                        list.get(tag).itemName = list.get(tag).getSpinnerItemList().get(spinnerPosition).getItemName();
 
                     } else {
                         list.get(tag).setItemSelectFlag(false);
-                        list.get(tag).setSpinnerSelectedIndex(spinnerPosition);
+                        list.get(tag).spinnerSelectedIndex = spinnerPosition;
                     }
                 }
 
@@ -184,11 +184,11 @@ public class AddStockActivity extends CustomActivity implements View.OnClickList
                 public void afterTextChanged(Editable s) {
                     final int tag = (Integer) inputItemQuantity.getTag() - 2000;
                     if (!s.toString().equals("")) {
-                        list.get(tag).setQty(s.toString());
+                        list.get(tag).qty = s.toString();
                         list.get(tag).setItemSelectFlag(true);
                     } else {
-                        list.get(tag).setQty(s.toString());
-                        if (list.get(tag).getQty().equals(""))
+                        list.get(tag).qty = s.toString();
+                        if (list.get(tag).qty.equals(""))
                             list.get(tag).setItemSelectFlag(false);
                     }
                 }
@@ -197,7 +197,7 @@ public class AddStockActivity extends CustomActivity implements View.OnClickList
             buttonRemoveLayout.setOnClickListener(view -> {
                 final int tag = (Integer) buttonRemoveLayout.getTag() - 3000;
                 if (list.size() > 1) {
-                    int spinnerPosition = list.get(tag).getSpinnerSelectedIndex();
+                    int spinnerPosition = list.get(tag).spinnerSelectedIndex;
                     list.get(tag).getSpinnerItemList().get(spinnerPosition).setVisibleItemFlag(false);
                     list.remove(tag);
                     setUpPartsList();
@@ -213,8 +213,8 @@ public class AddStockActivity extends CustomActivity implements View.OnClickList
             for (ModelAddStock model : list) {
                 try {
                     JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("itemId", model.getId());
-                    jsonObject.put("item_Qty", model.getQty());
+                    jsonObject.put("itemId", model.id);
+                    jsonObject.put("item_Qty", model.qty);
                     jsonArray.put(jsonObject);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -271,11 +271,11 @@ public class AddStockActivity extends CustomActivity implements View.OnClickList
     private void addItem() {
         if (list.size() > 0) {
             int lastIndex = list.size() - 1;
-            if (!list.get(lastIndex).getQty().equals("") && list.get(lastIndex).getSpinnerSelectedIndex() != 0) {
+            if (!list.get(lastIndex).qty.equals("") && list.get(lastIndex).spinnerSelectedIndex != 0) {
                 for (int i = 0; i < list.size(); i++) {
-                    int spinnerPosition = list.get(i).getSpinnerSelectedIndex();
-                    list.get(i).setId(list.get(i).getSpinnerItemList().get(spinnerPosition).getItemId());
-                    list.get(i).setItemName(list.get(i).getSpinnerItemList().get(spinnerPosition).getItemName());
+                    int spinnerPosition = list.get(i).spinnerSelectedIndex;
+                    list.get(i).id = list.get(i).getSpinnerItemList().get(spinnerPosition).getItemId();
+                    list.get(i).itemName = list.get(i).getSpinnerItemList().get(spinnerPosition).getItemName();
                     list.get(i).getSpinnerItemList().get(spinnerPosition).setVisibleItemFlag(true);
                     list.get(i).setFlag(true);
                 }
@@ -324,7 +324,7 @@ public class AddStockActivity extends CustomActivity implements View.OnClickList
         } else if (id == R.id.buttonAddStock) {
             if (list.size() > 0) {
                 int lastIndex = list.size() - 1;
-                if (!list.get(lastIndex).getQty().equals("") && list.get(lastIndex).getSpinnerSelectedIndex() != 0) {
+                if (!list.get(lastIndex).qty.equals("") && list.get(lastIndex).spinnerSelectedIndex != 0) {
                     dialogAddStockList(list);
                 } else
                     Toast.makeText(mContext, getResources().getString(R.string.please_select_item_or_quantity), Toast.LENGTH_SHORT).show();

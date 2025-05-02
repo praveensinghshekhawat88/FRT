@@ -1,36 +1,23 @@
-package com.callmangement.model.fps_wise_complaints;
+package com.callmangement.model.fps_wise_complaints
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-import java.util.ArrayList;
-import java.util.List;
+class ModelFPSComplaint {
+    @JvmField
+    @SerializedName("status")
+    var status: String? = null
 
-public class ModelFPSComplaint {
-    @SerializedName("status") private String status;
-    @SerializedName("message") private String message;
-    @SerializedName("fPSComplainHistoryReqList") private List<ModelFPSComplaintList> fPSComplainHistoryReqList = new ArrayList<>();
+    @SerializedName("message")
+    var message: String? = null
 
-    public String getStatus() {
-        return status;
+    @SerializedName("fPSComplainHistoryReqList")
+    private var fPSComplainHistoryReqList: List<ModelFPSComplaintList> = ArrayList()
+
+    fun getfPSComplainHistoryReqList(): List<ModelFPSComplaintList> {
+        return fPSComplainHistoryReqList
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public List<ModelFPSComplaintList> getfPSComplainHistoryReqList() {
-        return fPSComplainHistoryReqList;
-    }
-
-    public void setfPSComplainHistoryReqList(List<ModelFPSComplaintList> fPSComplainHistoryReqList) {
-        this.fPSComplainHistoryReqList = fPSComplainHistoryReqList;
+    fun setfPSComplainHistoryReqList(fPSComplainHistoryReqList: List<ModelFPSComplaintList>) {
+        this.fPSComplainHistoryReqList = fPSComplainHistoryReqList
     }
 }

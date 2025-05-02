@@ -144,28 +144,28 @@ public class ReportPdfActivity extends PDFCreatorActivity {
                 tableRowView1.getView().setPaddingRelative(0,5,0,0);
 
                 Monthly_Reports_Info monthly_reports_info = new Monthly_Reports_Info();
-                List<List<ModelComplaintList>> resolvedNotResolvedList = getResolvedNotResolvedList(Constants.listMonthReport.get(0).getDate(),Constants.listMonthReport.get(0).getList());
-                monthly_reports_info.setDate(Constants.listMonthReport.get(0).getDate());
-                monthly_reports_info.setResolved(resolvedNotResolvedList.get(0).size());
-                monthly_reports_info.setNot_resolved(resolvedNotResolvedList.get(1).size());
+                List<List<ModelComplaintList>> resolvedNotResolvedList = getResolvedNotResolvedList(Constants.listMonthReport.get(0).date, Constants.listMonthReport.get(0).list);
+                monthly_reports_info.date = Constants.listMonthReport.get(0).date;
+                monthly_reports_info.resolved = resolvedNotResolvedList.get(0).size();
+                monthly_reports_info.not_resolved = resolvedNotResolvedList.get(1).size();
 
                 int total = resolvedNotResolvedList.get(0).size() + resolvedNotResolvedList.get(1).size();
-                monthly_reports_info.setTotal(total);
+                monthly_reports_info.total = total;
 
                 PDFTextView pdfTextViewDate = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                pdfTextViewDate.setText(monthly_reports_info.getDate());
+                pdfTextViewDate.setText(monthly_reports_info.date);
                 tableRowView1.addToRow(pdfTextViewDate);
 
                 PDFTextView pdfTextViewTotal = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                pdfTextViewTotal.setText("" + (monthly_reports_info.getNot_resolved() + monthly_reports_info.getResolved()));
+                pdfTextViewTotal.setText("" + (monthly_reports_info.not_resolved + monthly_reports_info.resolved));
                 tableRowView1.addToRow(pdfTextViewTotal);
 
                 PDFTextView pdfTextViewResolved = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                pdfTextViewResolved.setText(""+monthly_reports_info.getResolved());
+                pdfTextViewResolved.setText(""+ monthly_reports_info.resolved);
                 tableRowView1.addToRow(pdfTextViewResolved);
 
                 PDFTextView pdfTextViewNotResolve = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                pdfTextViewNotResolve.setText(""+monthly_reports_info.getNot_resolved());
+                pdfTextViewNotResolve.setText(""+ monthly_reports_info.not_resolved);
                 tableRowView1.addToRow(pdfTextViewNotResolve);
 
                 PDFTableView tableView = new PDFTableView(getApplicationContext(), tableHeader, tableRowView1);
@@ -173,28 +173,28 @@ public class ReportPdfActivity extends PDFCreatorActivity {
                 for (int i = 1; i < Constants.listMonthReport.size(); i++) {
 
                     monthly_reports_info = new Monthly_Reports_Info();
-                    resolvedNotResolvedList = getResolvedNotResolvedList(Constants.listMonthReport.get(i).getDate(),Constants.listMonthReport.get(i).getList());
-                    monthly_reports_info.setDate(Constants.listMonthReport.get(i).getDate());
-                    monthly_reports_info.setResolved(resolvedNotResolvedList.get(0).size());
-                    monthly_reports_info.setNot_resolved(resolvedNotResolvedList.get(1).size());
+                    resolvedNotResolvedList = getResolvedNotResolvedList(Constants.listMonthReport.get(i).date, Constants.listMonthReport.get(i).list);
+                    monthly_reports_info.date = Constants.listMonthReport.get(i).date;
+                    monthly_reports_info.resolved = resolvedNotResolvedList.get(0).size();
+                    monthly_reports_info.not_resolved = resolvedNotResolvedList.get(1).size();
                     total = resolvedNotResolvedList.get(0).size() + resolvedNotResolvedList.get(1).size();
-                    monthly_reports_info.setTotal(total);
+                    monthly_reports_info.total = total;
 
                     tableRowView1 = new PDFTableView.PDFTableRowView(getApplicationContext());
                     pdfTextViewDate = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                    pdfTextViewDate.setText(monthly_reports_info.getDate());
+                    pdfTextViewDate.setText(monthly_reports_info.date);
                     tableRowView1.addToRow(pdfTextViewDate);
 
                     pdfTextViewTotal = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                    pdfTextViewTotal.setText("" + (monthly_reports_info.getNot_resolved() + monthly_reports_info.getResolved()));
+                    pdfTextViewTotal.setText("" + (monthly_reports_info.not_resolved + monthly_reports_info.resolved));
                     tableRowView1.addToRow(pdfTextViewTotal);
 
                     pdfTextViewResolved = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                    pdfTextViewResolved.setText(""+monthly_reports_info.getResolved());
+                    pdfTextViewResolved.setText(""+ monthly_reports_info.resolved);
                     tableRowView1.addToRow(pdfTextViewResolved);
 
                     pdfTextViewNotResolve = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                    pdfTextViewNotResolve.setText(""+monthly_reports_info.getNot_resolved());
+                    pdfTextViewNotResolve.setText(""+ monthly_reports_info.not_resolved);
                     tableRowView1.addToRow(pdfTextViewNotResolve);
 
                     tableView.addRow(tableRowView1);
@@ -214,25 +214,25 @@ public class ReportPdfActivity extends PDFCreatorActivity {
             String total = getIntent().getStringExtra("total");
 
             Monthly_Reports_Info monthly_reports_info = new Monthly_Reports_Info();
-            monthly_reports_info.setDate(date);
-            monthly_reports_info.setResolved(Integer.parseInt(resolved));
-            monthly_reports_info.setNot_resolved(Integer.parseInt(notResolved));
-            monthly_reports_info.setTotal(Integer.parseInt(total));
+            monthly_reports_info.date = date;
+            monthly_reports_info.resolved = Integer.parseInt(resolved);
+            monthly_reports_info.not_resolved = Integer.parseInt(notResolved);
+            monthly_reports_info.total = Integer.parseInt(total);
 
             PDFTextView pdfTextViewDate = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-            pdfTextViewDate.setText(monthly_reports_info.getDate());
+            pdfTextViewDate.setText(monthly_reports_info.date);
             tableRowView1.addToRow(pdfTextViewDate);
 
             PDFTextView pdfTextViewTotal = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-            pdfTextViewTotal.setText("" + (monthly_reports_info.getNot_resolved() + monthly_reports_info.getResolved()));
+            pdfTextViewTotal.setText("" + (monthly_reports_info.not_resolved + monthly_reports_info.resolved));
             tableRowView1.addToRow(pdfTextViewTotal);
 
             PDFTextView pdfTextViewResolved = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-            pdfTextViewResolved.setText(""+monthly_reports_info.getResolved());
+            pdfTextViewResolved.setText(""+ monthly_reports_info.resolved);
             tableRowView1.addToRow(pdfTextViewResolved);
 
             PDFTextView pdfTextViewNotResolve = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-            pdfTextViewNotResolve.setText(""+monthly_reports_info.getNot_resolved());
+            pdfTextViewNotResolve.setText(""+ monthly_reports_info.not_resolved);
             tableRowView1.addToRow(pdfTextViewNotResolve);
 
             PDFTableView tableView = new PDFTableView(getApplicationContext(), tableHeader, tableRowView1);
@@ -261,7 +261,7 @@ public class ReportPdfActivity extends PDFCreatorActivity {
             if (totalList != null) {
                 if (totalList.size() > 0) {
                     for (ModelComplaintList model : totalList) {
-                        if (model.getComplainStatusId().equals("3") && DateTimeUtils.getTimeStamp(date) == DateTimeUtils.getTimeStamp(model.getSermarkDateStr()))
+                        if (model.getComplainStatusId().equals("3") && DateTimeUtils.getTimeStamp(date) == DateTimeUtils.getTimeStamp(model.sermarkDateStr))
                             resolvedList.add(model);
                         else notResolvedList.add(model);
                     }

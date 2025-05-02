@@ -1,186 +1,182 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.databinding.ItemChallanUploadListBinding
+import com.callmangement.model.complaints.ModelComplaintList
+import com.callmangement.ui.complaint.ChallanUploadActivity
+import com.callmangement.utils.PrefManager
+import java.util.Locale
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
+class ChallanUploadListAdapter(private val context: Context) :
+    RecyclerView.Adapter<ChallanUploadListAdapter.ViewHolder>(), Filterable {
+    private var row_index = 0
+    private val REQUEST_CODE = 1
+    private var modelComplaintList: MutableList<ModelComplaintList>? = null
+    private var modelComplaintFilterList: MutableList<ModelComplaintList>? = null
+    private val prefManager = PrefManager(context)
 
-import com.callmangement.R;
-import com.callmangement.databinding.ItemChallanUploadListBinding;
-import com.callmangement.databinding.ItemComplaintPendingListActivityBinding;
-import com.callmangement.model.complaints.ModelComplaintList;
-import com.callmangement.ui.complaint.ChallanUploadActivity;
-import com.callmangement.ui.complaint.ComplaintDetailActivity;
-import com.callmangement.utils.PrefManager;
-
-import java.util.ArrayList;
-import java.util.List;
-
-
-public class ChallanUploadListAdapter extends RecyclerView.Adapter<ChallanUploadListAdapter.ViewHolder> implements Filterable {
-    private final Context context;
-    private int row_index = 0;
-    private final int REQUEST_CODE = 1;
-    private List<ModelComplaintList> modelComplaintList;
-    private List<ModelComplaintList> modelComplaintFilterList;
-    private final PrefManager prefManager;
-
-    public ChallanUploadListAdapter(Context context) {
-        this.context = context;
-        prefManager = new PrefManager(context);
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = DataBindingUtil.inflate<ItemChallanUploadListBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_challan_upload_list,
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemChallanUploadListBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_challan_upload_list, parent, false);
-        return new ViewHolder(binding);
-    }
+    @SuppressLint("SetTextI18n", "UseCompatLoadingForDrawables", "NotifyDataSetChanged")
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+        val model = modelComplaintList!![position]
+        holder.binding.data = model
 
-    @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables", "NotifyDataSetChanged"})
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        ModelComplaintList model = modelComplaintList.get(position);
-        holder.binding.setData(model);
+        holder.binding.textComplaintStatus.text =
+            context.resources.getString(R.string.complaint_status) + " : "
 
-        holder.binding.textComplaintStatus.setText(context.getResources().getString(R.string.complaint_status)+" : ");
+        holder.binding.textComplaintNumber.text =
+            context.resources.getString(R.string.c_no) + " : " + model.complainRegNo
+        holder.binding.textName.text =
+            context.resources.getString(R.string.name) + " : " + model.customerName + " " + "(" + context.resources.getString(
+                R.string.fps_code
+            ) + " : " + model.fpscode + ")"
+        holder.binding.textPhoneNumber.text =
+            context.resources.getString(R.string.mobile_no) + " : " + model.mobileNo
+        holder.binding.textServiceCenterCount.text =
+            context.resources.getString(R.string.count_on_service_center) + " : " + model.cntReptOnSerCenter
+        holder.binding.textDis.text = model.district
 
-        holder.binding.textComplaintNumber.setText(context.getResources().getString(R.string.c_no)+" : "+model.getComplainRegNo());
-        holder.binding.textName.setText(context.getResources().getString(R.string.name)+" : "+model.getCustomerName()+" "+"("+context.getResources().getString(R.string.fps_code)+" : "+model.getFpscode()+")");
-        holder.binding.textPhoneNumber.setText(context.getResources().getString(R.string.mobile_no)+" : "+model.getMobileNo());
-        holder.binding.textServiceCenterCount.setText(context.getResources().getString(R.string.count_on_service_center)+" : "+model.getCntReptOnSerCenter());
-        holder.binding.textDis.setText(model.getDistrict());
+        holder.binding.textComplaintStatusValue.text = model.complainStatus
+        holder.binding.textComplaintStatusValue.setTextColor(context.resources.getColor(R.color.colorRedDark))
 
-        holder.binding.textComplaintStatusValue.setText(model.getComplainStatus());
-        holder.binding.textComplaintStatusValue.setTextColor(context.getResources().getColor(R.color.colorRedDark));
-
-        if (model.getComplainRegDateStr()!=null && !model.getComplainRegDateStr().isEmpty() && !model.getComplainRegDateStr().equalsIgnoreCase("null")){
-            holder.binding.textComplaintRegDate.setVisibility(View.VISIBLE);
-            holder.binding.textComplaintRegDate.setText(context.getResources().getString(R.string.reg_date)+" : "+model.getComplainRegDateStr());
+        if (model.complainRegDateStr != null && !model.complainRegDateStr!!.isEmpty() && !model.complainRegDateStr.equals(
+                "null",
+                ignoreCase = true
+            )
+        ) {
+            holder.binding.textComplaintRegDate.visibility = View.VISIBLE
+            holder.binding.textComplaintRegDate.text =
+                context.resources.getString(R.string.reg_date) + " : " + model.complainRegDateStr
         } else {
-            holder.binding.textComplaintRegDate.setVisibility(View.GONE);
+            holder.binding.textComplaintRegDate.visibility = View.GONE
         }
 
-        holder.binding.listItem.setOnClickListener(view -> {
-            row_index = position;
-            notifyDataSetChanged();
-            Intent intent = new Intent(view.getContext(), ChallanUploadActivity.class);
-            intent.putExtra("param", model);
-            intent.putExtra("param2","pending");
-            prefManager.setCOMPLAINT_POSITION(position);
-            ((Activity) view.getContext()).startActivityForResult(intent, REQUEST_CODE);
-        });
-
-        if (row_index == position){
-            holder.binding.listItem.setBackground(context.getDrawable(R.drawable.shape_rect_background_dark_blue_layout));
-            holder.binding.textName.setTextColor(context.getResources().getColor(R.color.white));
-            holder.binding.textPhoneNumber.setTextColor(context.getResources().getColor(R.color.white));
-            holder.binding.textComplaintNumber.setTextColor(context.getResources().getColor(R.color.white));
-            holder.binding.textDis.setTextColor(context.getResources().getColor(R.color.white));
-            holder.binding.textTehsil.setTextColor(context.getResources().getColor(R.color.white));
-            holder.binding.textComplaintRegDate.setTextColor(context.getResources().getColor(R.color.white));
-            holder.binding.textComplaintStatus.setTextColor(context.getResources().getColor(R.color.white));
-            holder.binding.textServiceCenterCount.setTextColor(context.getResources().getColor(R.color.white));
-        } else {
-            holder.binding.listItem.setBackground(context.getDrawable(R.drawable.shape_rect_background_white_layout));
-            holder.binding.textName.setTextColor(context.getResources().getColor(R.color.grayDark));
-            holder.binding.textPhoneNumber.setTextColor(context.getResources().getColor(R.color.grayDark));
-            holder.binding.textComplaintNumber.setTextColor(context.getResources().getColor(R.color.colorActionBar));
-            holder.binding.textDis.setTextColor(context.getResources().getColor(R.color.grayDark));
-            holder.binding.textTehsil.setTextColor(context.getResources().getColor(R.color.blue_700));
-            holder.binding.textComplaintRegDate.setTextColor(context.getResources().getColor(R.color.grayDark));
-            holder.binding.textComplaintStatus.setTextColor(context.getResources().getColor(R.color.grayDark));
-            holder.binding.textServiceCenterCount.setTextColor(context.getResources().getColor(R.color.grayDark));
+        holder.binding.listItem.setOnClickListener { view: View ->
+            row_index = position
+            notifyDataSetChanged()
+            val intent = Intent(view.context, ChallanUploadActivity::class.java)
+            intent.putExtra("param", model)
+            intent.putExtra("param2", "pending")
+            prefManager.complainT_POSITION = position
+            (view.context as Activity).startActivityForResult(intent, REQUEST_CODE)
         }
 
+        if (row_index == position) {
+            holder.binding.listItem.background =
+                context.getDrawable(R.drawable.shape_rect_background_dark_blue_layout)
+            holder.binding.textName.setTextColor(context.resources.getColor(R.color.white))
+            holder.binding.textPhoneNumber.setTextColor(context.resources.getColor(R.color.white))
+            holder.binding.textComplaintNumber.setTextColor(context.resources.getColor(R.color.white))
+            holder.binding.textDis.setTextColor(context.resources.getColor(R.color.white))
+            holder.binding.textTehsil.setTextColor(context.resources.getColor(R.color.white))
+            holder.binding.textComplaintRegDate.setTextColor(context.resources.getColor(R.color.white))
+            holder.binding.textComplaintStatus.setTextColor(context.resources.getColor(R.color.white))
+            holder.binding.textServiceCenterCount.setTextColor(context.resources.getColor(R.color.white))
+        } else {
+            holder.binding.listItem.background =
+                context.getDrawable(R.drawable.shape_rect_background_white_layout)
+            holder.binding.textName.setTextColor(context.resources.getColor(R.color.grayDark))
+            holder.binding.textPhoneNumber.setTextColor(context.resources.getColor(R.color.grayDark))
+            holder.binding.textComplaintNumber.setTextColor(context.resources.getColor(R.color.colorActionBar))
+            holder.binding.textDis.setTextColor(context.resources.getColor(R.color.grayDark))
+            holder.binding.textTehsil.setTextColor(context.resources.getColor(R.color.blue_700))
+            holder.binding.textComplaintRegDate.setTextColor(context.resources.getColor(R.color.grayDark))
+            holder.binding.textComplaintStatus.setTextColor(context.resources.getColor(R.color.grayDark))
+            holder.binding.textServiceCenterCount.setTextColor(context.resources.getColor(R.color.grayDark))
+        }
     }
 
-   /* @SuppressLint("NotifyDataSetChanged")
+
+    /* @SuppressLint("NotifyDataSetChanged")
     public void setData(List<ModelComplaintList> modelComplaintList){
         this.modelComplaintList = modelComplaintList;
         this.modelComplaintFilterList = new ArrayList<>(modelComplaintList);
         notifyDataSetChanged();
     }*/
-
-
     @SuppressLint("NotifyDataSetChanged")
-    public void setData(List<ModelComplaintList> modelComplaintList) {
-        this.modelComplaintList = new ArrayList<>(modelComplaintList); // correct way
-        this.modelComplaintFilterList = new ArrayList<>(modelComplaintList);
-        notifyDataSetChanged();
+    fun setData(modelComplaintList: List<ModelComplaintList>?) {
+        this.modelComplaintList = ArrayList(modelComplaintList) // correct way
+        this.modelComplaintFilterList = ArrayList(modelComplaintList)
+        notifyDataSetChanged()
     }
 
-    public void addData(List<ModelComplaintList> newItems) {
-        int startPosition = modelComplaintList.size();
-        this.modelComplaintList.addAll(newItems);
-        this.modelComplaintFilterList.addAll(newItems);
-        notifyItemRangeInserted(startPosition, newItems.size());
+    fun addData(newItems: List<ModelComplaintList>) {
+        val startPosition = modelComplaintList!!.size
+        modelComplaintList!!.addAll(newItems)
+        modelComplaintFilterList!!.addAll(newItems)
+        notifyItemRangeInserted(startPosition, newItems.size)
     }
 
 
-
-
-
-
-    @Override
-    public int getItemCount() {
-        if (modelComplaintList != null) {
-            return modelComplaintList.size();
+    override fun getItemCount(): Int {
+        return if (modelComplaintList != null) {
+            modelComplaintList!!.size
         } else {
-            return 0;
+            0
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        ItemChallanUploadListBinding binding;
-        public ViewHolder(@NonNull ItemChallanUploadListBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
+    class ViewHolder(var binding: ItemChallanUploadListBinding) : RecyclerView.ViewHolder(
+        binding.root
+    )
+
+    override fun getFilter(): Filter {
+        return Searched_Filter
     }
 
-    @Override
-    public Filter getFilter() {
-        return Searched_Filter;
-    }
-
-    private final Filter Searched_Filter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            ArrayList<ModelComplaintList> filteredList = new ArrayList<>();
-            if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(modelComplaintFilterList);
+    private val Searched_Filter: Filter = object : Filter() {
+        override fun performFiltering(constraint: CharSequence): FilterResults {
+            val filteredList = ArrayList<ModelComplaintList>()
+            if (constraint == null || constraint.length == 0) {
+                filteredList.addAll(modelComplaintFilterList!!)
             } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-                for (ModelComplaintList item : modelComplaintFilterList) {
-                    if (item.getComplainRegNo().toLowerCase().contains(filterPattern) || item.getCustomerName().toLowerCase().contains(filterPattern) || item.getFpscode().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
+                val filterPattern =
+                    constraint.toString().lowercase(Locale.getDefault()).trim { it <= ' ' }
+                for (item in modelComplaintFilterList!!) {
+                    if (item.complainRegNo!!.lowercase(Locale.getDefault())
+                            .contains(filterPattern) || item.customerName!!.lowercase(
+                            Locale.getDefault()
+                        ).contains(filterPattern) || item.fpscode!!.lowercase(
+                            Locale.getDefault()
+                        ).contains(filterPattern)
+                    ) {
+                        filteredList.add(item)
                     }
                 }
             }
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-            return results;
+            val results = FilterResults()
+            results.values = filteredList
+            return results
         }
 
         @SuppressLint("NotifyDataSetChanged")
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
+        override fun publishResults(constraint: CharSequence, results: FilterResults) {
             if (results.values != null) {
-                modelComplaintList.clear();
-                modelComplaintList.addAll((ArrayList) results.values);
-                notifyDataSetChanged();
+                modelComplaintList!!.clear()
+                modelComplaintList!!.addAll(results.values as ArrayList<ModelComplaintList>)
+                notifyDataSetChanged()
             }
         }
-    };
+    }
 }
 

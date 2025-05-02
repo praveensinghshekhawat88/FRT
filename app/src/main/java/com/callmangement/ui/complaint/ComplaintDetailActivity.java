@@ -225,10 +225,10 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
                         binding.buttonResolved.setVisibility(View.GONE);
                         binding.buttonSliderSendToSE.setVisibility(View.GONE);
 
-                        if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                        if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                             binding.seImage.setVisibility(View.VISIBLE);
                             Glide.with(mContext)
-                                    .load(model.getImagePath())
+                                    .load(model.imagePath)
                                     .placeholder(R.drawable.image_not_fount)
                                     .into(binding.seImage);
                         } else {
@@ -246,16 +246,16 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
                     binding.buttonSliderSendToSE.setVisibility(View.VISIBLE);
                 }
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
                 if (model.getIsSentToServiceCentre().equals("true")) {
-                    if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                    if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                         binding.layoutReplacePartsByServiceCenter.setVisibility(View.VISIBLE);
-                        binding.inputReplacePartByServiceCenter.setText(model.getReplacedPartsDetail());
+                        binding.inputReplacePartByServiceCenter.setText(model.replacedPartsDetail);
                     } else {
                         binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     }
@@ -263,20 +263,20 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
 
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
@@ -299,41 +299,41 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
                 binding.chkBoxIsPhysicalDamage.setChecked(model.getPhysicalDamage() != null && model.getPhysicalDamage());
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
-                if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
-                    binding.inputReplacePart.setText(model.getReplacedPartsDetail());
+                    binding.inputReplacePart.setText(model.replacedPartsDetail);
                 } else {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     binding.inputReplacePart.setText("");
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
 
-                if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                     binding.seImage.setVisibility(View.VISIBLE);
                     Glide.with(mContext)
-                            .load(model.getImagePath())
+                            .load(model.imagePath)
                             .placeholder(R.drawable.image_not_fount)
                             .into(binding.seImage);
                 } else {
@@ -358,42 +358,42 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
                 binding.chkBoxIsPhysicalDamage.setChecked(model.getPhysicalDamage() != null && model.getPhysicalDamage());
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
-                if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
-                    binding.inputReplacePart.setText(model.getReplacedPartsDetail());
+                    binding.inputReplacePart.setText(model.replacedPartsDetail);
                 } else {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     binding.inputReplacePart.setText("");
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
 
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
 
-                if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                     binding.seImage.setVisibility(View.VISIBLE);
                     Glide.with(mContext)
-                            .load(model.getImagePath())
+                            .load(model.imagePath)
                             .placeholder(R.drawable.image_not_fount)
                             .into(binding.seImage);
                 } else {
@@ -422,42 +422,42 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
                 binding.chkBoxIsPhysicalDamage.setChecked(model.getPhysicalDamage() != null && model.getPhysicalDamage());
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
-                if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
-                    binding.inputReplacePart.setText(model.getReplacedPartsDetail());
+                    binding.inputReplacePart.setText(model.replacedPartsDetail);
                 } else {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     binding.inputReplacePart.setText("");
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
 
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
 
-                if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                     binding.seImage.setVisibility(View.VISIBLE);
                     Glide.with(mContext)
-                            .load(model.getImagePath())
+                            .load(model.imagePath)
                             .placeholder(R.drawable.image_not_fount)
                             .into(binding.seImage);
                 } else {
@@ -482,42 +482,42 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
                 binding.chkBoxIsPhysicalDamage.setChecked(model.getPhysicalDamage() != null && model.getPhysicalDamage());
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
-                if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
-                    binding.inputReplacePart.setText(model.getReplacedPartsDetail());
+                    binding.inputReplacePart.setText(model.replacedPartsDetail);
                 } else {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     binding.inputReplacePart.setText("");
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
 
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
 
-                if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                     binding.seImage.setVisibility(View.VISIBLE);
                     Glide.with(mContext)
-                            .load(model.getImagePath())
+                            .load(model.imagePath)
                             .placeholder(R.drawable.image_not_fount)
                             .into(binding.seImage);
                 } else {
@@ -542,42 +542,42 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
                 binding.chkBoxIsPhysicalDamage.setChecked(model.getPhysicalDamage() != null && model.getPhysicalDamage());
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
-                if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
-                    binding.inputReplacePart.setText(model.getReplacedPartsDetail());
+                    binding.inputReplacePart.setText(model.replacedPartsDetail);
                 } else {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     binding.inputReplacePart.setText("");
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
 
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
 
-                if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                     binding.seImage.setVisibility(View.VISIBLE);
                     Glide.with(mContext)
-                            .load(model.getImagePath())
+                            .load(model.imagePath)
                             .placeholder(R.drawable.image_not_fount)
                             .into(binding.seImage);
                 } else {
@@ -606,42 +606,42 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
                 binding.chkBoxIsPhysicalDamage.setChecked(model.getPhysicalDamage() != null && model.getPhysicalDamage());
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
-                if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
-                    binding.inputReplacePart.setText(model.getReplacedPartsDetail());
+                    binding.inputReplacePart.setText(model.replacedPartsDetail);
                 } else {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     binding.inputReplacePart.setText("");
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
 
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
 
-                if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                     binding.seImage.setVisibility(View.VISIBLE);
                     Glide.with(mContext)
-                            .load(model.getImagePath())
+                            .load(model.imagePath)
                             .placeholder(R.drawable.image_not_fount)
                             .into(binding.seImage);
                 } else {
@@ -666,42 +666,42 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
                 binding.chkBoxIsPhysicalDamage.setChecked(model.getPhysicalDamage() != null && model.getPhysicalDamage());
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
-                if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
-                    binding.inputReplacePart.setText(model.getReplacedPartsDetail());
+                    binding.inputReplacePart.setText(model.replacedPartsDetail);
                 } else {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     binding.inputReplacePart.setText("");
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
 
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
 
-                if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                     binding.seImage.setVisibility(View.VISIBLE);
                     Glide.with(mContext)
-                            .load(model.getImagePath())
+                            .load(model.imagePath)
                             .placeholder(R.drawable.image_not_fount)
                             .into(binding.seImage);
                 } else {
@@ -726,42 +726,42 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
                 binding.chkBoxIsPhysicalDamage.setChecked(model.getPhysicalDamage() != null && model.getPhysicalDamage());
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
-                if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
-                    binding.inputReplacePart.setText(model.getReplacedPartsDetail());
+                    binding.inputReplacePart.setText(model.replacedPartsDetail);
                 } else {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     binding.inputReplacePart.setText("");
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
 
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
 
-                if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                     binding.seImage.setVisibility(View.VISIBLE);
                     Glide.with(mContext)
-                            .load(model.getImagePath())
+                            .load(model.imagePath)
                             .placeholder(R.drawable.image_not_fount)
                             .into(binding.seImage);
                 } else {
@@ -790,42 +790,42 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
                 binding.chkBoxIsPhysicalDamage.setChecked(model.getPhysicalDamage() != null && model.getPhysicalDamage());
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
-                if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
-                    binding.inputReplacePart.setText(model.getReplacedPartsDetail());
+                    binding.inputReplacePart.setText(model.replacedPartsDetail);
                 } else {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     binding.inputReplacePart.setText("");
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
 
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
 
-                if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                     binding.seImage.setVisibility(View.VISIBLE);
                     Glide.with(mContext)
-                            .load(model.getImagePath())
+                            .load(model.imagePath)
                             .placeholder(R.drawable.image_not_fount)
                             .into(binding.seImage);
                 } else {
@@ -850,42 +850,42 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
                 binding.chkBoxIsPhysicalDamage.setChecked(model.getPhysicalDamage() != null && model.getPhysicalDamage());
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
-                if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
-                    binding.inputReplacePart.setText(model.getReplacedPartsDetail());
+                    binding.inputReplacePart.setText(model.replacedPartsDetail);
                 } else {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     binding.inputReplacePart.setText("");
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
 
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
 
-                if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                     binding.seImage.setVisibility(View.VISIBLE);
                     Glide.with(mContext)
-                            .load(model.getImagePath())
+                            .load(model.imagePath)
                             .placeholder(R.drawable.image_not_fount)
                             .into(binding.seImage);
                 } else {
@@ -910,42 +910,42 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
                 binding.chkBoxIsPhysicalDamage.setChecked(model.getPhysicalDamage() != null && model.getPhysicalDamage());
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
-                if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
-                    binding.inputReplacePart.setText(model.getReplacedPartsDetail());
+                    binding.inputReplacePart.setText(model.replacedPartsDetail);
                 } else {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     binding.inputReplacePart.setText("");
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
 
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
 
-                if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                     binding.seImage.setVisibility(View.VISIBLE);
                     Glide.with(mContext)
-                            .load(model.getImagePath())
+                            .load(model.imagePath)
                             .placeholder(R.drawable.image_not_fount)
                             .into(binding.seImage);
                 } else {
@@ -973,42 +973,42 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
                 binding.chkBoxIsPhysicalDamage.setChecked(model.getPhysicalDamage() != null && model.getPhysicalDamage());
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
-                if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
-                    binding.inputReplacePart.setText(model.getReplacedPartsDetail());
+                    binding.inputReplacePart.setText(model.replacedPartsDetail);
                 } else {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     binding.inputReplacePart.setText("");
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
 
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
 
-                if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                     binding.seImage.setVisibility(View.VISIBLE);
                     Glide.with(mContext)
-                            .load(model.getImagePath())
+                            .load(model.imagePath)
                             .placeholder(R.drawable.image_not_fount)
                             .into(binding.seImage);
                 } else {
@@ -1033,42 +1033,42 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
                 binding.chkBoxIsPhysicalDamage.setChecked(model.getPhysicalDamage() != null && model.getPhysicalDamage());
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
-                if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
-                    binding.inputReplacePart.setText(model.getReplacedPartsDetail());
+                    binding.inputReplacePart.setText(model.replacedPartsDetail);
                 } else {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     binding.inputReplacePart.setText("");
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
 
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
 
-                if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                     binding.seImage.setVisibility(View.VISIBLE);
                     Glide.with(mContext)
-                            .load(model.getImagePath())
+                            .load(model.imagePath)
                             .placeholder(R.drawable.image_not_fount)
                             .into(binding.seImage);
                 } else {
@@ -1093,42 +1093,42 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
                 binding.chkBoxIsPhysicalDamage.setChecked(model.getPhysicalDamage() != null && model.getPhysicalDamage());
 
-                if (model.getSeremark() != null && !model.getSeremark().equalsIgnoreCase("null")) {
-                    binding.inputRemark.setText(model.getSeremark());
+                if (model.seremark != null && !model.seremark.equalsIgnoreCase("null")) {
+                    binding.inputRemark.setText(model.seremark);
                 } else {
                     binding.inputRemark.setText("");
                 }
 
-                if (model.getReplacedPartsDetail() != null && !model.getReplacedPartsDetail().equalsIgnoreCase("null")) {
+                if (model.replacedPartsDetail != null && !model.replacedPartsDetail.equalsIgnoreCase("null")) {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
-                    binding.inputReplacePart.setText(model.getReplacedPartsDetail());
+                    binding.inputReplacePart.setText(model.replacedPartsDetail);
                 } else {
                     binding.layoutReplacePartsByServiceCenter.setVisibility(View.GONE);
                     binding.inputReplacePart.setText("");
                 }
 
-                if (model.getCourierServicesDetail() != null && !model.getCourierServicesDetail().equalsIgnoreCase("null")) {
-                    binding.inputCourierDetail.setText(model.getCourierServicesDetail());
+                if (model.courierServicesDetail != null && !model.courierServicesDetail.equalsIgnoreCase("null")) {
+                    binding.inputCourierDetail.setText(model.courierServicesDetail);
                 } else {
                     binding.inputCourierDetail.setText("");
                 }
 
-                if (model.getSermarkDateStr() != null && !model.getSermarkDateStr().equalsIgnoreCase("null")) {
-                    binding.inputResolvedDate.setText(model.getSermarkDateStr());
+                if (model.sermarkDateStr != null && !model.sermarkDateStr.equalsIgnoreCase("null")) {
+                    binding.inputResolvedDate.setText(model.sermarkDateStr);
                 } else {
                     binding.inputResolvedDate.setText("");
                 }
 
-                if (model.getChallanNo() != null && !model.getChallanNo().equalsIgnoreCase("null")) {
-                    binding.inputChallanNumber.setText(model.getChallanNo());
+                if (model.challanNo != null && !model.challanNo.equalsIgnoreCase("null")) {
+                    binding.inputChallanNumber.setText(model.challanNo);
                 } else {
                     binding.inputChallanNumber.setText("");
                 }
 
-                if (model.getImagePath() != null && !model.getImagePath().isEmpty() && !model.getImagePath().equalsIgnoreCase("null")) {
+                if (model.imagePath != null && !model.imagePath.isEmpty() && !model.imagePath.equalsIgnoreCase("null")) {
                     binding.seImage.setVisibility(View.VISIBLE);
                     Glide.with(mContext)
-                            .load(model.getImagePath())
+                            .load(model.imagePath)
                             .placeholder(R.drawable.image_not_fount)
                             .into(binding.seImage);
                 } else {
@@ -1161,7 +1161,7 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         SimpleDateFormat sdfSelectedDate = new SimpleDateFormat(myFormatSelectedDate, Locale.US);
 
-        String[] separator = model.getComplainRegDateStr().split(" ");
+        String[] separator = model.complainRegDateStr.split(" ");
         String regDateSep = separator[0];
         String regTimeSep = separator[1];
         String selectedDate = sdfSelectedDate.format(myCalendarResolvedDate.getTime());
@@ -1341,14 +1341,14 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
 
     private void resolveComplaint(String remark, String IsPhysicalDamage, String getStatus, String replacePart, String courierDetail, String se_image, String challanNo, String seRemarkDate, String replacePartsIds, String damageApprovalLetter, String DSO_LETTER_TYPE) {
         isLoading();
-        viewModel.resolveComplaint(prefManager.getUSER_Id(), IsPhysicalDamage, remark, model.getComplainRegNo(), getStatus, replacePart, courierDetail, se_image, challanNo, seRemarkDate, replacePartsIds, damageApprovalLetter, DSO_LETTER_TYPE).observe(this, modelResolveComplaint -> {
+        viewModel.resolveComplaint(prefManager.getUSER_Id(), IsPhysicalDamage, remark, model.complainRegNo, getStatus, replacePart, courierDetail, se_image, challanNo, seRemarkDate, replacePartsIds, damageApprovalLetter, DSO_LETTER_TYPE).observe(this, modelResolveComplaint -> {
             isLoading();
             Log.d("replacepartsid", "  " + replacePartsIds);
 
 
-            if (modelResolveComplaint.getStatus().equals("200")) {
+            if (modelResolveComplaint.status.equals("200")) {
 
-                String msg = modelResolveComplaint.getMessage();
+                String msg = modelResolveComplaint.message;
 //                Toast.makeText(this, "" + msg, Toast.LENGTH_SHORT).show();
 //                binding.buttonSliderSendToSE.setOuterColor(getResources().getColor(R.color.holo_blue_dark));
 //                binding.buttonSliderSendToSE.setCompleteIcon(R.drawable.ic_check);
@@ -1375,7 +1375,7 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
                 alert.setTitle(getResources().getString(R.string.alert));
                 alert.show();
             } else {
-                String msg = modelResolveComplaint.getMessage();
+                String msg = modelResolveComplaint.message;
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(msg)
                         .setCancelable(false)
@@ -1621,7 +1621,7 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
         isInventoryLoading();
         inventoryViewModel.getAvailableStockListForSE(prefManager.getUSER_Id(), "0").observe(this, modelParts -> {
             isInventoryLoading();
-            if (modelParts.getStatus().equals("200")) {
+            if (modelParts.status.equals("200")) {
                 listParts = modelParts.getParts();
                 Log.d("fdnf", "  " + listParts);
             }
@@ -1632,7 +1632,7 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
         if (Constants.isNetworkAvailable(mContext)) {
             showProgress();
             APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<ModelResponse> call = service.AcceptBySE(prefManager.getUSER_Id(), model.getComplainRegNo());
+            Call<ModelResponse> call = service.AcceptBySE(prefManager.getUSER_Id(), model.complainRegNo);
             call.enqueue(new Callback<ModelResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<ModelResponse> call, @NonNull Response<ModelResponse> response) {
@@ -1640,7 +1640,7 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
                     if (response.isSuccessful()) {
                         if (response.code() == 200) {
                             ModelResponse modelResponse = response.body();
-                            if (Objects.requireNonNull(modelResponse).getStatus().equals("200")) {
+                            if (Objects.requireNonNull(modelResponse).status.equals("200")) {
                                 Intent returnIntent = new Intent();
                                 setResult(Activity.RESULT_OK, returnIntent);
                                 finish();
@@ -1732,7 +1732,7 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
             @SuppressLint("SimpleDateFormat")
             SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
             try {
-                Date date = format.parse(model.getComplainRegDateStr());
+                Date date = format.parse(model.complainRegDateStr);
                 datePickerDialog.getDatePicker().setMinDate(Objects.requireNonNull(date).getTime());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1763,7 +1763,7 @@ public class ComplaintDetailActivity extends CustomActivity implements View.OnCl
         } else if (id == R.id.buttonResolved) {
             onClickResolveComplaint();
         } else if (id == R.id.se_image) {
-            startActivity(new Intent(mContext, ZoomInZoomOutActivity.class).putExtra("image", model.getImagePath()));
+            startActivity(new Intent(mContext, ZoomInZoomOutActivity.class).putExtra("image", model.imagePath));
         } else if (id == R.id.iv_back) {
             onBackPressed();
         } else if (id == R.id.buttonAcceptComplaint) {

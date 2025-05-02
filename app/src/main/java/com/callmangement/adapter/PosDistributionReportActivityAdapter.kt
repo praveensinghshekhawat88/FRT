@@ -1,78 +1,71 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.databinding.ItemPosDistributionReportActivityBinding
+import com.callmangement.ui.distributor.activity.PosDistributionReportActivity
+import com.callmangement.ui.distributor.model.PosDistributionDetail
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.callmangement.R;
-import com.callmangement.databinding.ItemPosDistributionReportActivityBinding;
-import com.callmangement.ui.distributor.activity.PosDistributionReportActivity;
-import com.callmangement.ui.distributor.model.PosDistributionDetail;
-
-import java.util.List;
-
-public class PosDistributionReportActivityAdapter extends RecyclerView.Adapter<PosDistributionReportActivityAdapter.ViewHolder> {
-    private final List<PosDistributionDetail> list;
-    private final Context context;
-
-    public PosDistributionReportActivityAdapter(Context context, List<PosDistributionDetail> list) {
-        this.context = context;
-        this.list = list;
+class PosDistributionReportActivityAdapter(
+    private val context: Context,
+    private val list: List<PosDistributionDetail>
+) : RecyclerView.Adapter<PosDistributionReportActivityAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemPosDistributionReportActivityBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemPosDistributionReportActivityBinding binding = ItemPosDistributionReportActivityBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
-        return new ViewHolder(binding);
-    }
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+        try {
+            holder.binding.tvFpsCode.text = list[position].fpscode
+            holder.binding.tvDealerName.text = list[position].dealerName
+            holder.binding.tvDistrict.text = list[position].districtName
 
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        try{
-            holder.binding.tvFpsCode.setText(list.get(position).getFpscode());
-            holder.binding.tvDealerName.setText(list.get(position).getDealerName());
-            holder.binding.tvDistrict.setText(list.get(position).getDistrictName());
-
-            if (list.get(position).getIsFormUploaded().equalsIgnoreCase("true")) {
-                holder.binding.tvFormUploadedStatus.setText(context.getResources().getString(R.string.uploaded));
-                holder.binding.tvFormUploadedStatus.setTextColor(context.getResources().getColor(R.color.colorGreenDark));
+            if (list[position].isFormUploaded.equals("true", ignoreCase = true)) {
+                holder.binding.tvFormUploadedStatus.text =
+                    context.resources.getString(R.string.uploaded)
+                holder.binding.tvFormUploadedStatus.setTextColor(context.resources.getColor(R.color.colorGreenDark))
             } else {
-                holder.binding.tvFormUploadedStatus.setText(context.getResources().getString(R.string.not_uploaded));
-                holder.binding.tvFormUploadedStatus.setTextColor(context.getResources().getColor(R.color.colorRedDark));
+                holder.binding.tvFormUploadedStatus.text =
+                    context.resources.getString(R.string.not_uploaded)
+                holder.binding.tvFormUploadedStatus.setTextColor(context.resources.getColor(R.color.colorRedDark))
             }
 
-            if (list.get(position).getIsPhotoUploaded().equalsIgnoreCase("true")) {
-                holder.binding.tvPhotoUploadedStatus.setText(context.getResources().getString(R.string.uploaded));
-                holder.binding.tvPhotoUploadedStatus.setTextColor(context.getResources().getColor(R.color.colorGreenDark));
+            if (list[position].isPhotoUploaded.equals("true", ignoreCase = true)) {
+                holder.binding.tvPhotoUploadedStatus.text =
+                    context.resources.getString(R.string.uploaded)
+                holder.binding.tvPhotoUploadedStatus.setTextColor(context.resources.getColor(R.color.colorGreenDark))
             } else {
-                holder.binding.tvPhotoUploadedStatus.setText(context.getResources().getString(R.string.not_uploaded));
-                holder.binding.tvPhotoUploadedStatus.setTextColor(context.getResources().getColor(R.color.colorRedDark));
+                holder.binding.tvPhotoUploadedStatus.text =
+                    context.resources.getString(R.string.not_uploaded)
+                holder.binding.tvPhotoUploadedStatus.setTextColor(context.resources.getColor(R.color.colorRedDark))
             }
 
-            holder.binding.tvSubmitFormView.setOnClickListener(view -> {
-                ((PosDistributionReportActivity)context).posDistributionFormView(list.get(position));
-            });
-
-        } catch (Exception e){
-            e.printStackTrace();
+            holder.binding.tvSubmitFormView.setOnClickListener { view: View? ->
+                (context as PosDistributionReportActivity).posDistributionFormView(
+                    list[position]
+                )
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return list.size();
+    override fun getItemCount(): Int {
+        return list.size
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ItemPosDistributionReportActivityBinding binding;
-        public ViewHolder(ItemPosDistributionReportActivityBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
+    class ViewHolder(val binding: ItemPosDistributionReportActivityBinding) :
+        RecyclerView.ViewHolder(
+            binding.root
+        )
 }

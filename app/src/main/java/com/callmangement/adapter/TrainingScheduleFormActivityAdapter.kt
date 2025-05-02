@@ -1,144 +1,125 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
-import com.callmangement.R;
-import com.callmangement.databinding.ItemTrainingScheduleFormActivityBinding;
-import com.callmangement.model.training_schedule.ModelTrainingScheduleFormAddItem;
-import java.util.List;
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.databinding.ItemTrainingScheduleFormActivityBinding
+import com.callmangement.model.training_schedule.ModelTrainingScheduleFormAddItem
 
-public class TrainingScheduleFormActivityAdapter extends RecyclerView.Adapter<TrainingScheduleFormActivityAdapter.ViewHolder> {
-    private final Activity context;
-    private final List<ModelTrainingScheduleFormAddItem> list;
-
-    public TrainingScheduleFormActivityAdapter(Activity context, List<ModelTrainingScheduleFormAddItem> list) {
-        this.context = context;
-        this.list = list;
+class TrainingScheduleFormActivityAdapter(
+    private val context: Activity,
+    private val list: List<ModelTrainingScheduleFormAddItem>?
+) : RecyclerView.Adapter<TrainingScheduleFormActivityAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = DataBindingUtil.inflate<ItemTrainingScheduleFormActivityBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_training_schedule_form_activity,
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemTrainingScheduleFormActivityBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_training_schedule_form_activity, parent, false);
-        return new ViewHolder(binding);
-    }
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+        context.currentFocus
 
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        context.getCurrentFocus();
+        val imm1 = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm1.hideSoftInputFromWindow(holder.binding.inputName.windowToken, 0)
+        holder.binding.inputName.requestFocus()
 
-        InputMethodManager imm1 = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm1.hideSoftInputFromWindow(holder.binding.inputName.getWindowToken(), 0);
-        holder.binding.inputName.requestFocus();
+        val imm2 = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm2.hideSoftInputFromWindow(holder.binding.inputFpsCode.windowToken, 0)
 
-        InputMethodManager imm2 = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm2.hideSoftInputFromWindow(holder.binding.inputFpsCode.getWindowToken(), 0);
         //holder.binding.inputFpsCode.requestFocus();
+        val imm3 = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm3.hideSoftInputFromWindow(holder.binding.inputPhone.windowToken, 0)
 
-        InputMethodManager imm3 = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm3.hideSoftInputFromWindow(holder.binding.inputPhone.getWindowToken(), 0);
         //holder.binding.inputPhone.requestFocus();
+        holder.binding.inputName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
 
-        holder.binding.inputName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (list.get(position).getName().equals("")) {
-                    if (!s.toString().equals("")) {
-                        list.get(position).setName(s.toString().trim());
-                    } else {
-                        if (list.get(position).getName().equals(""));
-                    }
-                }else {
-                    if (!s.toString().equals("")) {
-                        list.get(position).setName(s.toString().trim());
-                    }
-                }
-            }
-        });
 
-        holder.binding.inputFpsCode.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (list.get(position).getFpsCode().equals("")) {
-                    if (!s.toString().equals("")) {
-                        list.get(position).setFpsCode(s.toString().trim());
+            override fun afterTextChanged(s: Editable) {
+                if (list!![position].name == "") {
+                    if (s.toString() != "") {
+                        list[position].name = s.toString().trim { it <= ' ' }
                     } else {
-                        if (list.get(position).getFpsCode().equals(""));
+                        if (list[position].name == "");
                     }
                 } else {
-                    if (!s.toString().equals("")) {
-                        list.get(position).setFpsCode(s.toString().trim());
+                    if (s.toString() != "") {
+                        list[position].name = s.toString().trim { it <= ' ' }
                     }
                 }
             }
-        });
+        })
 
-        holder.binding.inputPhone.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        holder.binding.inputFpsCode.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (list.get(position).getPhone().equals("")) {
-                    if (!s.toString().equals("")) {
-                        list.get(position).setPhone(s.toString().trim());
+
+            override fun afterTextChanged(s: Editable) {
+                if (list!![position].fpsCode == "") {
+                    if (s.toString() != "") {
+                        list[position].fpsCode = s.toString().trim { it <= ' ' }
                     } else {
-                        if (list.get(position).getPhone().equals(""));
+                        if (list[position].fpsCode == "");
                     }
-                }else {
-                    if (!s.toString().equals("")) {
-                        list.get(position).setPhone(s.toString().trim());
+                } else {
+                    if (s.toString() != "") {
+                        list[position].fpsCode = s.toString().trim { it <= ' ' }
                     }
                 }
             }
-        });
+        })
 
+        holder.binding.inputPhone.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                if (list!![position].phone == "") {
+                    if (s.toString() != "") {
+                        list[position].phone = s.toString().trim { it <= ' ' }
+                    } else {
+                        if (list[position].phone == "");
+                    }
+                } else {
+                    if (s.toString() != "") {
+                        list[position].phone = s.toString().trim { it <= ' ' }
+                    }
+                }
+            }
+        })
     }
 
-    @Override
-    public int getItemCount() {
-        if (list!=null){
-            return list.size();
-        } else {
-            return 0;
-        }
+    override fun getItemCount(): Int {
+        return list?.size ?: 0
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        private final ItemTrainingScheduleFormActivityBinding binding;
-        public ViewHolder(@NonNull ItemTrainingScheduleFormActivityBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
-
+    class ViewHolder(val binding: ItemTrainingScheduleFormActivityBinding) :
+        RecyclerView.ViewHolder(
+            binding.root
+        )
 }

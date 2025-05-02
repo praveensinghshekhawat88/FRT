@@ -110,7 +110,7 @@ public class ComplaintsListAccordingToFPSActivity extends CustomActivity impleme
                     hideProgress();
                     if (response.isSuccessful()){
                         model = response.body();
-                        if (Objects.requireNonNull(model).getStatus().equals("200")){
+                        if (Objects.requireNonNull(model).status.equals("200")){
 
                             fPSComplainHistoryReqList = model.getfPSComplainHistoryReqList();
 

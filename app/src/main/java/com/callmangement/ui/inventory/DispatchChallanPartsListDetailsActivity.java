@@ -105,7 +105,7 @@ public class DispatchChallanPartsListDetailsActivity extends CustomActivity impl
                 binding.seRemarkLayout.setVisibility(View.GONE);
             }*/
 
-            if (model.getIsReceived().equalsIgnoreCase("true")){
+            if (model.isReceived.equalsIgnoreCase("true")){
                 binding.sePartsImageLay.setVisibility(View.VISIBLE);
                 Glide.with(mContext)
                         .load(Constants.API_BASE_URL+model.getReceivedPartsImage())
@@ -115,10 +115,10 @@ public class DispatchChallanPartsListDetailsActivity extends CustomActivity impl
                 binding.sePartsImageLay.setVisibility(View.GONE);
             }
 
-            if (model.getIsSubmitted().equalsIgnoreCase("true")){
+            if (model.isSubmitted.equalsIgnoreCase("true")){
 //                binding.buttonDispatch.setVisibility(View.GONE);
                 binding.actionBar.buttonPDF.setVisibility(View.VISIBLE);
-            } else if (model.getIsSubmitted().equalsIgnoreCase("false")){
+            } else if (model.isSubmitted.equalsIgnoreCase("false")){
 //                binding.buttonDispatch.setVisibility(View.VISIBLE);
                 binding.actionBar.buttonPDF.setVisibility(View.GONE);
             }
@@ -146,8 +146,8 @@ public class DispatchChallanPartsListDetailsActivity extends CustomActivity impl
             isLoading();
             inventoryViewModel.dispatchInvoicePartsList(model.getInvoiceId(), "0", "0").observe(this, modelDispatchInvoice -> {
                 isLoading();
-                if (modelDispatchInvoice.getStatus().equals("200")) {
-                    list = modelDispatchInvoice.getPartsDispatchInvoiceList();
+                if (modelDispatchInvoice.status.equals("200")) {
+                    list = modelDispatchInvoice.partsDispatchInvoiceList;
                     if (list.size() > 0) {
                         binding.challanRecycler.setVisibility(View.VISIBLE);
                         binding.textNoRecordFound.setVisibility(View.GONE);

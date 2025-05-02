@@ -105,7 +105,7 @@ public class ReceiveMaterialListDetailsActivity extends CustomActivity implement
         mActivity = this;
 
         if (model!=null) {
-            if (model.getIsReceived().equalsIgnoreCase("true")) {
+            if (model.isReceived.equalsIgnoreCase("true")) {
                 binding.buttonReceive.setVisibility(View.GONE);
                 binding.ivPartsImage.setVisibility(View.GONE);
                 binding.ivPartsImageView.setVisibility(View.VISIBLE);
@@ -115,7 +115,7 @@ public class ReceiveMaterialListDetailsActivity extends CustomActivity implement
                         .into(binding.ivPartsImageView);
                 /*binding.inputRemark.setEnabled(false);
                 binding.inputRemark.setText(""+model.getReceiverRemark());*/
-            } else if (model.getIsReceived().equalsIgnoreCase("false")) {
+            } else if (model.isReceived.equalsIgnoreCase("false")) {
                 binding.buttonReceive.setVisibility(View.VISIBLE);
                 binding.ivPartsImage.setVisibility(View.VISIBLE);
                 binding.ivPartsImageView.setVisibility(View.GONE);

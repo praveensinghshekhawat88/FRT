@@ -1,114 +1,49 @@
-package com.callmangement.model.district;
+package com.callmangement.model.district
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-import java.io.Serializable;
+class ModelDistrictList : Serializable {
+    @SerializedName("createdBy")
+    var createdBy: String? = null
 
-public class ModelDistrictList implements Serializable {
-   @SerializedName("createdBy") private String createdBy;
-   @SerializedName("districtNameHi") private String districtNameHi;
-   @SerializedName("districtNameEng") private String districtNameEng;
-   @SerializedName("updatedBy") private String updatedBy;
-   @SerializedName("districtId") private String districtId;
-   @SerializedName("orderBySrNo") private String orderBySrNo;
-   @SerializedName("createdOn") private String createdOn;
-   @SerializedName("updatedOn") private String updatedOn;
-   @SerializedName("isActive") private String isActive;
-   @SerializedName("districtCode") private String districtCode;
-   @SerializedName("email") private String email;
+    @JvmField
+    @SerializedName("districtNameHi")
+    var districtNameHi: String? = null
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
+    @JvmField
+    @SerializedName("districtNameEng")
+    var districtNameEng: String? = null
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
+    @SerializedName("updatedBy")
+    var updatedBy: String? = null
 
-    public String getDistrictNameHi() {
-        return districtNameHi;
-    }
+    @SerializedName("districtId")
+    var districtId: String? = null
+        get() {
+            if (field == null) return "0"
+            return field
+        }
 
-    public void setDistrictNameHi(String districtNameHi) {
-        this.districtNameHi = districtNameHi;
-    }
+    @SerializedName("orderBySrNo")
+    var orderBySrNo: String? = null
 
-    public String getDistrictNameEng() {
-        return districtNameEng;
-    }
+    @SerializedName("createdOn")
+    var createdOn: String? = null
 
-    public void setDistrictNameEng(String districtNameEng) {
-        this.districtNameEng = districtNameEng;
-    }
+    @SerializedName("updatedOn")
+    var updatedOn: String? = null
 
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
+    @SerializedName("isActive")
+    var isActive: String? = null
 
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
+    @SerializedName("districtCode")
+    var districtCode: String? = null
 
-    public String getDistrictId() {
-        if (districtId == null)
-            return "0";
-        return districtId;
-    }
+    @SerializedName("email")
+    var email: String? = null
 
-    public void setDistrictId(String districtId) {
-        this.districtId = districtId;
-    }
-
-    public String getOrderBySrNo() {
-        return orderBySrNo;
-    }
-
-    public void setOrderBySrNo(String orderBySrNo) {
-        this.orderBySrNo = orderBySrNo;
-    }
-
-    public String getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(String createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public String getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public void setUpdatedOn(String updatedOn) {
-        this.updatedOn = updatedOn;
-    }
-
-    public String getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(String isActive) {
-        this.isActive = isActive;
-    }
-
-    public String getDistrictCode() {
-        return districtCode;
-    }
-
-    public void setDistrictCode(String districtCode) {
-        this.districtCode = districtCode;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
-    public String toString() {
-        return districtNameEng;
+    override fun toString(): String {
+        return districtNameEng!!
     }
 }

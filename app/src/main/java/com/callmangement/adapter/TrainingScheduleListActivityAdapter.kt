@@ -1,64 +1,60 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.databinding.ItemTrainingScheduleListActivityBinding
+import com.callmangement.model.training_schedule.ModelTrainingScheduleList
+import com.callmangement.ui.training_schedule.UpdateTrainingScheduleActivity
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
+class TrainingScheduleListActivityAdapter(private val context: Context) :
+    RecyclerView.Adapter<TrainingScheduleListActivityAdapter.ViewHolder>() {
+    private var list: List<ModelTrainingScheduleList>? = null
 
-import com.callmangement.R;
-import com.callmangement.databinding.ItemTrainingScheduleListActivityBinding;
-import com.callmangement.model.training_schedule.ModelTrainingScheduleList;
-import com.callmangement.ui.training_schedule.UpdateTrainingScheduleActivity;
-import java.util.List;
-
-public class TrainingScheduleListActivityAdapter extends RecyclerView.Adapter<TrainingScheduleListActivityAdapter.ViewHolder> {
-    private final Context context;
-    private List<ModelTrainingScheduleList> list;
-
-    public TrainingScheduleListActivityAdapter(Context context) {
-        this.context = context;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = DataBindingUtil.inflate<ItemTrainingScheduleListActivityBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_training_schedule_list_activity,
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemTrainingScheduleListActivityBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_training_schedule_list_activity, parent, false);
-        return new ViewHolder(binding);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ModelTrainingScheduleList model = list.get(position);
-        holder.binding.setData(model);
-        holder.binding.crdItem.setOnClickListener(view -> context.startActivity(new Intent(context, UpdateTrainingScheduleActivity.class).putExtra("param", model)));
-
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val model = list!![position]
+        holder.binding.data = model
+        holder.binding.crdItem.setOnClickListener { view: View? ->
+            context.startActivity(
+                Intent(
+                    context, UpdateTrainingScheduleActivity::class.java
+                ).putExtra("param", model)
+            )
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setData(List<ModelTrainingScheduleList> list){
-        this.list = list;
-        notifyDataSetChanged();
+    fun setData(list: List<ModelTrainingScheduleList>?) {
+        this.list = list
+        notifyDataSetChanged()
     }
 
-    @Override
-    public int getItemCount() {
-        if (list != null){
-            return list.size();
-        }else {
-            return 0;
+    override fun getItemCount(): Int {
+        return if (list != null) {
+            list!!.size
+        } else {
+            0
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        private final ItemTrainingScheduleListActivityBinding binding;
-        public ViewHolder(@NonNull ItemTrainingScheduleListActivityBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
+    class ViewHolder(val binding: ItemTrainingScheduleListActivityBinding) :
+        RecyclerView.ViewHolder(
+            binding.root
+        )
 }

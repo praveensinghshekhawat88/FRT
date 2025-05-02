@@ -1,135 +1,142 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.databinding.ItemDailyReportsDetailsActivityBinding
+import com.callmangement.model.complaints.ModelComplaintList
+import java.util.Locale
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
+class DailyReportsDetailsActivityAdapter(
+    private val context: Context,
+    list: MutableList<ModelComplaintList>
+) : RecyclerView.Adapter<DailyReportsDetailsActivityAdapter.ViewHolder>(), Filterable {
+    private val list: List<ModelComplaintList> = list
+    private val modelComplaintFilterList: List<ModelComplaintList> = ArrayList(list)
 
-import com.callmangement.R;
-import com.callmangement.databinding.ItemDailyReportsDetailsActivityBinding;
-import com.callmangement.model.complaints.ModelComplaintList;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class DailyReportsDetailsActivityAdapter extends RecyclerView.Adapter<DailyReportsDetailsActivityAdapter.ViewHolder> implements Filterable {
-    private final Context context;
-    private final List<ModelComplaintList> list;
-    private final List<ModelComplaintList> modelComplaintFilterList;
-
-    public DailyReportsDetailsActivityAdapter(Context context, List<ModelComplaintList> list) {
-        this.context = context;
-        this.list = list;
-        this.modelComplaintFilterList = new ArrayList<>(list);
-    }
-
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemDailyReportsDetailsActivityBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_daily_reports_details_activity, parent, false);
-        return new ViewHolder(binding);
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = DataBindingUtil.inflate<ItemDailyReportsDetailsActivityBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_daily_reports_details_activity,
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
     @SuppressLint("SetTextI18n")
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ModelComplaintList model = list.get(position);
-        holder.binding.setData(model);
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val model = list[position]
+        holder.binding.data = model
 
-        holder.binding.textComplaintStatus.setText(context.getResources().getString(R.string.current_status)+" : ");
+        holder.binding.textComplaintStatus.text =
+            context.resources.getString(R.string.current_status) + " : "
 
-        holder.binding.textComplaintNumber.setText(context.getResources().getString(R.string.c_no)+" : "+model.getComplainRegNo());
-        holder.binding.textName.setText(context.getResources().getString(R.string.name)+" : "+model.getCustomerName()+" "+"("+context.getResources().getString(R.string.fps_code)+" : "+model.getFpscode()+")");
-        holder.binding.textPhoneNumber.setText(context.getResources().getString(R.string.mobile_no)+" : "+model.getMobileNo());
+        holder.binding.textComplaintNumber.text =
+            context.resources.getString(R.string.c_no) + " : " + model.complainRegNo
+        holder.binding.textName.text =
+            context.resources.getString(R.string.name) + " : " + model.customerName + " " + "(" + context.resources.getString(
+                R.string.fps_code
+            ) + " : " + model.fpscode + ")"
+        holder.binding.textPhoneNumber.text =
+            context.resources.getString(R.string.mobile_no) + " : " + model.mobileNo
 
-        if (model.getComplainStatusId().equals("1")) {
-            holder.binding.textComplaintStatusValue.setText(model.getComplainStatus());
-            holder.binding.textComplaintStatusValue.setTextColor(context.getResources().getColor(R.color.colorCopyButton));
-        } else if (model.getComplainStatusId().equals("2")) {
-            holder.binding.textComplaintStatusValue.setText(model.getComplainStatus());
-            holder.binding.textComplaintStatusValue.setTextColor(context.getResources().getColor(R.color.colorRedDark));
-        } else if (model.getComplainStatusId().equals("3")) {
-            holder.binding.textComplaintStatusValue.setText(model.getComplainStatus());
-            holder.binding.textComplaintStatusValue.setTextColor(context.getResources().getColor(R.color.colorGreenDark));
+        if (model.complainStatusId == "1") {
+            holder.binding.textComplaintStatusValue.text = model.complainStatus
+            holder.binding.textComplaintStatusValue.setTextColor(context.resources.getColor(R.color.colorCopyButton))
+        } else if (model.complainStatusId == "2") {
+            holder.binding.textComplaintStatusValue.text = model.complainStatus
+            holder.binding.textComplaintStatusValue.setTextColor(context.resources.getColor(R.color.colorRedDark))
+        } else if (model.complainStatusId == "3") {
+            holder.binding.textComplaintStatusValue.text = model.complainStatus
+            holder.binding.textComplaintStatusValue.setTextColor(context.resources.getColor(R.color.colorGreenDark))
         } else {
-            holder.binding.textComplaintStatusValue.setText(model.getComplainStatus());
-            holder.binding.textComplaintStatusValue.setTextColor(context.getResources().getColor(R.color.deep_purple_300));
+            holder.binding.textComplaintStatusValue.text = model.complainStatus
+            holder.binding.textComplaintStatusValue.setTextColor(context.resources.getColor(R.color.deep_purple_300))
         }
 
 
 
-        if (model.getComplainRegDateStr()!=null && !model.getComplainRegDateStr().isEmpty() && !model.getComplainRegDateStr().equalsIgnoreCase("null")){
-            holder.binding.textComplaintRegDate.setVisibility(View.VISIBLE);
-            holder.binding.textComplaintRegDate.setText(context.getResources().getString(R.string.reg_date)+" : "+model.getComplainRegDateStr());
-        }else {
-            holder.binding.textComplaintRegDate.setVisibility(View.GONE);
+        if (model.complainRegDateStr != null && !model.complainRegDateStr!!.isEmpty() && !model.complainRegDateStr.equals(
+                "null",
+                ignoreCase = true
+            )
+        ) {
+            holder.binding.textComplaintRegDate.visibility = View.VISIBLE
+            holder.binding.textComplaintRegDate.text =
+                context.resources.getString(R.string.reg_date) + " : " + model.complainRegDateStr
+        } else {
+            holder.binding.textComplaintRegDate.visibility = View.GONE
         }
 
-        if (model.getSermarkDateStr()!=null && !model.getSermarkDateStr().isEmpty() && !model.getSermarkDateStr().equalsIgnoreCase("null")){
-            holder.binding.textComplaintResolveDate.setVisibility(View.VISIBLE);
-            if (model.getComplainStatusId().equals("3")) {
-                holder.binding.textComplaintResolveDate.setText(context.getResources().getString(R.string.resolved_date) + " : " + model.getSermarkDateStr());
-            }else if (model.getComplainStatusId().equals("1")){
-                holder.binding.textComplaintResolveDate.setText(context.getResources().getString(R.string.send_to_se_date) + " : " + model.getSermarkDateStr());
+        if (model.sermarkDateStr != null && !model.sermarkDateStr!!.isEmpty() && !model.sermarkDateStr.equals(
+                "null",
+                ignoreCase = true
+            )
+        ) {
+            holder.binding.textComplaintResolveDate.visibility = View.VISIBLE
+            if (model.complainStatusId == "3") {
+                holder.binding.textComplaintResolveDate.text =
+                    context.resources.getString(R.string.resolved_date) + " : " + model.sermarkDateStr
+            } else if (model.complainStatusId == "1") {
+                holder.binding.textComplaintResolveDate.text =
+                    context.resources.getString(R.string.send_to_se_date) + " : " + model.sermarkDateStr
             }
-        }else {
-            holder.binding.textComplaintResolveDate.setVisibility(View.GONE);
+        } else {
+            holder.binding.textComplaintResolveDate.visibility = View.GONE
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return list.size();
+    override fun getItemCount(): Int {
+        return list.size
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        private final ItemDailyReportsDetailsActivityBinding binding;
+    class ViewHolder(val binding: ItemDailyReportsDetailsActivityBinding) : RecyclerView.ViewHolder(
+        binding.root
+    )
 
-        public ViewHolder(@NonNull ItemDailyReportsDetailsActivityBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
+    override fun getFilter(): Filter {
+        return Searched_Filter
     }
 
-    @Override
-    public Filter getFilter() {
-        return Searched_Filter;
-    }
-
-    private final Filter Searched_Filter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            ArrayList<ModelComplaintList> filteredList = new ArrayList<>();
-            if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(modelComplaintFilterList);
+    private val Searched_Filter: Filter = object : Filter() {
+        override fun performFiltering(constraint: CharSequence): FilterResults {
+            val filteredList = ArrayList<ModelComplaintList>()
+            if (constraint == null || constraint.length == 0) {
+                filteredList.addAll(modelComplaintFilterList)
             } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-                for (ModelComplaintList item : modelComplaintFilterList) {
-                    if (item.getComplainRegNo().toLowerCase().contains(filterPattern) || item.getCustomerName().toLowerCase().contains(filterPattern) || item.getFpscode().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
+                val filterPattern =
+                    constraint.toString().lowercase(Locale.getDefault()).trim { it <= ' ' }
+                for (item in modelComplaintFilterList) {
+                    if (item.complainRegNo!!.lowercase(Locale.getDefault())
+                            .contains(filterPattern) || item.customerName!!.lowercase(
+                            Locale.getDefault()
+                        ).contains(filterPattern) || item.fpscode!!.lowercase(
+                            Locale.getDefault()
+                        ).contains(filterPattern)
+                    ) {
+                        filteredList.add(item)
                     }
                 }
             }
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-            return results;
+            val results = FilterResults()
+            results.values = filteredList
+            return results
         }
 
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
+        override fun publishResults(constraint: CharSequence, results: FilterResults) {
             if (results.values != null) {
-                list.clear();
-                list.addAll((ArrayList) results.values);
-                notifyDataSetChanged();
+                list.clear()
+                list.addAll(results.values as ArrayList<ModelComplaintList>)
+                notifyDataSetChanged()
             }
         }
-    };
-
+    }
 }

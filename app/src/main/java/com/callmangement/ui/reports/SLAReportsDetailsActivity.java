@@ -83,8 +83,8 @@ public class SLAReportsDetailsActivity extends CustomActivity {
             isLoading();
             viewModel.getSLAReportDetails(String.valueOf(prefManager.getUSER_Id()), fromDate, toDate, day, districtId).observe(this, modelComplaint -> {
                 isLoading();
-                if (modelComplaint.getStatus().equals("200")) {
-                    complaintList = modelComplaint.getSla_reports_infos();
+                if (modelComplaint.status.equals("200")) {
+                    complaintList = modelComplaint.sla_reports_infos;
                     if (complaintList != null && complaintList.size() > 0) {
                         binding.rvComplaints.setVisibility(View.VISIBLE);
                         binding.textNoComplaint.setVisibility(View.GONE);

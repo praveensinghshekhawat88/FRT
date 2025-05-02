@@ -1,35 +1,29 @@
-package com.callmangement.model.expense;
+package com.callmangement.model.expense
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-import java.io.Serializable;
+class ModelExpenseStatus : Serializable {
+    @SerializedName("id")
+    var id: String? = null
+        get() {
+            if (field == null) return "0"
+            return field
+        }
 
-public class ModelExpenseStatus implements Serializable {
-    @SerializedName("id") private String id;
-    @SerializedName("expense_status") private String expense_status;
+    @SerializedName("expense_status")
+    private var expense_status: String? = null
 
-    public String getId() {
-        if (id == null)
-            return "0";
-        return id;
+    fun getExpense_status(): String {
+        if (expense_status == null) return ""
+        return expense_status!!
     }
 
-    public void setId(String id) {
-        this.id = id;
+    fun setExpense_status(expense_status: String?) {
+        this.expense_status = expense_status
     }
 
-    public String getExpense_status() {
-        if (expense_status == null)
-            return "";
-        return expense_status;
-    }
-
-    public void setExpense_status(String expense_status) {
-        this.expense_status = expense_status;
-    }
-
-    @Override
-    public String toString() {
-        return expense_status;
+    override fun toString(): String {
+        return expense_status!!
     }
 }

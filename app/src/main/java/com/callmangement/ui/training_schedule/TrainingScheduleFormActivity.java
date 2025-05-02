@@ -104,9 +104,9 @@ public class TrainingScheduleFormActivity extends CustomActivity implements View
             for (int i = 0; i < list.size(); i++) {
                 try {
                     JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("name", list.get(i).getName());
-                    jsonObject.put("fps_code", list.get(i).getFpsCode());
-                    jsonObject.put("phone", list.get(i).getPhone());
+                    jsonObject.put("name", list.get(i).name);
+                    jsonObject.put("fps_code", list.get(i).fpsCode);
+                    jsonObject.put("phone", list.get(i).phone);
                     jsonArray.put(jsonObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -125,7 +125,7 @@ public class TrainingScheduleFormActivity extends CustomActivity implements View
 
     private void addItem(){
         int lastIndex = list.size() - 1;
-        if (!list.get(lastIndex).getName().equals("") && !list.get(lastIndex).getFpsCode().equals("") && !list.get(lastIndex).getPhone().equals("")) {
+        if (!list.get(lastIndex).name.equals("") && !list.get(lastIndex).fpsCode.equals("") && !list.get(lastIndex).phone.equals("")) {
             list.add(new ModelTrainingScheduleFormAddItem("", "",""));
             if (adapter != null)
                 adapter.notifyItemInserted(list.size() - 1);
@@ -644,7 +644,7 @@ public class TrainingScheduleFormActivity extends CustomActivity implements View
                 break;
             case R.id.buttonSubmit:
                 int lastIndex = list.size() - 1;
-                if (!list.get(lastIndex).getName().equals("") && !list.get(lastIndex).getFpsCode().equals("") && !list.get(lastIndex).getPhone().equals("")) {
+                if (!list.get(lastIndex).name.equals("") && !list.get(lastIndex).fpsCode.equals("") && !list.get(lastIndex).phone.equals("")) {
                     submitForm();
                 }else Toast.makeText(mContext, "Please fill item first data.", Toast.LENGTH_SHORT).show();
                 break;

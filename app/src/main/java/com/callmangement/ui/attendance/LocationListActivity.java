@@ -71,7 +71,7 @@ public class LocationListActivity extends CustomActivity {
         isLoading();
         attendanceViewModel.getLocationList(String.valueOf(model.getUser_Id()),String.valueOf(model.getDistrict_Id()), model.getPunch_In_Date()).observe(this, modelAddLocationList -> {
             isLoading();
-            List<ModelAddLocationData> modelAddLocationData = modelAddLocationList.getLocation_list();
+            List<ModelAddLocationData> modelAddLocationData = modelAddLocationList.location_list;
             if (modelAddLocationData != null && modelAddLocationData.size() > 0) {
                 binding.rvLocation.setVisibility(View.VISIBLE);
                 binding.textNoLocation.setVisibility(View.GONE);

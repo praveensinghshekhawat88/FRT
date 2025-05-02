@@ -1,26 +1,14 @@
-package com.callmangement.model.logout;
+package com.callmangement.model.logout
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-import java.io.Serializable;
+class ModelLogout : Serializable {
+    @JvmField
+    @SerializedName("status")
+    var status: String? = null
 
-public class ModelLogout implements Serializable {
-    @SerializedName("status") private String status;
-    @SerializedName("message") private String message;
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    @JvmField
+    @SerializedName("message")
+    var message: String? = null
 }

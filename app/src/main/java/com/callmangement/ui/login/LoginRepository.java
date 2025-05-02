@@ -38,7 +38,7 @@ public class LoginRepository {
                     isLoading.setValue(false);
                     //Toast.makeText(mContext, ""+response.code(), Toast.LENGTH_SHORT).show();
                     ModelLogin model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         mutableLiveData.setValue(model);
                     } else {
                         Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();

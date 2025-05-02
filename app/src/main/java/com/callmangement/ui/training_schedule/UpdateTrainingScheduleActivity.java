@@ -80,7 +80,7 @@ public class UpdateTrainingScheduleActivity extends CustomActivity implements Vi
         Collections.reverse(tehsil_list);
         ModelTehsilList l = new ModelTehsilList();
         l.setTehsilId(String.valueOf(-1));
-        l.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+        l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
         tehsil_list.add(l);
         Collections.reverse(tehsil_list);
         ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, tehsil_list);
@@ -92,12 +92,12 @@ public class UpdateTrainingScheduleActivity extends CustomActivity implements Vi
         binding.actionBar.layoutLanguage.setVisibility(View.GONE);
         binding.actionBar.textToolbarTitle.setText(getResources().getString(R.string.update_training_schedule));
 
-        binding.textStartDateTime.setText(model.getStartDate());
-        binding.textEndDateTime.setText(model.getEndDate());
-        binding.inputPlace.setText(model.getAddress());
-        binding.inputDescription.setText(model.getDescription());
-        binding.inputTitle.setText(model.getTitle());
-        binding.inputTrainingNumber.setText(model.getTrainingNo());
+        binding.textStartDateTime.setText(model.startDate);
+        binding.textEndDateTime.setText(model.endDate);
+        binding.inputPlace.setText(model.address);
+        binding.inputDescription.setText(model.description);
+        binding.inputTitle.setText(model.title);
+        binding.inputTrainingNumber.setText(model.trainingNo);
 
     }
 
@@ -106,14 +106,14 @@ public class UpdateTrainingScheduleActivity extends CustomActivity implements Vi
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(++checkDistrict > 1) {
-                    districtNameEng = district_List.get(i).getDistrictNameEng();
+                    districtNameEng = district_List.get(i).districtNameEng;
                     districtId = district_List.get(i).getDistrictId();
                     if (districtNameEng.equalsIgnoreCase("--"+getResources().getString(R.string.district)+"--")) {
                         tehsil_list.clear();
                         Collections.reverse(tehsil_list);
                         ModelTehsilList list = new ModelTehsilList();
                         list.setTehsilId(String.valueOf(-1));
-                        list.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+                        list.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
                         tehsil_list.add(list);
                         Collections.reverse(tehsil_list);
                         ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, tehsil_list);
@@ -134,7 +134,7 @@ public class UpdateTrainingScheduleActivity extends CustomActivity implements Vi
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(++checkTehsil > 1) {
-                    tehsilNameEng = tehsil_list.get(i).getTehsilNameEng();
+                    tehsilNameEng = tehsil_list.get(i).tehsilNameEng;
                     tehsilId = tehsil_list.get(i).getTehsilId();
                 }
             }
@@ -219,7 +219,7 @@ public class UpdateTrainingScheduleActivity extends CustomActivity implements Vi
             makeToast(getResources().getString(R.string.please_input_training_description));
         }else {
             isLoading();
-            viewModel.updateTraining(prefManager.getUSER_Id(), districtId, tehsilId, model.getTrainingId(), startDateTime, endDateTime, model.getTrainingNo(), Constants.convertStringToUTF8(address), Constants.convertStringToUTF8(description), Constants.convertStringToUTF8(title)).observe(this, modelCreateTrainingSchedule -> {
+            viewModel.updateTraining(prefManager.getUSER_Id(), districtId, tehsilId, model.trainingId, startDateTime, endDateTime, model.trainingNo, Constants.convertStringToUTF8(address), Constants.convertStringToUTF8(description), Constants.convertStringToUTF8(title)).observe(this, modelCreateTrainingSchedule -> {
                 isLoading();
                 binding.inputTitle.setCursorVisible(false);
                 binding.inputPlace.setCursorVisible(false);
@@ -231,24 +231,24 @@ public class UpdateTrainingScheduleActivity extends CustomActivity implements Vi
     private void districtList(){
         isLoading();
         viewModel.getDistrict().observe(this, modelDistrict -> {
-            if (modelDistrict.getStatus().equals("200")){
+            if (modelDistrict.status.equals("200")){
                 isLoading();
-                district_List = modelDistrict.getDistrict_List();
+                district_List = modelDistrict.district_List;
                 if (district_List != null && district_List.size() > 0) {
                     Collections.reverse(district_List);
                     ModelDistrictList l = new ModelDistrictList();
                     l.setDistrictId(String.valueOf(-1));
-                    l.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
+                    l.districtNameEng = "--" + getResources().getString(R.string.district) + "--";
                     district_List.add(l);
                     Collections.reverse(district_List);
                     ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, district_List);
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     binding.spinnerDistrict.setAdapter(dataAdapter);
                     for (int i = 0 ; i < district_List.size(); i++){
-                        if (district_List.get(i).getDistrictId().equals(model.getDistrictID())) {
+                        if (district_List.get(i).getDistrictId().equals(model.districtID)) {
                             binding.spinnerDistrict.setSelection(i);
                             districtId = district_List.get(i).getDistrictId();
-                            districtNameEng = district_List.get(i).getDistrictNameEng();
+                            districtNameEng = district_List.get(i).districtNameEng;
                             tehsilList(district_List.get(i).getDistrictId());
                         }
                     }
@@ -268,28 +268,28 @@ public class UpdateTrainingScheduleActivity extends CustomActivity implements Vi
                 if (response.code() == 200){
                     if (response.isSuccessful()){
                         ModelTehsil modelTehsil = response.body();
-                        if (Objects.requireNonNull(modelTehsil).getStatus().equals("200")) {
+                        if (Objects.requireNonNull(modelTehsil).status.equals("200")) {
                             tehsil_list = modelTehsil.getTehsil_List();
                             if (tehsil_list != null && tehsil_list.size() > 0) {
                                 Collections.reverse(tehsil_list);
                                 ModelTehsilList l = new ModelTehsilList();
                                 l.setTehsilId(String.valueOf(-1));
-                                l.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+                                l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
                                 tehsil_list.add(l);
                                 Collections.reverse(tehsil_list);
                                 ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, tehsil_list);
                                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.spinnerTehsil.setAdapter(dataAdapter);
                                 for (int i = 0 ; i < tehsil_list.size(); i++){
-                                    if (tehsil_list.get(i).getTehsilId().equals(model.getTehsilID())) {
+                                    if (tehsil_list.get(i).getTehsilId().equals(model.tehsilID)) {
                                         tehsilId = tehsil_list.get(i).getTehsilId();
-                                        tehsilNameEng = tehsil_list.get(i).getTehsilNameEng();
+                                        tehsilNameEng = tehsil_list.get(i).tehsilNameEng;
                                         binding.spinnerTehsil.setSelection(i);
                                     }
                                 }
                             }
                         } else {
-                            makeToast(modelTehsil.getMessage());
+                            makeToast(modelTehsil.message);
                         }
                     } else {
                         makeToast(getResources().getString(R.string.error));

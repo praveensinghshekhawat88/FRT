@@ -75,10 +75,10 @@ public class ComplaintRepository {
                 if (response.isSuccessful()) {
                     isLoading.setValue(false);
                     ModelComplaint model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         mutableLiveData.setValue(model);
                     } else {
-                        Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
@@ -109,7 +109,7 @@ public class ComplaintRepository {
                 if (response.isSuccessful()) {
                     isLoading.setValue(false);
                     ModelComplaint model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         List<ModelComplaintList> modelComplaintList = model.getComplaint_List();
                         modelComplaintMutableLiveData.setValue(model);
 
@@ -215,7 +215,7 @@ public class ComplaintRepository {
 //                        }
                     } else {
                         modelComplaintMutableLiveData.setValue(model);
-                        Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -253,12 +253,12 @@ public class ComplaintRepository {
                 if (response.isSuccessful()) {
                     isLoading.setValue(false);
                     ModelComplaint model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         List<ModelComplaintList> modelComplaintList1 = model.getComplaint_List();
                         modelComplaintMutableLiveData.setValue(model);
 
                     } else {
-                        Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -297,11 +297,11 @@ public class ComplaintRepository {
                 if (response.isSuccessful()) {
                     isLoading.setValue(false);
                     ModelChallanUploadComplaint model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         modelChallanUploadComplaintMutableLiveData.setValue(model);
 
                     } else {
-                        Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -336,12 +336,12 @@ public class ComplaintRepository {
                 if (response.isSuccessful()) {
                     isLoading.setValue(false);
                     ModelChallanUploadComplaint model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         List<ModelComplaintList> modelComplaintList = model.getComplaint_List();
                         modelChallanUploadComplaintMutableLiveData.setValue(model);
 
                     } else {
-                        Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -373,10 +373,10 @@ public class ComplaintRepository {
                 if (response.isSuccessful()) {
                     isLoading.setValue(false);
                     ModelSLAReport model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         mutableSLAReportData.setValue(model);
                     } else {
-                        Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
@@ -405,10 +405,10 @@ public class ComplaintRepository {
                 if (response.isSuccessful()) {
                     isLoading.setValue(false);
                     ModelSLAReportDetails model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         mutableSLAReportDetailsData.setValue(model);
                     } else {
-                        Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
@@ -467,7 +467,7 @@ public class ComplaintRepository {
                 if (response.isSuccessful()) {
                     isLoading.setValue(false);
                     ModelResolveComplaint model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         modelResolveComplaintMutableLiveData.setValue(model);
                     } else {
                         modelResolveComplaintMutableLiveData.setValue(model);
@@ -505,7 +505,7 @@ public class ComplaintRepository {
                 if (response.isSuccessful()) {
                     isLoading.setValue(false);
                     ModelResolveComplaint model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         modelResolveComplaintMutableLiveData.setValue(model);
                     } else {
                         modelResolveComplaintMutableLiveData.setValue(model);
@@ -538,7 +538,7 @@ public class ComplaintRepository {
                 if (response.isSuccessful()) {
                     isLoading.setValue(false);
                     ModelTehsil modelTehsil = response.body();
-                    if (Objects.requireNonNull(modelTehsil).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(modelTehsil).status.equals("200")) {
                         List<ModelTehsilList> modelTehsilList = modelTehsil.getTehsil_List();
                         modelTehsilMutableLiveData.setValue(modelTehsil);
 //                        if (prefManager.getUSER_TYPE_ID().equals("4") && prefManager.getUSER_DistrictId().equals("8")) {
@@ -644,7 +644,7 @@ public class ComplaintRepository {
 //                        }
 
                     } else {
-                        Toast.makeText(mContext, modelTehsil.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, modelTehsil.message, Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     isLoading.setValue(false);
@@ -671,10 +671,10 @@ public class ComplaintRepository {
                 if (response.isSuccessful()) {
                     isLoading.setValue(false);
                     ModelDistrict modelTehsil = response.body();
-                    if (Objects.requireNonNull(modelTehsil).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(modelTehsil).status.equals("200")) {
                         modelDistrictMutableLiveData.setValue(modelTehsil);
                     } else {
-                        Toast.makeText(mContext, modelTehsil.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, modelTehsil.message, Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     isLoading.setValue(false);
@@ -701,10 +701,10 @@ public class ComplaintRepository {
                 if (response.isSuccessful()) {
                     isLoading.setValue(false);
                     ModelComplaintsCount model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         modelComplaintsCountMutableLiveData.setValue(model);
                     } else {
-                        Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show();
                     }
 
                 } else {

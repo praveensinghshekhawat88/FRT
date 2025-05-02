@@ -1,123 +1,109 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.databinding.ItemCreateChallanDispatchBinding
+import com.callmangement.model.inventrory.ModelPartsList
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
-import com.callmangement.R;
-import com.callmangement.databinding.ItemCreateChallanDispatchBinding;
-import com.callmangement.model.inventrory.ModelAvailableStockPartsList;
-import com.callmangement.model.inventrory.ModelPartsList;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class CreateNewChallanforDispatchActivityAdapter extends RecyclerView.Adapter<CreateNewChallanforDispatchActivityAdapter.ViewHolder> {
-    private final Activity context;
-    private final List<ModelPartsList> list;
-
-    public CreateNewChallanforDispatchActivityAdapter(Activity context, List<ModelPartsList> list) {
-        this.context = context;
-        this.list = list;
-    }
-
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemCreateChallanDispatchBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_create_challan_dispatch, parent, false);
-        return new ViewHolder(binding);
+class CreateNewChallanforDispatchActivityAdapter(
+    private val context: Activity,
+    private val list: List<ModelPartsList>
+) : RecyclerView.Adapter<CreateNewChallanforDispatchActivityAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = DataBindingUtil.inflate<ItemCreateChallanDispatchBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_create_challan_dispatch,
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.binding.inputProductAvailableQty.setText(list.get(position).getItem_Qty());
-        holder.binding.inputProductCount.setText(list.get(position).getQuantity());
-        holder.binding.tvItemName.setText(list.get(position).getItemName());
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+        holder.binding.inputProductAvailableQty.text = list[position].item_Qty
+        holder.binding.inputProductCount.setText(list[position].getQuantity())
+        holder.binding.tvItemName.text = list[position].itemName
 
-        if (list.get(position).isSelectFlag())
-            holder.binding.ivCheckbox.setBackgroundResource(R.drawable.ic_check_box);
-        else holder.binding.ivCheckbox.setBackgroundResource(R.drawable.ic_uncheck_box);
+        if (list[position].isSelectFlag) holder.binding.ivCheckbox.setBackgroundResource(R.drawable.ic_check_box)
+        else holder.binding.ivCheckbox.setBackgroundResource(R.drawable.ic_uncheck_box)
 
-        holder.binding.ivCheckbox.setOnClickListener(view -> {
-            list.get(position).setSelectFlag(!list.get(position).isSelectFlag());
-            notifyDataSetChanged();
-        });
-
-        holder.binding.ivMinus.setOnClickListener(view -> {
-            String quantity = holder.binding.inputProductCount.getText().toString().trim();
-            if (!quantity.isEmpty() && !quantity.equals("0")) {
-                int intQuantity = Integer.parseInt(quantity);
-                int updatedQuantity = intQuantity - 1;
-                list.get(position).setQuantity(String.valueOf(updatedQuantity));
-                holder.binding.inputProductCount.setText(list.get(position).getQuantity());
-            }
-        });
-
-        holder.binding.ivPlus.setOnClickListener(view -> {
-            String quantity = holder.binding.inputProductCount.getText().toString().trim();
-            int availableQty = Integer.parseInt(holder.binding.inputProductAvailableQty.getText().toString().trim());
-            if (!quantity.isEmpty()) {
-                int intQuantity = Integer.parseInt(quantity);
-                int updatedQuantity = intQuantity + 1;
-                if (updatedQuantity > availableQty) {
-                    Toast.makeText(context, context.getResources().getString(R.string.message_dispatch_quantity), Toast.LENGTH_SHORT).show();
-                } else {
-                    list.get(position).setQuantity(String.valueOf(updatedQuantity));
-                    holder.binding.inputProductCount.setText(list.get(position).getQuantity());
-                }
-            }
-        });
-
-
-
-
-        holder.binding.inputProductCount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.length() > 0) {
-                    Log.e("position",position+"");
-                    String quantity = holder.binding.inputProductCount.getText().toString().trim();
-                    list.get(position).setQuantity(quantity);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return list.size();
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ItemCreateChallanDispatchBinding binding;
-        public ViewHolder(@NonNull ItemCreateChallanDispatchBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+        holder.binding.ivCheckbox.setOnClickListener { view: View? ->
+            list[position].isSelectFlag = !list[position].isSelectFlag
+            notifyDataSetChanged()
         }
+
+        holder.binding.ivMinus.setOnClickListener { view: View? ->
+            val quantity = holder.binding.inputProductCount.text.toString().trim { it <= ' ' }
+            if (!quantity.isEmpty() && quantity != "0") {
+                val intQuantity = quantity.toInt()
+                val updatedQuantity = intQuantity - 1
+                list[position].setQuantity(updatedQuantity.toString())
+                holder.binding.inputProductCount.setText(list[position].getQuantity())
+            }
+        }
+
+        holder.binding.ivPlus.setOnClickListener { view: View? ->
+            val quantity = holder.binding.inputProductCount.text.toString().trim { it <= ' ' }
+            val availableQty =
+                holder.binding.inputProductAvailableQty.text.toString().trim { it <= ' ' }
+                    .toInt()
+            if (!quantity.isEmpty()) {
+                val intQuantity = quantity.toInt()
+                val updatedQuantity = intQuantity + 1
+                if (updatedQuantity > availableQty) {
+                    Toast.makeText(
+                        context,
+                        context.resources.getString(R.string.message_dispatch_quantity),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    list[position].setQuantity(updatedQuantity.toString())
+                    holder.binding.inputProductCount.setText(list[position].getQuantity())
+                }
+            }
+        }
+
+
+
+
+        holder.binding.inputProductCount.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+            }
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+                if (charSequence.length > 0) {
+                    Log.e("position", position.toString() + "")
+                    val quantity =
+                        holder.binding.inputProductCount.text.toString().trim { it <= ' ' }
+                    list[position].setQuantity(quantity)
+                }
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+            }
+        })
     }
+
+    override fun getItemCount(): Int {
+        return list.size
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    class ViewHolder(var binding: ItemCreateChallanDispatchBinding) : RecyclerView.ViewHolder(
+        binding.root
+    )
 }

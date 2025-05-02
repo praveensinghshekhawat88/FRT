@@ -52,10 +52,10 @@ public class TrainingScheduleRepository {
                 if (response.isSuccessful()){
                     isLoading.setValue(false);
                     ModelTehsil modelTehsil = response.body();
-                    if (Objects.requireNonNull(modelTehsil).getStatus().equals("200")){
+                    if (Objects.requireNonNull(modelTehsil).status.equals("200")){
                         modelTehsilMutableLiveData.setValue(modelTehsil);
                     }else {
-                        Toast.makeText(mContext, modelTehsil.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, modelTehsil.message, Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     isLoading.setValue(false);
@@ -82,10 +82,10 @@ public class TrainingScheduleRepository {
                 if (response.isSuccessful()){
                     isLoading.setValue(false);
                     ModelDistrict modelDistrict = response.body();
-                    if (Objects.requireNonNull(modelDistrict).getStatus().equals("200")){
+                    if (Objects.requireNonNull(modelDistrict).status.equals("200")){
                         modelDistrictMutableLiveData.setValue(modelDistrict);
                     }else {
-                        Toast.makeText(mContext, modelDistrict.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, modelDistrict.message, Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     isLoading.setValue(false);
@@ -112,10 +112,10 @@ public class TrainingScheduleRepository {
                 isLoading.setValue(false);
                 if (response.isSuccessful()) {
                     ModelCreateTrainingSchedule model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")){
+                    if (Objects.requireNonNull(model).status.equals("200")){
                         modelCreateTrainingScheduleMutableLiveData.setValue(model);
                     }
-                    Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show();
                 } else {
                     isLoading.setValue(false);
                     Toast.makeText(mContext, mContext.getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
@@ -163,10 +163,10 @@ public class TrainingScheduleRepository {
                 isLoading.setValue(false);
                 if (response.isSuccessful()) {
                     ModelUpdateTrainingSchedule model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")){
+                    if (Objects.requireNonNull(model).status.equals("200")){
                         modelUpdateTrainingScheduleMutableLiveData.setValue(model);
                     }
-                    Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show();
                 } else {
                     isLoading.setValue(false);
                     Toast.makeText(mContext, mContext.getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();

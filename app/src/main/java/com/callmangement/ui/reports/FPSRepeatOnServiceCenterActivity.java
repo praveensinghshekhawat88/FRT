@@ -265,13 +265,13 @@ public class FPSRepeatOnServiceCenterActivity extends CustomActivity implements 
 
     private void districtList() {
         viewModel.getDistrict().observe(this, modelDistrict -> {
-            if (modelDistrict.getStatus().equals("200")) {
-                district_List = modelDistrict.getDistrict_List();
+            if (modelDistrict.status.equals("200")) {
+                district_List = modelDistrict.district_List;
                 if (district_List != null && district_List.size() > 0) {
                     Collections.reverse(district_List);
                     ModelDistrictList l = new ModelDistrictList();
                     l.setDistrictId(String.valueOf(-1));
-                    l.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
+                    l.districtNameEng = "--" + getResources().getString(R.string.district) + "--";
                     district_List.add(l);
                     Collections.reverse(district_List);
                     ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, district_List);
@@ -299,9 +299,9 @@ public class FPSRepeatOnServiceCenterActivity extends CustomActivity implements 
                                     String responseStr = response.body().string();
                                     ModelRepeatFpsComplaints modelResponse = (ModelRepeatFpsComplaints) getObject(responseStr, ModelRepeatFpsComplaints.class);
                                     if (modelResponse != null){
-                                        if (modelResponse.getStatus().equals("200")) {
-                                            if (modelResponse.getParts().size() > 0) {
-                                                list = modelResponse.getParts();
+                                        if (modelResponse.status.equals("200")) {
+                                            if (modelResponse.parts.size() > 0) {
+                                                list = modelResponse.parts;
 //                                                Constants.modelRepeatFpsComplaintsList = list;
                                                 setUpAdapter(list);
                                             } else {

@@ -115,7 +115,7 @@ public class LoginActivity extends CustomActivity implements View.OnClickListene
                 isLoading();
 
 
-                if (modelLogin.getStatus().equals("200")) {
+                if (modelLogin.status.equals("200")) {
                     ModelLoginData data = modelLogin.getUser_details();
                     prefManager.setUserLoginStatus("true");
                     prefManager.setUser_Id(data.getUserId());
@@ -151,7 +151,7 @@ public class LoginActivity extends CustomActivity implements View.OnClickListene
             public void onResponse(@NonNull Call<ModelAttendance> call, @NonNull Response<ModelAttendance> response) {
                 if (response.isSuccessful()) {
                     ModelAttendance model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         startActivity(MainActivity.class);
                     } else {
                         startActivity(AttendanceActivity.class);

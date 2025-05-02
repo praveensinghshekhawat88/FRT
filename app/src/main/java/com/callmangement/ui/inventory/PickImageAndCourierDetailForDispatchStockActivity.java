@@ -591,10 +591,10 @@ public class PickImageAndCourierDetailForDispatchStockActivity extends CustomAct
                 if (response.isSuccessful()) {
                     if (response.code() == 200) {
                         ModelSavePartsDispatchDetails model = response.body();
-                        if (Objects.requireNonNull(model).getStatus().equals("200")) {
-                            submitDispatchParts(dispatchList, model.getModelPartsDispatchInvoiceList().getInvoiceId(), courierName, courierTrackingNumber);
+                        if (Objects.requireNonNull(model).status.equals("200")) {
+                            submitDispatchParts(dispatchList, model.modelPartsDispatchInvoiceList.getInvoiceId(), courierName, courierTrackingNumber);
                         } else {
-                            makeToast(model.getMessage());
+                            makeToast(model.message);
                         }
                     }
                 } else {
@@ -614,7 +614,7 @@ public class PickImageAndCourierDetailForDispatchStockActivity extends CustomAct
             isLoading();
             inventoryViewModel.submitDispatchParts(prefManager.getUSER_Id(), invoiceId, "").observe(this, modelSavePartsDispatchDetails -> {
                 isLoading();
-                if (modelSavePartsDispatchDetails.getStatus().equals("200")) {
+                if (modelSavePartsDispatchDetails.status.equals("200")) {
                     Constants.modelPartsList = partsList;
                     startActivity(new Intent(mContext, ChallanPDFActivity.class)
                             .putExtra("invoiceId", invoiceId)
@@ -622,7 +622,7 @@ public class PickImageAndCourierDetailForDispatchStockActivity extends CustomAct
                             .putExtra("email", prefManager.getUSER_EMAIL())
                             .putExtra("dispatchTo", districtNameEng)
                             .putExtra("username", seUserName)
-                            .putExtra("datetime", modelSavePartsDispatchDetails.getModelPartsDispatchInvoiceList().getDispatchDateStr())
+                            .putExtra("datetime", modelSavePartsDispatchDetails.modelPartsDispatchInvoiceList.getDispatchDateStr())
                             .putExtra("courierName", courierName)
                             .putExtra("courierTrackingNo", courierTrackingNo)
                             .putExtra(Constants.fromWhere, "CreateNewChallanDispatchActivity"));

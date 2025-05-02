@@ -1,33 +1,21 @@
-package com.callmangement.model.attendance;
+package com.callmangement.model.attendance
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-public class ModelAttendance {
-    @SerializedName("status") private String status;
-    @SerializedName("message") private String message;
-//    @SerializedName("data") ModelAttendanceData data = new ModelAttendanceData();
+class ModelAttendance {
+    //    @SerializedName("data") ModelAttendanceData data = new ModelAttendanceData();
+    @JvmField
+    @SerializedName("status")
+    var status: String? = null
 
-    public String getStatus() {
-        return status;
-    }
+    //    public ModelAttendanceData getData() {
+    @SerializedName("message")
+    var message: String? = null
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-//    public ModelAttendanceData getData() {
-//        return data;
-//    }
-//
-//    public void setData(ModelAttendanceData data) {
-//        this.data = data;
-//    }
+    //        return data;
+    //    }
+    //
+    //    public void setData(ModelAttendanceData data) {
+    //        this.data = data;
+    //    }
 }

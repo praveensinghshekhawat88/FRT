@@ -114,8 +114,8 @@ public class PosDistributionFormViewActivity extends CustomActivity implements V
             isLoading();
             viewModel.getDistrict().observe(this, modelDistrict -> {
                 isLoading();
-                if (modelDistrict.getStatus().equals("200")) {
-                    district_List = modelDistrict.getDistrict_List();
+                if (modelDistrict.status.equals("200")) {
+                    district_List = modelDistrict.district_List;
                     if (district_List != null && district_List.size() > 0) {
                         ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, district_List);
                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

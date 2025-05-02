@@ -1,33 +1,15 @@
-package com.callmangement.model.login;
+package com.callmangement.model.login
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-public class ModelLogin {
-    @SerializedName("status") private String status;
-    @SerializedName("message") private String message;
-    @SerializedName("user_details") ModelLoginData user_details = new ModelLoginData();
+class ModelLogin {
+    @kotlin.jvm.JvmField
+    @SerializedName("status")
+    var status: String? = null
 
-    public String getStatus() {
-        return status;
-    }
+    @SerializedName("message")
+    var message: String? = null
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public ModelLoginData getUser_details() {
-        return user_details;
-    }
-
-    public void setUser_details(ModelLoginData user_details) {
-        this.user_details = user_details;
-    }
+    @SerializedName("user_details")
+    var user_details: ModelLoginData = ModelLoginData()
 }

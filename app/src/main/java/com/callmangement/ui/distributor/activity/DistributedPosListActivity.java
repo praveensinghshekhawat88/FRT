@@ -304,13 +304,13 @@ public class DistributedPosListActivity extends CustomActivity implements View.O
 
     private void districtList() {
         viewModel.getDistrict().observe(this, modelDistrict -> {
-            if (modelDistrict.getStatus().equals("200")) {
-                district_List = modelDistrict.getDistrict_List();
+            if (modelDistrict.status.equals("200")) {
+                district_List = modelDistrict.district_List;
                 if (district_List != null && district_List.size() > 0) {
                     Collections.reverse(district_List);
                     ModelDistrictList l = new ModelDistrictList();
                     l.setDistrictId(String.valueOf(-1));
-                    l.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
+                    l.districtNameEng = "--" + getResources().getString(R.string.district) + "--";
                     district_List.add(l);
                     Collections.reverse(district_List);
                     ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, district_List);

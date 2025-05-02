@@ -1,79 +1,68 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
-import com.callmangement.R;
-import com.callmangement.databinding.ItemLocationListActivityBinding;
-import com.callmangement.model.attendance.ModelAddLocationData;
-import com.callmangement.model.attendance.ModelAttendanceData;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.databinding.ItemLocationListActivityBinding
+import com.callmangement.model.attendance.ModelAddLocationData
+import com.callmangement.model.attendance.ModelAttendanceData
+import java.util.StringTokenizer
 
-import java.util.List;
-import java.util.StringTokenizer;
+class LocationListActivityAdapter(
+    private val context: Context,
+    private val modelAttendanceData: ModelAttendanceData
+) : RecyclerView.Adapter<LocationListActivityAdapter.ViewHolder>() {
+    private var modelAddLocationData: List<ModelAddLocationData>? = null
 
-public class LocationListActivityAdapter extends RecyclerView.Adapter<LocationListActivityAdapter.ViewHolder> {
-    private final Context context;
-    private List<ModelAddLocationData> modelAddLocationData;
-    private final ModelAttendanceData modelAttendanceData;
-
-    public LocationListActivityAdapter(Context context, ModelAttendanceData modelAttendanceData) {
-        this.context = context;
-        this.modelAttendanceData = modelAttendanceData;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = DataBindingUtil.inflate<ItemLocationListActivityBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_location_list_activity,
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemLocationListActivityBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_location_list_activity, parent, false);
-        return new ViewHolder(binding);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ModelAddLocationData model = modelAddLocationData.get(position);
-        holder.binding.setData(model);
-        holder.binding.textDate.setText(formattedFilterDate(model.getLocation_Date_Time()));
-        holder.binding.textUsername.setText(modelAttendanceData.getUsername());
-        holder.binding.textEmail.setText(modelAttendanceData.getEmail());
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val model = modelAddLocationData!![position]
+        holder.binding.data = model
+        holder.binding.textDate.text = formattedFilterDate(model.location_Date_Time)
+        holder.binding.textUsername.text = modelAttendanceData.username
+        holder.binding.textEmail.text = modelAttendanceData.email
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setData(List<ModelAddLocationData> modelAddLocationData){
-        this.modelAddLocationData = modelAddLocationData;
-        notifyDataSetChanged();
+    fun setData(modelAddLocationData: List<ModelAddLocationData>?) {
+        this.modelAddLocationData = modelAddLocationData
+        notifyDataSetChanged()
     }
 
-    @Override
-    public int getItemCount() {
-        if (modelAddLocationData!=null){
-            return modelAddLocationData.size();
-        }else {
-            return 0;
+    override fun getItemCount(): Int {
+        return if (modelAddLocationData != null) {
+            modelAddLocationData!!.size
+        } else {
+            0
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        private final ItemLocationListActivityBinding binding;
-        public ViewHolder(@NonNull ItemLocationListActivityBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
+    class ViewHolder(val binding: ItemLocationListActivityBinding) : RecyclerView.ViewHolder(
+        binding.root
+    )
 
-    private String formattedFilterDate(String dateTimeStr){
-        StringTokenizer tokenizer = new StringTokenizer(dateTimeStr," ");
-        String date = tokenizer.nextToken();
-        String time = tokenizer.nextToken();
+    private fun formattedFilterDate(dateTimeStr: String?): String {
+        val tokenizer = StringTokenizer(dateTimeStr, " ")
+        val date = tokenizer.nextToken()
+        val time = tokenizer.nextToken()
         //String am_pm = tokenizer.nextToken();
-        StringTokenizer tokenizerDate = new StringTokenizer(date,"-");
-        String year = tokenizerDate.nextToken();
-        String month = tokenizerDate.nextToken();
-        String day = tokenizerDate.nextToken();
-        return day+"-"+month+"-"+year+" "+time;
+        val tokenizerDate = StringTokenizer(date, "-")
+        val year = tokenizerDate.nextToken()
+        val month = tokenizerDate.nextToken()
+        val day = tokenizerDate.nextToken()
+        return "$day-$month-$year $time"
     }
-
 }

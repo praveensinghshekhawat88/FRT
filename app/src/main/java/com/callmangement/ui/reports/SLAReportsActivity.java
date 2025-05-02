@@ -95,8 +95,8 @@ public class SLAReportsActivity extends CustomActivity {
 
         for(int i = 3;i<31;i++) {
             Days_Reports_Info days_reports_info = new Days_Reports_Info();
-            days_reports_info.setDay(i + " Days");
-            days_reports_info.setDays_count(i);
+            days_reports_info.day = i + " Days";
+            days_reports_info.days_count = i;
             daysList.add(days_reports_info);
         }
 
@@ -109,7 +109,7 @@ public class SLAReportsActivity extends CustomActivity {
         binding.spinnerDays.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Integer day = daysList.get(i).getDays_count();
+                Integer day = daysList.get(i).days_count;
                 String fromDate = "";
                 String toDate = "";
                 String districtId = "0";
@@ -135,8 +135,8 @@ public class SLAReportsActivity extends CustomActivity {
         isLoading();
         viewModel.getSLAReportList(String.valueOf(prefManager.getUSER_Id()), fromDate, toDate, ResolveInDays, districtId).observe(this, modelSLAReport -> {
             isLoading();
-            if (modelSLAReport.getStatus().equals("200")) {
-                sla_reports_infoArrayList = modelSLAReport.getSla_reports_infos();
+            if (modelSLAReport.status.equals("200")) {
+                sla_reports_infoArrayList = modelSLAReport.sla_reports_infos;
                 if (sla_reports_infoArrayList.size()!=0) {
                     binding.rvSlaReports.setVisibility(View.VISIBLE);
                     binding.textNoComplaint.setVisibility(View.GONE);
@@ -156,8 +156,8 @@ public class SLAReportsActivity extends CustomActivity {
         isLoading();
         viewModel.getSLAReportList(String.valueOf(prefManager.getUSER_Id()), fromDate, toDate, ResolveInDays, districtId).observe(this, modelSLAReport -> {
             isLoading();
-            if (modelSLAReport.getStatus().equals("200")) {
-                sla_reports_infoArrayList = modelSLAReport.getSla_reports_infos();
+            if (modelSLAReport.status.equals("200")) {
+                sla_reports_infoArrayList = modelSLAReport.sla_reports_infos;
                 if (sla_reports_infoArrayList.size()!=0) {
                     binding.rvSlaReports.setVisibility(View.VISIBLE);
                     binding.textNoComplaint.setVisibility(View.GONE);
@@ -217,7 +217,7 @@ public class SLAReportsActivity extends CustomActivity {
     public class CustomComparator implements Comparator<Monthly_Reports_Info> {
         @Override
         public int compare(Monthly_Reports_Info o1, Monthly_Reports_Info o2) {
-            return o1.getDate().compareTo(o2.getDate());
+            return o1.date.compareTo(o2.date);
         }
     }
 

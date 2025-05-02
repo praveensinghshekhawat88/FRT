@@ -233,7 +233,7 @@ public class DispatchChallanPDFActivity extends PDFCreatorActivity {
             tableRowView1.addToRow(pdfTextViewSrNo);
 
             PDFTextView pdfTextViewItemName = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-            pdfTextViewItemName.setText(""+modelPartsDispatchInvoiceList.getItemName());
+            pdfTextViewItemName.setText(""+ modelPartsDispatchInvoiceList.itemName);
             tableRowView1.addToRow(pdfTextViewItemName);
 
             PDFTextView pdfTextViewDispatchedQuantity = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
@@ -262,7 +262,7 @@ public class DispatchChallanPDFActivity extends PDFCreatorActivity {
                 tableRowView1.addToRow(pdfTextViewSrNo);
 
                 pdfTextViewItemName = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                pdfTextViewItemName.setText(""+modelPartsDispatchInvoiceList.getItemName());
+                pdfTextViewItemName.setText(""+ modelPartsDispatchInvoiceList.itemName);
                 tableRowView1.addToRow(pdfTextViewItemName);
 
                 pdfTextViewDispatchedQuantity = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);

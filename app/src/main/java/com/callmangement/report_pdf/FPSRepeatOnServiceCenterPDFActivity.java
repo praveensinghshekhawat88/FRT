@@ -146,7 +146,7 @@ public class FPSRepeatOnServiceCenterPDFActivity extends PDFCreatorActivity {
             tableRowView1.addToRow(pdfTextViewFPSRepeat);
 
             PDFTextView pdfTextViewDate = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-            pdfTextViewDate.setText(""+modelRepeatFpsComplaintsList.getIsSentToServiceCentreOnStr());
+            pdfTextViewDate.setText(""+modelRepeatFpsComplaintsList.isSentToServiceCentreOnStr());
             tableRowView1.addToRow(pdfTextViewDate);
 
             PDFTableView tableView = new PDFTableView(getApplicationContext(), tableHeader, tableRowView1);
@@ -175,7 +175,7 @@ public class FPSRepeatOnServiceCenterPDFActivity extends PDFCreatorActivity {
                 tableRowView1.addToRow(pdfTextViewFPSRepeat);
 
                 pdfTextViewDate = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                pdfTextViewDate.setText(""+modelRepeatFpsComplaintsList.getIsSentToServiceCentreOnStr());
+                pdfTextViewDate.setText(""+modelRepeatFpsComplaintsList.isSentToServiceCentreOnStr());
                 tableRowView1.addToRow(pdfTextViewDate);
 
 

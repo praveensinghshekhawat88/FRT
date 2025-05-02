@@ -1,353 +1,174 @@
-package com.callmangement.model.complaints;
+package com.callmangement.model.complaints
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-import java.io.Serializable;
+class ModelComplaintList : Serializable {
+    @JvmField
+    var registrationComplainDateTimeStamp: Long = 0
 
-public class ModelComplaintList implements Serializable {
-    long registrationComplainDateTimeStamp;
+    //   @SerializedName("complainRegDate") private ModelComplaintRegistrationDate complainRegDate = new ModelComplaintRegistrationDate();
+    @SerializedName("check_csrf")
+    var check_csrf: String? = null
 
-    public long getRegistrationComplainDateTimeStamp() {
-        return registrationComplainDateTimeStamp;
-    }
-
-    public void setRegistrationComplainDateTimeStamp(long registrationComplainDateTimeStamp) {
-        this.registrationComplainDateTimeStamp = registrationComplainDateTimeStamp;
-    }
-
-    @SerializedName("check_csrf") private String check_csrf;
-    @SerializedName("createdBy") private String createdBy;
-    @SerializedName("complainStatusId") private String complainStatusId;
-    @SerializedName("complainStatus") private String complainStatus;
-    @SerializedName("complainTypeId") private String complainTypeId;
-    @SerializedName("complainAssignTo") private String complainAssignTo;
-    @SerializedName("assignedUserID") private String assignedUserID;
-    @SerializedName("complainAssignDate") private String complainAssignDate;
-    @SerializedName("fpscode") private String fpscode;
-    @SerializedName("mobileNo") private String mobileNo;
-    @SerializedName("district") private String district;
-    @SerializedName("customerName") private String customerName;
-    @SerializedName("tehsil") private String tehsil;
-    @SerializedName("updatedBy") private String updatedBy;
-    @SerializedName("complainRegNo") private String complainRegNo;
-    @SerializedName("isPhysicalDamage") private Boolean isPhysicalDamage;
-    @SerializedName("seremark") private String seremark;
-    @SerializedName("complainDesc") private String complainDesc;
-    @SerializedName("complainType") private String complainType;
-    @SerializedName("customerId") private String customerId;
-    @SerializedName("orderBySrNo") private String orderBySrNo;
-    @SerializedName("isActive") private String isActive;
-    @SerializedName("districtId") private String districtId;
-    @SerializedName("complainId") private String complainId;
-    @SerializedName("tehsilId") private String tehsilId;
-    @SerializedName("replacedPartsDetail") private String replacedPartsDetail;
-    @SerializedName("courierServicesDetail") private String courierServicesDetail;
-    @SerializedName("complainRegDateStr") private String complainRegDateStr;
-    @SerializedName("imagePath") private String imagePath;
-    @SerializedName("sermarkDateStr") private String sermarkDateStr;
-    @SerializedName("challanNo") private String challanNo;
-    @SerializedName("complPartsIds") private String complPartsIds;
-    @SerializedName("isSentToServiceCentreOn") private String isSentToServiceCentreOn;
-    @SerializedName("isSentToServiceCentre") private String isSentToServiceCentre;
-    @SerializedName("cntReptOnSerCenter") private String cntReptOnSerCenter;
-
- //   @SerializedName("complainRegDate") private ModelComplaintRegistrationDate complainRegDate = new ModelComplaintRegistrationDate();
-
-    public String getCheck_csrf() {
-        return check_csrf;
-    }
-
-    public void setCheck_csrf(String check_csrf) {
-        this.check_csrf = check_csrf;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getComplainStatusId() {
-        if (complainStatusId == null)
-            return "";
-        return complainStatusId;
-    }
-
-    public void setComplainStatusId(String complainStatusId) {
-        this.complainStatusId = complainStatusId;
-    }
-
-    public String getComplainStatus() {
-        return complainStatus;
-    }
-
-    public void setComplainStatus(String complainStatus) {
-        this.complainStatus = complainStatus;
-    }
-
-    public String getComplainTypeId() {
-        return complainTypeId;
-    }
-
-    public void setComplainTypeId(String complainTypeId) {
-        this.complainTypeId = complainTypeId;
-    }
-
-    public String getComplainAssignTo() {
-        return complainAssignTo;
-    }
-
-    public void setComplainAssignTo(String complainAssignTo) {
-        this.complainAssignTo = complainAssignTo;
-    }
-
-    public String getAssignedUserID() {
-        return assignedUserID;
-    }
-
-    public void setAssignedUserID(String assignedUserID) {
-        this.assignedUserID = assignedUserID;
-    }
-
-    public String getComplainAssignDate() {
-        return complainAssignDate;
-    }
-
-    public void setComplainAssignDate(String complainAssignDate) {
-        this.complainAssignDate = complainAssignDate;
-    }
-
-    public String getFpscode() {
-        return fpscode;
-    }
-
-    public void setFpscode(String fpscode) {
-        this.fpscode = fpscode;
-    }
-
-    public String getMobileNo() {
-        return mobileNo;
-    }
-
-    public void setMobileNo(String mobileNo) {
-        this.mobileNo = mobileNo;
-    }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
+    @SerializedName("createdBy")
+    var createdBy: String? = null
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getTehsil() {
-        return tehsil;
-    }
-
-    public void setTehsil(String tehsil) {
-        this.tehsil = tehsil;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public String getComplainRegNo() {
-        return complainRegNo;
-    }
-
-    public void setComplainRegNo(String complainRegNo) {
-        this.complainRegNo = complainRegNo;
-    }
-
-    public Boolean getPhysicalDamage() {
-        return isPhysicalDamage;
-    }
+    @SerializedName("complainStatusId")
+    var complainStatusId: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
 
-    public void setPhysicalDamage(Boolean physicalDamage) {
-        isPhysicalDamage = physicalDamage;
-    }
-
-    public String getSeremark() {
-        return seremark;
-    }
+    @JvmField
+    @SerializedName("complainStatus")
+    var complainStatus: String? = null
 
-    public void setSeremark(String seremark) {
-        this.seremark = seremark;
-    }
+    @SerializedName("complainTypeId")
+    var complainTypeId: String? = null
 
-    public String getComplainDesc() {
-        return complainDesc;
-    }
+    @SerializedName("complainAssignTo")
+    var complainAssignTo: String? = null
 
-    public void setComplainDesc(String complainDesc) {
-        this.complainDesc = complainDesc;
-    }
+    @SerializedName("assignedUserID")
+    var assignedUserID: String? = null
 
-    public String getComplainType() {
-        return complainType;
-    }
+    @SerializedName("complainAssignDate")
+    var complainAssignDate: String? = null
 
-    public void setComplainType(String complainType) {
-        this.complainType = complainType;
-    }
+    @JvmField
+    @SerializedName("fpscode")
+    var fpscode: String? = null
 
-    public String getCustomerId() {
-        return customerId;
-    }
+    @JvmField
+    @SerializedName("mobileNo")
+    var mobileNo: String? = null
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
+    @JvmField
+    @SerializedName("district")
+    var district: String? = null
 
-    public String getOrderBySrNo() {
-        return orderBySrNo;
-    }
+    @JvmField
+    @SerializedName("customerName")
+    var customerName: String? = null
 
-    public void setOrderBySrNo(String orderBySrNo) {
-        this.orderBySrNo = orderBySrNo;
-    }
+    @JvmField
+    @SerializedName("tehsil")
+    var tehsil: String? = null
 
-    public String getIsActive() {
-        return isActive;
-    }
+    @SerializedName("updatedBy")
+    var updatedBy: String? = null
 
-    public void setIsActive(String isActive) {
-        this.isActive = isActive;
-    }
+    @JvmField
+    @SerializedName("complainRegNo")
+    var complainRegNo: String? = null
 
-    public String getDistrictId() {
-        return districtId;
-    }
+    @SerializedName("isPhysicalDamage")
+    var physicalDamage: Boolean? = null
 
-    public void setDistrictId(String districtId) {
-        this.districtId = districtId;
-    }
+    @JvmField
+    @SerializedName("seremark")
+    var seremark: String? = null
 
-    public String getComplainId() {
-        return complainId;
-    }
+    @JvmField
+    @SerializedName("complainDesc")
+    var complainDesc: String? = null
 
-    public void setComplainId(String complainId) {
-        this.complainId = complainId;
-    }
+    @JvmField
+    @SerializedName("complainType")
+    var complainType: String? = null
 
-    public String getTehsilId() {
-        return tehsilId;
-    }
+    @SerializedName("customerId")
+    var customerId: String? = null
 
-    public void setTehsilId(String tehsilId) {
-        this.tehsilId = tehsilId;
-    }
+    @SerializedName("orderBySrNo")
+    var orderBySrNo: String? = null
 
-//    public ModelComplaintRegistrationDate getComplainRegDate() {
-//        return complainRegDate;
-//    }
-//
-//    public void setComplainRegDate(ModelComplaintRegistrationDate complainRegDate) {
-//        this.complainRegDate = complainRegDate;
-//    }
-
-    public String getReplacedPartsDetail() {
-        return replacedPartsDetail;
-    }
+    @SerializedName("isActive")
+    var isActive: String? = null
 
-    public void setReplacedPartsDetail(String replacedPartsDetail) {
-        this.replacedPartsDetail = replacedPartsDetail;
-    }
+    @SerializedName("districtId")
+    var districtId: String? = null
 
-    public String getCourierServicesDetail() {
-        return courierServicesDetail;
-    }
+    @JvmField
+    @SerializedName("complainId")
+    var complainId: String? = null
 
-    public void setCourierServicesDetail(String courierServicesDetail) {
-        this.courierServicesDetail = courierServicesDetail;
-    }
+    @SerializedName("tehsilId")
+    var tehsilId: String? = null
 
-    public String getComplainRegDateStr() {
-        return complainRegDateStr;
-    }
+    //    public ModelComplaintRegistrationDate getComplainRegDate() {
+    //        return complainRegDate;
+    //    }
+    //
+    //    public void setComplainRegDate(ModelComplaintRegistrationDate complainRegDate) {
+    //        this.complainRegDate = complainRegDate;
+    //    }
+    @JvmField
+    @SerializedName("replacedPartsDetail")
+    var replacedPartsDetail: String? = null
 
-    public void setComplainRegDateStr(String complainRegDateStr) {
-        this.complainRegDateStr = complainRegDateStr;
-    }
+    @JvmField
+    @SerializedName("courierServicesDetail")
+    var courierServicesDetail: String? = null
 
-    public String getImagePath() {
-        return imagePath;
-    }
+    @JvmField
+    @SerializedName("complainRegDateStr")
+    var complainRegDateStr: String? = null
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
+    @JvmField
+    @SerializedName("imagePath")
+    var imagePath: String? = null
 
-    public String getSermarkDateStr() {
-        return sermarkDateStr;
-    }
+    @JvmField
+    @SerializedName("sermarkDateStr")
+    var sermarkDateStr: String? = null
 
-    public void setSermarkDateStr(String sermarkDateStr) {
-        this.sermarkDateStr = sermarkDateStr;
-    }
+    @JvmField
+    @SerializedName("challanNo")
+    var challanNo: String? = null
 
-    public String getChallanNo() {
-        return challanNo;
-    }
+    @SerializedName("complPartsIds")
+    private var complPartsIds: String? = null
 
-    public void setChallanNo(String challanNo) {
-        this.challanNo = challanNo;
-    }
+    @SerializedName("isSentToServiceCentreOn")
+    private var isSentToServiceCentreOn: String? = null
 
-    public String getComplPartsIds() {
-        if (complPartsIds == null || complPartsIds.isEmpty())
-            return "";
-        return complPartsIds;
-    }
+    @SerializedName("isSentToServiceCentre")
+    private var isSentToServiceCentre: String? = null
 
-    public void setComplPartsIds(String complPartsIds) {
-        this.complPartsIds = complPartsIds;
-    }
+    @SerializedName("cntReptOnSerCenter")
+    var cntReptOnSerCenter: String? = null
+        get() {
+            if (field == null) return "0"
+            return field
+        }
 
-    public String getIsSentToServiceCentreOn() {
-        if (isSentToServiceCentreOn == null || isSentToServiceCentreOn.isEmpty())
-            return "";
-        return isSentToServiceCentreOn;
+    fun getComplPartsIds(): String {
+        if (complPartsIds == null || complPartsIds!!.isEmpty()) return ""
+        return complPartsIds!!
     }
 
-    public void setIsSentToServiceCentreOn(String isSentToServiceCentreOn) {
-        this.isSentToServiceCentreOn = isSentToServiceCentreOn;
+    fun setComplPartsIds(complPartsIds: String?) {
+        this.complPartsIds = complPartsIds
     }
 
-    public String getIsSentToServiceCentre() {
-        if (isSentToServiceCentre == null || isSentToServiceCentre.isEmpty())
-            return "false";
-        return isSentToServiceCentre;
+    fun getIsSentToServiceCentreOn(): String {
+        if (isSentToServiceCentreOn == null || isSentToServiceCentreOn!!.isEmpty()) return ""
+        return isSentToServiceCentreOn!!
     }
 
-    public void setIsSentToServiceCentre(String isSentToServiceCentre) {
-        this.isSentToServiceCentre = isSentToServiceCentre;
+    fun setIsSentToServiceCentreOn(isSentToServiceCentreOn: String?) {
+        this.isSentToServiceCentreOn = isSentToServiceCentreOn
     }
 
-    public String getCntReptOnSerCenter() {
-        if (cntReptOnSerCenter == null)
-            return "0";
-        return cntReptOnSerCenter;
+    fun getIsSentToServiceCentre(): String {
+        if (isSentToServiceCentre == null || isSentToServiceCentre!!.isEmpty()) return "false"
+        return isSentToServiceCentre!!
     }
 
-    public void setCntReptOnSerCenter(String cntReptOnSerCenter) {
-        this.cntReptOnSerCenter = cntReptOnSerCenter;
+    fun setIsSentToServiceCentre(isSentToServiceCentre: String?) {
+        this.isSentToServiceCentre = isSentToServiceCentre
     }
 }

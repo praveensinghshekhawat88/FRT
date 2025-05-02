@@ -1,589 +1,620 @@
-package com.callmangement.ui.reports;
+package com.callmangement.ui.reports
 
-import android.graphics.Color;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.graphics.Color
+import android.os.Build
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import androidx.annotation.RequiresApi
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import com.callmangement.Network.APIService
+import com.callmangement.Network.RetrofitInstance
+import com.callmangement.R
+import com.callmangement.custom.CustomActivity
+import com.callmangement.databinding.ActivityGraphBinding
+import com.callmangement.model.complaints.ModelComplaint
+import com.callmangement.model.complaints.ModelComplaintList
+import com.callmangement.model.district.ModelDistrict
+import com.callmangement.model.district.ModelDistrictList
+import com.callmangement.support.charting.components.Legend
+import com.callmangement.support.charting.components.XAxis
+import com.callmangement.support.charting.data.BarData
+import com.callmangement.support.charting.data.BarDataSet
+import com.callmangement.support.charting.data.BarEntry
+import com.callmangement.support.charting.formatter.IndexAxisValueFormatter
+import com.callmangement.support.charting.interfaces.datasets.IBarDataSet
+import com.callmangement.ui.complaint.ComplaintViewModel
+import com.callmangement.utils.DateTimeUtils
+import com.callmangement.utils.PrefManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.DateFormatSymbols
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Collections
+import java.util.Locale
+import java.util.Objects
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
-
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
-import com.callmangement.R;
-import com.callmangement.custom.CustomActivity;
-import com.callmangement.databinding.ActivityGraphBinding;
-import com.callmangement.model.complaints.ModelComplaint;
-import com.callmangement.model.complaints.ModelComplaintList;
-import com.callmangement.model.district.ModelDistrictList;
-import com.callmangement.support.charting.components.Legend;
-import com.callmangement.support.charting.components.XAxis;
-import com.callmangement.support.charting.data.BarData;
-import com.callmangement.support.charting.data.BarDataSet;
-import com.callmangement.support.charting.data.BarEntry;
-import com.callmangement.support.charting.formatter.IndexAxisValueFormatter;
-import com.callmangement.support.charting.interfaces.datasets.IBarDataSet;
-import com.callmangement.ui.complaint.ComplaintViewModel;
-import com.callmangement.utils.DateTimeUtils;
-import com.callmangement.utils.PrefManager;
-
-import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class GraphActivity extends CustomActivity {
-    ActivityGraphBinding binding;
-    private PrefManager prefManager;
-    private ComplaintViewModel viewModel;
-    private List<ModelComplaintList> complaintList;
-    private final String myFormat = "yyyy-MM-dd";
-    private final String complainStatusId = "0";
-    private String districtId = "0";
-    private int checkDistrict = 0;
-    private String districtNameEng = "";
-    private List<ModelDistrictList> district_List = new ArrayList<>();
-    public static final int[] MATERIAL_COLORS = {rgb("#5d62b5")};
-    public static final int[] MATERIAL_COLORS2 = {rgb("#29c3be")};
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_graph);
-        binding.actionBar.ivBack.setVisibility(View.VISIBLE);
-        binding.actionBar.ivThreeDot.setVisibility(View.GONE);
-        binding.actionBar.layoutLanguage.setVisibility(View.GONE);
-        binding.actionBar.textToolbarTitle.setText(getResources().getString(R.string.graph));
-        viewModel = ViewModelProviders.of(this).get(ComplaintViewModel.class);
-        prefManager = new PrefManager(mContext);
-        if (prefManager.getUSER_TYPE_ID().equals("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) { // for service engineer
-            districtId = prefManager.getUSER_DistrictId();
-            binding.rlDistrict.setVisibility(View.GONE);
-        } else if (prefManager.getUSER_TYPE_ID().equalsIgnoreCase("6") && prefManager.getUSER_TYPE().equalsIgnoreCase("DSO")){ // for dso
-            districtId = prefManager.getUSER_DistrictId();
-            binding.rlDistrict.setVisibility(View.GONE);
-        } else{
-            districtList();
-            binding.rlDistrict.setVisibility(View.VISIBLE);
+class GraphActivity : CustomActivity() {
+    var binding: ActivityGraphBinding? = null
+    private var prefManager: PrefManager? = null
+    private var viewModel: ComplaintViewModel? = null
+    private var complaintList: List<ModelComplaintList>? = null
+    private val myFormat = "yyyy-MM-dd"
+    private val complainStatusId = "0"
+    private var districtId = "0"
+    private var checkDistrict = 0
+    private var districtNameEng = ""
+    private var district_List: MutableList<ModelDistrictList?>? = ArrayList()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_graph)
+        binding!!.actionBar.ivBack.visibility = View.VISIBLE
+        binding!!.actionBar.ivThreeDot.visibility = View.GONE
+        binding!!.actionBar.layoutLanguage.visibility = View.GONE
+        binding!!.actionBar.textToolbarTitle.text = resources.getString(R.string.graph)
+        viewModel = ViewModelProviders.of(this).get(
+            ComplaintViewModel::class.java
+        )
+        prefManager = PrefManager(mContext)
+        if (prefManager!!.useR_TYPE_ID == "4" && prefManager!!.useR_TYPE.equals(
+                "ServiceEngineer",
+                ignoreCase = true
+            )
+        ) { // for service engineer
+            districtId = prefManager!!.useR_DistrictId
+            binding!!.rlDistrict.visibility = View.GONE
+        } else if (prefManager!!.useR_TYPE_ID.equals(
+                "6",
+                ignoreCase = true
+            ) && prefManager!!.useR_TYPE.equals("DSO", ignoreCase = true)
+        ) { // for dso
+            districtId = prefManager!!.useR_DistrictId
+            binding!!.rlDistrict.visibility = View.GONE
+        } else {
+            districtList()
+            binding!!.rlDistrict.visibility = View.VISIBLE
         }
-        initView();
-        fetchComplaintList();
+        initView()
+        fetchComplaintList()
     }
 
-    private void initView() {
-        binding.spinnerDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(++checkDistrict > 1) {
-                    districtNameEng = district_List.get(i).getDistrictNameEng();
-                    districtId = district_List.get(i).getDistrictId();
-                    if (districtNameEng.equalsIgnoreCase("--"+getResources().getString(R.string.district)+"--")) {
-                        fetchComplaintListByDistrictWise("0");
+    private fun initView() {
+        binding!!.spinnerDistrict.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View,
+                    i: Int,
+                    l: Long
+                ) {
+                    if (++checkDistrict > 1) {
+                        districtNameEng = district_List!![i]!!.districtNameEng.toString()
+                        districtId = district_List!![i]!!.districtId.toString()
+                        if (districtNameEng.equals(
+                                "--" + resources.getString(R.string.district) + "--",
+                                ignoreCase = true
+                            )
+                        ) {
+                            fetchComplaintListByDistrictWise("0")
+                        } else {
+                            fetchComplaintListByDistrictWise(districtId)
+                        }
+                    }
+                }
+
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {
+                }
+            }
+
+        binding!!.actionBar.ivBack.setOnClickListener { view: View? -> onBackPressed() }
+    }
+
+    private fun fetchComplaintList() {
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+
+        val calendarToday = Calendar.getInstance()
+        val today = calendarToday.time
+        val todayDate = sdf.format(today)
+
+        val calendarLastThreeMonth = Calendar.getInstance()
+        calendarLastThreeMonth.add(Calendar.MONTH, -2)
+        calendarLastThreeMonth[Calendar.DATE] = 1
+        val lastThreeMonthDate = calendarLastThreeMonth.time
+        val lastThreeMonthDateStr = sdf.format(lastThreeMonthDate)
+
+        val fromDate = lastThreeMonthDateStr
+        val toDate = todayDate
+
+        showProgress()
+        val service = RetrofitInstance.getRetrofitInstance().create(
+            APIService::class.java
+        )
+        val call = service.getComplaintListDistStatusDateWise(
+            prefManager!!.useR_Id.toString(),
+            districtId,
+            complainStatusId,
+            fromDate,
+            toDate,
+            "0",
+            "0",
+            "0",
+            ""
+        )
+        call.enqueue(object : Callback<ModelComplaint?> {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            override fun onResponse(
+                call: Call<ModelComplaint?>,
+                response: Response<ModelComplaint?>
+            ) {
+                hideProgress()
+                if (response.isSuccessful) {
+                    val modelComplaint = response.body()
+                    if (Objects.requireNonNull<ModelComplaint?>(modelComplaint).status == "200") {
+                        complaintList = modelComplaint!!.complaint_List
+                        val sortedList: List<ModelComplaintList> = ArrayList(complaintList!!)
+                        for (model in sortedList) {
+                            model.registrationComplainDateTimeStamp =
+                                DateTimeUtils.getTimeStamp(model.complainRegDateStr)
+                        }
+                        Collections.sort(
+                            sortedList,
+                            Comparator.comparingLong(ModelComplaintList::registrationComplainDateTimeStamp)
+                        )
+                        totalComplaintBarGraph(sortedList)
+                        val listMonthName: MutableList<String> = ArrayList()
+                        for (modelMonth in sortedList) {
+//                            ModelComplaintRegistrationDate monthDetailModel = modelMonth.getComplainRegDate();
+//                            String monthName = monthDetailModel.getMonth();
+
+                            val monthDetailModel = modelMonth.complainRegDateStr
+                            val mnt_list = monthDetailModel!!.split("-".toRegex())
+                                .dropLastWhile { it.isEmpty() }
+                                .toTypedArray()
+
+                            val date = mnt_list[0]
+                            val month = mnt_list[1].toInt()
+                            val year = mnt_list[2]
+
+                            val monthString = DateFormatSymbols().months[month - 1]
+
+                            val monthName = monthString
+                            if (listMonthName.size == 0) listMonthName.add(monthName)
+                            else {
+                                var existFlag = false
+                                for (i in listMonthName.indices) {
+                                    if (monthName.equals(listMonthName[i], ignoreCase = true)) {
+                                        existFlag = true
+                                        break
+                                    }
+                                }
+                                if (!existFlag) listMonthName.add(monthName)
+                            }
+                        }
+
+                        try {
+                            binding!!.textFirstMonth.text = listMonthName[0]
+                            binding!!.textSecondMonth.text = listMonthName[1]
+                            binding!!.textCurrentMonth.text = listMonthName[2]
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            binding!!.barGraphTotalComplaints.visibility = View.GONE
+                        }
                     } else {
-                        fetchComplaintListByDistrictWise(districtId);
+                        makeToast(modelComplaint!!.message)
                     }
+                } else {
+                    makeToast(resources.getString(R.string.error))
                 }
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
+            override fun onFailure(call: Call<ModelComplaint?>, t: Throwable) {
+                hideProgress()
+                makeToast(resources.getString(R.string.error_message))
             }
-        });
-
-        binding.actionBar.ivBack.setOnClickListener(view -> onBackPressed());
-
+        })
     }
 
-    private void fetchComplaintList(){
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+    private fun fetchComplaintListByDistrictWise(districtId: String) {
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
 
-        Calendar calendarToday = Calendar.getInstance();
-        Date today = calendarToday.getTime();
-        String todayDate = sdf.format(today);
+        val calendarToday = Calendar.getInstance()
+        val today = calendarToday.time
+        val todayDate = sdf.format(today)
 
-        Calendar calendarLastThreeMonth = Calendar.getInstance();
-        calendarLastThreeMonth.add(Calendar.MONTH, -2);
-        calendarLastThreeMonth.set(Calendar.DATE, 1);
-        Date lastThreeMonthDate = calendarLastThreeMonth.getTime();
-        String lastThreeMonthDateStr = sdf.format(lastThreeMonthDate);
+        val calendarLastThreeMonth = Calendar.getInstance()
+        calendarLastThreeMonth.add(Calendar.MONTH, -2)
+        calendarLastThreeMonth[Calendar.DATE] = 1
+        val lastThreeMonthDate = calendarLastThreeMonth.time
+        val lastThreeMonthDateStr = sdf.format(lastThreeMonthDate)
 
-        String fromDate = lastThreeMonthDateStr;
-        String toDate = todayDate;
+        val fromDate = lastThreeMonthDateStr
+        val toDate = todayDate
 
-        showProgress();
-        APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-        Call<ModelComplaint> call = service.getComplaintListDistStatusDateWise(String.valueOf(prefManager.getUSER_Id()), districtId, complainStatusId, fromDate, toDate,"0","0","0","");
-        call.enqueue(new Callback<ModelComplaint>() {
+        showProgress()
+        val service = RetrofitInstance.getRetrofitInstance().create(
+            APIService::class.java
+        )
+        val call = service.getComplaintListDistStatusDateWise(
+            prefManager!!.useR_Id.toString(),
+            districtId,
+            complainStatusId,
+            fromDate,
+            toDate,
+            "0",
+            "0",
+            "0",
+            ""
+        )
+        call.enqueue(object : Callback<ModelComplaint?> {
             @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(@NonNull Call<ModelComplaint> call, @NonNull Response<ModelComplaint> response) {
-                hideProgress();
-                if (response.isSuccessful()) {
-                    ModelComplaint modelComplaint = response.body();
-                    if (Objects.requireNonNull(modelComplaint).getStatus().equals("200")) {
-                        complaintList = modelComplaint.getComplaint_List();
-                        List<ModelComplaintList> sortedList = new ArrayList<>(complaintList);
-                        for (ModelComplaintList model : sortedList) {
-                            model.setRegistrationComplainDateTimeStamp(DateTimeUtils.getTimeStamp(model.getComplainRegDateStr()));
+            override fun onResponse(
+                call: Call<ModelComplaint?>,
+                response: Response<ModelComplaint?>
+            ) {
+                hideProgress()
+                if (response.isSuccessful) {
+                    val modelComplaint = response.body()
+                    if (Objects.requireNonNull<ModelComplaint?>(modelComplaint).status == "200") {
+                        complaintList = modelComplaint!!.complaint_List
+                        val sortedList: List<ModelComplaintList> = ArrayList(complaintList)
+                        for (model in sortedList) {
+                            model.registrationComplainDateTimeStamp =
+                                DateTimeUtils.getTimeStamp(model.complainRegDateStr)
                         }
-                        Collections.sort(sortedList, Comparator.comparingLong(ModelComplaintList::getRegistrationComplainDateTimeStamp));
-                        totalComplaintBarGraph(sortedList);
-                        List<String> listMonthName = new ArrayList<>();
-                        for (ModelComplaintList modelMonth : sortedList) {
+
+                        Collections.sort<ModelComplaintList>(
+                            sortedList,
+                            Comparator.comparingLong<ModelComplaintList>(ModelComplaintList::registrationComplainDateTimeStamp)
+                        )
+                        totalComplaintBarGraph(sortedList)
+
+                        val listMonthName: MutableList<String> = ArrayList()
+                        for (modelMonth in sortedList) {
 //                            ModelComplaintRegistrationDate monthDetailModel = modelMonth.getComplainRegDate();
 //                            String monthName = monthDetailModel.getMonth();
+                            //         String monthName = "Monthhhhhh";
 
-                            String monthDetailModel = modelMonth.getComplainRegDateStr();
-                            String[] mnt_list = monthDetailModel.split("-");
 
-                            String date = mnt_list[0];
-                            int month = Integer.parseInt(mnt_list[1]);
-                            String year = mnt_list[2];
+                            val monthDetailModel = modelMonth.complainRegDateStr
+                            Log.d("--monthDetailModel--", " $monthDetailModel")
+                            val mnt_list = monthDetailModel!!.split("-".toRegex())
+                                .dropLastWhile { it.isEmpty() }
+                                .toTypedArray()
 
-                     String monthString = new DateFormatSymbols().getMonths()[month-1];
+                            val date = mnt_list[0]
+                            val month = mnt_list[1].toInt()
+                            val year = mnt_list[2]
 
-                            String monthName = monthString;
-                            if (listMonthName.size() == 0)
-                                listMonthName.add(monthName);
+                            val monthString = DateFormatSymbols().months[month - 1]
+
+                            val monthName = monthString
+
+
+
+
+
+
+
+
+
+                            if (listMonthName.size == 0) listMonthName.add(monthName)
                             else {
-                                boolean existFlag = false;
-                                for (int i = 0; i < listMonthName.size(); i++) {
-                                    if (monthName.equalsIgnoreCase(listMonthName.get(i))) {
-                                        existFlag = true;
-                                        break;
+                                var existFlag = false
+                                for (i in listMonthName.indices) {
+                                    if (monthName.equals(listMonthName[i], ignoreCase = true)) {
+                                        existFlag = true
+                                        break
                                     }
                                 }
-                                if (!existFlag)
-                                    listMonthName.add(monthName);
+                                if (!existFlag) listMonthName.add(monthName)
                             }
                         }
 
                         try {
-                            binding.textFirstMonth.setText(listMonthName.get(0));
-                            binding.textSecondMonth.setText(listMonthName.get(1));
-                            binding.textCurrentMonth.setText(listMonthName.get(2));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            binding.barGraphTotalComplaints.setVisibility(View.GONE);
+                            binding!!.textFirstMonth.text = listMonthName[0]
+                            binding!!.textSecondMonth.text = listMonthName[1]
+                            binding!!.textCurrentMonth.text = listMonthName[2]
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            binding!!.barGraphTotalComplaints.visibility = View.GONE
                         }
-                    }else {
-                        makeToast(modelComplaint.getMessage());
+                    } else {
+                        makeToast(modelComplaint!!.message)
                     }
-                }else {
-                    makeToast(getResources().getString(R.string.error));
+                } else {
+                    makeToast(resources.getString(R.string.error))
                 }
             }
 
-            @Override
-            public void onFailure(@NonNull Call<ModelComplaint> call, @NonNull Throwable t) {
-                hideProgress();
-                makeToast(getResources().getString(R.string.error_message));
+            override fun onFailure(call: Call<ModelComplaint?>, t: Throwable) {
+                hideProgress()
+                makeToast(resources.getString(R.string.error_message))
             }
-        });
+        })
     }
 
-    private void fetchComplaintListByDistrictWise(String districtId){
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+    private fun districtList() {
+        viewModel!!.district.observe(this) { modelDistrict: ModelDistrict ->
+            if (modelDistrict.status == "200") {
+                district_List = modelDistrict.district_List
 
-        Calendar calendarToday = Calendar.getInstance();
-        Date today = calendarToday.getTime();
-        String todayDate = sdf.format(today);
+                if (district_List != null && district_List!!.size > 0) {
+                    district_List!!.reverse()
+                    val l = ModelDistrictList()
+                    l.districtId = (-1).toString()
+                    l.districtNameEng = "--" + resources.getString(R.string.district) + "--"
+                    district_List!!.add(l)
+                    district_List!!.reverse()
 
-        Calendar calendarLastThreeMonth = Calendar.getInstance();
-        calendarLastThreeMonth.add(Calendar.MONTH, -2);
-        calendarLastThreeMonth.set(Calendar.DATE, 1);
-        Date lastThreeMonthDate = calendarLastThreeMonth.getTime();
-        String lastThreeMonthDateStr = sdf.format(lastThreeMonthDate);
-
-        String fromDate = lastThreeMonthDateStr;
-        String toDate = todayDate;
-
-        showProgress();
-        APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-        Call<ModelComplaint> call = service.getComplaintListDistStatusDateWise(String.valueOf(prefManager.getUSER_Id()), districtId, complainStatusId, fromDate, toDate,"0","0","0","");
-        call.enqueue(new Callback<ModelComplaint>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(@NonNull Call<ModelComplaint> call, @NonNull Response<ModelComplaint> response) {
-                hideProgress();
-                if (response.isSuccessful()) {
-                    ModelComplaint modelComplaint = response.body();
-                    if (Objects.requireNonNull(modelComplaint).getStatus().equals("200")) {
-                        complaintList = modelComplaint.getComplaint_List();
-                        List<ModelComplaintList> sortedList = new ArrayList<>(complaintList);
-                        for (ModelComplaintList model : sortedList) {
-                            model.setRegistrationComplainDateTimeStamp(DateTimeUtils.getTimeStamp(model.getComplainRegDateStr()));
-                        }
-
-                        Collections.sort(sortedList, Comparator.comparingLong(ModelComplaintList::getRegistrationComplainDateTimeStamp));
-                        totalComplaintBarGraph(sortedList);
-
-                        List<String> listMonthName = new ArrayList<>();
-                        for (ModelComplaintList modelMonth : sortedList) {
-//                            ModelComplaintRegistrationDate monthDetailModel = modelMonth.getComplainRegDate();
-//                            String monthName = monthDetailModel.getMonth();
-                   //         String monthName = "Monthhhhhh";
-
-
-                            String monthDetailModel = modelMonth.getComplainRegDateStr();
-                            Log.d("--monthDetailModel--"," "+ monthDetailModel);
-                            String[] mnt_list = monthDetailModel.split("-");
-
-                            String date = mnt_list[0];
-                            int month = Integer.parseInt(mnt_list[1]);
-                            String year = mnt_list[2];
-
-                            String monthString = new DateFormatSymbols().getMonths()[month-1];
-
-                            String monthName = monthString;
-
-
-
-
-
-
-
-
-
-                            if (listMonthName.size() == 0)
-                                listMonthName.add(monthName);
-                            else {
-                                boolean existFlag = false;
-                                for (int i = 0; i < listMonthName.size(); i++) {
-                                    if (monthName.equalsIgnoreCase(listMonthName.get(i))) {
-                                        existFlag = true;
-                                        break;
-                                    }
-                                }
-                                if (!existFlag)
-                                    listMonthName.add(monthName);
-                            }
-                        }
-
-                        try {
-                            binding.textFirstMonth.setText(listMonthName.get(0));
-                            binding.textSecondMonth.setText(listMonthName.get(1));
-                            binding.textCurrentMonth.setText(listMonthName.get(2));
-                            
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            binding.barGraphTotalComplaints.setVisibility(View.GONE);
-                        }
-                    }else {
-                        makeToast(modelComplaint.getMessage());
-                    }
-                }else {
-                    makeToast(getResources().getString(R.string.error));
+                    val dataAdapter = ArrayAdapter(
+                        mContext!!,
+                        android.R.layout.simple_spinner_item,
+                        district_List!!
+                    )
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    binding!!.spinnerDistrict.adapter = dataAdapter
                 }
             }
-
-            @Override
-            public void onFailure(@NonNull Call<ModelComplaint> call, @NonNull Throwable t) {
-                hideProgress();
-                makeToast(getResources().getString(R.string.error_message));
-            }
-
-        });
+        }
     }
 
-    private void districtList(){
-        viewModel.getDistrict().observe(this, modelDistrict -> {
-            if (modelDistrict.getStatus().equals("200")){
-                district_List = modelDistrict.getDistrict_List();
-
-                if (district_List != null && district_List.size() > 0) {
-                    Collections.reverse(district_List);
-                    ModelDistrictList l = new ModelDistrictList();
-                    l.setDistrictId(String.valueOf(-1));
-                    l.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
-                    district_List.add(l);
-                    Collections.reverse(district_List);
-
-                    ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, district_List);
-                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    binding.spinnerDistrict.setAdapter(dataAdapter);
-
+    private val isLoading: Unit
+        get() {
+            viewModel!!.isLoading.observe(this) { aBoolean: Boolean ->
+                if (aBoolean) {
+                    showProgress(resources.getString(R.string.please_wait))
+                } else {
+                    hideProgress()
                 }
-
             }
-        });
-    }
+        }
 
-    private void isLoading() {
-        viewModel.getIsLoading().observe(this, aBoolean -> {
-            if (aBoolean) {
-                showProgress(getResources().getString(R.string.please_wait));
-            } else {
-                hideProgress();
-            }
-        });
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
     //start total complaints bar graph
-    private void totalComplaintBarGraph(List<ModelComplaintList> modelComplaintList) {
-        binding.barGraphTotalComplaints.getDescription().setEnabled(false);
+    private fun totalComplaintBarGraph(modelComplaintList: List<ModelComplaintList>) {
+        binding!!.barGraphTotalComplaints.description.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
-        binding.barGraphTotalComplaints.setMaxVisibleValueCount(60);
-        binding.barGraphTotalComplaints.setDrawValueAboveBar(true);
+        binding!!.barGraphTotalComplaints.setMaxVisibleValueCount(60)
+        binding!!.barGraphTotalComplaints.setDrawValueAboveBar(true)
 
         // scaling can now only be done on x- and y-axis separately
-        binding.barGraphTotalComplaints.setPinchZoom(false);
+        binding!!.barGraphTotalComplaints.setPinchZoom(false)
 
-        binding.barGraphTotalComplaints.setDrawBarShadow(false);
-        binding.barGraphTotalComplaints.setDrawGridBackground(false);
+        binding!!.barGraphTotalComplaints.setDrawBarShadow(false)
+        binding!!.barGraphTotalComplaints.setDrawGridBackground(false)
 
         // add a nice and smooth animation
-        binding.barGraphTotalComplaints.animateY(1500);
+        binding!!.barGraphTotalComplaints.animateY(1500)
 
-//        binding.barGraphTotalComplaints.getLegend().setEnabled(false);
+        //        binding.barGraphTotalComplaints.getLegend().setEnabled(false);
+        val l = binding!!.barGraphTotalComplaints.legend
+        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        l.orientation = Legend.LegendOrientation.HORIZONTAL
+        l.setDrawInside(false)
+        l.xEntrySpace = 10f
+        l.yEntrySpace = 0f
+        l.yOffset = 7f
+        l.textSize = 12f
 
-        Legend l = binding.barGraphTotalComplaints.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-        l.setXEntrySpace(10f);
-        l.setYEntrySpace(0f);
-        l.setYOffset(7f);
-        l.setTextSize(12f);
-
-        binding.barGraphTotalComplaints.setExtraOffsets(0f, 0f, 0f, 0f);
-        setDataTotalComplaintsBarGraph(modelComplaintList);
-
+        binding!!.barGraphTotalComplaints.setExtraOffsets(0f, 0f, 0f, 0f)
+        setDataTotalComplaintsBarGraph(modelComplaintList)
     }
 
-    private void setDataTotalComplaintsBarGraph(List<ModelComplaintList> modelComplaintList) {
-        float barWidth = 0.3f;
-        float barSpace = 0.0f;
-        float groupSpace = 0.06f;
-        int groupCount = 3;
+    private fun setDataTotalComplaintsBarGraph(modelComplaintList: List<ModelComplaintList>) {
+        val barWidth = 0.3f
+        val barSpace = 0.0f
+        val groupSpace = 0.06f
+        val groupCount = 3
 
-        ArrayList<BarEntry> valuesTotalComplaints = new ArrayList<>();
-        ArrayList<BarEntry> valuesResolvedComplaints = new ArrayList<>();
+        val valuesTotalComplaints = ArrayList<BarEntry>()
+        val valuesResolvedComplaints = ArrayList<BarEntry>()
 
-        List<ModelComplaintList> modelResolveComplaintList = new ArrayList<>();
+        val modelResolveComplaintList: MutableList<ModelComplaintList> = ArrayList()
 
-        for (int i = 0; i < modelComplaintList.size(); i++) {
-            if (modelComplaintList.get(i).getComplainStatusId().equals("3")) {
-                modelResolveComplaintList.add(modelComplaintList.get(i));
+        for (i in modelComplaintList.indices) {
+            if (modelComplaintList[i].complainStatusId == "3") {
+                modelResolveComplaintList.add(modelComplaintList[i])
             }
         }
 
-        List<String> listMonthName = new ArrayList<>();
-        for (ModelComplaintList modelMonth : modelComplaintList) {
+        val listMonthName: MutableList<String> = ArrayList()
+        for (modelMonth in modelComplaintList) {
 //            ModelComplaintRegistrationDate monthDetailModel = modelMonth.getComplainRegDate();
 //            String monthName = monthDetailModel.getMonth();
 
-       //     String monthName = "Monthhhhhh";
+            //     String monthName = "Monthhhhhh";
 
 
-            String monthDetailModel = modelMonth.getComplainRegDateStr();
-            Log.d("--monthDetailModel--"," "+ monthDetailModel);
-            String[] mnt_list = monthDetailModel.split("-");
+            val monthDetailModel = modelMonth.complainRegDateStr
+            Log.d("--monthDetailModel--", " $monthDetailModel")
+            val mnt_list = monthDetailModel!!.split("-".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray()
 
-            String date = mnt_list[0];
-            int month = Integer.parseInt(mnt_list[1]);
-            String year = mnt_list[2];
+            val date = mnt_list[0]
+            val month = mnt_list[1].toInt()
+            val year = mnt_list[2]
 
-            String monthString = new DateFormatSymbols().getMonths()[month-1];
+            val monthString = DateFormatSymbols().months[month - 1]
 
-            String monthName = monthString;
+            val monthName = monthString
 
-            if (listMonthName.size() == 0)
-                listMonthName.add(monthName);
+            if (listMonthName.size == 0) listMonthName.add(monthName)
             else {
-                boolean existFlag = false;
-                for (int i = 0; i < listMonthName.size(); i++) {
-                    if (monthName.equalsIgnoreCase(listMonthName.get(i))) {
-                        existFlag = true;
-                        break;
+                var existFlag = false
+                for (i in listMonthName.indices) {
+                    if (monthName.equals(listMonthName[i], ignoreCase = true)) {
+                        existFlag = true
+                        break
                     }
                 }
-                if (!existFlag)
-                    listMonthName.add(monthName);
+                if (!existFlag) listMonthName.add(monthName)
             }
         }
 
 
-        List<ModelComplaintList> listFirstMonthTotal = new ArrayList<>();
-        List<ModelComplaintList> listSecondMonthTotal = new ArrayList<>();
-        List<ModelComplaintList> listCurrentMonthTotal = new ArrayList<>();
+        val listFirstMonthTotal: MutableList<ModelComplaintList> = ArrayList()
+        val listSecondMonthTotal: MutableList<ModelComplaintList> = ArrayList()
+        val listCurrentMonthTotal: MutableList<ModelComplaintList> = ArrayList()
 
-        for (ModelComplaintList model : modelComplaintList) {
-       //     String monthName1 = model.getComplainRegDate().getMonth();
-               String monthName = model.getComplainRegDateStr();
-
-
-
-            Log.d("--monthDetailModel--"," "+ monthName);
-            String[] mnt_list = monthName.split("-");
-
-            String date = mnt_list[0];
-            int month = Integer.parseInt(mnt_list[1]);
-            String year = mnt_list[2];
-
-            String monthString = new DateFormatSymbols().getMonths()[month-1];
+        for (model in modelComplaintList) {
+            //     String monthName1 = model.getComplainRegDate().getMonth();
+            val monthName = model.complainRegDateStr
 
 
 
-         // String monthName1 = "Monthhhhhh";
-          String monthName1 = monthString;
+            Log.d("--monthDetailModel--", " $monthName")
+            val mnt_list =
+                monthName!!.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+
+            val date = mnt_list[0]
+            val month = mnt_list[1].toInt()
+            val year = mnt_list[2]
+
+            val monthString = DateFormatSymbols().months[month - 1]
 
 
-
-            if (listMonthName.size() > 0) {
-                for (int j = 0; j < listMonthName.size(); j++) {
-                    String monthName2 = listMonthName.get(j);
-                    if (monthName1.equalsIgnoreCase(monthName2)){
-                        switch (j){
-                            case 0:
-                                listFirstMonthTotal.add(model);
-                                break;
-                            case 1:
-                                listSecondMonthTotal.add(model);
-                                break;
-                            case 2:
-                                listCurrentMonthTotal.add(model);
-                                break;
-                        }
-                    }
-                }
-            }
-        }
-
-
-        List<ModelComplaintList> listFirstMonthResolve = new ArrayList<>();
-        List<ModelComplaintList> listSecondMonthResolve = new ArrayList<>();
-        List<ModelComplaintList> listCurrentMonthResolve = new ArrayList<>();
-
-        for (ModelComplaintList model : modelResolveComplaintList) {
-       //     String monthName1 = model.getComplainRegDate().getMonth();
-          //  String monthName1 = "Monthhhhhh";
-
-
-            String monthName = model.getComplainRegDateStr();
-
-
-
-            Log.d("--monthDetailModel--", " "+monthName);
-            String[] mnt_list = monthName.split("-");
-
-            String date = mnt_list[0];
-            int month = Integer.parseInt(mnt_list[1]);
-            String year = mnt_list[2];
-
-            String monthString = new DateFormatSymbols().getMonths()[month-1];
             // String monthName1 = "Monthhhhhh";
-            String monthName1 = monthString;
+            val monthName1 = monthString
 
-            if (listMonthName.size() > 0) {
-                for (int j = 0; j < listMonthName.size(); j++) {
-                    String monthName2 = listMonthName.get(j);
-                    if (monthName1.equalsIgnoreCase(monthName2)){
-                        switch (j){
-                            case 0:
-                                listFirstMonthResolve.add(model);
-                                break;
-                            case 1:
-                                listSecondMonthResolve.add(model);
-                                break;
-                            case 2:
-                                listCurrentMonthResolve.add(model);
-                                break;
+
+
+            if (listMonthName.size > 0) {
+                for (j in listMonthName.indices) {
+                    val monthName2 = listMonthName[j]
+                    if (monthName1.equals(monthName2, ignoreCase = true)) {
+                        when (j) {
+                            0 -> listFirstMonthTotal.add(model)
+                            1 -> listSecondMonthTotal.add(model)
+                            2 -> listCurrentMonthTotal.add(model)
                         }
                     }
                 }
             }
         }
 
-        valuesTotalComplaints.add(new BarEntry(0, listFirstMonthTotal.size()));
-        valuesResolvedComplaints.add(new BarEntry(0, listFirstMonthResolve.size()));
 
-        valuesTotalComplaints.add(new BarEntry(1, listSecondMonthTotal.size()));
-        valuesResolvedComplaints.add(new BarEntry(1, listSecondMonthResolve.size()));
+        val listFirstMonthResolve: MutableList<ModelComplaintList> = ArrayList()
+        val listSecondMonthResolve: MutableList<ModelComplaintList> = ArrayList()
+        val listCurrentMonthResolve: MutableList<ModelComplaintList> = ArrayList()
 
-        valuesTotalComplaints.add(new BarEntry(2, listCurrentMonthTotal.size()));
-        valuesResolvedComplaints.add(new BarEntry(2, listCurrentMonthResolve.size()));
+        for (model in modelResolveComplaintList) {
+            //     String monthName1 = model.getComplainRegDate().getMonth();
+            //  String monthName1 = "Monthhhhhh";
 
-        XAxis xAxis = binding.barGraphTotalComplaints.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setCenterAxisLabels(false);
-        xAxis.setDrawGridLines(false);
-        xAxis.setGranularity(1f);
-        xAxis.setGranularityEnabled(false);
-//        xAxis.setAxisMinimum(0f);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter());
 
-        BarDataSet set1, set2;
-        if (binding.barGraphTotalComplaints.getData() != null &&
-                binding.barGraphTotalComplaints.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet) binding.barGraphTotalComplaints.getData().getDataSetByIndex(0);
-            set2 = (BarDataSet) binding.barGraphTotalComplaints.getData().getDataSetByIndex(1);
-            set1.setValues(valuesTotalComplaints);
-            set2.setValues(valuesResolvedComplaints);
-            binding.barGraphTotalComplaints.getData().notifyDataChanged();
-            binding.barGraphTotalComplaints.notifyDataSetChanged();
+            val monthName = model.complainRegDateStr
 
-        } else {
-            set1 = new BarDataSet(valuesTotalComplaints, getResources().getString(R.string.total));
-            set1.setColors(MATERIAL_COLORS);
-            set1.setDrawValues(true);
 
-            set2 = new BarDataSet(valuesResolvedComplaints, getResources().getString(R.string.complaint_resolve));
-            set2.setColors(MATERIAL_COLORS2);
-            set2.setDrawValues(true);
 
-            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1);
-            dataSets.add(set2);
+            Log.d("--monthDetailModel--", " $monthName")
+            val mnt_list =
+                monthName!!.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-            BarData data = new BarData(dataSets);
-            data.setValueTextSize(13f);
-            data.getDataSetCount();
-            binding.barGraphTotalComplaints.setData(data);
-            binding.barGraphTotalComplaints.setFitBars(true);
+            val date = mnt_list[0]
+            val month = mnt_list[1].toInt()
+            val year = mnt_list[2]
+
+            val monthString = DateFormatSymbols().months[month - 1]
+            // String monthName1 = "Monthhhhhh";
+            val monthName1 = monthString
+
+            if (listMonthName.size > 0) {
+                for (j in listMonthName.indices) {
+                    val monthName2 = listMonthName[j]
+                    if (monthName1.equals(monthName2, ignoreCase = true)) {
+                        when (j) {
+                            0 -> listFirstMonthResolve.add(model)
+                            1 -> listSecondMonthResolve.add(model)
+                            2 -> listCurrentMonthResolve.add(model)
+                        }
+                    }
+                }
+            }
         }
 
-        binding.barGraphTotalComplaints.getXAxis().setAxisMinimum(0);
+        valuesTotalComplaints.add(BarEntry(0f, listFirstMonthTotal.size.toFloat()))
+        valuesResolvedComplaints.add(BarEntry(0f, listFirstMonthResolve.size.toFloat()))
 
-//        binding.barGraphTotalComplaints.getXAxis().setAxisMaximum(0
+        valuesTotalComplaints.add(BarEntry(1f, listSecondMonthTotal.size.toFloat()))
+        valuesResolvedComplaints.add(BarEntry(1f, listSecondMonthResolve.size.toFloat()))
+
+        valuesTotalComplaints.add(BarEntry(2f, listCurrentMonthTotal.size.toFloat()))
+        valuesResolvedComplaints.add(BarEntry(2f, listCurrentMonthResolve.size.toFloat()))
+
+        val xAxis = binding!!.barGraphTotalComplaints.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setCenterAxisLabels(false)
+        xAxis.setDrawGridLines(false)
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = false
+        //        xAxis.setAxisMinimum(0f);
+        xAxis.valueFormatter = IndexAxisValueFormatter()
+
+        val set1: BarDataSet
+        val set2: BarDataSet
+        if (binding!!.barGraphTotalComplaints.data != null &&
+            binding!!.barGraphTotalComplaints.data.dataSetCount > 0
+        ) {
+            set1 = binding!!.barGraphTotalComplaints.data.getDataSetByIndex(0) as BarDataSet
+            set2 = binding!!.barGraphTotalComplaints.data.getDataSetByIndex(1) as BarDataSet
+            set1.values = valuesTotalComplaints
+            set2.values = valuesResolvedComplaints
+            binding!!.barGraphTotalComplaints.data.notifyDataChanged()
+            binding!!.barGraphTotalComplaints.notifyDataSetChanged()
+        } else {
+            set1 = BarDataSet(valuesTotalComplaints, resources.getString(R.string.total))
+            set1.setColors(*MATERIAL_COLORS)
+            set1.setDrawValues(true)
+
+            set2 = BarDataSet(
+                valuesResolvedComplaints,
+                resources.getString(R.string.complaint_resolve)
+            )
+            set2.setColors(*MATERIAL_COLORS2)
+            set2.setDrawValues(true)
+
+            val dataSets = ArrayList<IBarDataSet>()
+            dataSets.add(set1)
+            dataSets.add(set2)
+
+            val data = BarData(dataSets)
+            data.setValueTextSize(13f)
+            data.dataSetCount
+            binding!!.barGraphTotalComplaints.data = data
+            binding!!.barGraphTotalComplaints.setFitBars(true)
+        }
+
+        binding!!.barGraphTotalComplaints.xAxis.axisMinimum = 0f
+
+        //        binding.barGraphTotalComplaints.getXAxis().setAxisMaximum(0
 //                + binding.barGraphTotalComplaints.getBarData().getGroupWidth(groupSpace, barSpace) * groupCount);
-
-        binding.barGraphTotalComplaints.getBarData().setBarWidth(0.40f);
-        binding.barGraphTotalComplaints.groupBars(groupSpace, groupSpace, barSpace);
-        binding.barGraphTotalComplaints.invalidate();
-
+        binding!!.barGraphTotalComplaints.barData.barWidth = 0.40f
+        binding!!.barGraphTotalComplaints.groupBars(groupSpace, groupSpace, barSpace)
+        binding!!.barGraphTotalComplaints.invalidate()
     }
-    //end total complaints bar graph
 
-    public static int rgb(String hex) {
-        int color = (int) Long.parseLong(hex.replace("#", ""), 16);
-        int r = (color >> 16) & 0xFF;
-        int g = (color >> 8) & 0xFF;
-        int b = (color >> 0) & 0xFF;
-        return Color.rgb(r, g, b);
+    companion object {
+        val MATERIAL_COLORS: IntArray = intArrayOf(rgb("#5d62b5"))
+        val MATERIAL_COLORS2: IntArray = intArrayOf(rgb("#29c3be"))
+
+        //end total complaints bar graph
+        fun rgb(hex: String): Int {
+            val color = hex.replace("#", "").toLong(16).toInt()
+            val r = (color shr 16) and 0xFF
+            val g = (color shr 8) and 0xFF
+            val b = (color shr 0) and 0xFF
+            return Color.rgb(r, g, b)
+        }
     }
 }

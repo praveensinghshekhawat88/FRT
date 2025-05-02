@@ -1,108 +1,49 @@
-package com.callmangement.model.reports;
+package com.callmangement.model.reports
 
-import com.callmangement.model.complaints.ModelComplaintRegistrationDate;
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-import java.io.Serializable;
+class ModelSLAReportDetailsList : Serializable {
+    @JvmField
+    @SerializedName("complainStatusId")
+    var complainStatusId: String? = null
 
-public class ModelSLAReportDetailsList implements Serializable {
-    @SerializedName("complainStatusId") private String complainStatusId;
-    @SerializedName("complainStatus") private String complainStatus;
-    @SerializedName("fpscode") private String fpscode;
-    @SerializedName("mobileNo") private String mobileNo;
-    @SerializedName("customerName") private String customerName;
-    @SerializedName("complainRegNo") private String complainRegNo;
-    @SerializedName("tehsil") private String tehsil;
-    @SerializedName("customerId") private String customerId;
-    @SerializedName("complainRegDateStr") private String complainRegDateStr;
-    @SerializedName("sermarkDateStr") private String sermarkDateStr;
-    @SerializedName("resolveTime") private Integer resolveTime;
+    @JvmField
+    @SerializedName("complainStatus")
+    var complainStatus: String? = null
 
-    public String getComplainStatusId() {
-        return complainStatusId;
-    }
+    @JvmField
+    @SerializedName("fpscode")
+    var fpscode: String? = null
 
-    public void setComplainStatusId(String complainStatusId) {
-        this.complainStatusId = complainStatusId;
-    }
+    @JvmField
+    @SerializedName("mobileNo")
+    var mobileNo: String? = null
 
-    public String getComplainStatus() {
-        return complainStatus;
-    }
+    @JvmField
+    @SerializedName("customerName")
+    var customerName: String? = null
 
-    public void setComplainStatus(String complainStatus) {
-        this.complainStatus = complainStatus;
-    }
+    @JvmField
+    @SerializedName("complainRegNo")
+    var complainRegNo: String? = null
 
-    public String getFpscode() {
-        return fpscode;
-    }
+    @JvmField
+    @SerializedName("tehsil")
+    var tehsil: String? = null
 
-    public void setFpscode(String fpscode) {
-        this.fpscode = fpscode;
-    }
+    @SerializedName("customerId")
+    var customerId: String? = null
 
-    public String getMobileNo() {
-        return mobileNo;
-    }
+    @JvmField
+    @SerializedName("complainRegDateStr")
+    var complainRegDateStr: String? = null
 
-    public void setMobileNo(String mobileNo) {
-        this.mobileNo = mobileNo;
-    }
+    @JvmField
+    @SerializedName("sermarkDateStr")
+    var sermarkDateStr: String? = null
 
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getComplainRegNo() {
-        return complainRegNo;
-    }
-
-    public void setComplainRegNo(String complainRegNo) {
-        this.complainRegNo = complainRegNo;
-    }
-
-    public String getTehsil() {
-        return tehsil;
-    }
-
-    public void setTehsil(String tehsil) {
-        this.tehsil = tehsil;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
-    public String getComplainRegDateStr() {
-        return complainRegDateStr;
-    }
-
-    public void setComplainRegDateStr(String complainRegDateStr) {
-        this.complainRegDateStr = complainRegDateStr;
-    }
-
-    public String getSermarkDateStr() {
-        return sermarkDateStr;
-    }
-
-    public void setSermarkDateStr(String sermarkDateStr) {
-        this.sermarkDateStr = sermarkDateStr;
-    }
-
-    public Integer getResolveTime() {
-        return this.resolveTime;
-    }
-
-    public void setResolveTime(Integer resolveTime) {
-        this.resolveTime = resolveTime;
-    }
+    @JvmField
+    @SerializedName("resolveTime")
+    var resolveTime: Int? = null
 }

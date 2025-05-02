@@ -274,12 +274,12 @@ public class ReceiveMaterialListActivity extends CustomActivity implements View.
                     hideProgress();
                     if (response.isSuccessful()){
                         ModelDispatchInvoice model = response.body();
-                        if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                        if (Objects.requireNonNull(model).status.equals("200")) {
                             hideProgress();
-                            if (model.getPartsDispatchInvoiceList().size() > 0){
+                            if (model.partsDispatchInvoiceList.size() > 0){
                                 binding.rvReceiveMaterial.setVisibility(View.VISIBLE);
                                 binding.textNoRecordFound.setVisibility(View.GONE);
-                                List<ModelPartsDispatchInvoiceList> partsDispatchInvoiceList = model.getPartsDispatchInvoiceList();
+                                List<ModelPartsDispatchInvoiceList> partsDispatchInvoiceList = model.partsDispatchInvoiceList;
                                 Collections.reverse(partsDispatchInvoiceList);
                                 binding.rvReceiveMaterial.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
                                 binding.rvReceiveMaterial.setAdapter(new ReceiveMaterialListActivityAdapter(mContext, partsDispatchInvoiceList));

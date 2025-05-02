@@ -14,9 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.callmangement.R;
-import com.callmangement.model.WeighingDeliveryDetail.weighingDeliveryImagesDetail;
+import com.callmangement.model.weighingDeliveryDetail.weighingDeliveryImagesDetail;
 import com.callmangement.support.OnSingleClickListener;
-import com.callmangement.ui.errors.model.GetErrorImagesDatum;
 import com.callmangement.ui.home.ZoomInZoomOutActivity;
 import com.callmangement.utils.Constants;
 
@@ -52,7 +51,7 @@ public class ViewImagesListingAdapterIris extends RecyclerView.Adapter<ViewImage
     public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         weighingDeliveryImagesDetail getErrorImagesDatum = getErrorImagesDatumArrayList.get(position);
 
-        String imagePath = getErrorImagesDatum.getImagePath();
+        String imagePath = getErrorImagesDatum.imagePath;
 
 
         if (imagePath != null
@@ -70,7 +69,7 @@ public class ViewImagesListingAdapterIris extends RecyclerView.Adapter<ViewImage
             public void onSingleClick(View v) {
                 if (mOnItemViewClickListener != null)
                     mOnItemViewClickListener.onItemClick(getErrorImagesDatum, position);
-                mContext.startActivity(new Intent(mContext, ZoomInZoomOutActivity.class).putExtra("image", Constants.API_BASE_URL+ getErrorImagesDatum.getImagePath()));
+                mContext.startActivity(new Intent(mContext, ZoomInZoomOutActivity.class).putExtra("image", Constants.API_BASE_URL+ getErrorImagesDatum.imagePath));
             }
         });
 

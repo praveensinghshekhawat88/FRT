@@ -1,33 +1,16 @@
-package com.callmangement.model.complaints;
+package com.callmangement.model.complaints
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-public class ModelComplaintsCount {
-    @SerializedName("status") private String status;
-    @SerializedName("message") private String message;
-    @SerializedName("Complaints_Count") private ModelComplaintsCountData Complaints_Count = new ModelComplaintsCountData();
+class ModelComplaintsCount {
+    @JvmField
+    @SerializedName("status")
+    var status: String? = null
 
-    public String getStatus() {
-        return status;
-    }
+    @JvmField
+    @SerializedName("message")
+    var message: String? = null
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public ModelComplaintsCountData getComplaints_Count() {
-        return Complaints_Count;
-    }
-
-    public void setComplaints_Count(ModelComplaintsCountData complaints_Count) {
-        Complaints_Count = complaints_Count;
-    }
+    @SerializedName("Complaints_Count")
+    var complaints_Count: ModelComplaintsCountData = ModelComplaintsCountData()
 }

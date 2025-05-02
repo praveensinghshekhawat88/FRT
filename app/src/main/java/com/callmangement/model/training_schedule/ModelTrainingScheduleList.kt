@@ -1,188 +1,76 @@
-package com.callmangement.model.training_schedule;
+package com.callmangement.model.training_schedule
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-import java.io.Serializable;
+class ModelTrainingScheduleList : Serializable {
+    @JvmField
+    @SerializedName("address")
+    var address: String? = null
 
-public class ModelTrainingScheduleList implements Serializable {
-    @SerializedName("address") private String address;
-    @SerializedName("description") private String description;
-    @SerializedName("createdBy") private String createdBy;
-    @SerializedName("tehsilNameEng") private String tehsilNameEng;
-    @SerializedName("tehsilNameHi") private String tehsilNameHi;
-    @SerializedName("tehsilID") private String tehsilID;
-    @SerializedName("blockId") private String blockId;
-    @SerializedName("trainingId") private String trainingId;
-    @SerializedName("endDate") private String endDate;
-    @SerializedName("trainingNo") private String trainingNo;
-    @SerializedName("districtID") private String districtID;
-    @SerializedName("startDate") private String startDate;
-    @SerializedName("tstatus") private String tstatus;
-    @SerializedName("createdOn") private String createdOn;
-    @SerializedName("isActive") private String isActive;
-    @SerializedName("updatedBy") private String updatedBy;
-    @SerializedName("updatedOn") private String updatedOn;
-    @SerializedName("districtNameHi") private String districtNameHi;
-    @SerializedName("districtNameEng") private String districtNameEng;
-    @SerializedName("title") private String title;
+    @JvmField
+    @SerializedName("description")
+    var description: String? = null
 
-    public String getAddress() {
-        return address;
-    }
+    @SerializedName("createdBy")
+    var createdBy: String? = null
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    @JvmField
+    @SerializedName("tehsilNameEng")
+    var tehsilNameEng: String? = null
 
-    public String getDescription() {
-        return description;
-    }
+    @SerializedName("tehsilNameHi")
+    var tehsilNameHi: String? = null
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    @JvmField
+    @SerializedName("tehsilID")
+    var tehsilID: String? = null
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
+    @SerializedName("blockId")
+    var blockId: String? = null
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
+    @JvmField
+    @SerializedName("trainingId")
+    var trainingId: String? = null
 
-    public String getTehsilNameEng() {
-        return tehsilNameEng;
-    }
+    @JvmField
+    @SerializedName("endDate")
+    var endDate: String? = null
 
-    public void setTehsilNameEng(String tehsilNameEng) {
-        this.tehsilNameEng = tehsilNameEng;
-    }
+    @JvmField
+    @SerializedName("trainingNo")
+    var trainingNo: String? = null
 
-    public String getTehsilNameHi() {
-        return tehsilNameHi;
-    }
+    @JvmField
+    @SerializedName("districtID")
+    var districtID: String? = null
 
-    public void setTehsilNameHi(String tehsilNameHi) {
-        this.tehsilNameHi = tehsilNameHi;
-    }
+    @JvmField
+    @SerializedName("startDate")
+    var startDate: String? = null
 
-    public String getTehsilID() {
-        return tehsilID;
-    }
+    @SerializedName("tstatus")
+    var tstatus: String? = null
 
-    public void setTehsilID(String tehsilID) {
-        this.tehsilID = tehsilID;
-    }
+    @SerializedName("createdOn")
+    var createdOn: String? = null
 
-    public String getBlockId() {
-        return blockId;
-    }
+    @SerializedName("isActive")
+    var isActive: String? = null
 
-    public void setBlockId(String blockId) {
-        this.blockId = blockId;
-    }
+    @SerializedName("updatedBy")
+    var updatedBy: String? = null
 
-    public String getTrainingId() {
-        return trainingId;
-    }
+    @SerializedName("updatedOn")
+    var updatedOn: String? = null
 
-    public void setTrainingId(String trainingId) {
-        this.trainingId = trainingId;
-    }
+    @SerializedName("districtNameHi")
+    var districtNameHi: String? = null
 
-    public String getEndDate() {
-        return endDate;
-    }
+    @SerializedName("districtNameEng")
+    var districtNameEng: String? = null
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getTrainingNo() {
-        return trainingNo;
-    }
-
-    public void setTrainingNo(String trainingNo) {
-        this.trainingNo = trainingNo;
-    }
-
-    public String getDistrictID() {
-        return districtID;
-    }
-
-    public void setDistrictID(String districtID) {
-        this.districtID = districtID;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getTstatus() {
-        return tstatus;
-    }
-
-    public void setTstatus(String tstatus) {
-        this.tstatus = tstatus;
-    }
-
-    public String getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(String createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public String getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(String isActive) {
-        this.isActive = isActive;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public String getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public void setUpdatedOn(String updatedOn) {
-        this.updatedOn = updatedOn;
-    }
-
-    public String getDistrictNameHi() {
-        return districtNameHi;
-    }
-
-    public void setDistrictNameHi(String districtNameHi) {
-        this.districtNameHi = districtNameHi;
-    }
-
-    public String getDistrictNameEng() {
-        return districtNameEng;
-    }
-
-    public void setDistrictNameEng(String districtNameEng) {
-        this.districtNameEng = districtNameEng;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    @JvmField
+    @SerializedName("title")
+    var title: String? = null
 }

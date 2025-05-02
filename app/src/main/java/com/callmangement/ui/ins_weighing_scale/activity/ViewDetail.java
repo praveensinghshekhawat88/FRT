@@ -8,13 +8,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,23 +26,20 @@ import com.callmangement.Network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityDeliverylistDetailsIrisBinding;
-import com.callmangement.firebase.FirebaseUtils;
 import com.callmangement.imagepicker.model.Config;
 import com.callmangement.imagepicker.model.Image;
 import com.callmangement.imagepicker.ui.imagepicker.ImagePicker;
-import com.callmangement.model.WeighingDeliveryDetail.weighingDelieryRoot;
-import com.callmangement.model.WeighingDeliveryDetail.weighingDeliveryData;
-import com.callmangement.model.WeighingDeliveryDetail.weighingDeliveryImagesDetail;
+import com.callmangement.model.weighingDeliveryDetail.weighingDelieryRoot;
+import com.callmangement.model.weighingDeliveryDetail.weighingDeliveryData;
+import com.callmangement.model.weighingDeliveryDetail.weighingDeliveryImagesDetail;
 import com.callmangement.model.logout.ModelLogout;
 import com.callmangement.support.ImageUtilsForRotate;
 import com.callmangement.support.OnSingleClickListener;
 import com.callmangement.ui.ins_weighing_scale.adapter.ViewImagesListingAdapterIris;
 import com.callmangement.ui.ins_weighing_scale.model.DeliveredWeightInstal.WeighInsData;
 import com.callmangement.ui.ins_weighing_scale.model.SaveInstall.SaveRoot;
-import com.callmangement.ui.login.LoginActivity;
 import com.callmangement.utils.CompressImage;
 import com.callmangement.utils.Constants;
-import com.callmangement.utils.EqualSpacingItemDecoration;
 import com.callmangement.utils.PrefManager;
 
 import java.io.File;
@@ -287,12 +282,12 @@ public class ViewDetail extends CustomActivity implements View.OnClickListener {
                 if (response.isSuccessful()) {
                     if (response.code() == 200) {
                         ModelLogout model = response.body();
-                        if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                        if (Objects.requireNonNull(model).status.equals("200")) {
                             Intent previousScreen = new Intent(getApplicationContext(), InstallationPendingList.class);
                             setResult(RESULT_OK);
                             finish();
                         } else {
-                            makeToast(model.getMessage());
+                            makeToast(model.message);
                         }
                     } else {
                         makeToast(getResources().getString(R.string.error));
@@ -474,13 +469,13 @@ public class ViewDetail extends CustomActivity implements View.OnClickListener {
                             if (response.code() == 200) {
                                 if (response.body() != null) {
 
-                                    if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                    if (Objects.requireNonNull(response.body()).status.equals("200")) {
                                         weighingDelieryRoot getErrorImagesRoot = response.body();
                                         weighingDeliveryData weighingDeliveryData = getErrorImagesRoot.getData();
                                         Log.d("getErrorTypesRoot..", "getErrorTypesRoot.." + getErrorImagesRoot);
-                                        binding.inputWsSerialno.setText(weighingDeliveryData.getWeighingScaleSerialNo());
+                                        binding.inputWsSerialno.setText(weighingDeliveryData.weighingScaleSerialNo);
                                         ArrayList<weighingDeliveryImagesDetail> getErrorImagesDatumArrayList =
-                                                weighingDeliveryData.getImagesDetail();
+                                                weighingDeliveryData.imagesDetail;
 
                                         if (!getErrorImagesDatumArrayList.isEmpty()) {
                                             binding.tvUploadedimage.setVisibility(View.VISIBLE);

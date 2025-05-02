@@ -292,7 +292,7 @@ public class AttendanceActivity extends CustomActivity {
             public void onResponse(@NonNull Call<ModelAttendance> call, @NonNull Response<ModelAttendance> response) {
                 if (response.isSuccessful()){
                     ModelAttendance model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")){
+                    if (Objects.requireNonNull(model).status.equals("200")){
 
                         makeToast(getResources().getString(R.string.your_attendance_marked_successfully));
 

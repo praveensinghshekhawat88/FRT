@@ -1,3 +1,0 @@
-G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/.cxx/Debug/3ai3603n/x86_64/CMakeFiles/e_hr.dir
-G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/.cxx/Debug/3ai3603n/x86_64/CMakeFiles/edit_cache.dir
-G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/.cxx/Debug/3ai3603n/x86_64/CMakeFiles/rebuild_cache.dir

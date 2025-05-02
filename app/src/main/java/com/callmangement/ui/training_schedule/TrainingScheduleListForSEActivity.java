@@ -110,10 +110,10 @@ public class TrainingScheduleListForSEActivity extends CustomActivity implements
         isLoading();
         viewModel.getTraining(prefManager.getUSER_Id(), prefManager.getUSER_DistrictId(),tehsilId,trainingNumber,startDate,endDate).observe(this, modelTrainingSchedule -> {
             isLoading();
-            if (modelTrainingSchedule.getList().size() > 0){
+            if (modelTrainingSchedule.list.size() > 0){
                 binding.textNoTrainingSchedule.setVisibility(View.GONE);
                 binding.rvTrainingSchedule.setVisibility(View.VISIBLE);
-                adapter.setData(modelTrainingSchedule.getList());
+                adapter.setData(modelTrainingSchedule.list);
             } else {
                 binding.textNoTrainingSchedule.setVisibility(View.VISIBLE);
                 binding.rvTrainingSchedule.setVisibility(View.GONE);
@@ -142,13 +142,13 @@ public class TrainingScheduleListForSEActivity extends CustomActivity implements
                 if (response.code() == 200){
                     if (response.isSuccessful()){
                         ModelTehsil modelTehsil = response.body();
-                        if (Objects.requireNonNull(modelTehsil).getStatus().equals("200")) {
+                        if (Objects.requireNonNull(modelTehsil).status.equals("200")) {
                             tehsil_list = modelTehsil.getTehsil_List();
                             if (tehsil_list != null && tehsil_list.size() > 0) {
                                 Collections.reverse(tehsil_list);
                                 ModelTehsilList l = new ModelTehsilList();
                                 l.setTehsilId(String.valueOf(-1));
-                                l.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+                                l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
                                 tehsil_list.add(l);
                                 Collections.reverse(tehsil_list);
                                 ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, tehsil_list);
@@ -156,7 +156,7 @@ public class TrainingScheduleListForSEActivity extends CustomActivity implements
                                 spinnerTehsil.setAdapter(dataAdapter);
                             }
                         } else {
-                            makeToast(modelTehsil.getMessage());
+                            makeToast(modelTehsil.message);
                         }
                     } else {
                         makeToast(getResources().getString(R.string.error));
@@ -195,7 +195,7 @@ public class TrainingScheduleListForSEActivity extends CustomActivity implements
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     if(++checkTehsil > 1) {
-                        tehsilNameEng = tehsil_list.get(i).getTehsilNameEng();
+                        tehsilNameEng = tehsil_list.get(i).tehsilNameEng;
                         tehsilId = tehsil_list.get(i).getTehsilId();
                     }
                 }

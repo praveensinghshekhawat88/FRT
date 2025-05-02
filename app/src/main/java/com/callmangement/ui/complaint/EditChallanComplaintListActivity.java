@@ -316,7 +316,7 @@ public class EditChallanComplaintListActivity extends CustomActivity {
         isLoading();
         viewModel.getModelEditChallanComplaintMutableLiveData(String.valueOf(prefManager.getUSER_Id()), districtId, complainRegNo, "").observe(this, modelComplaint -> {
             isLoading();
-            if (modelComplaint.getStatus().equals("200")) {
+            if (modelComplaint.status.equals("200")) {
                 modelComplaintList = modelComplaint.getComplaint_List();
                 setDataIntoAdapter(modelComplaintList);
             }
@@ -356,16 +356,16 @@ public class EditChallanComplaintListActivity extends CustomActivity {
                     if (districtNameEng.equalsIgnoreCase("--" + getResources().getString(R.string.district) + "--")) {
                         complaintList.add(modelComplaintList.get(i));
                     } else {
-                        if (modelComplaintList.get(i).getDistrict() != null) {
-                            if (modelComplaintList.get(i).getDistrict().equalsIgnoreCase(districtNameEng)) {
+                        if (modelComplaintList.get(i).district != null) {
+                            if (modelComplaintList.get(i).district.equalsIgnoreCase(districtNameEng)) {
                                 complaintList.add(modelComplaintList.get(i));
                             }
                         }
                     }
 
                 } else {
-                    if (modelComplaintList.get(i).getTehsil() != null) {
-                        if (modelComplaintList.get(i).getTehsil().equalsIgnoreCase(tehsilNameEng)) {
+                    if (modelComplaintList.get(i).tehsil != null) {
+                        if (modelComplaintList.get(i).tehsil.equalsIgnoreCase(tehsilNameEng)) {
                             complaintList.add(modelComplaintList.get(i));
                         }
                     }
@@ -394,8 +394,8 @@ public class EditChallanComplaintListActivity extends CustomActivity {
                 if (districtNameEng.equalsIgnoreCase("--" + getResources().getString(R.string.district) + "--")) {
                     complaintList.add(modelComplaintList.get(i));
                 } else {
-                    if (modelComplaintList.get(i).getDistrict() != null) {
-                        if (modelComplaintList.get(i).getDistrict().equalsIgnoreCase(districtNameEng)) {
+                    if (modelComplaintList.get(i).district != null) {
+                        if (modelComplaintList.get(i).district.equalsIgnoreCase(districtNameEng)) {
                             complaintList.add(modelComplaintList.get(i));
                         }
                     }
@@ -422,8 +422,8 @@ public class EditChallanComplaintListActivity extends CustomActivity {
                 if (district.equalsIgnoreCase("--" + getResources().getString(R.string.district) + "--")) {
                     tehsilList.add(tehsil_List_main.get(i));
                 } else {
-                    if (tehsil_List_main.get(i).getDistrictNameEng() != null) {
-                        if (tehsil_List_main.get(i).getDistrictNameEng().equalsIgnoreCase(district)) {
+                    if (tehsil_List_main.get(i).districtNameEng != null) {
+                        if (tehsil_List_main.get(i).districtNameEng.equalsIgnoreCase(district)) {
                             tehsilList.add(tehsil_List_main.get(i));
                         }
                     }
@@ -434,7 +434,7 @@ public class EditChallanComplaintListActivity extends CustomActivity {
             Collections.reverse(tehsilList);
             ModelTehsilList l = new ModelTehsilList();
             l.setTehsilId(String.valueOf(-1));
-            l.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+            l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
             tehsilList.add(l);
             Collections.reverse(tehsilList);
 
@@ -451,8 +451,8 @@ public class EditChallanComplaintListActivity extends CustomActivity {
                 if (districtId.equalsIgnoreCase("0")) {
                     tehsilList.add(tehsil_List_main.get(i));
                 } else {
-                    if (tehsil_List_main.get(i).getFk_DistrictId() != null) {
-                        if (tehsil_List_main.get(i).getFk_DistrictId().equalsIgnoreCase(districtId)) {
+                    if (tehsil_List_main.get(i).fk_DistrictId != null) {
+                        if (tehsil_List_main.get(i).fk_DistrictId.equalsIgnoreCase(districtId)) {
                             tehsilList.add(tehsil_List_main.get(i));
                         }
                     }
@@ -464,7 +464,7 @@ public class EditChallanComplaintListActivity extends CustomActivity {
             Collections.reverse(tehsilList);
             ModelTehsilList l = new ModelTehsilList();
             l.setTehsilId(String.valueOf(-1));
-            l.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+            l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
             tehsilList.add(l);
             Collections.reverse(tehsilList);
 

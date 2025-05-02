@@ -37,7 +37,7 @@ public class RepeatFpsComplaintDetailActivity extends CustomActivity implements 
     private void getIntentData() {
         model = (ModelRepeatFpsComplaintsList) getIntent().getSerializableExtra("param");
         binding.setData(model);
-        binding.chkBoxIsPhysicalDamage.setChecked(model.getIsPhysicalDamage() != null && model.getIsPhysicalDamage());
+        binding.chkBoxIsPhysicalDamage.setChecked(model.isPhysicalDamage != null && model.isPhysicalDamage);
         if (!model.getImagePath().isEmpty()) {
             binding.seImage.setVisibility(View.VISIBLE);
             Glide.with(mContext)

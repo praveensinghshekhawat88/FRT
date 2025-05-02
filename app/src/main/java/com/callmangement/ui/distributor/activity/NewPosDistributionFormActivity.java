@@ -205,7 +205,7 @@ public class NewPosDistributionFormActivity extends CustomActivity implements Vi
         binding.spinnerDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                districtNameEng = district_List.get(i).getDistrictNameEng();
+                districtNameEng = district_List.get(i).districtNameEng;
                 districtId = district_List.get(i).getDistrictId();
                 /*if (!districtId.equals("0") && Objects.requireNonNull(binding.inputFpsCode.getText()).toString().trim().length() > 0)
                     getOldMachineDetailsByFPSAPI(binding.inputFpsCode.getText().toString());*/
@@ -397,8 +397,8 @@ public class NewPosDistributionFormActivity extends CustomActivity implements Vi
             isLoading();
             viewModel.getDistrict().observe(this, modelDistrict -> {
                 isLoading();
-                if (modelDistrict.getStatus().equals("200")) {
-                    district_List = modelDistrict.getDistrict_List();
+                if (modelDistrict.status.equals("200")) {
+                    district_List = modelDistrict.district_List;
                     if (district_List != null && district_List.size() > 0) {
                         /*Collections.reverse(district_List);
                         ModelDistrictList_w l = new ModelDistrictList_w();
@@ -531,18 +531,18 @@ public class NewPosDistributionFormActivity extends CustomActivity implements Vi
                                             binding.inputFingerprintSrNo.setEnabled(false);
                                             binding.inputTicketNumber.setEnabled(false);
 
-                                            oldMachineSrNo = modelResponse.getOldMachineData().getOldMachineSerialNo();
-                                            fingerPrintSrNo = modelResponse.getOldMachineData().getOldMachineBiometricSeriallNo();
+                                            oldMachineSrNo = modelResponse.oldMachineData.getOldMachineSerialNo();
+                                            fingerPrintSrNo = modelResponse.oldMachineData.getOldMachineBiometricSeriallNo();
 
-                                            binding.inputDealerName.setText(modelResponse.getOldMachineData().getDealerName());
-                                            binding.inputMobileNumber.setText(modelResponse.getOldMachineData().getMobileNo());
-                                            binding.inputBlockName.setText(modelResponse.getOldMachineData().getBlockName());
+                                            binding.inputDealerName.setText(modelResponse.oldMachineData.getDealerName());
+                                            binding.inputMobileNumber.setText(modelResponse.oldMachineData.getMobileNo());
+                                            binding.inputBlockName.setText(modelResponse.oldMachineData.getBlockName());
                                             binding.inputOldMachineSrNo.setText(oldMachineSrNo);
                                             binding.inputFingerprintSrNo.setText(fingerPrintSrNo);
-                                            binding.inputTicketNumber.setText(modelResponse.getOldMachineData().getTicketNo());
+                                            binding.inputTicketNumber.setText(modelResponse.oldMachineData.getTicketNo());
 
-                                            districtId = modelResponse.getOldMachineData().getDistrictId().toString();
-                                            binding.spinnerDistrict.setSelection(getSelectedDistrictSpinnerIndex(modelResponse.getOldMachineData().getDistrictId().toString()));
+                                            districtId = modelResponse.oldMachineData.getDistrictId().toString();
+                                            binding.spinnerDistrict.setSelection(getSelectedDistrictSpinnerIndex(modelResponse.oldMachineData.getDistrictId().toString()));
                                         }
                                     } else {
                                         dialogMessage(modelResponse.getMessage());
@@ -616,13 +616,13 @@ public class NewPosDistributionFormActivity extends CustomActivity implements Vi
                                             binding.inputIMEIIMEI2.setEnabled(false);
                                             binding.inputAccessoriesProvided.setEnabled(false);
 
-                                            binding.inputNewMachineSrNo.setText(modelResponse.getNewMachineData().getNewMachineSerialNo());
-                                            binding.inputNewFingerprintSrNo.setText(modelResponse.getNewMachineData().getNewMachineBiometricSeriallNo());
-                                            binding.inputIMEIIMEI2.setText(modelResponse.getNewMachineData().getNewMachineIMEI1() + " - " + modelResponse.getNewMachineData().getNewMachineIMEI2());
-                                            binding.inputAccessoriesProvided.setText(modelResponse.getNewMachineData().getAccessoriesProvided());
+                                            binding.inputNewMachineSrNo.setText(modelResponse.newMachineData.newMachineSerialNo);
+                                            binding.inputNewFingerprintSrNo.setText(modelResponse.newMachineData.newMachineBiometricSeriallNo);
+                                            binding.inputIMEIIMEI2.setText(modelResponse.newMachineData.newMachineIMEI1 + " - " + modelResponse.newMachineData.newMachineIMEI2);
+                                            binding.inputAccessoriesProvided.setText(modelResponse.newMachineData.getAccessoriesProvided());
                                         }
                                     } else {
-                                        dialogMessage(modelResponse.getMessage());
+                                        dialogMessage(modelResponse.message);
                                         binding.inputNewMachineSrNo.setText("");
                                         binding.inputNewFingerprintSrNo.setText("");
                                         binding.inputIMEIIMEI2.setText("");
@@ -758,7 +758,7 @@ public class NewPosDistributionFormActivity extends CustomActivity implements Vi
                                         onBackPressed();
                                     }
                                 } else {
-                                    makeToast(modelResponse.getMessage());
+                                    makeToast(modelResponse.message);
                                 }
                             }
                         }

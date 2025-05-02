@@ -1,46 +1,18 @@
-package com.callmangement.model.inventrory;
+package com.callmangement.model.inventrory
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+class ModelReceiveMaterialListData : Serializable {
+    @SerializedName("date")
+    var date: String? = null
 
-public class ModelReceiveMaterialListData implements Serializable {
-    @SerializedName("date") private String date;
-    @SerializedName("quantity") private String quantity;
-    @SerializedName("status") private String status;
-    @SerializedName("materialList") private List<ModelReceiveMaterialListDataList> materialList = new ArrayList<>();
+    @SerializedName("quantity")
+    var quantity: String? = null
 
-    public String getDate() {
-        return date;
-    }
+    @SerializedName("status")
+    var status: String? = null
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public List<ModelReceiveMaterialListDataList> getMaterialList() {
-        return materialList;
-    }
-
-    public void setMaterialList(List<ModelReceiveMaterialListDataList> materialList) {
-        this.materialList = materialList;
-    }
+    @SerializedName("materialList")
+    var materialList: List<ModelReceiveMaterialListDataList> = ArrayList()
 }

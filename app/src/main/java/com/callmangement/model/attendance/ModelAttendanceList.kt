@@ -1,36 +1,16 @@
-package com.callmangement.model.attendance;
+package com.callmangement.model.attendance
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-import java.util.ArrayList;
-import java.util.List;
+class ModelAttendanceList {
+    @JvmField
+    @SerializedName("message")
+    var message: String? = null
 
-public class ModelAttendanceList {
-    @SerializedName("message") private String message;
-    @SerializedName("status") private String status;
-    @SerializedName("Data") List<ModelAttendanceData> Data = new ArrayList<>();
+    @JvmField
+    @SerializedName("status")
+    var status: String? = null
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public List<ModelAttendanceData> getData() {
-        return Data;
-    }
-
-    public void setData(List<ModelAttendanceData> data) {
-        Data = data;
-    }
+    @SerializedName("Data")
+    var data: List<ModelAttendanceData> = ArrayList()
 }

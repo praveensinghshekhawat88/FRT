@@ -88,7 +88,7 @@ public class ResetDeviceActivity extends CustomActivity implements View.OnClickL
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (++checkDistrict > 1) {
-                    districtNameEng = district_List.get(i).getDistrictNameEng();
+                    districtNameEng = district_List.get(i).districtNameEng;
                     districtId = district_List.get(i).getDistrictId();
                     if (!districtNameEng.equalsIgnoreCase("--" + getResources().getString(R.string.district) + "--")) {
                         getSEUsersList();
@@ -108,8 +108,8 @@ public class ResetDeviceActivity extends CustomActivity implements View.OnClickL
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (++checkSEUsers > 1) {
-                    seUserName = modelSEUsersList.get(i).getUserName();
-                    seUserId = modelSEUsersList.get(i).getUserId();
+                    seUserName = modelSEUsersList.get(i).userName;
+                    seUserId = modelSEUsersList.get(i).userId;
                     if (seUserName.equalsIgnoreCase("--" + getResources().getString(R.string.username) + "--")) {
                         seUserId = "0";
                     }
@@ -127,13 +127,13 @@ public class ResetDeviceActivity extends CustomActivity implements View.OnClickL
         isLoading();
         viewModel.getDistrict().observe(this, modelDistrict -> {
             isLoading();
-            if (modelDistrict.getStatus().equals("200")) {
-                district_List = modelDistrict.getDistrict_List();
+            if (modelDistrict.status.equals("200")) {
+                district_List = modelDistrict.district_List;
                 if (district_List != null && district_List.size() > 0) {
                     Collections.reverse(district_List);
                     ModelDistrictList l = new ModelDistrictList();
                     l.setDistrictId(String.valueOf(-1));
-                    l.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
+                    l.districtNameEng = "--" + getResources().getString(R.string.district) + "--";
                     district_List.add(l);
                     Collections.reverse(district_List);
 
@@ -149,8 +149,8 @@ public class ResetDeviceActivity extends CustomActivity implements View.OnClickL
 
         Collections.reverse(modelSEUsersList);
         ModelSEUsersList l = new ModelSEUsersList();
-        l.setUserId(String.valueOf(-1));
-        l.setUserName("--" + getResources().getString(R.string.username) + "--");
+        l.userId = String.valueOf(-1);
+        l.userName = "--" + getResources().getString(R.string.username) + "--";
         modelSEUsersList.add(l);
         Collections.reverse(modelSEUsersList);
 
@@ -168,13 +168,13 @@ public class ResetDeviceActivity extends CustomActivity implements View.OnClickL
             public void onResponse(@NonNull Call<ModelSEUsers> call, @NonNull Response<ModelSEUsers> response) {
                 if (response.isSuccessful()) {
                     ModelSEUsers modelSEUsers = response.body();
-                    if (Objects.requireNonNull(modelSEUsers).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(modelSEUsers).status.equals("200")) {
                         modelSEUsersList = modelSEUsers.getSEUsersList();
                         if (modelSEUsersList != null && modelSEUsersList.size() > 0) {
                             Collections.reverse(modelSEUsersList);
                             ModelSEUsersList l = new ModelSEUsersList();
-                            l.setUserId(String.valueOf(-1));
-                            l.setUserName("--" + getResources().getString(R.string.username) + "--");
+                            l.userId = String.valueOf(-1);
+                            l.userName = "--" + getResources().getString(R.string.username) + "--";
                             modelSEUsersList.add(l);
                             Collections.reverse(modelSEUsersList);
 
@@ -183,7 +183,7 @@ public class ResetDeviceActivity extends CustomActivity implements View.OnClickL
                             binding.spinnerServiceEngineer.setAdapter(dataAdapter);
                         }
                     } else {
-                        makeToast(modelSEUsers.getMessage());
+                        makeToast(modelSEUsers.message);
                     }
                 } else {
                     makeToast(getResources().getString(R.string.error));
@@ -208,7 +208,7 @@ public class ResetDeviceActivity extends CustomActivity implements View.OnClickL
                     hideProgress();
                     if (response.isSuccessful()) {
                         ModelResetDevice model = response.body();
-                        if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                        if (Objects.requireNonNull(model).status.equals("200")) {
                             dialogResetDeviceSuccess();
                             binding.spinnerDistrict.setSelection(0);
                             binding.spinnerServiceEngineer.setSelection(0);

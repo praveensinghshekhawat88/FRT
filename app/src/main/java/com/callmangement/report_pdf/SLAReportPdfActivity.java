@@ -151,11 +151,11 @@ public class SLAReportPdfActivity extends PDFCreatorActivity {
             SLA_Reports_Info sla_reports_info = sla_reports_infoArrayList.get(0);
 
             PDFTextView pdfTextViewDistrict = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-            pdfTextViewDistrict.setText(sla_reports_info.getDistrict());
+            pdfTextViewDistrict.setText(sla_reports_info.district);
             tableRowView1.addToRow(pdfTextViewDistrict);
 
             PDFTextView pdfTextViewComplaintCount = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-            pdfTextViewComplaintCount.setText(""+sla_reports_info.getComplaintCount());
+            pdfTextViewComplaintCount.setText(""+ sla_reports_info.complaintCount);
             tableRowView1.addToRow(pdfTextViewComplaintCount);
 
             PDFTextView pdfTextViewResolveInDays = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
@@ -170,11 +170,11 @@ public class SLAReportPdfActivity extends PDFCreatorActivity {
 
                 tableRowView1 = new PDFTableView.PDFTableRowView(getApplicationContext());
                 pdfTextViewDistrict = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                pdfTextViewDistrict.setText(sla_reports_info.getDistrict());
+                pdfTextViewDistrict.setText(sla_reports_info.district);
                 tableRowView1.addToRow(pdfTextViewDistrict);
 
                 pdfTextViewComplaintCount = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                pdfTextViewComplaintCount.setText(""+sla_reports_info.getComplaintCount());
+                pdfTextViewComplaintCount.setText(""+ sla_reports_info.complaintCount);
                 tableRowView1.addToRow(pdfTextViewComplaintCount);
 
                 pdfTextViewResolveInDays = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);

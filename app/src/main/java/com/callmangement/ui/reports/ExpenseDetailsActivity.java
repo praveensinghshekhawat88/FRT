@@ -64,12 +64,12 @@ public class ExpenseDetailsActivity extends CustomActivity implements View.OnCli
         binding.inputName.setText(model.getSeName());
         binding.inputDistrict.setText(model.getDistrict());
 
-        binding.inputDocketno.setText(model.getDocketNo());
-        binding.inputcouriername.setText(model.getCourierName());
+        binding.inputDocketno.setText(model.docketNo);
+        binding.inputcouriername.setText(model.courierName);
 
         binding.inputRemark.setText(model.getRemark());
         binding.inputRemark.setText(model.getRemark());
-        binding.inputTotalExpenseAmount.setText(String.valueOf(model.getTotalExAmount()));
+        binding.inputTotalExpenseAmount.setText(String.valueOf(model.totalExAmount));
         binding.inputExpenseDate.setText(model.getCreatedOnStr());
 
         if (prefManager.getUSER_TYPE_ID().equals("1") && prefManager.getUSER_TYPE().equalsIgnoreCase("Admin")) {
@@ -92,7 +92,7 @@ public class ExpenseDetailsActivity extends CustomActivity implements View.OnCli
         }
 
         Glide.with(mContext)
-                .load(Constants.API_BASE_URL+model.getFilePath())
+                .load(Constants.API_BASE_URL+ model.filePath)
                 .placeholder(R.drawable.image_not_fount)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(binding.ivChallanImage);
@@ -148,7 +148,7 @@ public class ExpenseDetailsActivity extends CustomActivity implements View.OnCli
         if (id == R.id.iv_back){
             onBackPressed();
         } else if (id == R.id.ivChallanImage){
-            startActivity(new Intent(mContext, ZoomInZoomOutActivity.class).putExtra("image", Constants.API_BASE_URL+model.getFilePath()));
+            startActivity(new Intent(mContext, ZoomInZoomOutActivity.class).putExtra("image", Constants.API_BASE_URL+ model.filePath));
         } else if (id == R.id.buttonComplete) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setMessage(getResources().getString(R.string.complete_expense_dialog_msg))

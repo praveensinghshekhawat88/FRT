@@ -1,36 +1,14 @@
-package com.callmangement.model.inventrory;
+package com.callmangement.model.inventrory
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-import java.util.ArrayList;
-import java.util.List;
+class ModelDisputeParts {
+    @SerializedName("status")
+    var status: String? = null
 
-public class ModelDisputeParts {
-    @SerializedName("status") private String status;
-    @SerializedName("message") private String message;
-    @SerializedName("partsDispueStockDetails") private List<ModelDisputePartsList> partsDispueStockDetails = new ArrayList();
+    @SerializedName("message")
+    var message: String? = null
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public List<ModelDisputePartsList> getPartsDispueStockDetails() {
-        return partsDispueStockDetails;
-    }
-
-    public void setPartsDispueStockDetails(List<ModelDisputePartsList> partsDispueStockDetails) {
-        this.partsDispueStockDetails = partsDispueStockDetails;
-    }
+    @SerializedName("partsDispueStockDetails")
+    var partsDispueStockDetails: List<ModelDisputePartsList?> = ArrayList()
 }

@@ -1,58 +1,44 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.databinding.ItemDialogChallanForDispatchBinding
+import com.callmangement.model.inventrory.ModelPartsList
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.callmangement.R;
-import com.callmangement.databinding.ItemDialogChallanForDispatchBinding;
-import com.callmangement.model.inventrory.ModelPartsList;
-
-import java.util.List;
-
-public class DialogChallanForDispatchAdapter extends RecyclerView.Adapter<DialogChallanForDispatchAdapter.ViewHolder> {
-    private final Activity context;
-    private final List<ModelPartsList> list;
-
-    public DialogChallanForDispatchAdapter(Activity context, List<ModelPartsList> list) {
-        this.context = context;
-        this.list = list;
-    }
-
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemDialogChallanForDispatchBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_dialog_challan_for_dispatch, parent, false);
-        return new ViewHolder(binding);
+class DialogChallanForDispatchAdapter(
+    private val context: Activity,
+    private val list: List<ModelPartsList>
+) : RecyclerView.Adapter<DialogChallanForDispatchAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = DataBindingUtil.inflate<ItemDialogChallanForDispatchBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_dialog_challan_for_dispatch,
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.binding.tvItemName.setText(list.get(position).getItemName());
-        holder.binding.tvProductCount.setText(list.get(position).getQuantity());
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+        holder.binding.tvItemName.text = list[position].itemName
+        holder.binding.tvProductCount.text = list[position].getQuantity()
     }
 
-    @Override
-    public int getItemCount() {
-        return list.size();
+    override fun getItemCount(): Int {
+        return list.size
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ItemDialogChallanForDispatchBinding binding;
-        public ViewHolder(@NonNull ItemDialogChallanForDispatchBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
+    class ViewHolder(var binding: ItemDialogChallanForDispatchBinding) : RecyclerView.ViewHolder(
+        binding.root
+    )
 }

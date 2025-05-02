@@ -1,60 +1,23 @@
-package com.callmangement.model.login;
+package com.callmangement.model.login
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-public class ModelVerifyOTP {
-    @SerializedName("status") private String status;
-    @SerializedName("message") private String message;
-    @SerializedName("id") private int id;
-    @SerializedName("name") private String name;
-    @SerializedName("email") private String email;
-    @SerializedName("mobile") private String mobile;
+class ModelVerifyOTP {
+    @SerializedName("status")
+    var status: String? = null
 
-    public String getStatus() {
-        return status;
-    }
+    @SerializedName("message")
+    var message: String? = null
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    @SerializedName("id")
+    var id: Int = 0
 
-    public String getMessage() {
-        return message;
-    }
+    @SerializedName("name")
+    var name: String? = null
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    @SerializedName("email")
+    var email: String? = null
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    @SerializedName("mobile")
+    var mobile: String? = null
 }

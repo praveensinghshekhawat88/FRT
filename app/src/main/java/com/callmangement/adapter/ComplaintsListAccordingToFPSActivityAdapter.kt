@@ -1,104 +1,96 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.databinding.ItemComplaintsListAccordingToFpsActivityBinding
+import com.callmangement.model.fps_wise_complaints.ModelFPSComplaintList
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.callmangement.R;
-import com.callmangement.databinding.ItemComplaintsListAccordingToFpsActivityBinding;
-import com.callmangement.model.fps_wise_complaints.ModelFPSComplaintList;
-
-import java.util.List;
-
-public class ComplaintsListAccordingToFPSActivityAdapter extends RecyclerView.Adapter<ComplaintsListAccordingToFPSActivityAdapter.ViewHolder> {
-    private final Context context;
-    private final List<ModelFPSComplaintList> modelFPSComplaintLists;
-
-    public ComplaintsListAccordingToFPSActivityAdapter(Context mContext, List<ModelFPSComplaintList> modelFPSComplaintLists) {
-        this.context = mContext;
-        this.modelFPSComplaintLists = modelFPSComplaintLists;
-    }
-
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemComplaintsListAccordingToFpsActivityBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_complaints_list_according_to_fps_activity, parent, false);
-        return new ViewHolder(binding);
+class ComplaintsListAccordingToFPSActivityAdapter(
+    private val context: Context,
+    private val modelFPSComplaintLists: List<ModelFPSComplaintList>?
+) : RecyclerView.Adapter<ComplaintsListAccordingToFPSActivityAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = DataBindingUtil.inflate<ItemComplaintsListAccordingToFpsActivityBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_complaints_list_according_to_fps_activity,
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
     @SuppressLint("SetTextI18n")
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ModelFPSComplaintList model = modelFPSComplaintLists.get(position);
-        holder.binding.setData(model);
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val model = modelFPSComplaintLists!![position]
+        holder.binding.data = model
 
-        holder.binding.textComplaintNumber.setText(context.getResources().getString(R.string.c_no)+" : "+model.getComplainRegNo());
-        holder.binding.textName.setText(model.getCustomerName()+" "+"( "+context.getResources().getString(R.string.fps_code)+" : "+model.getFpscode()+" )");
-        holder.binding.textPhoneNumber.setText(model.getMobileNo());
-        holder.binding.textComplaintDesc.setText(model.getComplainDesc());
+        holder.binding.textComplaintNumber.text =
+            context.resources.getString(R.string.c_no) + " : " + model.complainRegNo
+        holder.binding.textName.text =
+            model.customerName + " " + "( " + context.resources.getString(R.string.fps_code) + " : " + model.fpscode + " )"
+        holder.binding.textPhoneNumber.text = model.mobileNo
+        holder.binding.textComplaintDesc.text = model.complainDesc
 
-        Log.d("ComplainStatusId","---"+model.getComplainStatusId());
+        Log.d("ComplainStatusId", "---" + model.complainStatusId)
 
-        if (model.getComplainStatusId().equals("1")){
-            holder.binding.textComplaintStatusValue.setText(model.getComplainStatus());
-            holder.binding.textComplaintStatusValue.setTextColor(context.getResources().getColor(R.color.colorCopyButton));
-
-        } else if (model.getComplainStatusId().equals("2")){
-            holder.binding.textComplaintStatusValue.setText(model.getComplainStatus());
-            holder.binding.textComplaintStatusValue.setTextColor(context.getResources().getColor(R.color.colorRedDark));
-
-        } else if (model.getComplainStatusId().equals("3")){
-            holder.binding.textComplaintStatusValue.setText(model.getComplainStatus());
-            holder.binding.textComplaintStatusValue.setTextColor(context.getResources().getColor(R.color.colorGreenDark));
+        if (model.complainStatusId == "1") {
+            holder.binding.textComplaintStatusValue.text = model.complainStatus
+            holder.binding.textComplaintStatusValue.setTextColor(context.resources.getColor(R.color.colorCopyButton))
+        } else if (model.complainStatusId == "2") {
+            holder.binding.textComplaintStatusValue.text = model.complainStatus
+            holder.binding.textComplaintStatusValue.setTextColor(context.resources.getColor(R.color.colorRedDark))
+        } else if (model.complainStatusId == "3") {
+            holder.binding.textComplaintStatusValue.text = model.complainStatus
+            holder.binding.textComplaintStatusValue.setTextColor(context.resources.getColor(R.color.colorGreenDark))
         } else {
-            holder.binding.textComplaintStatusValue.setText(model.getComplainStatus());
-            holder.binding.textComplaintStatusValue.setTextColor(context.getResources().getColor(R.color.deep_purple_300));
+            holder.binding.textComplaintStatusValue.text = model.complainStatus
+            holder.binding.textComplaintStatusValue.setTextColor(context.resources.getColor(R.color.deep_purple_300))
         }
 
-        if (model.getComplainRegDateStr()!=null && !model.getComplainRegDateStr().isEmpty() && !model.getComplainRegDateStr().equalsIgnoreCase("null")){
-            holder.binding.layoutCompRegDate.setVisibility(View.VISIBLE);
-            holder.binding.textComplaintRegDate.setText(model.getComplainRegDateStr());
-        }else {
-            holder.binding.layoutCompRegDate.setVisibility(View.GONE);
+        if (model.complainRegDateStr != null && !model.complainRegDateStr!!.isEmpty() && !model.complainRegDateStr.equals(
+                "null",
+                ignoreCase = true
+            )
+        ) {
+            holder.binding.layoutCompRegDate.visibility = View.VISIBLE
+            holder.binding.textComplaintRegDate.text = model.complainRegDateStr
+        } else {
+            holder.binding.layoutCompRegDate.visibility = View.GONE
         }
 
-        if (model.getSermarkDateStr()!=null && !model.getSermarkDateStr().isEmpty() && !model.getSermarkDateStr().equalsIgnoreCase("null")){
-            holder.binding.layoutCompResolvedDate.setVisibility(View.VISIBLE);
-            if (model.getComplainStatusId().equals("3")) {
-                holder.binding.textResolvedDate.setText(context.getResources().getString(R.string.resolved_date));
-                holder.binding.textComplaintResolveDate.setText(model.getSermarkDateStr());
-            } else if (model.getComplainStatusId().equals("1")){
-                holder.binding.textResolvedDate.setText(context.getResources().getString(R.string.send_to_se_date));
-                holder.binding.textComplaintResolveDate.setText(model.getSermarkDateStr());
+        if (model.sermarkDateStr != null && !model.sermarkDateStr!!.isEmpty() && !model.sermarkDateStr.equals(
+                "null",
+                ignoreCase = true
+            )
+        ) {
+            holder.binding.layoutCompResolvedDate.visibility = View.VISIBLE
+            if (model.complainStatusId == "3") {
+                holder.binding.textResolvedDate.text =
+                    context.resources.getString(R.string.resolved_date)
+                holder.binding.textComplaintResolveDate.text = model.sermarkDateStr
+            } else if (model.complainStatusId == "1") {
+                holder.binding.textResolvedDate.text =
+                    context.resources.getString(R.string.send_to_se_date)
+                holder.binding.textComplaintResolveDate.text = model.sermarkDateStr
             }
         } else {
-            holder.binding.layoutCompResolvedDate.setVisibility(View.GONE);
-        }
-
-    }
-
-    @Override
-    public int getItemCount() {
-        if (modelFPSComplaintLists != null) {
-            return modelFPSComplaintLists.size();
-        }else {
-            return 0;
+            holder.binding.layoutCompResolvedDate.visibility = View.GONE
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        private final ItemComplaintsListAccordingToFpsActivityBinding binding;
-        public ViewHolder(@NonNull ItemComplaintsListAccordingToFpsActivityBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
+    override fun getItemCount(): Int {
+        return modelFPSComplaintLists?.size ?: 0
     }
 
+    class ViewHolder(val binding: ItemComplaintsListAccordingToFpsActivityBinding) :
+        RecyclerView.ViewHolder(
+            binding.root
+        )
 }

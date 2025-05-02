@@ -76,9 +76,9 @@ public class FPSRepeatOnServiceCenterDetailActivity extends CustomActivity imple
                                     String responseStr = response.body().string();
                                     ModelRepeatFpsComplaints modelResponse = (ModelRepeatFpsComplaints) getObject(responseStr, ModelRepeatFpsComplaints.class);
                                     if (modelResponse != null){
-                                        if (modelResponse.getStatus().equals("200")) {
-                                            if (modelResponse.getParts().size() > 0) {
-                                                list = modelResponse.getParts();
+                                        if (modelResponse.status.equals("200")) {
+                                            if (modelResponse.parts.size() > 0) {
+                                                list = modelResponse.parts;
 //                                                Constants.modelRepeatFpsComplaintsList = list;
                                                 setUpAdapter(list);
                                             } else {

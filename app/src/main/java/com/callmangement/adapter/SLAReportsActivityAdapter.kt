@@ -1,78 +1,61 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.databinding.ItemSlaReportsActivityBinding
+import com.callmangement.model.reports.SLA_Reports_Info
+import com.callmangement.ui.reports.SLAReportsDetailsActivity
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
+class SLAReportsActivityAdapter(private val context: Context) :
+    RecyclerView.Adapter<SLAReportsActivityAdapter.ViewHolder>() {
+    private var slaReportsInfos: List<SLA_Reports_Info>? = null
+    var days: Int = 0
 
-import com.callmangement.R;
-import com.callmangement.databinding.ItemSlaReportsActivityBinding;
-import com.callmangement.model.reports.SLA_Reports_Info;
-import com.callmangement.ui.reports.SLAReportsDetailsActivity;
-
-import java.util.List;
-
-public class SLAReportsActivityAdapter extends RecyclerView.Adapter<SLAReportsActivityAdapter.ViewHolder> {
-    private final Context context;
-    private List<SLA_Reports_Info> slaReportsInfos;
-    private Integer intervalDays = 0;
-
-    public SLAReportsActivityAdapter(Context context) {
-        this.context = context;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = DataBindingUtil.inflate<ItemSlaReportsActivityBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_sla_reports_activity,
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemSlaReportsActivityBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_sla_reports_activity, parent, false);
-        return new ViewHolder(binding);
-    }
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+        val model = slaReportsInfos!![position]
+        holder.binding.data = model
 
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        SLA_Reports_Info model = slaReportsInfos.get(position);
-        holder.binding.setData(model);
-
-        holder.binding.crdItem.setOnClickListener(view -> view.getContext().startActivity(new Intent(view.getContext(), SLAReportsDetailsActivity.class)
-                .putExtra("districtId", model.getDistrictId())
-                .putExtra("intervalDays", intervalDays)));
-
+        holder.binding.crdItem.setOnClickListener { view: View ->
+            view.context.startActivity(
+                Intent(view.context, SLAReportsDetailsActivity::class.java)
+                    .putExtra("districtId", model.districtId)
+                    .putExtra("intervalDays", days)
+            )
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setData(List<SLA_Reports_Info> monthlyReportsInfos) {
-        this.slaReportsInfos = monthlyReportsInfos;
-        notifyDataSetChanged();
+    fun setData(monthlyReportsInfos: List<SLA_Reports_Info>?) {
+        this.slaReportsInfos = monthlyReportsInfos
+        notifyDataSetChanged()
     }
 
-    public void setDays(Integer intervalDays) {
-        this.intervalDays = intervalDays;
-    }
-
-    public Integer getDays() {
-        return intervalDays;
-    }
-
-    @Override
-    public int getItemCount() {
-        if (slaReportsInfos != null) {
-            return slaReportsInfos.size();
+    override fun getItemCount(): Int {
+        return if (slaReportsInfos != null) {
+            slaReportsInfos!!.size
         } else {
-            return 0;
+            0
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ItemSlaReportsActivityBinding binding;
-
-        public ViewHolder(@NonNull ItemSlaReportsActivityBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
+    class ViewHolder(val binding: ItemSlaReportsActivityBinding) : RecyclerView.ViewHolder(
+        binding.root
+    )
 }

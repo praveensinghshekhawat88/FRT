@@ -87,7 +87,7 @@ public class TotalStockListForManagerActivity extends CustomActivity implements 
                 @Override
                 public void onChanged(ModelParts modelParts) {
                     isLoading();
-                    if (modelParts.getStatus().equals("200")) {
+                    if (modelParts.status.equals("200")) {
                         modelPartsList = modelParts.getParts();
                         if (modelPartsList.size() > 0) {
                             setUpCurrentStockListAdapter(modelPartsList);

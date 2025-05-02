@@ -1,36 +1,17 @@
-package com.callmangement.model.district;
+package com.callmangement.model.district
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-import java.util.ArrayList;
-import java.util.List;
+class ModelDistrict {
+    @JvmField
+    @SerializedName("status")
+    var status: String? = null
 
-public class ModelDistrict {
-    @SerializedName("status") private String status;
-    @SerializedName("message") private String message;
-    @SerializedName("District_List") private List<ModelDistrictList> district_List = new ArrayList<>();
+    @JvmField
+    @SerializedName("message")
+    var message: String? = null
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public List<ModelDistrictList> getDistrict_List() {
-        return district_List;
-    }
-
-    public void setDistrict_List(List<ModelDistrictList> district_List) {
-        this.district_List = district_List;
-    }
+    @JvmField
+    @SerializedName("District_List")
+    var district_List: MutableList<ModelDistrictList?>? = ArrayList()
 }

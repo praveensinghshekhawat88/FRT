@@ -1,79 +1,64 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.content.Context;
-import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import android.content.Context
+import android.content.Intent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.databinding.ItemViewExpenseActivityBinding
+import com.callmangement.model.expense.ModelExpensesList
+import com.callmangement.ui.reports.ExpenseDetailsActivity
 
-import com.callmangement.R;
-import com.callmangement.databinding.ItemViewExpenseActivityBinding;
-import com.callmangement.model.expense.ModelExpensesList;
-import com.callmangement.ui.reports.ExpenseDetailsActivity;
-
-import java.util.List;
-
-public class ViewExpenseActivityAdapter extends RecyclerView.Adapter<ViewExpenseActivityAdapter.ViewHolder> {
-    private final Context context;
-    private final List<ModelExpensesList> modelExpensesList;
-
-    public ViewExpenseActivityAdapter(Context context, List<ModelExpensesList> modelExpensesList) {
-        this.context = context;
-        this.modelExpensesList = modelExpensesList;
+class ViewExpenseActivityAdapter(
+    private val context: Context,
+    private val modelExpensesList: List<ModelExpensesList>
+) : RecyclerView.Adapter<ViewExpenseActivityAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemViewExpenseActivityBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemViewExpenseActivityBinding binding = ItemViewExpenseActivityBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
-        return new ViewHolder(binding);
-    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val model = modelExpensesList[position]
+        holder.binding.textName.text = model.seName
+        holder.binding.textDistrictName.text = model.district
+        holder.binding.textRemark.text = model.remark
+        holder.binding.textAmount.text = model.totalExAmount.toString()
+        holder.binding.textExpenseDate.text = model.createdOnStr
 
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ModelExpensesList model = modelExpensesList.get(position);
-        holder.binding.textName.setText(model.getSeName());
-        holder.binding.textDistrictName.setText(model.getDistrict());
-        holder.binding.textRemark.setText(model.getRemark());
-        holder.binding.textAmount.setText(String.valueOf(model.getTotalExAmount()));
-        holder.binding.textExpenseDate.setText(model.getCreatedOnStr());
-
-        if (model.getExpenseStatusID() == 1) {
-            holder.binding.textExpenseStatus.setText(model.getExpenseStatus());
-            holder.binding.textExpenseStatus.setTextColor(context.getResources().getColor(R.color.colorRedDark));
-        } else if (model.getExpenseStatusID() == 2) {
-            holder.binding.textExpenseStatus.setText(model.getExpenseStatus());
-            holder.binding.textExpenseStatus.setTextColor(context.getResources().getColor(R.color.colorGreenDark));
+        if (model.expenseStatusID == 1) {
+            holder.binding.textExpenseStatus.text = model.expenseStatus
+            holder.binding.textExpenseStatus.setTextColor(context.resources.getColor(R.color.colorRedDark))
+        } else if (model.expenseStatusID == 2) {
+            holder.binding.textExpenseStatus.text = model.expenseStatus
+            holder.binding.textExpenseStatus.setTextColor(context.resources.getColor(R.color.colorGreenDark))
         }
 
-        if (model.getCompletedOnStr().isEmpty()) {
-            holder.binding.expenseCompletedDateLay.setVisibility(View.GONE);
+        if (model.completedOnStr!!.isEmpty()) {
+            holder.binding.expenseCompletedDateLay.visibility = View.GONE
         } else {
-            holder.binding.expenseCompletedDateLay.setVisibility(View.VISIBLE);
-            holder.binding.textExpenseCompletedDate.setText(model.getCompletedOnStr());
+            holder.binding.expenseCompletedDateLay.visibility = View.VISIBLE
+            holder.binding.textExpenseCompletedDate.text = model.completedOnStr
         }
 
-        holder.binding.tvView.setOnClickListener(view -> {
-            Intent intent = new Intent(context, ExpenseDetailsActivity.class);
-            intent.putExtra("param", model);
-            context.startActivity(intent);
-        });
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return modelExpensesList.size();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ItemViewExpenseActivityBinding binding;
-        public ViewHolder(ItemViewExpenseActivityBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+        holder.binding.tvView.setOnClickListener { view: View? ->
+            val intent = Intent(context, ExpenseDetailsActivity::class.java)
+            intent.putExtra("param", model)
+            context.startActivity(intent)
         }
     }
 
+    override fun getItemCount(): Int {
+        return modelExpensesList.size
+    }
+
+    class ViewHolder(val binding: ItemViewExpenseActivityBinding) : RecyclerView.ViewHolder(
+        binding.root
+    )
 }

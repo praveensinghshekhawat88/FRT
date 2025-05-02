@@ -87,7 +87,7 @@ public class AttendanceDetailsActivity extends CustomActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(++checkDistrict > 1) {
-                    districtNameEng = district_List.get(i).getDistrictNameEng();
+                    districtNameEng = district_List.get(i).districtNameEng;
                     districtId = district_List.get(i).getDistrictId();
                     if (districtNameEng.equalsIgnoreCase("--"+getResources().getString(R.string.district)+"--")) {
                         districtId = "0";
@@ -186,13 +186,13 @@ public class AttendanceDetailsActivity extends CustomActivity {
 
     private void districtList(){
         viewModel.getDistrict().observe(this, modelDistrict -> {
-            if (modelDistrict.getStatus().equals("200")){
-                district_List = modelDistrict.getDistrict_List();
+            if (modelDistrict.status.equals("200")){
+                district_List = modelDistrict.district_List;
                 if (district_List != null && district_List.size() > 0) {
                     Collections.reverse(district_List);
                     ModelDistrictList l = new ModelDistrictList();
                     l.setDistrictId(String.valueOf(-1));
-                    l.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
+                    l.districtNameEng = "--" + getResources().getString(R.string.district) + "--";
                     district_List.add(l);
                     Collections.reverse(district_List);
                     ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, district_List);

@@ -1,14 +1,16 @@
-package com.callmangement.firebase;
+package com.callmangement.firebase
+
+import com.google.firebase.messaging.FirebaseMessaging
 
 
-import com.google.firebase.messaging.FirebaseMessaging;
-
-public class FirebaseUtils {
-    public static void registerTopic(String topic){
-        FirebaseMessaging.getInstance().subscribeToTopic(topic);
+object FirebaseUtils {
+    @JvmStatic
+    fun registerTopic(topic: String?) {
+        FirebaseMessaging.getInstance().subscribeToTopic(topic!!)
     }
 
-    public static void unregisterTopic(String topic){
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
+    @JvmStatic
+    fun unregisterTopic(topic: String?) {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic!!)
     }
 }

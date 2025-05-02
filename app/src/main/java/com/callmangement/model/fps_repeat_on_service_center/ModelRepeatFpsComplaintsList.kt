@@ -1,582 +1,268 @@
+package com.callmangement.model.fps_repeat_on_service_center
 
-package com.callmangement.model.fps_repeat_on_service_center;
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-import java.io.Serializable;
-
-public class ModelRepeatFpsComplaintsList implements Serializable {
+class ModelRepeatFpsComplaintsList : Serializable {
     @SerializedName("getStatus")
     @Expose
-    private Object getStatus;
+    var getStatus: Any? = null
+
     @SerializedName("fromDate")
     @Expose
-    private Object fromDate;
+    var fromDate: Any? = null
+
     @SerializedName("toDate")
     @Expose
-    private Object toDate;
+    var toDate: Any? = null
+
     @SerializedName("check_csrf")
     @Expose
-    private Object checkCsrf;
+    var checkCsrf: Any? = null
+
     @SerializedName("createdBy")
     @Expose
-    private Object createdBy;
+    var createdBy: Any? = null
+
     @SerializedName("isSentToServiceCentreOn")
     @Expose
-    private Object isSentToServiceCentreOn;
+    var isSentToServiceCentreOn: Any? = null
+
     @SerializedName("complainAssignDate")
     @Expose
-    private Object complainAssignDate;
+    var complainAssignDate: Any? = null
+
     @SerializedName("assignedUserID")
     @Expose
-    private Object assignedUserID;
+    var assignedUserID: Any? = null
+
     @SerializedName("isResolvedInLessTwoDays")
     @Expose
-    private Boolean isResolvedInLessTwoDays;
+    var isResolvedInLessTwoDays: Boolean? = null
+
     @SerializedName("complainAssignTo")
     @Expose
-    private Object complainAssignTo;
+    var complainAssignTo: Any? = null
+
     @SerializedName("customerName")
     @Expose
-    private String customerName;
+    var customerName: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
+
     @SerializedName("mobileNo")
     @Expose
-    private String mobileNo;
+    var mobileNo: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
+
     @SerializedName("tehsil")
     @Expose
-    private Object tehsil;
+    var tehsil: Any? = null
+
     @SerializedName("district")
     @Expose
-    private String district;
+    var district: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
+
     @SerializedName("fpscode")
     @Expose
-    private String fpscode;
+    var fpscode: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
+
     @SerializedName("districtId")
     @Expose
-    private Object districtId;
+    var districtId: Any? = null
+
     @SerializedName("complainRegNo")
     @Expose
-    private String complainRegNo;
+    var complainRegNo: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
+
     @SerializedName("complainDesc")
     @Expose
-    private String complainDesc;
+    var complainDesc: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
+
     @SerializedName("updatedBy")
     @Expose
-    private Object updatedBy;
+    var updatedBy: Any? = null
+
     @SerializedName("scremark")
     @Expose
-    private Object scremark;
+    var scremark: Any? = null
+
     @SerializedName("seremark")
     @Expose
-    private String seremark;
+    var seremark: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
+
     @SerializedName("challanNo")
     @Expose
-    private String challanNo;
+    var challanNo: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
+
     @SerializedName("complainId")
     @Expose
-    private Object complainId;
+    var complainId: Any? = null
+
     @SerializedName("tehsilId")
     @Expose
-    private Object tehsilId;
+    var tehsilId: Any? = null
+
     @SerializedName("complainStatusOnThisDate")
     @Expose
-    private Object complainStatusOnThisDate;
+    var complainStatusOnThisDate: Any? = null
+
     @SerializedName("customerId")
     @Expose
-    private Object customerId;
+    var customerId: Any? = null
+
     @SerializedName("orderBySrNo")
     @Expose
-    private Object orderBySrNo;
+    var orderBySrNo: Any? = null
+
     @SerializedName("sermarkDate")
     @Expose
-    private Object sermarkDate;
+    var sermarkDate: Any? = null
+
     @SerializedName("createdOn")
     @Expose
-    private Object createdOn;
+    var createdOn: Any? = null
+
     @SerializedName("complainType")
     @Expose
-    private String complainType;
+    var complainType: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
+
     @SerializedName("imagePath")
     @Expose
-    private String imagePath;
+    var imagePath: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
+
     @SerializedName("updatedOn")
     @Expose
-    private Object updatedOn;
+    var updatedOn: Any? = null
+
     @SerializedName("isActive")
     @Expose
-    private Boolean isActive;
+    var isActive: Boolean? = null
+
     @SerializedName("resolveTime")
     @Expose
-    private Object resolveTime;
+    var resolveTime: Any? = null
+
     @SerializedName("sladays_2")
     @Expose
-    private Object sladays2;
+    var sladays2: Any? = null
+
     @SerializedName("sladays_RD")
     @Expose
-    private Object sladaysRD;
+    var sladaysRD: Any? = null
+
     @SerializedName("complainStatus")
     @Expose
-    private Object complainStatus;
+    var complainStatus: Any? = null
+
     @SerializedName("complainTypeId")
     @Expose
-    private Object complainTypeId;
+    var complainTypeId: Any? = null
+
     @SerializedName("complainRegDate")
     @Expose
-    private Object complainRegDate;
+    var complainRegDate: Any? = null
+
+    @JvmField
     @SerializedName("isPhysicalDamage")
     @Expose
-    private Boolean isPhysicalDamage;
+    var isPhysicalDamage: Boolean? = null
+
     @SerializedName("complainStatusId")
     @Expose
-    private Object complainStatusId;
+    var complainStatusId: Any? = null
+
     @SerializedName("sermarkDateStr")
     @Expose
-    private String sermarkDateStr;
+    var sermarkDateStr: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
+
     @SerializedName("screplacedPartsDetail")
     @Expose
-    private Object screplacedPartsDetail;
+    var screplacedPartsDetail: Any? = null
+
     @SerializedName("sccourierServicesDetail")
     @Expose
-    private Object sccourierServicesDetail;
+    var sccourierServicesDetail: Any? = null
+
     @SerializedName("courierServicesDetail")
     @Expose
-    private String courierServicesDetail;
+    var courierServicesDetail: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
+
     @SerializedName("complainRegDateStr")
     @Expose
-    private String complainRegDateStr;
+    var complainRegDateStr: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
+
     @SerializedName("replacedPartsDetail")
     @Expose
-    private String replacedPartsDetail;
+    var replacedPartsDetail: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
+
     @SerializedName("cntReptOnSerCenter")
     @Expose
-    private Integer cntReptOnSerCenter;
+    var cntReptOnSerCenter: Int? = null
+        get() {
+            if (field == null) return 0
+            return field
+        }
 
     @SerializedName("isSentToServiceCentreOnStr")
     @Expose
-    private String isSentToServiceCentreOnStr;
-
-    public Object getGetStatus() {
-        return getStatus;
-    }
-
-    public void setGetStatus(Object getStatus) {
-        this.getStatus = getStatus;
-    }
-
-    public Object getFromDate() {
-        return fromDate;
-    }
-
-    public void setFromDate(Object fromDate) {
-        this.fromDate = fromDate;
-    }
-
-    public Object getToDate() {
-        return toDate;
-    }
-
-    public void setToDate(Object toDate) {
-        this.toDate = toDate;
-    }
-
-    public Object getCheckCsrf() {
-        return checkCsrf;
-    }
-
-    public void setCheckCsrf(Object checkCsrf) {
-        this.checkCsrf = checkCsrf;
-    }
-
-    public Object getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Object createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Object getIsSentToServiceCentreOn() {
-        return isSentToServiceCentreOn;
-    }
-
-    public void setIsSentToServiceCentreOn(Object isSentToServiceCentreOn) {
-        this.isSentToServiceCentreOn = isSentToServiceCentreOn;
-    }
-
-    public Object getComplainAssignDate() {
-        return complainAssignDate;
-    }
-
-    public void setComplainAssignDate(Object complainAssignDate) {
-        this.complainAssignDate = complainAssignDate;
-    }
-
-    public Object getAssignedUserID() {
-        return assignedUserID;
-    }
-
-    public void setAssignedUserID(Object assignedUserID) {
-        this.assignedUserID = assignedUserID;
-    }
-
-    public Boolean getIsResolvedInLessTwoDays() {
-        return isResolvedInLessTwoDays;
-    }
-
-    public void setIsResolvedInLessTwoDays(Boolean isResolvedInLessTwoDays) {
-        this.isResolvedInLessTwoDays = isResolvedInLessTwoDays;
-    }
-
-    public Object getComplainAssignTo() {
-        return complainAssignTo;
-    }
-
-    public void setComplainAssignTo(Object complainAssignTo) {
-        this.complainAssignTo = complainAssignTo;
-    }
-
-    public String getCustomerName() {
-        if (customerName == null)
-            return "";
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getMobileNo() {
-        if (mobileNo == null)
-            return "";
-        return mobileNo;
-    }
-
-    public void setMobileNo(String mobileNo) {
-        this.mobileNo = mobileNo;
-    }
-
-    public Object getTehsil() {
-        return tehsil;
-    }
-
-    public void setTehsil(Object tehsil) {
-        this.tehsil = tehsil;
-    }
-
-    public String getDistrict() {
-        if (district == null)
-            return "";
-        return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public String getFpscode() {
-        if (fpscode == null)
-            return "";
-        return fpscode;
-    }
-
-    public void setFpscode(String fpscode) {
-        this.fpscode = fpscode;
-    }
-
-    public Object getDistrictId() {
-        return districtId;
-    }
-
-    public void setDistrictId(Object districtId) {
-        this.districtId = districtId;
-    }
-
-    public String getComplainRegNo() {
-        if (complainRegNo == null)
-            return "";
-        return complainRegNo;
-    }
-
-    public void setComplainRegNo(String complainRegNo) {
-        this.complainRegNo = complainRegNo;
-    }
-
-    public String getComplainDesc() {
-        if (complainDesc == null)
-            return "";
-        return complainDesc;
-    }
-
-    public void setComplainDesc(String complainDesc) {
-        this.complainDesc = complainDesc;
-    }
-
-    public Object getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(Object updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public Object getScremark() {
-        return scremark;
-    }
-
-    public void setScremark(Object scremark) {
-        this.scremark = scremark;
-    }
-
-    public String getSeremark() {
-        if (seremark == null)
-            return "";
-        return seremark;
-    }
-
-    public void setSeremark(String seremark) {
-        this.seremark = seremark;
-    }
-
-    public String getChallanNo() {
-        if (challanNo == null)
-            return "";
-        return challanNo;
-    }
-
-    public void setChallanNo(String challanNo) {
-        this.challanNo = challanNo;
-    }
-
-    public Object getComplainId() {
-        return complainId;
-    }
-
-    public void setComplainId(Object complainId) {
-        this.complainId = complainId;
-    }
-
-    public Object getTehsilId() {
-        return tehsilId;
-    }
-
-    public void setTehsilId(Object tehsilId) {
-        this.tehsilId = tehsilId;
-    }
-
-    public Object getComplainStatusOnThisDate() {
-        return complainStatusOnThisDate;
-    }
-
-    public void setComplainStatusOnThisDate(Object complainStatusOnThisDate) {
-        this.complainStatusOnThisDate = complainStatusOnThisDate;
-    }
-
-    public Object getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Object customerId) {
-        this.customerId = customerId;
-    }
-
-    public Object getOrderBySrNo() {
-        return orderBySrNo;
-    }
-
-    public void setOrderBySrNo(Object orderBySrNo) {
-        this.orderBySrNo = orderBySrNo;
-    }
-
-    public Object getSermarkDate() {
-        return sermarkDate;
-    }
-
-    public void setSermarkDate(Object sermarkDate) {
-        this.sermarkDate = sermarkDate;
-    }
-
-    public Object getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(Object createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public String getComplainType() {
-        if (complainType == null)
-            return "";
-        return complainType;
-    }
-
-    public void setComplainType(String complainType) {
-        this.complainType = complainType;
-    }
-
-    public String getImagePath() {
-        if (imagePath == null)
-            return "";
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public Object getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public void setUpdatedOn(Object updatedOn) {
-        this.updatedOn = updatedOn;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public Object getResolveTime() {
-        return resolveTime;
-    }
-
-    public void setResolveTime(Object resolveTime) {
-        this.resolveTime = resolveTime;
-    }
-
-    public Object getSladays2() {
-        return sladays2;
-    }
-
-    public void setSladays2(Object sladays2) {
-        this.sladays2 = sladays2;
-    }
-
-    public Object getSladaysRD() {
-        return sladaysRD;
-    }
-
-    public void setSladaysRD(Object sladaysRD) {
-        this.sladaysRD = sladaysRD;
-    }
-
-    public Object getComplainStatus() {
-        return complainStatus;
-    }
-
-    public void setComplainStatus(Object complainStatus) {
-        this.complainStatus = complainStatus;
-    }
-
-    public Object getComplainTypeId() {
-        return complainTypeId;
-    }
-
-    public void setComplainTypeId(Object complainTypeId) {
-        this.complainTypeId = complainTypeId;
-    }
-
-    public Object getComplainRegDate() {
-        return complainRegDate;
-    }
-
-    public void setComplainRegDate(Object complainRegDate) {
-        this.complainRegDate = complainRegDate;
-    }
-
-    public Boolean getIsPhysicalDamage() {
-        return isPhysicalDamage;
-    }
-
-    public void setIsPhysicalDamage(Boolean isPhysicalDamage) {
-        this.isPhysicalDamage = isPhysicalDamage;
-    }
-
-    public Object getComplainStatusId() {
-        return complainStatusId;
-    }
-
-    public void setComplainStatusId(Object complainStatusId) {
-        this.complainStatusId = complainStatusId;
-    }
-
-    public String getSermarkDateStr() {
-        if (sermarkDateStr == null)
-            return "";
-        return sermarkDateStr;
-    }
-
-    public void setSermarkDateStr(String sermarkDateStr) {
-        this.sermarkDateStr = sermarkDateStr;
-    }
-
-    public Object getScreplacedPartsDetail() {
-        return screplacedPartsDetail;
-    }
-
-    public void setScreplacedPartsDetail(Object screplacedPartsDetail) {
-        this.screplacedPartsDetail = screplacedPartsDetail;
-    }
-
-    public Object getSccourierServicesDetail() {
-        return sccourierServicesDetail;
-    }
-
-    public void setSccourierServicesDetail(Object sccourierServicesDetail) {
-        this.sccourierServicesDetail = sccourierServicesDetail;
-    }
-
-    public String getCourierServicesDetail() {
-        if (courierServicesDetail == null)
-            return "";
-        return courierServicesDetail;
-    }
-
-    public void setCourierServicesDetail(String courierServicesDetail) {
-        this.courierServicesDetail = courierServicesDetail;
-    }
-
-    public String getComplainRegDateStr() {
-        if (complainRegDateStr == null)
-            return "";
-        return complainRegDateStr;
-    }
-
-    public void setComplainRegDateStr(String complainRegDateStr) {
-        this.complainRegDateStr = complainRegDateStr;
-    }
-
-    public String getReplacedPartsDetail() {
-        if (replacedPartsDetail == null)
-            return "";
-        return replacedPartsDetail;
-    }
-
-    public void setReplacedPartsDetail(String replacedPartsDetail) {
-        this.replacedPartsDetail = replacedPartsDetail;
-    }
-
-    public Integer getCntReptOnSerCenter() {
-        if (cntReptOnSerCenter == null)
-            return 0;
-        return cntReptOnSerCenter;
-    }
-
-    public void setCntReptOnSerCenter(Integer cntReptOnSerCenter) {
-        this.cntReptOnSerCenter = cntReptOnSerCenter;
-    }
-
-    public String getIsSentToServiceCentreOnStr() {
-        if (isSentToServiceCentreOnStr == null)
-            return "";
-        return isSentToServiceCentreOnStr;
-    }
-
-    public void setIsSentToServiceCentreOnStr(String isSentToServiceCentreOnStr) {
-        this.isSentToServiceCentreOnStr = isSentToServiceCentreOnStr;
-    }
+    var isSentToServiceCentreOnStr: String? = null
+        get() {
+            if (field == null) return ""
+            return field
+        }
 }

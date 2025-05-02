@@ -1,58 +1,50 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.databinding.ItemFpsRepeatOnServiceCenterDetailActivityBinding
+import com.callmangement.model.fps_repeat_on_service_center.ModelRepeatFpsComplaintsList
+import com.callmangement.ui.reports.FPSRepeatOnServiceCenterDetailActivity
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import com.callmangement.databinding.ItemFpsRepeatOnServiceCenterDetailActivityBinding;
-import com.callmangement.model.fps_repeat_on_service_center.ModelRepeatFpsComplaintsList;
-import com.callmangement.ui.reports.FPSRepeatOnServiceCenterDetailActivity;
-
-import java.util.List;
-
-public class FPSRepeatOnServiceCenterDetailActivityAdapter extends RecyclerView.Adapter<FPSRepeatOnServiceCenterDetailActivityAdapter.ViewHolder> {
-    private final Context context;
-    private final List<ModelRepeatFpsComplaintsList> list;
-
-    public FPSRepeatOnServiceCenterDetailActivityAdapter(Context context, List<ModelRepeatFpsComplaintsList> list) {
-        this.context = context;
-        this.list = list;
-    }
-
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemFpsRepeatOnServiceCenterDetailActivityBinding binding = ItemFpsRepeatOnServiceCenterDetailActivityBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
-        return new ViewHolder(binding);
+class FPSRepeatOnServiceCenterDetailActivityAdapter(
+    private val context: Context,
+    private val list: List<ModelRepeatFpsComplaintsList>
+) : RecyclerView.Adapter<FPSRepeatOnServiceCenterDetailActivityAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemFpsRepeatOnServiceCenterDetailActivityBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
     @SuppressLint("SetTextI18n")
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ModelRepeatFpsComplaintsList model = list.get(position);
-        holder.binding.tvComplaintNumber.setText(model.getComplainRegNo());
-        holder.binding.tvFpsCode.setText(model.getFpscode());
-        holder.binding.tvDealerName.setText(model.getCustomerName());
-        holder.binding.tvDistrict.setText(model.getDistrict());
-        holder.binding.tvDateTime.setText(model.getIsSentToServiceCentreOnStr());
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val model = list[position]
+        holder.binding.tvComplaintNumber.text = model.complainRegNo
+        holder.binding.tvFpsCode.text = model.fpscode
+        holder.binding.tvDealerName.text = model.customerName
+        holder.binding.tvDistrict.text = model.district
+        holder.binding.tvDateTime.text = model.isSentToServiceCentreOnStr
 
-        holder.binding.crdItem.setOnClickListener(view -> ((FPSRepeatOnServiceCenterDetailActivity)context).repeatFpsComplaintDetail(model));
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return list.size();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        private final ItemFpsRepeatOnServiceCenterDetailActivityBinding binding;
-        public ViewHolder(@NonNull ItemFpsRepeatOnServiceCenterDetailActivityBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+        holder.binding.crdItem.setOnClickListener { view: View? ->
+            (context as FPSRepeatOnServiceCenterDetailActivity).repeatFpsComplaintDetail(
+                model
+            )
         }
     }
+
+    override fun getItemCount(): Int {
+        return list.size
+    }
+
+    class ViewHolder(val binding: ItemFpsRepeatOnServiceCenterDetailActivityBinding) :
+        RecyclerView.ViewHolder(
+            binding.root
+        )
 }

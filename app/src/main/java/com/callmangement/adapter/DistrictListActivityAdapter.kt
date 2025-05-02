@@ -1,78 +1,56 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.databinding.ItemDistrictListActivityBinding
+import com.callmangement.model.district.ModelDistrictList
+import com.callmangement.utils.PrefManager
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
+class DistrictListActivityAdapter(private val context: Context) :
+    RecyclerView.Adapter<DistrictListActivityAdapter.ViewHolder>() {
+    private var district_List: List<ModelDistrictList>? = null
+    private val prefManager = PrefManager(context)
 
-import com.callmangement.R;
-import com.callmangement.custom.CustomActivity;
-import com.callmangement.databinding.ItemAttedanceDetailsActivityBinding;
-import com.callmangement.databinding.ItemDistrictListActivityBinding;
-import com.callmangement.model.district.ModelDistrictList;
-import com.callmangement.ui.attendance.ServiceEngineerListActivity;
-import com.callmangement.utils.PrefManager;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class DistrictListActivityAdapter extends RecyclerView.Adapter<DistrictListActivityAdapter.ViewHolder> {
-    private final Context context;
-    private List<ModelDistrictList> district_List;
-    private final PrefManager prefManager;
-
-    public DistrictListActivityAdapter(Context context) {
-        this.context = context;
-        prefManager = new PrefManager(context);
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = DataBindingUtil.inflate<ItemDistrictListActivityBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_district_list_activity,
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemDistrictListActivityBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_district_list_activity, parent, false);
-        return new ViewHolder(binding);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ModelDistrictList model = district_List.get(position);
-        if (!prefManager.getUSER_Change_Language().equals("")) {
-            if (prefManager.getUSER_Change_Language().equals("en"))
-                holder.binding.textDistrictName.setText(model.getDistrictNameEng());
-            else holder.binding.textDistrictName.setText(model.getDistrictNameHi());
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val model = district_List!![position]
+        if (prefManager.useR_Change_Language != "") {
+            if (prefManager.useR_Change_Language == "en") holder.binding.textDistrictName.text =
+                model.districtNameEng
+            else holder.binding.textDistrictName.text = model.districtNameHi
         }
 
-//        holder.binding.crdItem.setOnClickListener(view -> {
+        //        holder.binding.crdItem.setOnClickListener(view -> {
 //            context.startActivity(new Intent(context, ServiceEngineerListActivity.class));
 //        });
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setData(List<ModelDistrictList> district_List){
-        this.district_List = district_List;
-        notifyDataSetChanged();
+    fun setData(district_List: List<ModelDistrictList>?) {
+        this.district_List = district_List
+        notifyDataSetChanged()
     }
 
-    @Override
-    public int getItemCount() {
-        if (district_List != null)
-            return district_List.size();
-        else return 0;
+    override fun getItemCount(): Int {
+        return if (district_List != null) district_List!!.size
+        else 0
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        private final ItemDistrictListActivityBinding binding;
-        public ViewHolder(@NonNull ItemDistrictListActivityBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
-
+    class ViewHolder(val binding: ItemDistrictListActivityBinding) : RecyclerView.ViewHolder(
+        binding.root
+    )
 }

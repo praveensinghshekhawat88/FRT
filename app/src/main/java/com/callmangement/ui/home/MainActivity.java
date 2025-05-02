@@ -437,7 +437,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (++checkDistrict > 1) {
-                    districtNameEng = district_List.get(i).getDistrictNameEng();
+                    districtNameEng = district_List.get(i).districtNameEng;
                     districtId = district_List.get(i).getDistrictId();
                     fetchDataByFilterType();
                 }
@@ -654,7 +654,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
 
         binding.pieChart.setDragDecelerationFrictionCoef(0.95f);
 
-        binding.pieChart.setCenterText(getResources().getString(R.string.total) + "\n" + model.getTotal());
+        binding.pieChart.setCenterText(getResources().getString(R.string.total) + "\n" + model.total);
         binding.pieChart.setCenterTextSize(14f);
         binding.pieChart.setCenterTextColor(Color.BLACK);
 
@@ -706,22 +706,22 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
         float sumResolvedComp = 0;
         float sumComplaintOnServiceCenter = 0;
 
-        if (model.getNotResolve() != null) {
-            sumPendingComp = model.getNotResolve();
+        if (model.notResolve != null) {
+            sumPendingComp = model.notResolve;
         }
-        if (model.getResolved() != null) {
-            sumResolvedComp = model.getResolved();
-        }
-
-
-        if (model.getSendToSECenter() != null) {
-            sumComplaintOnServiceCenter = model.getSendToSECenter();
+        if (model.resolved != null) {
+            sumResolvedComp = model.resolved;
         }
 
-        if (model.getTotal() != null) {
-            float sumPendingCompPercent = (sumPendingComp * 100) / model.getTotal();
-            float sumResolvedCompPercent = (sumResolvedComp * 100) / model.getTotal();
-            float sumComplaintOnServiceCenterCompPercent = (sumComplaintOnServiceCenter * 100) / model.getTotal();
+
+        if (model.sendToSECenter != null) {
+            sumComplaintOnServiceCenter = model.sendToSECenter;
+        }
+
+        if (model.total != null) {
+            float sumPendingCompPercent = (sumPendingComp * 100) / model.total;
+            float sumResolvedCompPercent = (sumResolvedComp * 100) / model.total;
+            float sumComplaintOnServiceCenterCompPercent = (sumComplaintOnServiceCenter * 100) / model.total;
 
             entries.add(new PieEntry(sumPendingComp));
             entries.add(new PieEntry(sumResolvedComp));
@@ -768,14 +768,14 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
         //isLoading();
         viewModel.getComplaintsCount(String.valueOf(prefManager.getUSER_Id()), districtId, fromDate, toDate).observe(this, modelComplaintsCount -> {
             //isLoading();
-            if (modelComplaintsCount.getStatus().equals("200")) {
+            if (modelComplaintsCount.status.equals("200")) {
                 ModelComplaintsCountData modelComplaintsCountData = modelComplaintsCount.getComplaints_Count();
                 pieChart(modelComplaintsCountData);
-                binding.textCountTotal.setText(String.valueOf(modelComplaintsCountData.getTotal()));
-                binding.textCountTotalPending.setText(String.valueOf(modelComplaintsCountData.getNotResolve()));
-                binding.textCountTotalResolved.setText(String.valueOf(modelComplaintsCountData.getResolved()));
-                binding.textCountSenToSECenter.setText(String.valueOf(modelComplaintsCountData.getSendToSECenter()));
-                binding.textUploadPendingComplaintChallam.setText(String.valueOf(modelComplaintsCountData.getUploadPendingChallan()));
+                binding.textCountTotal.setText(String.valueOf(modelComplaintsCountData.total));
+                binding.textCountTotalPending.setText(String.valueOf(modelComplaintsCountData.notResolve));
+                binding.textCountTotalResolved.setText(String.valueOf(modelComplaintsCountData.resolved));
+                binding.textCountSenToSECenter.setText(String.valueOf(modelComplaintsCountData.sendToSECenter));
+                binding.textUploadPendingComplaintChallam.setText(String.valueOf(modelComplaintsCountData.uploadPendingChallan));
 
             }
         });
@@ -792,16 +792,16 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
                 if (response.isSuccessful()) {
                     ModelComplaintsCount model = response.body();
 
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         ModelComplaintsCountData modelComplaintsCountData = model.getComplaints_Count();
                         pieChart(modelComplaintsCountData);
-                        binding.textCountTotal.setText(String.valueOf(modelComplaintsCountData.getTotal()));
-                        binding.textCountTotalPending.setText(String.valueOf(modelComplaintsCountData.getNotResolve()));
-                        binding.textCountTotalResolved.setText(String.valueOf(modelComplaintsCountData.getResolved()));
-                        binding.textCountSenToSECenter.setText(String.valueOf(modelComplaintsCountData.getSendToSECenter()));
-                        binding.textUploadPendingComplaintChallam.setText(String.valueOf(modelComplaintsCountData.getUploadPendingChallan()));
+                        binding.textCountTotal.setText(String.valueOf(modelComplaintsCountData.total));
+                        binding.textCountTotalPending.setText(String.valueOf(modelComplaintsCountData.notResolve));
+                        binding.textCountTotalResolved.setText(String.valueOf(modelComplaintsCountData.resolved));
+                        binding.textCountSenToSECenter.setText(String.valueOf(modelComplaintsCountData.sendToSECenter));
+                        binding.textUploadPendingComplaintChallam.setText(String.valueOf(modelComplaintsCountData.uploadPendingChallan));
                     } else {
-                        Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
@@ -827,17 +827,17 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
                 hideProgress();
                 if (response.isSuccessful()) {
                     ModelComplaintsCount model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         ModelComplaintsCountData modelComplaintsCountData = model.getComplaints_Count();
                         pieChart(modelComplaintsCountData);
-                        binding.textCountTotal.setText(String.valueOf(modelComplaintsCountData.getTotal()));
-                        binding.textCountTotalPending.setText(String.valueOf(modelComplaintsCountData.getNotResolve()));
-                        binding.textCountTotalResolved.setText(String.valueOf(modelComplaintsCountData.getResolved()));
-                        binding.textCountSenToSECenter.setText(String.valueOf(modelComplaintsCountData.getSendToSECenter()));
-                        binding.textUploadPendingComplaintChallam.setText(String.valueOf(modelComplaintsCountData.getUploadPendingChallan()));
+                        binding.textCountTotal.setText(String.valueOf(modelComplaintsCountData.total));
+                        binding.textCountTotalPending.setText(String.valueOf(modelComplaintsCountData.notResolve));
+                        binding.textCountTotalResolved.setText(String.valueOf(modelComplaintsCountData.resolved));
+                        binding.textCountSenToSECenter.setText(String.valueOf(modelComplaintsCountData.sendToSECenter));
+                        binding.textUploadPendingComplaintChallam.setText(String.valueOf(modelComplaintsCountData.uploadPendingChallan));
 
                     } else {
-                        Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
@@ -865,17 +865,17 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
                 hideProgress();
                 if (response.isSuccessful()) {
                     ModelComplaintsCount model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (Objects.requireNonNull(model).status.equals("200")) {
                         ModelComplaintsCountData modelComplaintsCountData = model.getComplaints_Count();
                         pieChart(modelComplaintsCountData);
-                        binding.textCountTotal.setText(String.valueOf(modelComplaintsCountData.getTotal()));
-                        binding.textCountTotalPending.setText(String.valueOf(modelComplaintsCountData.getNotResolve()));
-                        binding.textCountTotalResolved.setText(String.valueOf(modelComplaintsCountData.getResolved()));
-                        binding.textCountSenToSECenter.setText(String.valueOf(modelComplaintsCountData.getSendToSECenter()));
-                        binding.textUploadPendingComplaintChallam.setText(String.valueOf(modelComplaintsCountData.getUploadPendingChallan()));
+                        binding.textCountTotal.setText(String.valueOf(modelComplaintsCountData.total));
+                        binding.textCountTotalPending.setText(String.valueOf(modelComplaintsCountData.notResolve));
+                        binding.textCountTotalResolved.setText(String.valueOf(modelComplaintsCountData.resolved));
+                        binding.textCountSenToSECenter.setText(String.valueOf(modelComplaintsCountData.sendToSECenter));
+                        binding.textUploadPendingComplaintChallam.setText(String.valueOf(modelComplaintsCountData.uploadPendingChallan));
 
                     } else {
-                        Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
@@ -893,7 +893,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
 
     private void tehsilList(String user_id) {
         viewModel.getTehsil(user_id).observe(this, modelTehsil -> {
-            if (modelTehsil.getStatus().equals("200")) {
+            if (modelTehsil.status.equals("200")) {
                 Tehsil_List = modelTehsil.getTehsil_List();
             }
         });
@@ -901,13 +901,13 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
 
     private void districtList() {
         viewModel.getDistrict().observe(this, modelDistrict -> {
-            if (modelDistrict.getStatus().equals("200")) {
-                district_List = modelDistrict.getDistrict_List();
+            if (modelDistrict.status.equals("200")) {
+                district_List = modelDistrict.district_List;
                 if (district_List != null && district_List.size() > 0) {
                     Collections.reverse(district_List);
                     ModelDistrictList l = new ModelDistrictList();
                     l.setDistrictId(String.valueOf(-1));
-                    l.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
+                    l.districtNameEng = "--" + getResources().getString(R.string.district) + "--";
                     district_List.add(l);
                     Collections.reverse(district_List);
 
@@ -929,7 +929,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
                 if (response.isSuccessful()) {
                     if (response.code() == 200) {
                         ModelLogin model = response.body();
-                        if (!Objects.requireNonNull(model).getStatus().equals("200")) {
+                        if (!Objects.requireNonNull(model).status.equals("200")) {
                             logout();
                         }
                     } else {
@@ -958,7 +958,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
                 if (response.isSuccessful()) {
                     if (response.code() == 200) {
                         ModelLogout model = response.body();
-                        if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                        if (Objects.requireNonNull(model).status.equals("200")) {
                             FirebaseUtils.unregisterTopic("all");
                             prefManager.clear();
                             prefManager.setUSER_PunchIn(IsSE_PunchIN);
@@ -969,7 +969,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
                             startActivity(new Intent(mContext, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                             finish();
                         } else {
-                            makeToast(model.getMessage());
+                            makeToast(model.message);
                         }
                     } else {
                         makeToast(getResources().getString(R.string.error));
@@ -1289,6 +1289,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
     @Override
     public void onBackPressed() {
 
+        super.onBackPressed();
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setMessage(getResources().getString(R.string.do_you_want_to_exit_from_this_app))
                 .setCancelable(false)

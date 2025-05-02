@@ -1,46 +1,28 @@
+package com.callmangement.model.expense
 
-package com.callmangement.model.expense;
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
-import java.util.ArrayList;
-import java.util.List;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-public class ModelExpesne {
+class ModelExpesne {
     @SerializedName("expensesList")
     @Expose
-    private List<ModelExpensesList> modelExpensesListList = null;
+    private var modelExpensesListList: List<ModelExpensesList>? = null
+
     @SerializedName("message")
     @Expose
-    private String message;
+    var message: String? = null
+
+    @JvmField
     @SerializedName("status")
     @Expose
-    private String status;
+    var status: String? = null
 
-    public List<ModelExpensesList> getExpensesList() {
-        if (modelExpensesListList == null)
-            return new ArrayList<>();
-        return modelExpensesListList;
-    }
-
-    public void setExpensesList(List<ModelExpensesList> modelExpensesListList) {
-        this.modelExpensesListList = modelExpensesListList;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
+    var expensesList: List<ModelExpensesList>?
+        get() {
+            if (modelExpensesListList == null) return ArrayList()
+            return modelExpensesListList
+        }
+        set(modelExpensesListList) {
+            this.modelExpensesListList = modelExpensesListList
+        }
 }

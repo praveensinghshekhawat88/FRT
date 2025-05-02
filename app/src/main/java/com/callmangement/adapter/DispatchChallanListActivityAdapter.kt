@@ -1,86 +1,79 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
-import com.callmangement.R;
-import com.callmangement.databinding.ItemDispatchChallanListActivityBinding;
-import com.callmangement.model.inventrory.ModelPartsDispatchInvoiceList;
-import com.callmangement.ui.inventory.DispatchChallanListActivity;
-import com.callmangement.ui.inventory.DispatchChallanPartsListDetailsActivity;
-import java.util.List;
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.databinding.ItemDispatchChallanListActivityBinding
+import com.callmangement.model.inventrory.ModelPartsDispatchInvoiceList
+import com.callmangement.ui.inventory.DispatchChallanPartsListDetailsActivity
 
-public class DispatchChallanListActivityAdapter extends RecyclerView.Adapter<DispatchChallanListActivityAdapter.ViewHolder> {
-
-    private final Activity context;
-    private final List<ModelPartsDispatchInvoiceList> list;
-
-    public DispatchChallanListActivityAdapter(Activity context, List<ModelPartsDispatchInvoiceList> list) {
-        this.context = context;
-        this.list = list;
+class DispatchChallanListActivityAdapter(
+    private val context: Activity,
+    private val list: List<ModelPartsDispatchInvoiceList>
+) : RecyclerView.Adapter<DispatchChallanListActivityAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = DataBindingUtil.inflate<ItemDispatchChallanListActivityBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_dispatch_challan_list_activity,
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemDispatchChallanListActivityBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_dispatch_challan_list_activity, parent, false);
-        return new ViewHolder(binding);
-    }
+    @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+        val model = list[position]
 
-    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        ModelPartsDispatchInvoiceList model = list.get(position);
-
-        holder.binding.textInvoiceNumber.setText(model.getInvoiceId());
-        holder.binding.textDispatchFrom.setText(model.getDispatcherName());
-        holder.binding.textDispatchTo.setText(model.getDistrictNameEng());
-        holder.binding.textUsername.setText(model.getReciverName());
-        holder.binding.textInvoiceDate.setText(model.getDispatchDateStr());
-        if (!model.getCourierName().isEmpty()) {
-            holder.binding.layoutCourierName.setVisibility(View.VISIBLE);
-            holder.binding.textCourierName.setText(model.getCourierName());
+        holder.binding.textInvoiceNumber.text = model.invoiceId
+        holder.binding.textDispatchFrom.text = model.dispatcherName
+        holder.binding.textDispatchTo.text = model.districtNameEng
+        holder.binding.textUsername.text = model.reciverName
+        holder.binding.textInvoiceDate.text = model.dispatchDateStr
+        if (!model.courierName!!.isEmpty()) {
+            holder.binding.layoutCourierName.visibility = View.VISIBLE
+            holder.binding.textCourierName.text = model.courierName
         } else {
-            holder.binding.layoutCourierName.setVisibility(View.GONE);
+            holder.binding.layoutCourierName.visibility = View.GONE
         }
-        if (!model.getCourierTrackingNo().isEmpty()) {
-            holder.binding.layoutCourierTrackingNumber.setVisibility(View.VISIBLE);
-            holder.binding.textCourierTrackingNumber.setText(model.getCourierTrackingNo());
+        if (!model.courierTrackingNo!!.isEmpty()) {
+            holder.binding.layoutCourierTrackingNumber.visibility = View.VISIBLE
+            holder.binding.textCourierTrackingNumber.text = model.courierTrackingNo
         } else {
-            holder.binding.layoutCourierTrackingNumber.setVisibility(View.GONE);
+            holder.binding.layoutCourierTrackingNumber.visibility = View.GONE
         }
 
-        if (model.getIsReceived().equalsIgnoreCase("true")){
-            holder.binding.layoutReceivedStatus.setVisibility(View.VISIBLE);
-            holder.binding.layoutReceivedDate.setVisibility(View.VISIBLE);
-            holder.binding.textReceivedStatus.setText("Received");
-            holder.binding.textReceivedStatus.setTextColor(context.getResources().getColor(R.color.colorGreenDark));
-            holder.binding.textReceivedDate.setText(model.getReceivedDateStr());
-        }else {
-            holder.binding.layoutReceivedStatus.setVisibility(View.VISIBLE);
-            holder.binding.layoutReceivedDate.setVisibility(View.GONE);
-            holder.binding.textReceivedStatus.setText("Not Received");
-            holder.binding.textReceivedStatus.setTextColor(context.getResources().getColor(R.color.colorRedDark));
+        if (model.isReceived.equals("true", ignoreCase = true)) {
+            holder.binding.layoutReceivedStatus.visibility = View.VISIBLE
+            holder.binding.layoutReceivedDate.visibility = View.VISIBLE
+            holder.binding.textReceivedStatus.text = "Received"
+            holder.binding.textReceivedStatus.setTextColor(context.resources.getColor(R.color.colorGreenDark))
+            holder.binding.textReceivedDate.text = model.receivedDateStr
+        } else {
+            holder.binding.layoutReceivedStatus.visibility = View.VISIBLE
+            holder.binding.layoutReceivedDate.visibility = View.GONE
+            holder.binding.textReceivedStatus.text = "Not Received"
+            holder.binding.textReceivedStatus.setTextColor(context.resources.getColor(R.color.colorRedDark))
         }
 
-        if (model.getIsSubmitted().equalsIgnoreCase("true")){
-            holder.binding.ivDelete.setVisibility(View.GONE);
-            holder.binding.buttonDispatch.setVisibility(View.GONE);
-            holder.binding.buttonView.setVisibility(View.VISIBLE);
-            holder.binding.textInvoiceStatus.setText("Dispatched");
-            holder.binding.textInvoiceStatus.setTextColor(context.getResources().getColor(R.color.colorGreenDark));
-        }else {
-            holder.binding.ivDelete.setVisibility(View.VISIBLE);
-            holder.binding.buttonDispatch.setVisibility(View.VISIBLE);
-            holder.binding.buttonView.setVisibility(View.GONE);
-            holder.binding.textInvoiceStatus.setText("Saved");
-            holder.binding.textInvoiceStatus.setTextColor(context.getResources().getColor(R.color.colorRedDark));
+        if (model.isSubmitted.equals("true", ignoreCase = true)) {
+            holder.binding.ivDelete.visibility = View.GONE
+            holder.binding.buttonDispatch.visibility = View.GONE
+            holder.binding.buttonView.visibility = View.VISIBLE
+            holder.binding.textInvoiceStatus.text = "Dispatched"
+            holder.binding.textInvoiceStatus.setTextColor(context.resources.getColor(R.color.colorGreenDark))
+        } else {
+            holder.binding.ivDelete.visibility = View.VISIBLE
+            holder.binding.buttonDispatch.visibility = View.VISIBLE
+            holder.binding.buttonView.visibility = View.GONE
+            holder.binding.textInvoiceStatus.text = "Saved"
+            holder.binding.textInvoiceStatus.setTextColor(context.resources.getColor(R.color.colorRedDark))
         }
 
         /*if (model.getItemStockStatusId().equals("2")){
@@ -102,10 +95,15 @@ public class DispatchChallanListActivityAdapter extends RecyclerView.Adapter<Dis
         }else {
             holder.binding.layoutDisputeStatus.setVisibility(View.GONE);
         }*/
+        holder.binding.buttonView.setOnClickListener { view: View? ->
+            context.startActivity(
+                Intent(
+                    context, DispatchChallanPartsListDetailsActivity::class.java
+                ).putExtra("param", model)
+            )
+        }
 
-        holder.binding.buttonView.setOnClickListener(view -> context.startActivity(new Intent(context, DispatchChallanPartsListDetailsActivity.class).putExtra("param", model)));
-
-//        holder.binding.buttonDispatch.setOnClickListener(view -> context.startActivity(new Intent(context, DispatchChallanPartsListDetailsActivity.class).putExtra("param", model)));
+        //        holder.binding.buttonDispatch.setOnClickListener(view -> context.startActivity(new Intent(context, DispatchChallanPartsListDetailsActivity.class).putExtra("param", model)));
         /*holder.binding.ivDelete.setOnClickListener(view -> {
             if (context instanceof DispatchChallanListActivity) {
                 ((DispatchChallanListActivity)context).dialogDeleteInvoice(model.getInvoiceId());
@@ -113,22 +111,16 @@ public class DispatchChallanListActivityAdapter extends RecyclerView.Adapter<Dis
         });*/
     }
 
-    @Override
-    public int getItemCount() {
-        return list.size();
+    override fun getItemCount(): Int {
+        return list.size
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ItemDispatchChallanListActivityBinding binding;
-        public ViewHolder(@NonNull ItemDispatchChallanListActivityBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
+    class ViewHolder(var binding: ItemDispatchChallanListActivityBinding) : RecyclerView.ViewHolder(
+        binding.root
+    )
 }
 

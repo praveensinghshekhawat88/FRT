@@ -1,35 +1,18 @@
-package com.callmangement.model.reports;
+package com.callmangement.model.reports
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-import java.io.Serializable;
+class SLA_Reports_Info : Serializable {
+    @JvmField
+    @SerializedName("district")
+    var district: String? = null
 
-public class SLA_Reports_Info implements Serializable {
-    @SerializedName("district") private String district;
-    @SerializedName("districtId") private Integer districtId;
-    @SerializedName("complaintCount") private Integer complaintCount;
+    @JvmField
+    @SerializedName("districtId")
+    var districtId: Int? = null
 
-    public String getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public Integer getDistrictId() {
-        return districtId;
-    }
-
-    public void setDistrictId(Integer districtId) {
-        this.districtId = districtId;
-    }
-
-    public Integer getComplaintCount() {
-        return complaintCount;
-    }
-
-    public void setComplaintCount(Integer complaintCount) {
-        this.complaintCount = complaintCount;
-    }
+    @JvmField
+    @SerializedName("complaintCount")
+    var complaintCount: Int? = null
 }

@@ -3,7 +3,6 @@ package com.callmangement.ui.ins_weighing_scale.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,14 +10,12 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.callmangement.Network.APIService;
 import com.callmangement.Network.RetrofitInstance;
@@ -27,12 +24,7 @@ import com.callmangement.custom.CustomActivity;
 
 import com.callmangement.databinding.ActivityInstalledListdetailedBinding;
 import com.callmangement.imagepicker.ui.imagepicker.ImagePicker;
-import com.callmangement.model.WeighingDeliveryDetail.weighingDelieryRoot;
-import com.callmangement.model.WeighingDeliveryDetail.weighingDeliveryData;
-import com.callmangement.model.WeighingDeliveryDetail.weighingDeliveryImagesDetail;
 import com.callmangement.ui.ins_weighing_scale.adapter.ViewImageInstalledAdapterIris;
-import com.callmangement.ui.ins_weighing_scale.adapter.ViewImagesListingAdapterIris;
-import com.callmangement.ui.ins_weighing_scale.model.DeliveredWeightInstal.WeighInsData;
 import com.callmangement.ui.ins_weighing_scale.model.Installed.InstalledDatum;
 import com.callmangement.ui.ins_weighing_scale.model.InstalledDetailed.InstalledDetailedData;
 import com.callmangement.ui.ins_weighing_scale.model.InstalledDetailed.InstalledDetailedRoot;

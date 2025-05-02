@@ -1,45 +1,41 @@
-package com.callmangement.custom;
+package com.callmangement.custom
 
-import android.app.ProgressDialog;
-import android.content.Context;
+import android.app.ProgressDialog
+import android.content.Context
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
+class BaseFragment : Fragment() {
+    var mContext: FragmentActivity? = null
+    private var mDialog: ProgressDialog? = null
 
-public class BaseFragment extends Fragment {
-    public FragmentActivity mContext;
-    private ProgressDialog mDialog;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (mContext!=null){
-            mContext = (FragmentActivity) context;
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (mContext != null) {
+            mContext = context as FragmentActivity
         }
     }
 
-    public void showProgress(String message) {
-        mDialog = new ProgressDialog(mContext);
-        mDialog.setMessage(message);
-        mDialog.setCancelable(false);
-        mDialog.show();
+    fun showProgress(message: String?) {
+        mDialog = ProgressDialog(mContext)
+        mDialog!!.setMessage(message)
+        mDialog!!.setCancelable(false)
+        mDialog!!.show()
     }
 
-    public void showProgress() {
-        hideProgress();
-        mDialog = new ProgressDialog(mContext);
-        mDialog.setMessage("Loading...");
-        mDialog.setCancelable(false);
-        mDialog.show();
+    fun showProgress() {
+        hideProgress()
+        mDialog = ProgressDialog(mContext)
+        mDialog!!.setMessage("Loading...")
+        mDialog!!.setCancelable(false)
+        mDialog!!.show()
     }
 
-    public void hideProgress() {
+    fun hideProgress() {
         try {
-            if (mDialog!=null) mDialog.dismiss();
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (mDialog != null) mDialog!!.dismiss()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
-
 }

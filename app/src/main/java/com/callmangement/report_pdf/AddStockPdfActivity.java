@@ -143,18 +143,18 @@ public class AddStockPdfActivity extends PDFCreatorActivity {
 
             ModelAddStock modelAddStock = Constants.modelAddStock.get(0);
 
-            totalQuantity = Integer.parseInt(modelAddStock.getQty());
+            totalQuantity = Integer.parseInt(modelAddStock.qty);
 
             PDFTextView pdfTextViewSrNo = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
             pdfTextViewSrNo.setText("1");
             tableRowView1.addToRow(pdfTextViewSrNo);
 
             PDFTextView pdfTextViewItemName = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-            pdfTextViewItemName.setText(""+modelAddStock.getItemName());
+            pdfTextViewItemName.setText(""+ modelAddStock.itemName);
             tableRowView1.addToRow(pdfTextViewItemName);
 
             PDFTextView pdfTextViewQuantity = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-            pdfTextViewQuantity.setText(""+modelAddStock.getQty());
+            pdfTextViewQuantity.setText(""+ modelAddStock.qty);
             tableRowView1.addToRow(pdfTextViewQuantity);
 
 
@@ -164,7 +164,7 @@ public class AddStockPdfActivity extends PDFCreatorActivity {
 
                 modelAddStock = Constants.modelAddStock.get(i);
 
-                totalQuantity += Integer.parseInt(modelAddStock.getQty());
+                totalQuantity += Integer.parseInt(modelAddStock.qty);
 
                 int srNo = i+1;
 
@@ -174,11 +174,11 @@ public class AddStockPdfActivity extends PDFCreatorActivity {
                 tableRowView1.addToRow(pdfTextViewSrNo);
 
                 pdfTextViewItemName = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                pdfTextViewItemName.setText(""+modelAddStock.getItemName());
+                pdfTextViewItemName.setText(""+ modelAddStock.itemName);
                 tableRowView1.addToRow(pdfTextViewItemName);
 
                 pdfTextViewQuantity = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-                pdfTextViewQuantity.setText(""+modelAddStock.getQty());
+                pdfTextViewQuantity.setText(""+ modelAddStock.qty);
                 tableRowView1.addToRow(pdfTextViewQuantity);
 
                 tableView.addRow(tableRowView1);

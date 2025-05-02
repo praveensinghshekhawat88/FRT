@@ -1,57 +1,44 @@
-package com.callmangement.adapter;
+package com.callmangement.adapter
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.callmangement.R
+import com.callmangement.databinding.ItemDialogAddStockListBinding
+import com.callmangement.model.inventrory.ModelAddStock
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.callmangement.R;
-import com.callmangement.databinding.ItemDialogAddStockListBinding;
-import com.callmangement.model.inventrory.ModelAddStock;
-import java.util.List;
-
-public class DialogAddStockListAdapter extends RecyclerView.Adapter<DialogAddStockListAdapter.ViewHolder> {
-    private final Activity context;
-    private final List<ModelAddStock> list;
-
-    public DialogAddStockListAdapter(Activity context, List<ModelAddStock> list) {
-        this.context = context;
-        this.list = list;
-    }
-
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemDialogAddStockListBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_dialog_add_stock_list, parent, false);
-        return new ViewHolder(binding);
+class DialogAddStockListAdapter(
+    private val context: Activity,
+    private val list: List<ModelAddStock>
+) : RecyclerView.Adapter<DialogAddStockListAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = DataBindingUtil.inflate<ItemDialogAddStockListBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_dialog_add_stock_list,
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.binding.tvItemName.setText(list.get(position).getItemName());
-        holder.binding.tvQuantity.setText(list.get(position).getQty());
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+        holder.binding.tvItemName.text = list[position].itemName
+        holder.binding.tvQuantity.text = list[position].qty
     }
 
-    @Override
-    public int getItemCount() {
-        return list.size();
+    override fun getItemCount(): Int {
+        return list.size
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ItemDialogAddStockListBinding binding;
-        public ViewHolder(@NonNull ItemDialogAddStockListBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
+    class ViewHolder(var binding: ItemDialogAddStockListBinding) : RecyclerView.ViewHolder(
+        binding.root
+    )
 }

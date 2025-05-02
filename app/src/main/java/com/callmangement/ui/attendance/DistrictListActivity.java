@@ -41,8 +41,8 @@ public class DistrictListActivity extends CustomActivity {
         isLoading();
         viewModel.getDistrict().observe(this, modelDistrict -> {
             isLoading();
-            if (modelDistrict.getStatus().equals("200")){
-                district_List = modelDistrict.getDistrict_List();
+            if (modelDistrict.status.equals("200")){
+                district_List = modelDistrict.district_List;
                 adapter.setData(district_List);
             }
         });

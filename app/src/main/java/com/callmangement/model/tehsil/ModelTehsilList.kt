@@ -1,151 +1,62 @@
-package com.callmangement.model.tehsil;
+package com.callmangement.model.tehsil
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-import java.io.Serializable;
+class ModelTehsilList : Serializable {
+    @SerializedName("mobileNo")
+    var mobileNo: String? = null
 
-public class ModelTehsilList implements Serializable {
-    @SerializedName("mobileNo") private String mobileNo;
-    @SerializedName("updatedBy") private String updatedBy;
-    @SerializedName("createdBy") private String createdBy;
-    @SerializedName("updatedOn") private String updatedOn;
-    @SerializedName("fk_DistrictId") private String fk_DistrictId;
-    @SerializedName("orderBySrNo") private String orderBySrNo;
-    @SerializedName("isActive") private String isActive;
-    @SerializedName("createdOn") private String createdOn;
-    @SerializedName("tehsilId") private String tehsilId;
-    @SerializedName("districtNameHi") private String districtNameHi;
-    @SerializedName("districtNameEng") private String districtNameEng;
-    @SerializedName("tehsilNameEng") private String tehsilNameEng;
-    @SerializedName("tehsilEMail") private String tehsilEMail;
-    @SerializedName("tehsilNameHi") private String tehsilNameHi;
-    @SerializedName("tehsilCode") private String tehsilCode;
+    @SerializedName("updatedBy")
+    var updatedBy: String? = null
 
-    public String getMobileNo() {
-        return mobileNo;
+    @SerializedName("createdBy")
+    var createdBy: String? = null
+
+    @SerializedName("updatedOn")
+    var updatedOn: String? = null
+
+    @JvmField
+    @SerializedName("fk_DistrictId")
+    var fk_DistrictId: String? = null
+
+    @SerializedName("orderBySrNo")
+    var orderBySrNo: String? = null
+
+    @SerializedName("isActive")
+    var isActive: String? = null
+
+    @SerializedName("createdOn")
+    var createdOn: String? = null
+
+    @SerializedName("tehsilId")
+    var tehsilId: String? = null
+        get() {
+            if (field == null) return "0"
+            return field
+        }
+
+    @SerializedName("districtNameHi")
+    var districtNameHi: String? = null
+
+    @JvmField
+    @SerializedName("districtNameEng")
+    var districtNameEng: String? = null
+
+    @JvmField
+    @SerializedName("tehsilNameEng")
+    var tehsilNameEng: String? = null
+
+    @SerializedName("tehsilEMail")
+    var tehsilEMail: String? = null
+
+    @SerializedName("tehsilNameHi")
+    var tehsilNameHi: String? = null
+
+    @SerializedName("tehsilCode")
+    var tehsilCode: String? = null
+
+    override fun toString(): String {
+        return tehsilNameEng!!
     }
-
-    public void setMobileNo(String mobileNo) {
-        this.mobileNo = mobileNo;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public void setUpdatedOn(String updatedOn) {
-        this.updatedOn = updatedOn;
-    }
-
-    public String getFk_DistrictId() {
-        return fk_DistrictId;
-    }
-
-    public void setFk_DistrictId(String fk_DistrictId) {
-        this.fk_DistrictId = fk_DistrictId;
-    }
-
-    public String getOrderBySrNo() {
-        return orderBySrNo;
-    }
-
-    public void setOrderBySrNo(String orderBySrNo) {
-        this.orderBySrNo = orderBySrNo;
-    }
-
-    public String getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(String isActive) {
-        this.isActive = isActive;
-    }
-
-    public String getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(String createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public String getTehsilId() {
-        if (tehsilId == null)
-            return "0";
-        return tehsilId;
-    }
-
-    public void setTehsilId(String tehsilId) {
-        this.tehsilId = tehsilId;
-    }
-
-    public String getDistrictNameHi() {
-        return districtNameHi;
-    }
-
-    public void setDistrictNameHi(String districtNameHi) {
-        this.districtNameHi = districtNameHi;
-    }
-
-    public String getDistrictNameEng() {
-        return districtNameEng;
-    }
-
-    public void setDistrictNameEng(String districtNameEng) {
-        this.districtNameEng = districtNameEng;
-    }
-
-    public String getTehsilNameEng() {
-        return tehsilNameEng;
-    }
-
-    public void setTehsilNameEng(String tehsilNameEng) {
-        this.tehsilNameEng = tehsilNameEng;
-    }
-
-    public String getTehsilEMail() {
-        return tehsilEMail;
-    }
-
-    public void setTehsilEMail(String tehsilEMail) {
-        this.tehsilEMail = tehsilEMail;
-    }
-
-    public String getTehsilNameHi() {
-        return tehsilNameHi;
-    }
-
-    public void setTehsilNameHi(String tehsilNameHi) {
-        this.tehsilNameHi = tehsilNameHi;
-    }
-
-    public String getTehsilCode() {
-        return tehsilCode;
-    }
-
-    public void setTehsilCode(String tehsilCode) {
-        this.tehsilCode = tehsilCode;
-    }
-
-    @Override
-    public String toString() {
-        return tehsilNameEng;
-    }
-
 }

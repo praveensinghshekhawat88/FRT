@@ -115,7 +115,7 @@ public class LastComplaintFPSListActivity extends CustomActivity implements View
                 if (!districtList.get(i).getDistrictId().equals("0")){
                     binding.rvFpsList.setVisibility(View.GONE);
                     binding.textNoRecordFound.setVisibility(View.VISIBLE);
-                    districtNameEng = districtList.get(i).getDistrictNameEng();
+                    districtNameEng = districtList.get(i).districtNameEng;
                     districtId = districtList.get(i).getDistrictId();
                     tehsilList(districtId);
                 }else{
@@ -134,7 +134,7 @@ public class LastComplaintFPSListActivity extends CustomActivity implements View
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (!tehsilList.get(i).getTehsilId().equals("0")){
-                    tehsilNameEng = tehsilList.get(i).getTehsilNameEng();
+                    tehsilNameEng = tehsilList.get(i).tehsilNameEng;
                     tehsilId = tehsilList.get(i).getTehsilId();
                     getFpsList();
                 }else {
@@ -153,12 +153,12 @@ public class LastComplaintFPSListActivity extends CustomActivity implements View
         isLoading();
         viewModel.getDistrict().observe(this, modelDistrict -> {
             isLoading();
-            if (modelDistrict.getStatus().equals("200")) {
+            if (modelDistrict.status.equals("200")) {
                 districtList.clear();
-                districtList = modelDistrict.getDistrict_List();
+                districtList = modelDistrict.district_List;
                 if (districtList != null && districtList.size() > 0) {
                     ModelDistrictList modelDistrictList = new ModelDistrictList();
-                    modelDistrictList.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
+                    modelDistrictList.districtNameEng = "--" + getResources().getString(R.string.district) + "--";
                     districtList.add(0,modelDistrictList);
                     ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, districtList);
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -166,7 +166,7 @@ public class LastComplaintFPSListActivity extends CustomActivity implements View
 
                     tehsilList.clear();
                     ModelTehsilList modelTehsilList = new ModelTehsilList();
-                    modelTehsilList.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+                    modelTehsilList.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
                     tehsilList.add(0,modelTehsilList);
                     ArrayAdapter<ModelTehsilList> dataAdapter1 = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, tehsilList);
                     dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -188,12 +188,12 @@ public class LastComplaintFPSListActivity extends CustomActivity implements View
                     hideProgress();
                     if (response.isSuccessful()){
                         ModelTehsil model = response.body();
-                        if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                        if (Objects.requireNonNull(model).status.equals("200")) {
                             tehsilList.clear();
                             tehsilList = model.getTehsil_List();
                             if (tehsilList != null && tehsilList.size() > 0) {
                                 ModelTehsilList modelTehsilList = new ModelTehsilList();
-                                modelTehsilList.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+                                modelTehsilList.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
                                 tehsilList.add(0,modelTehsilList);
                                 ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, tehsilList);
                                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -201,7 +201,7 @@ public class LastComplaintFPSListActivity extends CustomActivity implements View
                             }
 
                         }else {
-                            Toast.makeText(mActivity, model.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mActivity, model.message, Toast.LENGTH_SHORT).show();
                         }
 
                     }else {
@@ -249,7 +249,7 @@ public class LastComplaintFPSListActivity extends CustomActivity implements View
                     if (response.isSuccessful()){
                         ModelFPSDistTehWise model = response.body();
                         if (Objects.requireNonNull(model).getStatus().equals("200")){
-                            modelFPSDistTehWiseList = model.getModelFPSDistTehWiseList();
+                            modelFPSDistTehWiseList = model.modelFPSDistTehWiseList;
                             if (modelFPSDistTehWiseList.size() > 0) {
                                 binding.rvFpsList.setVisibility(View.VISIBLE);
                                 binding.textNoRecordFound.setVisibility(View.GONE);
@@ -261,7 +261,7 @@ public class LastComplaintFPSListActivity extends CustomActivity implements View
                                 // creating a new variable for gson.
                                 Gson gson = new Gson();
                                 // getting data from gson and storing it in a string.
-                                String json = gson.toJson(  response.body().getModelFPSDistTehWiseList());
+                                String json = gson.toJson(response.body().modelFPSDistTehWiseList);
                                 // below line is to save data in shared
                                 // prefs in the form of string.
                                 editor.putString("LastComp", json);

@@ -131,7 +131,7 @@ public class MonthlyReportsActivity extends CustomActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (++checkDistrict > 1) {
-                    districtNameEng = district_List.get(i).getDistrictNameEng();
+                    districtNameEng = district_List.get(i).districtNameEng;
                     districtId = district_List.get(i).getDistrictId();
                     if (districtNameEng.equalsIgnoreCase("--" + getResources().getString(R.string.district) + "--")) {
                         //    fetchComplaintListByDistrictWise("0");
@@ -220,11 +220,11 @@ public class MonthlyReportsActivity extends CustomActivity {
             //     isLoading();
             hideProgress();
             adapter.showLoader(false);
-            Log.d("status", "status---" + modelComplaint.getStatus());
+            Log.d("status", "status---" + modelComplaint.status);
 
-            if (modelComplaint.getStatus().equals("200")) {
+            if (modelComplaint.status.equals("200")) {
 
-                if (modelComplaint.getCurrentPage() == modelComplaint.getTotalPages())
+                if (modelComplaint.currentPage == modelComplaint.totalPages)
                     allPagesLoaded = true;
                 else
                     allPagesLoaded = false;
@@ -248,7 +248,7 @@ public class MonthlyReportsActivity extends CustomActivity {
 
                 currentPage++;
 
-            } else if (modelComplaint.getStatus().equals("201")) {
+            } else if (modelComplaint.status.equals("201")) {
                 binding.rvMonthlyReports.setVisibility(View.GONE);
                 binding.textNoComplaint.setVisibility(View.VISIBLE);
 
@@ -273,15 +273,15 @@ public class MonthlyReportsActivity extends CustomActivity {
         List<MonthReportModel> monthReportList = new ArrayList<>();
         List<Object> formattedObjectList = new ArrayList<>();
         if (objectList.size() > 0) {
-            String date = ((ModelComplaintList) objectList.get(0)).getComplainRegDateStr();
+            String date = ((ModelComplaintList) objectList.get(0)).complainRegDateStr;
             if (objectList.size() > 1)
                 formattedObjectList.add(new MonthDateModel(date));
             formattedObjectList.add(objectList.get(0));
             for (int i = 1; i < objectList.size(); i++) {
-                String date1 = ((ModelComplaintList) objectList.get(i)).getComplainRegDateStr();
-                String date2 = ((ModelComplaintList) objectList.get(i - 1)).getComplainRegDateStr();
+                String date1 = ((ModelComplaintList) objectList.get(i)).complainRegDateStr;
+                String date2 = ((ModelComplaintList) objectList.get(i - 1)).complainRegDateStr;
                 if (!date1.equals(date2)) {
-                    formattedObjectList.add(new MonthDateModel(((ModelComplaintList) objectList.get(i)).getComplainRegDateStr()));
+                    formattedObjectList.add(new MonthDateModel(((ModelComplaintList) objectList.get(i)).complainRegDateStr));
                     formattedObjectList.add(objectList.get(i));
                 } else formattedObjectList.add(objectList.get(i));
             }
@@ -295,11 +295,11 @@ public class MonthlyReportsActivity extends CustomActivity {
                         MonthReportModel monthReportModel = new MonthReportModel();
                         if (formattedObjectList.get(j) instanceof MonthDateModel) {
                             if (innerDateWiseList != null) {
-                                monthReportModel.setDate(date);
-                                monthReportModel.setList(innerDateWiseList);
+                                monthReportModel.date = date;
+                                monthReportModel.list = (innerDateWiseList);
                                 monthReportList.add(monthReportModel);
                             }
-                            date = ((MonthDateModel) formattedObjectList.get(j)).getDate();
+                            date = ((MonthDateModel) formattedObjectList.get(j)).date;
                             innerDateWiseList = new ArrayList<>();
                         } else {
                             if (innerDateWiseList != null)
@@ -308,16 +308,16 @@ public class MonthlyReportsActivity extends CustomActivity {
                     }
                     if (innerDateWiseList != null) {
                         MonthReportModel monthReportModel = new MonthReportModel();
-                        monthReportModel.setDate(date);
-                        monthReportModel.setList(innerDateWiseList);
+                        monthReportModel.date = date;
+                        monthReportModel.list = (innerDateWiseList);
                         monthReportList.add(monthReportModel);
                     }
                 } else {
                     MonthReportModel monthReportModel = new MonthReportModel();
-                    monthReportModel.setDate(((ModelComplaintList) formattedObjectList.get(0)).getComplainRegDateStr());
+                    monthReportModel.date = ((ModelComplaintList) formattedObjectList.get(0)).complainRegDateStr;
                     innerDateWiseList = new ArrayList<>();
                     innerDateWiseList.add((ModelComplaintList) formattedObjectList.get(0));
-                    monthReportModel.setList(innerDateWiseList);
+                    monthReportModel.list = (innerDateWiseList);
                     monthReportList.add(monthReportModel);
                 }
             }
@@ -329,14 +329,14 @@ public class MonthlyReportsActivity extends CustomActivity {
 
     private void districtList() {
         viewModel.getDistrict().observe(this, modelDistrict -> {
-            if (modelDistrict.getStatus().equals("200")) {
-                district_List = modelDistrict.getDistrict_List();
+            if (modelDistrict.status.equals("200")) {
+                district_List = modelDistrict.district_List;
 
                 if (district_List != null && district_List.size() > 0) {
                     Collections.reverse(district_List);
                     ModelDistrictList l = new ModelDistrictList();
                     l.setDistrictId(String.valueOf(-1));
-                    l.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
+                    l.districtNameEng = "--" + getResources().getString(R.string.district) + "--";
                     district_List.add(l);
                     Collections.reverse(district_List);
 
@@ -395,7 +395,7 @@ public class MonthlyReportsActivity extends CustomActivity {
     public class CustomComparator implements Comparator<Monthly_Reports_Info> {
         @Override
         public int compare(Monthly_Reports_Info o1, Monthly_Reports_Info o2) {
-            return o1.getDate().compareTo(o2.getDate());
+            return o1.date.compareTo(o2.date);
         }
     }
 

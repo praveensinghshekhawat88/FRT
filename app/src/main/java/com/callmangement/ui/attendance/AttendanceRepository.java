@@ -49,10 +49,10 @@ public class AttendanceRepository {
                 if (response.isSuccessful()){
                     isLoading.setValue(false);
                     ModelAttendanceList model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")){
+                    if (Objects.requireNonNull(model).status.equals("200")){
                         mutableLiveData.setValue(model);
                     } else {
-                        Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     isLoading.setValue(false);
@@ -79,14 +79,14 @@ public class AttendanceRepository {
                     isLoading.setValue(false);
                     ModelAddLocationList model = response.body();
                     if (Objects.requireNonNull(model).getStatus().equals("200")) {
-                        List<ModelAddLocationData> data = model.getLocation_list();
+                        List<ModelAddLocationData> data = model.location_list;
                         List<ModelAddLocationData> list = new ArrayList<>();
                         for (int i = 0; i < data.size(); i++) {
                             if (data.get(i).getLocation_Date_Time().contains(date)) {
                                 list.add(data.get(i));
                             }
                         }
-                        model.setLocation_list(list);
+                        model.location_list = (list);
                         modelAddLocationListMutableLiveData.setValue(model);
                     }else {
                         Toast.makeText(mContext, model.getMassage(), Toast.LENGTH_SHORT).show();
