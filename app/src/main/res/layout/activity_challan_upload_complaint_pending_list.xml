@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grayLight"
+        tools:context=".ui.complaint.ChallanUploadComplaintPendingListActivity">
+
+        <include
+            android:id="@+id/action_bar"
+            layout="@layout/global_action_bar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_layout"
+            android:layout_below="@+id/action_bar"
+            android:background="@color/grayLight"
+            android:orientation="vertical"
+            android:padding="10sp">
+
+         <!--   <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/inputSearch"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/shape_rect_search_edittext_layout"
+                android:drawableLeft="@drawable/ic_search"
+                android:drawablePadding="10sp"
+                android:hint="@string/search"
+                android:paddingLeft="10sp"
+                android:singleLine="true"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:id="@+id/rl_district"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerDistrict"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_toLeftOf="@+id/iv_dropdownDistrict"
+                    android:background="@null" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_dropdownDistrict"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5sp"
+                    android:src="@drawable/ic_arrow_down" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <View
+                    android:layout_width="1sp"
+                    android:layout_height="match_parent"
+                    android:background="@color/grayLight" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="40sp"
+                    android:layout_gravity="center"
+                    android:layout_weight="7"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="@string/complaint_details"
+                    android:textColor="@color/grayDark" />
+
+
+                <View
+                    android:layout_width="1sp"
+                    android:layout_height="match_parent"
+                    android:background="@color/grayLight" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_tehsil"
+                    android:layout_width="0sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="3"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spinnerTehsil"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_toLeftOf="@+id/iv_dropdownTehsil"
+                        android:background="@null" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_dropdownTehsil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="2sp"
+                        android:src="@drawable/ic_arrow_down" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="1sp"
+                    android:layout_height="match_parent"
+                    android:background="@color/grayLight" />
+            </LinearLayout>-->
+
+
+            <RelativeLayout
+                android:id="@+id/rl_district"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:layout_marginBottom="@dimen/_5sdp"
+              >
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerDistrict"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_toLeftOf="@+id/iv_dropdownDistrict"
+                    android:background="@null" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_dropdownDistrict"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5sp"
+                    android:src="@drawable/ic_arrow_down" />
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+
+
+
+
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/inputFPS"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                    android:drawableLeft="@drawable/ic_search"
+                    android:drawablePadding="10sp"
+                    android:hint="@string/fps_code"
+
+                    android:paddingLeft="10sp"
+                    android:textSize="16dp"
+                    android:singleLine="true"
+                    android:visibility="visible"
+                    android:layout_weight="1"/>
+
+
+                <Space
+                    android:id="@+id/spacer"
+                    android:layout_width="2sp"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"/>
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout">
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@null" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_dropdown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10sp"
+                        android:src="@drawable/ic_arrow_down" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/layout_date_range"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:visibility="gone">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/textFromDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:focusable="false"
+                    android:hint="@string/from_date"
+                    android:drawableStart="@drawable/ic_date_range"
+                    android:paddingStart="10sp"
+                    android:textSize="16sp" />
+
+                <Space
+                    android:layout_width="10sp"
+                    android:layout_height="match_parent" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/textToDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:focusable="false"
+                    android:hint="@string/to_date"
+                    android:drawableStart="@drawable/ic_date_range"
+                    android:paddingStart="10sp"
+                    android:textSize="16sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+               >
+
+
+
+                <Button
+                    android:id="@+id/buttonSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="@drawable/selector_background_orange_pressed_rec_layout"
+                    android:hint="@string/filter"
+                    android:layout_marginTop="@dimen/_5ssp"
+                    android:textColorHint="@color/white"
+                    android:textSize="16sp"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:weightSum="10"
+                >
+
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_gravity="center"
+                    android:layout_weight="7"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="@string/complaint_details"
+                    android:textColor="@color/grayDark" />
+
+
+
+
+                <View
+                    android:layout_width="1sp"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:background="@color/grayLight" />
+
+
+                <RelativeLayout
+                    android:id="@+id/rl_tehsil"
+                    android:layout_width="0dp"
+                    android:layout_height="40sp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                    android:layout_weight="3">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spinnerTehsil"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_toLeftOf="@+id/iv_dropdownTehsil"
+                        android:background="@null" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_dropdownTehsil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="2sp"
+                        android:src="@drawable/ic_arrow_down" />
+                </RelativeLayout>
+
+
+
+
+
+
+
+            </LinearLayout>
+
+
+
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:background="@color/grayLight" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_complaint_pending"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/item_complaint_pending_list_activity" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textNoComplaint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/no_complaint"
+                    android:textSize="18sp"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/total" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textTotalComplaint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="right"
+                    android:text="0" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/bottom_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="5sp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="40sp"
+                android:layout_height="50sp"
+                android:src="@drawable/rcsc_2" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/rcsc_3" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </RelativeLayout>
+</layout>

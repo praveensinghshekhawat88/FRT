@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.distributor.activity.DistributorPosReportForSEActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+       >
+        <include
+            android:id="@+id/action_bar"
+            layout="@layout/global_action_bar" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_10sdp"
+            android:scrollbars="none">
+        <LinearLayout
+            android:id="@+id/layoutFilter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+           >
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/fps_code"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/grayDark"
+                android:textSize="@dimen/_13ssp" />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/inputFpsCode"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="@string/fps_code"
+                android:paddingStart="10sp"
+                android:textSize="16sp"
+                android:inputType="number"
+                tools:ignore="RtlSymmetry" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/errortype"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/grayDark"
+                android:textSize="@dimen/_13ssp" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout">
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_dropdown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10sp"
+                    android:src="@drawable/ic_arrow_down" />
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/layout_date_range"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:visibility="gone">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/textFromDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:focusable="false"
+                    android:hint="@string/from_date"
+                    android:drawableStart="@drawable/ic_date_range"
+                    android:paddingStart="10sp"
+                    android:textSize="16sp" />
+
+                <Space
+                    android:layout_width="10sp"
+                    android:layout_height="match_parent" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/textToDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:focusable="false"
+                    android:hint="@string/to_date"
+                    android:drawableStart="@drawable/ic_date_range"
+                    android:paddingStart="10sp"
+                    android:textSize="16sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/device_code"
+                android:layout_marginTop="@dimen/_15sdp"
+
+                android:textColor="@color/grayDark"
+                android:textSize="@dimen/_13ssp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/inputDeviceCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                    android:fontFamily="@font/roboto_regular"
+                    android:hint="@string/device_code"
+                    android:paddingStart="10sp"
+                    android:textSize="16sp"
+                    tools:ignore="RtlSymmetry" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:text="@string/optional"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:textSize="14dp" />
+                </LinearLayout>
+
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/mobile_no"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/grayDark"
+                android:textSize="@dimen/_13ssp" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/inputMobileno"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="@string/mobile_no"
+                android:inputType="number"
+                android:paddingStart="10sp"
+                android:textSize="16sp"
+                tools:ignore="RtlSymmetry" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/remark"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/grayDark"
+                android:textSize="@dimen/_13ssp" />
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/inputRemark"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                    android:fontFamily="@font/roboto_regular"
+                    android:hint="@string/remark"
+                    android:paddingStart="10sp"
+                    android:textSize="16sp"
+                    tools:ignore="RtlSymmetry" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/upload_image"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:textColor="@color/grayDark"
+                android:textSize="@dimen/_13ssp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+
+                android:padding="10dp"
+                android:layout_marginTop="@dimen/_5sdp">
+
+                <LinearLayout
+                    android:id="@+id/linChooseImages1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_challan_image"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_dashed_layout">
+
+                        <ImageView
+                            android:id="@+id/ivChallanImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_baseline_image" />
+                    </RelativeLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:text="@string/optional"
+                        android:visibility="gone"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linChooseImages2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_parts_image1"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_dashed_layout">
+
+                        <ImageView
+                            android:id="@+id/ivPartsImage1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_baseline_image" />
+                    </RelativeLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:text="@string/optional"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linChooseImages3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_parts_image2"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_dashed_layout">
+
+                        <ImageView
+                            android:id="@+id/ivPartsImage2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_baseline_image" />
+                    </RelativeLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:text="@string/optional"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonUploadError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45sp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
+                android:layout_marginBottom="10sp"
+                android:hint="@string/submit"
+                android:fontFamily="@font/roboto_bold"
+                android:textColorHint="@color/white"
+                android:textSize="18sp"
+                android:background="@drawable/rounded_button_blue_layout"/>
+
+
+
+        </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

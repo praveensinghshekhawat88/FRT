@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10sp"
+        android:id="@+id/list_item"
+        android:background="@drawable/shape_rect_border_gray_background_white_layout">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10sp"
+            android:src="@drawable/icon_4"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_regular"
+            android:text="October 2021"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+    </LinearLayout>
+</layout>

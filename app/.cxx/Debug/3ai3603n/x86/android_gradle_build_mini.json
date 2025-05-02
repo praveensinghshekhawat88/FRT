@@ -1,0 +1,27 @@
+{
+  "buildFiles": [
+    "G:\\Praveen\\CallManagementFRTAndroid_Praveen_Personal\\FRT\\app\\src\\main\\cpp\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "C:\\Users\\Precise\\AppData\\Local\\Android\\Sdk\\cmake\\3.18.1\\bin\\ninja.exe",
+      "-C",
+      "G:\\Praveen\\CallManagementFRTAndroid_Praveen_Personal\\FRT\\app\\.cxx\\Debug\\3ai3603n\\x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "C:\\Users\\Precise\\AppData\\Local\\Android\\Sdk\\cmake\\3.18.1\\bin\\ninja.exe",
+    "-C",
+    "G:\\Praveen\\CallManagementFRTAndroid_Praveen_Personal\\FRT\\app\\.cxx\\Debug\\3ai3603n\\x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "e_hr::@6890427a1f51a3e7e1df": {
+      "artifactName": "e_hr",
+      "abi": "x86",
+      "output": "G:\\Praveen\\CallManagementFRTAndroid_Praveen_Personal\\FRT\\app\\build\\intermediates\\cxx\\Debug\\3ai3603n\\obj\\x86\\libe_hr.so",
+      "runtimeFiles": []
+    }
+  }
+}

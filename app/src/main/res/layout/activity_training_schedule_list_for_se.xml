@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.training_schedule.TrainingScheduleListForSEActivity">
+        <include
+            android:id="@+id/action_bar"
+            layout="@layout/global_action_bar"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_trainingSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textNoTrainingSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_training_schedule"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="18sp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"/>
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

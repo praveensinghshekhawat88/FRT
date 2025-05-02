@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rounded_layout_for_dialog_dispatch"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:id="@+id/layoutChallanDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15sp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/invoice_id"
+                android:textColor="@color/grayDark"
+                android:textSize="14sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text=" : "
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textInvoiceNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text=""
+                android:textColor="@color/colorActionBar"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/inputDeleteRemark"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_70sdp"
+            android:background="@drawable/shape_rect_background_gray_rounded_corner_layout_5"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="start"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="@string/enter_remark_here"
+            android:inputType="text"
+            android:padding="@dimen/_10sdp"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_5sdp">
+            <TextView
+                android:id="@+id/textNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no"
+                android:textSize="@dimen/_14sdp"
+                android:fontFamily="@font/roboto_bold"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:textColor="@color/colorOrange"/>
+            <TextView
+                android:id="@+id/textYes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yes"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="@dimen/_14sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:textColor="@color/colorOrange"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

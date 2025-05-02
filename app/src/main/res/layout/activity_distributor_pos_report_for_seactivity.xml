@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.distributor.activity.DistributorPosReportForSEActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_above="@+id/bottom_layout">
+        <include
+            android:id="@+id/action_bar"
+            layout="@layout/global_action_bar" />
+
+        <LinearLayout
+            android:id="@+id/layoutFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10sp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout">
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@null" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_dropdown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10sp"
+                    android:src="@drawable/ic_arrow_down" />
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/layout_date_range"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:visibility="gone">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/textFromDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:focusable="false"
+                    android:hint="@string/from_date"
+                    android:drawableStart="@drawable/ic_date_range"
+                    android:paddingStart="10sp"
+                    android:textSize="16sp" />
+
+                <Space
+                    android:layout_width="10sp"
+                    android:layout_height="match_parent" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/textToDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:focusable="false"
+                    android:hint="@string/to_date"
+                    android:drawableStart="@drawable/ic_date_range"
+                    android:paddingStart="10sp"
+                    android:textSize="16sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/inputFpsCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                    android:fontFamily="@font/roboto_regular"
+                    android:hint="@string/fps_code"
+                    android:paddingStart="10sp"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    tools:ignore="RtlSymmetry" />
+                <Space
+                    android:layout_width="10sp"
+                    android:layout_height="match_parent" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/inputTicketNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                    android:fontFamily="@font/roboto_regular"
+                    android:hint="@string/ticket_number"
+                    android:paddingStart="10sp"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    tools:ignore="RtlSymmetry"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_gravity="center">
+                <LinearLayout
+                    android:id="@+id/btnsearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+
+                    android:background="@drawable/round_btn_blue_layout"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:drawablePadding="5dp"
+                        android:textStyle="bold"
+                        android:text="@string/filter"
+                        android:layout_gravity="center"
+                        android:textSize="14dp"
+                        android:textColor="@color/white"
+                        android:visibility="visible"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:background="@color/grayLight"
+            tools:ignore="SmallSp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvNoDataFound"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            android:visibility="gone"
+            android:text="@string/no_data_found"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5sp"
+            android:background="@color/grayLight"
+            android:layout_above="@id/bottom_layout"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="45sp"
+            android:background="@color/colorActionBar"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textComplaintName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20sp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/total_count" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textTotalCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="20sp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="right"
+                android:text="0"
+                tools:ignore="RtlHardcoded" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.training_schedule.TrainingScheduleListActivity">
+
+        <include
+            android:id="@+id/action_bar"
+            layout="@layout/global_action_bar"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonCreateTrainingSchedule"
+            android:layout_width="match_parent"
+            android:layout_height="45sp"
+            android:layout_gravity="center"
+            android:layout_margin="10sp"
+            android:background="@drawable/shape_rect_login_button_layout"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text="@string/create_training_schedule"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_training_schedule_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textNoTrainingSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_training_schedule"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="18sp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"/>
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

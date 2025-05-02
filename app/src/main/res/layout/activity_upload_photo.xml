@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.distributor.activity.UploadPhotoActivity">
+    <include
+        android:id="@+id/action_bar"
+        layout="@layout/global_action_bar"/>
+    <RelativeLayout
+        android:layout_width="@dimen/_180sdp"
+        android:layout_height="@dimen/_200sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bg_dashed_layout">
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_baseline_image"
+            tools:ignore="ImageContrastCheck" />
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_upload"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@drawable/rounded_button_blue_layout"
+        android:gravity="center"
+        android:text="@string/upload"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_14sdp"
+        tools:ignore="TextContrastCheck" />
+</LinearLayout>

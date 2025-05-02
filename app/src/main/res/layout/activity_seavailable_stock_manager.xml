@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.inventory.SEAvailableStockManagerActivity">
+
+    <include
+        android:id="@+id/action_bar"
+        layout="@layout/global_action_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/action_bar"
+        android:layout_above="@+id/bottom_layout">
+        <LinearLayout
+            android:id="@+id/rl_district_and_se_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/action_bar">
+
+            <RelativeLayout
+                android:id="@+id/rl_district"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_marginStart="10sp"
+                android:layout_marginTop="10sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginBottom="10sp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerDistrict"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_toStartOf="@+id/iv_dropdownDistrict"
+                    android:background="@null" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_dropdownDistrict"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10sp"
+                    android:src="@drawable/ic_arrow_down" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_ServiceEngineer"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="10sp"
+                android:layout_marginEnd="10sp"
+                android:layout_marginBottom="10sp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerServiceEngineer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_toLeftOf="@+id/iv_dropdownServiceEngineer"
+                    android:background="@null" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_dropdownServiceEngineer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10sp"
+                    android:src="@drawable/ic_arrow_down" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/inputSearch"
+            android:layout_width="match_parent"
+            android:layout_height="45sp"
+            android:hint="@string/search"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="10sp"
+            android:visibility="visible"
+            android:paddingStart="10sp"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/shape_rect_search_edittext_layout"
+            tools:ignore="RtlSymmetry" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:background="@color/grayLight"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/district"
+                android:textSize="14sp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@color/black"
+                tools:ignore="RtlSymmetry" />
+            <View
+                android:layout_width="1sp"
+                android:layout_height="match_parent"
+                android:background="@color/grayLight"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/username"
+                android:textSize="14sp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@color/black"
+                tools:ignore="RtlSymmetry" />
+            <View
+                android:layout_width="1sp"
+                android:layout_height="match_parent"
+                android:background="@color/grayLight"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/item_name"
+                android:textSize="14sp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@color/black"
+                tools:ignore="RtlSymmetry" />
+            <View
+                android:layout_width="1sp"
+                android:layout_height="match_parent"
+                android:background="@color/grayLight"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/quantity"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="14sp"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:background="@color/grayLight"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_se_available_stock_manager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textNoStockFound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_stock_found"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="18sp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="@color/grayLight"
+        android:layout_above="@+id/bottom_layout"
+        android:visibility="gone"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorActionBar"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:fontFamily="@font/roboto_bold"
+            android:paddingStart="10sp"
+            android:text="@string/total_quantity"
+            android:textColor="@color/white"
+            tools:ignore="RtlSymmetry" />
+
+        <View
+            android:layout_width="1sp"
+            android:layout_height="match_parent"
+            android:background="@color/grayLight"
+            android:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textTotalItemQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="8"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/white" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</RelativeLayout>

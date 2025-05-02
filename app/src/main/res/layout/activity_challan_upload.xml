@@ -1,0 +1,781 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.callmangement.model.complaints.ModelComplaintList" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:isScrollContainer="true"
+        tools:context=".ui.complaint.ChallanUploadActivity">
+
+        <include
+            android:id="@+id/action_bar"
+            layout="@layout/global_action_bar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_layout"
+            android:layout_below="@id/action_bar"
+            android:background="@color/white"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="15sp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/fps_code"
+                            android:textColor="@color/grayDark"
+                            android:textSize="15sp" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5sp"
+                            android:background="@drawable/disabled_edittext"
+                            android:enabled="false"
+                            android:fontFamily="@font/roboto_regular"
+                            android:padding="10sp"
+                            android:text="@{data.fpscode}"
+                            android:textColor="@color/grayDark"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="10sp"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/district"
+                            android:textColor="@color/grayDark"
+                            android:textSize="15sp" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:background="@drawable/disabled_edittext"
+                            android:enabled="false"
+                            android:fontFamily="@font/roboto_regular"
+                            android:padding="10sp"
+                            android:text="@{data.district}"
+                            android:textColor="@color/grayDark"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/dealer_name"
+                            android:textColor="@color/grayDark"
+                            android:textSize="15sp" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5sp"
+                            android:background="@drawable/disabled_edittext"
+                            android:enabled="false"
+                            android:fontFamily="@font/roboto_regular"
+                            android:padding="10sp"
+                            android:text="@{data.customerName}"
+                            android:textColor="@color/grayDark"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="10sp"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/fps_mobile"
+                            android:textColor="@color/grayDark"
+                            android:textSize="15sp" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:background="@drawable/disabled_edittext"
+                            android:enabled="false"
+                            android:fontFamily="@font/roboto_regular"
+                            android:padding="10sp"
+                            android:text="@{data.mobileNo}"
+                            android:textColor="@color/grayDark"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15sp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/call_detail"
+                    android:textColor="@color/grayDark"
+                    android:textSize="18sp" />
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/shape_rect_border_gray_layout"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/issue"
+                        android:textColor="@color/grayDark"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5sp"
+                        android:background="@drawable/disabled_edittext"
+                        android:enabled="false"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="10sp"
+                        android:text="@{data.complainDesc}"
+                        android:textColor="@color/grayDark"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="@string/issue_type"
+                                android:textColor="@color/grayDark"
+                                android:textSize="15sp" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5sp"
+                                android:background="@drawable/disabled_edittext"
+                                android:enabled="false"
+                                android:fontFamily="@font/roboto_regular"
+                                android:padding="10sp"
+                                android:text="@{data.complainType}"
+                                android:textColor="@color/grayDark"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <Space
+                            android:layout_width="5sp"
+                            android:layout_height="match_parent" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="@string/date"
+                                android:textColor="@color/grayDark"
+                                android:textSize="15sp" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5sp"
+                                android:background="@drawable/disabled_edittext"
+                                android:enabled="false"
+                                android:fontFamily="@font/roboto_regular"
+                                android:padding="10sp"
+                                android:text="@{data.complainRegDateStr}"
+                                android:textColor="@color/grayDark"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                   <!-- <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="@string/challan_number"
+                                android:textColor="@color/grayDark"
+                                android:textSize="15sp" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/inputChallanNumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5sp"
+                                android:background="@drawable/enabled_edittext"
+                                android:fontFamily="@font/roboto_regular"
+                                android:inputType="number"
+                                android:padding="10sp"
+                                android:text=""
+                                android:textColor="@color/grayDark"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <Space
+                            android:layout_width="5sp"
+                            android:layout_height="match_parent" />
+
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="@string/resolved_date"
+                                android:textColor="@color/grayDark"
+                                android:textSize="15sp" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/inputResolvedDate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5sp"
+                                android:background="@drawable/shape_rect_border_gray_layout"
+                                android:focusable="false"
+                                android:fontFamily="@font/roboto_regular"
+                                android:padding="10sp"
+                                android:text=""
+                                android:textColor="@color/grayDark"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>-->
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/remark"
+                        android:textColor="@color/grayDark"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:visibility="gone"
+                        android:id="@+id/inputRemark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5sp"
+                        android:background="@drawable/shape_rect_border_gray_layout"
+                        android:fontFamily="@font/roboto_regular"
+                        android:paddingLeft="10sp"
+                        android:paddingTop="10sp"
+                        android:paddingRight="10sp"
+                        android:paddingBottom="30sp"
+                        android:text=""
+                        android:textColor="@color/grayDark"
+                        android:textSize="14sp" />
+
+                    <CheckBox
+                        android:visibility="gone"
+                        android:id="@+id/chkBoxIsPhysicalDamage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10sp"
+                        android:background="@drawable/shape_rect_border_gray_layout"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="@string/machine_is_physically_damaged"
+                        android:textColor="@color/grayDark"
+                        android:textSize="14sp" />
+
+                    <!--<androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/physically_damage_machine_image"
+                        android:textColor="@color/grayDark"
+                        android:textSize="15sp"
+                        android:visibility="gone" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/inputPhysicallyDamageMachineImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5sp"
+                        android:background="@drawable/shape_rect_border_gray_layout"
+                        android:drawableEnd="@drawable/ic_camera"
+                        android:focusable="false"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="10sp"
+                        android:text=""
+                        android:textColor="@color/grayDark"
+                        android:textSize="14sp"
+                        android:visibility="gone" />-->
+
+                    <LinearLayout
+                        android:id="@+id/layout_replace_parts_by_service_center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/replace_part_by_service_center"
+                            android:textColor="@color/grayDark"
+                            android:textSize="15sp" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/inputReplacePartByServiceCenter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5sp"
+                            android:background="@drawable/shape_rect_border_gray_layout"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:fontFamily="@font/roboto_regular"
+                            android:padding="10sp"
+                            android:text=""
+                            android:textColor="@color/grayDark"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/replace_part"
+                        android:textColor="@color/grayDark"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:visibility="gone"
+                        android:id="@+id/inputReplacePart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5sp"
+                        android:background="@drawable/shape_rect_border_gray_layout"
+                        android:focusable="false"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="10sp"
+                        android:text=""
+                        android:textColor="@color/grayDark"
+                        android:textSize="14sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/courier_detail"
+                        android:textColor="@color/grayDark"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:visibility="gone"
+                        android:id="@+id/inputCourierDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5sp"
+                        android:background="@drawable/shape_rect_border_gray_layout"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="10sp"
+                        android:text=""
+                        android:textColor="@color/grayDark"
+                        android:textSize="14sp" />
+
+                 <!--   <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/inputImageHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/image"
+                        android:textColor="@color/grayDark"
+                        android:textSize="15sp"
+                        android:visibility="visible" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/inputImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5sp"
+                        android:background="@drawable/enabled_edittext"
+                        android:drawableEnd="@drawable/ic_camera"
+                        android:focusable="false"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="10sp"
+                        android:text=""
+                        android:textColor="@color/grayDark"
+                        android:textSize="14sp"
+                        android:visibility="visible" />-->
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:visibility="gone"
+                        android:id="@+id/inputDSOLetterHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/dso_letter"
+                        android:textColor="@color/grayDark"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:visibility="gone"
+                        android:id="@+id/inputDSOLetter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5sp"
+                        android:background="@drawable/shape_rect_border_gray_layout"
+                        android:drawableEnd="@drawable/ic_camera"
+                        android:focusable="false"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="10sp"
+                        android:text=""
+                        android:textColor="@color/grayDark"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/se_image"
+                        android:layout_width="150sp"
+                        android:layout_height="150sp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10sp"
+                        android:scaleType="fitXY"
+                        android:visibility="gone" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:visibility="gone"
+                        android:id="@+id/buttonResolved"
+                        android:layout_width="match_parent"
+                        android:layout_height="45sp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20sp"
+                        android:background="@drawable/shape_rect_background_green_layout"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="center"
+                        android:text="@string/resolve"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13sdp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/buttonAcceptComplaint"
+                        android:layout_width="match_parent"
+                        android:layout_height="45sp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20sp"
+                        android:background="@drawable/shape_rect_background_green_layout"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="center"
+                        android:text="@string/accept_complaint"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13sdp"
+                        android:visibility="gone" />
+
+                    <com.callmangement.support.slidetoact.SlideToActView
+                        android:visibility="gone"
+                        android:id="@+id/buttonSliderSendToSE"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        app:area_margin="4dp"
+                        app:border_radius="0dp"
+                        app:icon_margin="5dp"
+                        app:outer_color="@color/holo_blue_dark"
+                        app:slider_height="45sp"
+                        app:text="@string/send_service_center_caps"
+                        app:text_size="@dimen/_13sdp"
+                        app:text_style="bold" />
+
+                   <!-- <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnChallanUpload"
+                        android:layout_width="match_parent"
+                        android:layout_height="45sp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20sp"
+                        android:background="@drawable/shape_rect_background_green_layout"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="center"
+                        android:text="@string/challan_upload"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13sdp" />-->
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:padding="15dp"
+                        android:background="@drawable/shape_rect_border_gray_layout">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10sp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:text="@string/challan_number"
+                                    android:textColor="@color/grayDark"
+                                    android:textSize="15sp" />
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/inputChallanNumber"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="5sp"
+                                    android:hint="@string/enter_challan_number"
+                                    android:focusable="true"
+                                    android:textColorHint="@color/gray"
+                                    android:background="@drawable/enabled_edittext"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:inputType="number"
+                                    android:padding="10sp"
+                                    android:text=""
+                                    android:textColor="@color/grayDark"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                            <Space
+                                android:layout_width="5sp"
+                                android:layout_height="match_parent" />
+
+                            <LinearLayout
+                                android:visibility="gone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:text="@string/resolved_date"
+                                    android:textColor="@color/grayDark"
+                                    android:textSize="15sp" />
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/inputResolvedDate"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="5sp"
+                                    android:background="@drawable/shape_rect_border_gray_layout"
+                                    android:focusable="false"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:padding="10sp"
+                                    android:text=""
+                                    android:textColor="@color/grayDark"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/inputImageHint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10sp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/image"
+                            android:textColor="@color/grayDark"
+                            android:textSize="15sp"
+                            android:visibility="visible" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/inputImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5sp"
+                            android:background="@drawable/enabled_edittext"
+                            android:drawableEnd="@drawable/ic_camera"
+                            android:focusable="false"
+                            android:fontFamily="@font/roboto_regular"
+                            android:padding="10sp"
+                            android:text=""
+                            android:textColor="@color/grayDark"
+                            android:textSize="14sp"
+                            android:visibility="visible" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnChallanUpload"
+                            android:layout_width="match_parent"
+                            android:layout_height="45sp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="20sp"
+                            android:background="@drawable/shape_rect_background_green_layout"
+                            android:fontFamily="@font/roboto_bold"
+                            android:gravity="center"
+                            android:text="@string/challan_upload"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_13sdp" />
+
+                    </LinearLayout>>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </ScrollView>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/bottom_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="5sp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="40sp"
+                android:layout_height="50sp"
+                android:src="@drawable/rcsc_2" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/rcsc_3" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </RelativeLayout>
+</layout>

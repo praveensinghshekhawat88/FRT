@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.reset_device.ResetDeviceActivity">
+    <include
+        android:id="@+id/action_bar"
+        layout="@layout/global_action_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rl_district"
+            android:layout_width="match_parent"
+            android:layout_height="48sp"
+            android:layout_margin="10sp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_rect_rounded_border_gray_layout"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinnerDistrict"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_toStartOf="@+id/iv_dropdownDistrict"
+                android:background="@null" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_dropdownDistrict"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10sp"
+                android:src="@drawable/ic_arrow_down" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_ServiceEngineer"
+            android:layout_width="match_parent"
+            android:layout_height="48sp"
+            android:layout_margin="10sp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_rect_rounded_border_gray_layout"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinnerServiceEngineer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_toStartOf="@+id/iv_dropdownServiceEngineer"
+                android:background="@null" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_dropdownServiceEngineer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10sp"
+                android:src="@drawable/ic_arrow_down" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonResetDevice"
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30sp"
+        android:layout_marginStart="10sp"
+        android:layout_marginEnd="10sp"
+        android:background="@drawable/shape_rect_login_button_layout"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center"
+        android:hint="@string/reset_device"
+        android:textColorHint="@color/white"
+        android:textSize="20sp" />
+
+</LinearLayout>

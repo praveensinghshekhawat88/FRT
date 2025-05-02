@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/action_bar"
+        layout="@layout/global_action_bar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/action_bar"
+
+        >
+        <!--  <include
+              android:id="@+id/action_bar"
+              layout="@layout/global_action_bar" />-->
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:padding="10dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/layoutFilter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+
+                    >
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+
+                        >
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="एफपीएस कोड"
+                            android:textColor="@color/grayDark"
+                            android:textSize="13dp" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/inputFpsCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="40sp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                            android:fontFamily="@font/roboto_regular"
+                            android:gravity="center_vertical"
+                            android:hint="एफपीएस कोड"
+                            android:inputType="number"
+                            android:paddingStart="10sp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            tools:ignore="RtlSymmetry" />
+
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="10sp"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+
+                        >
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:gravity="center_vertical"
+                            android:text="ब्लॉक"
+                            android:textColor="@color/grayDark"
+                            android:textSize="13dp" />
+
+
+                        <TextView
+                            android:id="@+id/inputBlockName"
+                            android:layout_width="match_parent"
+                            android:layout_height="40sp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                            android:fontFamily="@font/roboto_regular"
+                            android:gravity="center_vertical"
+                            android:hint="ब्लॉक"
+                            android:paddingStart="10sp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            tools:ignore="RtlSymmetry" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        >
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:gravity="center_vertical"
+                            android:text="डीलर का नाम "
+                            android:textColor="@color/grayDark"
+                            android:textSize="13dp" />
+
+
+                        <TextView
+                            android:id="@+id/inputDealerName"
+                            android:layout_width="match_parent"
+                            android:layout_height="40sp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                            android:fontFamily="@font/roboto_regular"
+                            android:gravity="center_vertical"
+                            android:hint="डीलर का नाम "
+                            android:inputType="number"
+                            android:paddingStart="10sp"
+
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            tools:ignore="RtlSymmetry" />
+
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="10sp"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+
+                        >
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="डीलर का मोबाइल नंबर"
+                            android:textColor="@color/grayDark"
+                            android:textSize="13dp" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/inputMobileno"
+                            android:layout_width="match_parent"
+                            android:layout_height="40sp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                            android:fontFamily="@font/roboto_regular"
+                            android:gravity="center_vertical"
+                            android:hint="मोबाइल नंबर"
+                            android:inputType="number"
+                            android:paddingStart="10sp"
+                            android:textColor="@color/black"
+
+                            android:textSize="16sp"
+                            tools:ignore="RtlSymmetry" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+
+                    >
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+
+                        >
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="वेहिंगमशीन सीरियलनंबर"
+                            android:textColor="@color/grayDark"
+                            android:textSize="13dp" />
+
+                        <EditText
+                            android:id="@+id/input_ws_serialno"
+                            android:layout_width="match_parent"
+                            android:layout_height="40sp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                            android:fontFamily="@font/roboto_regular"
+                            android:gravity="center_vertical"
+                            android:hint="वेहिंगमशीन सीरियलनंबर"
+                            android:paddingStart="10sp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            tools:ignore="RtlSymmetry" />
+
+                    </LinearLayout>
+
+
+                    <Space
+                        android:layout_width="10sp"
+                        android:layout_height="match_parent" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        >
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="मशीन मॉडल"
+                            android:textColor="@color/grayDark"
+                            android:textSize="13dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/intput_ws_model"
+                                android:layout_width="match_parent"
+                                android:layout_height="40sp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                                android:fontFamily="@font/roboto_regular"
+                                android:gravity="center_vertical"
+                                android:hint="मशीन मॉडल"
+                                android:inputType="number"
+                                android:paddingStart="10sp"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                tools:ignore="RtlSymmetry" />
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:gravity="center"
+                                android:text="@string/optional"
+                                android:textColor="@color/black"
+                                android:textSize="14dp"
+                                android:visibility="gone" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    >
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        >
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="टिकेट नंबर"
+                            android:textColor="@color/grayDark"
+                            android:textSize="13dp" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/inputtickretno"
+                                android:layout_width="match_parent"
+                                android:layout_height="40sp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                                android:fontFamily="@font/roboto_regular"
+                                android:gravity="center_vertical"
+                                android:hint="टिकेट नंबर"
+                                android:inputType="number"
+                                android:paddingStart="10sp"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                tools:ignore="RtlSymmetry" />
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                    <Space
+                        android:layout_width="10sp"
+                        android:layout_height="match_parent" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        >
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/delivered_date"
+                            android:textColor="@color/grayDark"
+                            android:textSize="13dp" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/inputtransdate"
+                                android:layout_width="match_parent"
+                                android:layout_height="40sp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                                android:fontFamily="@font/roboto_regular"
+                                android:gravity="center_vertical"
+                                android:hint="@string/delivered_date"
+                                android:inputType="number"
+                                android:paddingStart="10sp"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                tools:ignore="RtlSymmetry" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    >
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+
+                        >
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="स्टेटस"
+                            android:textColor="@color/grayDark"
+                            android:textSize="13dp" />
+
+
+                        <TextView
+                            android:id="@+id/inputstatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="40sp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                            android:fontFamily="@font/roboto_regular"
+                            android:gravity="center_vertical"
+                            android:hint="स्टेटस"
+                            android:paddingStart="10sp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            tools:ignore="RtlSymmetry" />
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="10sp"
+                        android:layout_height="match_parent" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        >
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_uploadedimage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/colorPrimary"
+                    android:fontFamily="@font/roboto_medium"
+                    android:padding="5dp"
+                    android:text="@string/delivered_photos"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:visibility="visible" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_viewimages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textNoDataFound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="40sp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="No Data Found"
+                    android:textSize="18sp"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonVerify"
+                    android:layout_width="match_parent"
+                    android:layout_height="45sp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_marginTop="20sp"
+                    android:layout_marginBottom="@dimen/_50sdp"
+                    android:background="@drawable/shape_rect_login_button_layout"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:hint="@string/verify"
+                    android:textColorHint="@color/white"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:id="@+id/updateImageAria"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="@dimen/_50sdp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:background="@color/colorPrimary"
+                        android:fontFamily="@font/roboto_medium"
+                        android:padding="5dp"
+                        android:text="@string/update_image"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:visibility="visible" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3"
+                        android:padding="10dp"
+                        android:layout_marginTop="5dp">
+                        <LinearLayout
+                            android:id="@+id/linChooseImages1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:id="@+id/rl_parts_image1"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_dashed_layout">
+
+                                <ImageView
+                                    android:id="@+id/ivPartsImage1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_baseline_image" />
+                            </RelativeLayout>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:gravity="center"
+                                android:text="@string/dealer_image_with_machine"
+                                android:visibility="visible"
+                                android:textColor="@color/black"
+                                android:textSize="14dp" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/linChooseImages2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:id="@+id/rl_parts_image2"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_dashed_layout">
+
+                                <ImageView
+                                    android:id="@+id/ivPartsImage2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_baseline_image" />
+                            </RelativeLayout>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:gravity="center"
+                                android:text="@string/w_machine_s_serial_no_image"
+                                android:textColor="@color/black"
+                                android:textSize="14dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linChooseImages3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:id="@+id/rl_challan_image3"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_dashed_layout">
+
+                                <ImageView
+                                    android:id="@+id/ivPartsImage3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_baseline_image" />
+                            </RelativeLayout>
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:gravity="center"
+                                android:text="@string/challan_image"
+                                android:textColor="@color/black"
+                                android:textSize="14dp" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/remark"
+                        android:textColor="@color/grayDark"
+                        android:textSize="13dp" />
+
+
+                    <EditText
+                        android:id="@+id/input_ws_reamrk"
+                        android:layout_width="match_parent"
+                        android:layout_height="80sp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center_vertical"
+                        android:hint="@string/enter_remark"
+                        android:inputType="text"
+                        android:paddingStart="10sp"
+                        android:textColor="@color/black"
+
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/buttonUpdate"
+                        android:layout_width="match_parent"
+                        android:layout_height="45sp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20sp"
+                        android:layout_marginBottom="@dimen/_50sdp"
+                        android:background="@drawable/shape_rect_login_button_layout"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:hint="@string/update"
+                        android:textColorHint="@color/white"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

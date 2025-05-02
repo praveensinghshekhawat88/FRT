@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/rounded_layout_for_dialog_dispatch"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15sp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/request_stock"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15sdp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grayLight"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:weightSum="10">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:maxLines="2"
+                android:layout_weight="7"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/item_name"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:gravity="center"
+                android:layout_weight="3"
+                android:text="@string/quantity"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="@dimen/_14sdp"
+                android:textColor="@color/black"
+                tools:ignore="TextViewEdits" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grayLight"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_stock_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_10sdp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_5sdp">
+
+            <TextView
+                android:id="@+id/textCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/cancel"
+                android:textColor="@color/colorOrange"
+                android:textSize="@dimen/_15sdp"/>
+
+            <TextView
+                android:id="@+id/textConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/confirm"
+                android:textColor="@color/colorOrange"
+                android:textSize="@dimen/_15sdp" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

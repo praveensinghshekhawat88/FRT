@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="data"
+            type="com.callmangement.model.training_schedule.ModelTrainingScheduleList" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/crd_item"
+        app:cardCornerRadius="15sp"
+        android:background="?attr/selectableItemBackground">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_margin="10sp"
+            android:weightSum="10">
+            <LinearLayout
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/grayDark"
+                        android:textSize="13sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/black"
+                        android:text=" : "/>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{data.title}"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5sp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/address"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/grayDark"
+                        android:textSize="13sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/black"
+                        android:text=" : "/>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{data.address}"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5sp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/description"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/grayDark"
+                        android:textSize="13sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/black"
+                        android:text=" : "/>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{data.description}"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5sp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start_date_time"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/grayDark"
+                        android:textSize="13sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/black"
+                        android:text=" : "/>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textStartDateTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{data.startDate}"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5sp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/end_date_time"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/grayDark"
+                        android:textSize="13sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/black"
+                        android:text=" : "/>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textEndDateTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{data.endDate}"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="1sp"
+                android:layout_height="match_parent"
+                android:background="@color/grayLight" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textTehsil"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:paddingLeft="1sp"
+                android:paddingRight="1sp"
+                android:text="@{data.tehsilNameEng}"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!--    <androidx.cardview.widget.CardView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:id="@+id/crd_item"-->
+    <!--        android:background="@color/white"-->
+    <!--        app:cardCornerRadius="15sp"-->
+    <!--        android:foreground="?attr/selectableItemBackground">-->
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:orientation="vertical"-->
+    <!--            android:padding="10sp">-->
+    <!--            <LinearLayout-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:orientation="horizontal"-->
+    <!--                android:layout_marginTop="5sp"-->
+    <!--                android:weightSum="10">-->
+    <!--                <LinearLayout-->
+    <!--                    android:layout_width="0dp"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_weight="4"-->
+    <!--                    android:orientation="vertical">-->
+    <!--                    <TextView-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:text="@string/tehsil"-->
+    <!--                        android:gravity="center"-->
+    <!--                        android:textSize="14sp"-->
+    <!--                        android:fontFamily="@font/roboto_regular"-->
+    <!--                        android:textColor="@color/grayDark"/>-->
+    <!--                    <TextView-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:text="@{data.tehsilNameEng}"-->
+    <!--                        android:textSize="16sp"-->
+    <!--                        android:gravity="center"-->
+    <!--                        android:layout_marginTop="5sp"-->
+    <!--                        android:fontFamily="@font/roboto_bold"-->
+    <!--                        android:textColor="@color/black"/>-->
+    <!--                </LinearLayout>-->
+    <!--                <View-->
+    <!--                    android:layout_width="0.5sp"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:background="@color/grayDark"/>-->
+    <!--                <LinearLayout-->
+    <!--                    android:layout_width="0dp"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:orientation="vertical"-->
+    <!--                    android:layout_weight="6"-->
+    <!--                    android:layout_gravity="center">-->
+    <!--                    <TextView-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:text="@string/date_str"-->
+    <!--                        android:gravity="center"-->
+    <!--                        android:textSize="14sp"-->
+    <!--                        android:fontFamily="@font/roboto_regular"-->
+    <!--                        android:textColor="@color/grayDark"/>-->
+    <!--                    <TextView-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:text="@{data.startDate}"-->
+    <!--                        android:textSize="16sp"-->
+    <!--                        android:gravity="center"-->
+    <!--                        android:layout_marginTop="5sp"-->
+    <!--                        android:fontFamily="@font/roboto_bold"-->
+    <!--                        android:textColor="@color/black"/>-->
+    <!--                </LinearLayout>-->
+    <!--            </LinearLayout>-->
+    <!--        </LinearLayout>-->
+    <!--    </androidx.cardview.widget.CardView>-->
+
+</layout>

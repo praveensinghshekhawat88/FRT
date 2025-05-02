@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "208331204931",
+    "project_id": "callmanagementfrt",
+    "storage_bucket": "callmanagementfrt.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208331204931:android:10d45b7b14ea6e6d15a7f6",
+        "android_client_info": {
+          "package_name": "com.callmangement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqLVgrGIhJyjYyklKwOty-MsBeGIEcQQA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

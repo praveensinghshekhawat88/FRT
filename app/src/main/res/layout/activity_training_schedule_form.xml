@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.training_schedule.TrainingScheduleFormActivity">
+        <include
+            android:id="@+id/action_bar"
+            layout="@layout/global_action_bar"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none"
+            android:layout_above="@+id/bottom_layout"
+            android:layout_below="@+id/action_bar">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_layout_physical_form"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:id="@+id/buttonAddLayout"
+                    android:layout_width="35sp"
+                    android:layout_height="35sp"
+                    android:layout_gravity="right"
+                    android:src="@drawable/ic_add"
+                    android:layout_marginRight="5dp"
+                    android:background="?attr/selectableItemBackground"/>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10sp"
+            android:layout_above="@+id/buttonSubmit">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_dashed_layout">
+
+                    <ImageView
+                        android:id="@+id/photo1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_baseline_image" />
+                </RelativeLayout>
+                <Space
+                    android:layout_width="5sp"
+                    android:layout_height="match_parent" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_dashed_layout">
+
+                    <ImageView
+                        android:id="@+id/photo2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_baseline_image" />
+                </RelativeLayout>
+                <Space
+                    android:layout_width="5sp"
+                    android:layout_height="match_parent" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_dashed_layout">
+
+                    <ImageView
+                        android:id="@+id/photo3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_baseline_image" />
+                </RelativeLayout>
+                <Space
+                    android:layout_width="5sp"
+                    android:layout_height="match_parent" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_dashed_layout">
+
+                    <ImageView
+                        android:id="@+id/photo4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_baseline_image" />
+                </RelativeLayout>
+                <Space
+                    android:layout_width="5sp"
+                    android:layout_height="match_parent" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_dashed_layout">
+
+                    <ImageView
+                        android:id="@+id/photo5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_baseline_image" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/inputImagePhysicalForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10sp"
+                android:background="@drawable/shape_rect_border_gray_layout"
+                android:drawableRight="@drawable/ic_camera"
+                android:focusable="false"
+                android:fontFamily="@font/roboto_regular"
+                android:padding="10sp"
+                android:hint="Physical form"
+                android:textColor="@color/grayDark"
+                android:textSize="14sp"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorBlue"
+            android:hint="Submit"
+            android:textColorHint="@color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.complaints_fps_wise.LastComplaintFPSListActivity">
+
+    <include
+        android:id="@+id/action_bar"
+        layout="@layout/global_action_bar" />
+
+    <LinearLayout
+        android:id="@+id/rl_district_and_teh_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/action_bar">
+
+        <RelativeLayout
+            android:id="@+id/rl_district"
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_rect_rounded_border_gray_layout"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinnerDistrict"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_toStartOf="@+id/iv_dropdownDistrict"
+                android:background="@null" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_dropdownDistrict"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10sp"
+                android:src="@drawable/ic_arrow_down" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_tehsil"
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_rect_rounded_border_gray_layout"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinnerTehsil"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_toStartOf="@+id/iv_dropdownTehsil"
+                android:background="@null" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_dropdownTehsil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10sp"
+                android:src="@drawable/ic_arrow_down" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_inputFps_getDetailButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/_10sdp"
+        android:layout_below="@id/rl_district_and_teh_list"
+        android:weightSum="10">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/inputFpsCode"
+            android:layout_width="0dp"
+            android:layout_height="40sp"
+            android:layout_gravity="center"
+            android:layout_weight="6"
+            android:background="@drawable/shape_rect_rounded_border_gray_layout"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="@string/fps_code"
+            android:paddingStart="15sp"
+            android:inputType="number"
+            android:textColor="@color/grayDark"
+            android:textSize="14sp" />
+        <Space
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="match_parent"/>
+        <Button
+            android:id="@+id/buttonGetDetails"
+            android:layout_width="0dp"
+            android:layout_height="40sp"
+            android:layout_weight="4"
+            android:background="@drawable/rounded_button_blue_layout"
+            android:hint="@string/get_fps"
+            android:textColorHint="@color/white"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/layout_inputFps_getDetailButton">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_fps_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textNoRecordFound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_record_found"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="18sp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible"/>
+    </RelativeLayout>
+
+</RelativeLayout>

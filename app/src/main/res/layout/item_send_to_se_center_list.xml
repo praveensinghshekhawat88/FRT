@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="data"
+            type="com.callmangement.model.complaints.ModelComplaintList" />
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_item"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <View
+                android:layout_width="1sp"
+                android:layout_height="match_parent"
+                android:background="@color/grayLight" />
+
+            <LinearLayout
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:orientation="vertical"
+                android:padding="5sp">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textComplaintNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/colorActionBar"
+                    android:textSize="13sp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginTop="5sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/grayDark"
+                    android:textSize="13sp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textPhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginTop="5sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/grayDark"
+                    android:textSize="13sp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:orientation="horizontal">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textComplaintStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/grayDark"
+                        android:textSize="13sp"/>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textComplaintStatusValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:fontFamily="@font/roboto_bold"
+                        android:textColor="@color/grayDark"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textComplaintRegDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:visibility="visible"
+                    android:layout_marginTop="5sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/grayDark"
+                    android:textSize="13sp"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textComplaintResolveDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:visibility="visible"
+                    android:layout_marginTop="5sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/grayDark"
+                    android:textSize="13sp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="1sp"
+                android:layout_height="match_parent"
+                android:background="@color/grayLight" />
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:padding="5sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+
+            >
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textDis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:paddingLeft="1sp"
+                android:paddingRight="1sp"
+                android:text=""
+                android:textColor="@color/grayDark"
+                android:textSize="13sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textTehsil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:paddingLeft="1sp"
+                android:paddingRight="1sp"
+                android:text="@{data.getTehsil()}"
+                android:textColor="@color/grayDark"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+            <View
+                android:layout_width="1sp"
+                android:layout_height="match_parent"
+                android:background="@color/grayLight" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/grayLight"/>
+    </RelativeLayout>
+
+</layout>

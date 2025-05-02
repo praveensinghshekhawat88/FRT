@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_5sdp"
+        android:elevation="@dimen/_5sdp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp">
+                <RelativeLayout
+                    android:id="@+id/rl_district"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:visibility="visible"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spinnerDistrict"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_toLeftOf="@+id/iv_dropdownDistrict"
+                        android:background="@null"
+                        android:gravity="center" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_dropdownDistrict"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5sp"
+                        android:src="@drawable/ic_arrow_down" />
+                </RelativeLayout>
+                <Space
+                    android:layout_width="10sp"
+                    android:layout_height="match_parent"/>
+                <RelativeLayout
+                    android:id="@+id/rl_tehsil"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spinnerTehsil"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_toLeftOf="@+id/iv_dropdownTehsil"
+                        android:background="@null"
+                        android:gravity="center" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_dropdownTehsil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5sp"
+                        android:src="@drawable/ic_arrow_down" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/layout_date_range"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
+                android:layout_marginTop="10sp"
+                android:layout_marginRight="10sp"
+                android:layout_marginBottom="10sp"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/inputStartDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                    android:focusable="false"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:hint="@string/from_date"
+                    android:paddingLeft="5sp"
+                    android:textSize="14sp" />
+
+                <Space
+                    android:layout_width="10sp"
+                    android:layout_height="match_parent" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/inputEndDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                    android:focusable="false"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:hint="@string/to_date"
+                    android:paddingLeft="5sp"
+                    android:textSize="14sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/inputTrainingNumber"
+                android:layout_width="match_parent"
+                android:layout_height="45sp"
+                android:layout_marginBottom="10sp"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="@string/training_number"
+                android:paddingStart="10sp"
+                android:singleLine="true"
+                android:inputType="number"
+                android:imeOptions="actionDone"
+                android:textSize="14sp"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonTrainingFilter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
+                android:layout_marginBottom="10sp"
+                android:hint="Filter"
+                android:fontFamily="@font/roboto_bold"
+                android:textColorHint="@color/white"
+                android:textSize="18sp"
+                android:background="@drawable/bg_rounded_corner_layout"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

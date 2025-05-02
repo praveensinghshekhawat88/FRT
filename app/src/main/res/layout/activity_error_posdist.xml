@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.reports.ViewExpenseActivity">
+    <include
+        android:id="@+id/action_bar"
+        layout="@layout/global_action_bar" />
+    <LinearLayout
+        android:id="@+id/layoutFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:paddingTop="10sp"
+        android:paddingBottom="8sp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_10sdp">
+
+            <RelativeLayout
+                android:id="@+id/rl_district"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:visibility="visible"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerDistrict"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_toStartOf="@+id/iv_dropdownDistrict"
+                    android:background="@null" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_dropdownDistrict"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10sp"
+                    android:src="@drawable/ic_arrow_down" />
+            </RelativeLayout>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/se_district"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="@string/district"
+                android:imeOptions="actionNext"
+                android:padding="10sp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                />
+
+            <Space
+                android:id="@+id/spacer"
+                android:layout_width="10sp"
+                android:layout_height="match_parent"
+                android:visibility="visible"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@null" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_dropdown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10sp"
+                    android:src="@drawable/ic_arrow_down" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_5sdp"
+            >
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/inputSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:visibility="visible"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="@string/fps_code"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:padding="10sp"
+                android:singleLine="true"
+                android:textColor="@color/grayDark"
+                android:textSize="15sp"
+                />
+            <Space
+                android:layout_width="10sp"
+                android:layout_height="match_parent" />
+            <RelativeLayout
+                android:id="@+id/expenseStatusLay"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout">
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerExpenseStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@null" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_dropdownExpenseStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10sp"
+                    android:src="@drawable/ic_arrow_down" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layout_date_range"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:visibility="gone">
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/textFromDate"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:focusable="false"
+                android:hint="@string/from_date"
+                android:drawableStart="@drawable/ic_date_range"
+                android:paddingStart="10sp"
+                android:textSize="16sp" />
+
+            <Space
+                android:layout_width="10sp"
+                android:layout_height="match_parent" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/textToDate"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:focusable="false"
+                android:hint="@string/to_date"
+                android:drawableStart="@drawable/ic_date_range"
+                android:paddingStart="10sp"
+                android:textSize="16sp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:layout_marginRight="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:background="@drawable/shape_rect_rounded_border_gray_layout"
+       android:visibility="gone"
+
+        >
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/inputfps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:gravity="left"
+            android:padding="5dp"
+            android:background="@null"
+            android:hint="@string/fps_code"
+            android:singleLine="true"
+            android:visibility="visible" />
+
+
+
+
+
+
+
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:layout_marginTop="@dimen/_5sdp"
+
+        android:background="@drawable/shape_rect_rounded_border_gray_layout">
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinnererrortype"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:prompt="@string/error"
+            />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_dropdown2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10sp"
+            android:src="@drawable/ic_arrow_down" />
+    </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:layout_gravity="center">
+        <LinearLayout
+            android:id="@+id/btnsearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_30sdp"
+
+            android:background="@drawable/rounded_button_blue_layout"
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:padding="5dp"
+                android:drawablePadding="@dimen/_5sdp"
+                android:textStyle="bold"
+                android:text="@string/filter"
+                android:layout_gravity="center"
+                android:textSize="@dimen/_14sdp"
+                android:textColor="@color/white"
+                android:visibility="visible"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="@color/colorActionBar"
+        android:layout_marginTop="@dimen/_7sdp"
+
+        tools:ignore="SmallSp" />
+
+
+
+    <LinearLayout
+        android:id="@+id/tv_add"
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+
+
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/_15sdp"
+        android:background="@drawable/rounded_button_green_layout"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+
+        >
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center"
+            android:drawablePadding="@dimen/_5sdp"
+            android:drawableRight="@drawable/baseline_add_circle_24"
+
+            android:textStyle="bold"
+            android:text="@string/addnewError"
+
+            android:layout_gravity="center"
+            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/white"
+            android:visibility="visible"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"/>
+
+
+    </LinearLayout>
+
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_expenses"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textNoDataFound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_data_found"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="18sp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
+
+
+
+    </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</LinearLayout>

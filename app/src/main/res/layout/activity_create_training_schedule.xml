@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.training_schedule.CreateTrainingScheduleActivity">
+        <include
+            android:id="@+id/action_bar"
+            layout="@layout/global_action_bar"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp">
+            <RelativeLayout
+                android:id="@+id/rl_district"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:visibility="visible"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerDistrict"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_toLeftOf="@+id/iv_dropdownDistrict"
+                    android:background="@null"
+                    android:gravity="center" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_dropdownDistrict"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5sp"
+                    android:src="@drawable/ic_arrow_down" />
+            </RelativeLayout>
+            <Space
+                android:layout_width="10sp"
+                android:layout_height="match_parent"/>
+            <RelativeLayout
+                android:id="@+id/rl_tehsil"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerTehsil"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_toLeftOf="@+id/iv_dropdownTehsil"
+                    android:background="@null" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_dropdownTehsil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5sp"
+                    android:src="@drawable/ic_arrow_down" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layout_date_range"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="10sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/textStartDateTime"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:focusable="false"
+                android:hint="@string/start_date_time"
+                android:paddingLeft="5sp"
+                android:textSize="14sp" />
+
+            <Space
+                android:layout_width="10sp"
+                android:layout_height="match_parent" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/textEndDateTime"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect_rounded_border_gray_layout"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:focusable="false"
+                android:hint="@string/end_date_time"
+                android:paddingLeft="5sp"
+                android:textSize="14sp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <EditText
+            android:id="@+id/inputTitle"
+            android:layout_width="match_parent"
+            android:layout_height="45sp"
+            android:layout_marginBottom="10sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="@string/title"
+            android:paddingStart="10sp"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:textSize="14sp"
+            android:background="@drawable/shape_rect_rounded_border_gray_layout" />
+
+        <EditText
+            android:id="@+id/inputPlace"
+            android:layout_width="match_parent"
+            android:layout_height="45sp"
+            android:layout_marginBottom="10sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="@string/place"
+            android:paddingStart="10sp"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:textSize="14sp"
+            android:background="@drawable/shape_rect_rounded_border_gray_layout" />
+
+        <EditText
+            android:id="@+id/inputDescription"
+            android:layout_width="match_parent"
+            android:layout_height="45sp"
+            android:layout_marginBottom="10sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="@string/description"
+            android:paddingStart="10sp"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:textSize="14sp"
+            android:background="@drawable/shape_rect_rounded_border_gray_layout" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonCreateTraining"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginBottom="10sp"
+            android:hint="@string/create_training"
+            android:fontFamily="@font/roboto_bold"
+            android:textColorHint="@color/white"
+            android:textSize="18sp"
+            android:background="@drawable/bg_rounded_corner_layout"/>
+    </LinearLayout>
+</layout>
