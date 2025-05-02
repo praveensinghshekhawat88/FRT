@@ -62,6 +62,7 @@ public class MonthlyReportsActivity extends CustomActivity {
     private boolean isLoading = false;
     private boolean allPagesLoaded = false;
     private int currentPage = 1;
+    private int PAGE_SIZE = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,7 +216,7 @@ public class MonthlyReportsActivity extends CustomActivity {
         //isLoading();
         showProgress(getResources().getString(R.string.please_wait));
         viewModel.getComplaintsDistStatusDateWise(String.valueOf(prefManager.getUSER_Id()), districtId, complainStatusId, fromDate, toDate,
-                "1", "" + currentPage, "10", "").observe(this, modelComplaint -> {
+                "1", "" + currentPage, "" + PAGE_SIZE, "").observe(this, modelComplaint -> {
             //     isLoading();
             hideProgress();
             adapter.showLoader(false);
@@ -263,8 +264,8 @@ public class MonthlyReportsActivity extends CustomActivity {
         else
             adapter.showLoader(true);
 
-        viewModel.getComplaintsDistStatusDateWise(
-                String.valueOf(prefManager.getUSER_Id()), districtId, complainStatusId, fromDate, toDate, "1", "" + currentPage, "10", "");
+        viewModel.getComplaintsDistStatusDateWise(String.valueOf(prefManager.getUSER_Id()),
+                districtId, complainStatusId, fromDate, toDate, "1", "" + currentPage, "" + PAGE_SIZE, "");
     }
 
 
