@@ -10,8 +10,8 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.adapter.ViewExpenseActivityAdapter
 import com.callmangement.custom.CustomActivity
@@ -32,7 +32,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Collections
 import java.util.Locale
-import java.util.Objects
 
 class ViewExpenseActivity : CustomActivity(), View.OnClickListener {
     private var binding: ActivityViewExpenseBinding? = null
@@ -276,7 +275,7 @@ class ViewExpenseActivity : CustomActivity(), View.OnClickListener {
         ) {
             binding!!.rlDistrict.visibility = View.GONE
             binding!!.spacer.visibility = View.GONE
-            districtId = prefManager!!.useR_DistrictId
+            districtId = prefManager!!.useR_DistrictId!!
         }
     }
 

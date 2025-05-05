@@ -16,12 +16,11 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.callmangement.BuildConfig
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.custom.CustomActivity
 import com.callmangement.databinding.ActivityDistributorPosReportBinding
@@ -53,7 +52,6 @@ import java.util.Calendar
 import java.util.Collections
 import java.util.Date
 import java.util.Locale
-import java.util.Objects
 
 class UploadImageActivity : CustomActivity(), View.OnClickListener {
     var binding: ActivityDistributorPosReportBinding? = null
@@ -584,12 +582,12 @@ class UploadImageActivity : CustomActivity(), View.OnClickListener {
             datePickerDialog.datePicker.maxDate = System.currentTimeMillis() - 1000
             datePickerDialog.show()
         } else if (id == R.id.buttonPDF) {
-            if (Constants.posDistributionDetailsList != null && Constants.posDistributionDetailsList.size > 0) {
+            if (Constants.posDistributionDetailsList != null && Constants.posDistributionDetailsList!!.size > 0) {
                 startActivity(Intent(mContext, DistributedStatusReportPdfActivity::class.java))
                 finish()
             }
         } else if (id == R.id.buttonEXCEL) {
-            if (Constants.posDistributionDetailsList != null && Constants.posDistributionDetailsList.size > 0) {
+            if (Constants.posDistributionDetailsList != null && Constants.posDistributionDetailsList!!.size > 0) {
                 ExcelformTable()
             } else {
                 Toast.makeText(mContext, "No Data Found", Toast.LENGTH_SHORT).show()
@@ -667,9 +665,9 @@ class UploadImageActivity : CustomActivity(), View.OnClickListener {
 
 
         Log.d("mylist", " -------------- " + Constants.posDistributionDetailsList)
-        if (Constants.posDistributionDetailsList != null && Constants.posDistributionDetailsList.size > 0) {
-            for (i in Constants.posDistributionDetailsList.indices) {
-                val detailsInfo = Constants.posDistributionDetailsList[i]
+        if (Constants.posDistributionDetailsList != null && Constants.posDistributionDetailsList!!.size > 0) {
+            for (i in Constants.posDistributionDetailsList!!.indices) {
+                val detailsInfo = Constants.posDistributionDetailsList!![i]
                 val fps = detailsInfo.fpscode.toString()
                 val ticketNo = detailsInfo.ticketNo.toString()
                 val districtName = detailsInfo.districtName.toString()

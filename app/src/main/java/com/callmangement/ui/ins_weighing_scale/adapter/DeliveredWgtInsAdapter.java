@@ -24,8 +24,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.ui.ins_weighing_scale.activity.ViewDetail;
 import com.callmangement.ui.ins_weighing_scale.activity.NewDelivery;
@@ -105,7 +105,7 @@ public class DeliveredWgtInsAdapter extends RecyclerView.Adapter<DeliveredWgtIns
                 holder.tv_installed.setVisibility(View.GONE);
                 holder.tv_verify.setVisibility(View.VISIBLE);
             }
-            // districtId = prefManager.getUSER_DistrictId();
+            // districtId = prefManager.getUseR_DistrictId();
         }
 
 
@@ -268,7 +268,7 @@ else {
            // Integer ErrorStatusIdd = model.getErrorStatusId();
             prefManager = new PrefManager(context);
 
-            String userid = prefManager.getUSER_Id();
+            String userid = prefManager.getUseR_Id();
             String FPSCode = String.valueOf(model.getFpscode());
             String DeviceTypeId = String.valueOf(model.getDeviceTypeId());
             Log.d("response", " " + userid + " " + FPSCode + " " + DeviceTypeId );
@@ -286,7 +286,7 @@ else {
                             if (response.code() == 200) {
                                 if (response.body() != null) {
 
-                                    if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                    if (response.body().getStatus().equals("200")) {
                                         challanRoot challanroot = response.body();
                                         Log.d("getErrorTypesRoot..", "getErrorTypesRoot.." + challanroot);
                                      String fileUrl = challanroot.getData().getFileUrl();

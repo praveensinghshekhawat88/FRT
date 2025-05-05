@@ -17,8 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityIrisInstalledDetailBinding;
@@ -218,12 +218,12 @@ public class IrisInstalledDetailActivity extends CustomActivity implements View.
         if (Constants.isNetworkAvailable(mActivity)) {
             hideProgress();
             APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            String USER_Id = preference.getUSER_Id();
+            String USER_Id = preference.getUseR_Id();
             String fpscode = model.getFpscode();
             String disid = String.valueOf(model.getDistrictId());
             String modelTicketNo = model.getTicketNo();
             String deliveryid = String.valueOf(model.getDeliveryId());
-            Log.d("USER_ID","--" +preference.getUSER_Id());
+            Log.d("USER_ID","--" +preference.getUseR_Id());
             Log.d("fpscode","--" +fpscode);
             Log.d("disid","--" +disid);
             Log.d("modelTicketNo","--"+ modelTicketNo);
@@ -239,7 +239,7 @@ public class IrisInstalledDetailActivity extends CustomActivity implements View.
                         try {
                             if (response.code() == 200) {
                                 if (response.body() != null) {
-                                    if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                    if (response.body().getStatus().equals("200")) {
                                         InstalledDetailedResponse getErrorImagesRoot = response.body();
                                         InstalledDtlDataIris weighingDeliveryData = getErrorImagesRoot.getData();
                                         Log.d("getErrorTypesRoot..", "getErrorTypesRoot.." + getErrorImagesRoot);

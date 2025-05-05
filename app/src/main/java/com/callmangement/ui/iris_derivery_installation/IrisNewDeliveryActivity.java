@@ -1,7 +1,5 @@
 package com.callmangement.ui.iris_derivery_installation;
 
-import static com.google.gson.internal.$Gson$Types.arrayOf;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -49,9 +47,9 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.MultipartRequester;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.MultipartRequester;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityIrisNewDeliveryBinding;
@@ -61,7 +59,6 @@ import com.callmangement.imagepicker.ui.imagepicker.ImagePicker;
 import com.callmangement.support.FetchAddressIntentServices;
 import com.callmangement.support.ImageUtilsForRotate;
 import com.callmangement.support.OnSingleClickListener;
-import com.callmangement.ui.ins_weighing_scale.model.SaveInstall.SaveRoot;
 import com.callmangement.ui.ins_weighing_scale.model.fps.DetailByFpsData;
 import com.callmangement.ui.ins_weighing_scale.model.fps.DetailByFpsRoot;
 import com.callmangement.ui.iris_derivery_installation.Model.CheckIrisSerialNoResponse;
@@ -94,7 +91,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Part;
 
 public class IrisNewDeliveryActivity extends CustomActivity {
     private static final int GALLERY_REQUEST_CODE = 123;
@@ -690,7 +686,7 @@ public class IrisNewDeliveryActivity extends CustomActivity {
         if (Constants.isNetworkAvailable(mActivity)) {
             hideKeyboard(mActivity);
             showProgress(getResources().getString(R.string.please_wait));
-            String USER_Id = preference.getUSER_Id();
+            String USER_Id = preference.getUseR_Id();
          //   Log.d("USER_ID", " "+USER_Id);
             APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
             Call<DetailByFpsRoot> call = apiInterface.apiDetailsByFPS(Fps_code, USER_Id, "0");
@@ -701,7 +697,7 @@ public class IrisNewDeliveryActivity extends CustomActivity {
                     if (response.isSuccessful()) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     alertDialog.dismiss();
 
                                     DetailByFpsRoot detailByFpsRoot = response.body();
@@ -838,7 +834,7 @@ public class IrisNewDeliveryActivity extends CustomActivity {
                 if (partsImageStoragePath1.contains("file:/")) {
                     partsImageStoragePath1 = partsImageStoragePath1.replace("file:/", "");
                 }
-                partsImageStoragePath1 = CompressImage.compress(partsImageStoragePath1, this);
+                partsImageStoragePath1 = CompressImage.Companion.compress(partsImageStoragePath1, this);
                 File imgFile = new File(partsImageStoragePath1);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -863,7 +859,7 @@ public class IrisNewDeliveryActivity extends CustomActivity {
                 if (partsImageStoragePath2.contains("file:/")) {
                     partsImageStoragePath2 = partsImageStoragePath2.replace("file:/", "");
                 }
-                partsImageStoragePath2 = CompressImage.compress(partsImageStoragePath2, this);
+                partsImageStoragePath2 = CompressImage.Companion.compress(partsImageStoragePath2, this);
                 File imgFile = new File(partsImageStoragePath2);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -888,7 +884,7 @@ public class IrisNewDeliveryActivity extends CustomActivity {
                 if (partsImageStoragePath3.contains("file:/")) {
                     partsImageStoragePath3 = partsImageStoragePath3.replace("file:/", "");
                 }
-                partsImageStoragePath3 = CompressImage.compress(partsImageStoragePath3, this);
+                partsImageStoragePath3 = CompressImage.Companion.compress(partsImageStoragePath3, this);
                 File imgFile = new File(partsImageStoragePath3);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -915,7 +911,7 @@ public class IrisNewDeliveryActivity extends CustomActivity {
         if (Constants.isNetworkAvailable(mActivity)) {
             hideKeyboard(mActivity);
             showProgress(getResources().getString(R.string.please_wait));
-            String USER_Id = preference.getUSER_Id();
+            String USER_Id = preference.getUseR_Id();
          //   Log.d("USER_ID"," "+ USER_Id);
             mydatetime = String.valueOf(dateAndTimeEditText.getText());
 
@@ -1016,7 +1012,7 @@ public class IrisNewDeliveryActivity extends CustomActivity {
                     if (response.isSuccessful()) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     makeToast(String.valueOf(response.body().getResponse().getMessage()));
                                     Intent intent = new Intent(mActivity, IrisDeliveryInstallationDashboard.class);
                                     startActivity(intent);
@@ -1176,7 +1172,7 @@ public class IrisNewDeliveryActivity extends CustomActivity {
         if (Constants.isNetworkAvailable(mActivity)) {
             hideKeyboard(mActivity);
             showProgress(getResources().getString(R.string.please_wait));
-            String USER_Id = preference.getUSER_Id();
+            String USER_Id = preference.getUseR_Id();
         //    Log.d("USER_ID", USER_Id);
             APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
             Call<CheckIrisSerialNoResponse> call = apiInterface.checkIrisSerialNo( USER_Id, "3",irisScannerSerialNo);
@@ -1187,7 +1183,7 @@ public class IrisNewDeliveryActivity extends CustomActivity {
                     if (response.isSuccessful()) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                 //    alertDialog.dismiss();
                                     CheckIrisSerialNoResponse checkIrisSerialNoResponse = response.body();
                                     if (checkIrisSerialNoResponse.getResponse() != null &&

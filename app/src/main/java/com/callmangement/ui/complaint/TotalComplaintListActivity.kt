@@ -20,8 +20,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.adapter.TotalComplaintListActivityAdapter
 import com.callmangement.custom.CustomActivity
@@ -39,7 +39,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Collections
 import java.util.Locale
-import java.util.Objects
 
 class TotalComplaintListActivity : CustomActivity() {
     private val tehsilList: MutableList<ModelTehsilList?> = ArrayList()
@@ -606,8 +605,8 @@ class TotalComplaintListActivity : CustomActivity() {
                 // filterType = getResources().getString(R.string.custom_filter);
 
                 binding!!.spinner.setSelection(5)
-                fromDate = prefManager!!.froM_DATE
-                toDate = prefManager!!.tO_DATE
+                fromDate = prefManager!!.froM_DATE!!
+                toDate = prefManager!!.tO_DATE!!
                 binding!!.layoutDateRange.visibility = View.VISIBLE
                 binding!!.textFromDate.setText(fromDate)
                 binding!!.textToDate.setText(toDate)
@@ -616,8 +615,8 @@ class TotalComplaintListActivity : CustomActivity() {
 
 
                 try {
-                    myCalendarFromDate.time = sdf.parse(fromDate)
-                    myCalendarToDate.time = sdf.parse(toDate)
+                    myCalendarFromDate.time = sdf.parse(fromDate)!!
+                    myCalendarToDate.time = sdf.parse(toDate)!!
                 } catch (e: ParseException) {
                     e.printStackTrace()
                 }

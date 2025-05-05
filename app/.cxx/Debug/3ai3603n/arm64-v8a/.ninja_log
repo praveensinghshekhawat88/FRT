@@ -1,3 +1,18 @@
 # ninja log v5
 0	353	767867116	CMakeFiles/e_hr.dir/native-lib.cpp.o	5ddd1055471d6043
 355	437	767867116	G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/build/intermediates/cxx/Debug/3ai3603n/obj/arm64-v8a/libe_hr.so	b3c5172be571cd22
+0	8	0	clean	d9e6f7ac77c20f4c
+0	7	0	clean	d9e6f7ac77c20f4c
+2	9566	767976841	CMakeFiles/e_hr.dir/native-lib.cpp.o	5ddd1055471d6043
+9566	10471	767976842	G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/build/intermediates/cxx/Debug/3ai3603n/obj/arm64-v8a/libe_hr.so	b3c5172be571cd22
+0	7	0	clean	d9e6f7ac77c20f4c
+0	8	0	clean	d9e6f7ac77c20f4c
+2	343	767977477	CMakeFiles/e_hr.dir/native-lib.cpp.o	5ddd1055471d6043
+344	424	767977477	G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/build/intermediates/cxx/Debug/3ai3603n/obj/arm64-v8a/libe_hr.so	b3c5172be571cd22
+0	7	0	clean	d9e6f7ac77c20f4c
+0	7	0	clean	d9e6f7ac77c20f4c
+1	390	767978308	CMakeFiles/e_hr.dir/native-lib.cpp.o	5ddd1055471d6043
+390	491	767978308	G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/build/intermediates/cxx/Debug/3ai3603n/obj/arm64-v8a/libe_hr.so	b3c5172be571cd22
+0	8	0	clean	d9e6f7ac77c20f4c
+1	2140	768121898	CMakeFiles/e_hr.dir/native-lib.cpp.o	5ddd1055471d6043
+2140	4105	768121900	G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/build/intermediates/cxx/Debug/3ai3603n/obj/arm64-v8a/libe_hr.so	b3c5172be571cd22

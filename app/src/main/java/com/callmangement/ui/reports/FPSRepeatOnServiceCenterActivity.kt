@@ -13,8 +13,8 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.adapter.FPSRepeatOnServiceCenterActivityAdapter
 import com.callmangement.custom.CustomActivity
@@ -32,7 +32,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Collections
 import java.util.Locale
 import java.util.Objects
 
@@ -72,7 +71,7 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
             ComplaintViewModel::class.java
         )
         prefManager = PrefManager(mContext)
-        districtId = prefManager!!.useR_DistrictId
+        districtId = prefManager!!.useR_DistrictId!!
         setUpOnClickListener()
         manageLayout()
         setUpData()
@@ -88,7 +87,7 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
         ) {
             binding!!.rlDistrict.visibility = View.GONE
             binding!!.spacer.visibility = View.GONE
-            districtId = prefManager!!.useR_DistrictId
+            districtId = prefManager!!.useR_DistrictId!!
         } else if (prefManager!!.useR_TYPE_ID.equals(
                 "6",
                 ignoreCase = true
@@ -96,7 +95,7 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
         ) {
             binding!!.rlDistrict.visibility = View.GONE
             binding!!.spacer.visibility = View.GONE
-            districtId = prefManager!!.useR_DistrictId
+            districtId = prefManager!!.useR_DistrictId!!
         } else {
             binding!!.rlDistrict.visibility = View.VISIBLE
             binding!!.spacer.visibility = View.VISIBLE

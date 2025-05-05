@@ -31,8 +31,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.custom.CustomActivity
 import com.callmangement.custom_spinner_with_checkbox.MutliSelectDistributionPartsAdapter

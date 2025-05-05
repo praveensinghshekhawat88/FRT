@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.adapter.FPSRepeatOnServiceCenterDetailActivityAdapter
 import com.callmangement.custom.CustomActivity
@@ -45,7 +45,7 @@ class FPSRepeatOnServiceCenterDetailActivity : CustomActivity(), View.OnClickLis
             resources.getString(R.string.count_on_service_center)
         prefManager = PrefManager(mContext)
         model = intent.getSerializableExtra("param") as ModelRepeatFpsComplaintsList?
-        districtId = prefManager!!.useR_DistrictId
+        districtId = prefManager!!.useR_DistrictId!!
         setUpOnClickListener()
         fetchData()
     }

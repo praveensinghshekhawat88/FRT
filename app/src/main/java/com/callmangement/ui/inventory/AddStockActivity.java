@@ -1,12 +1,10 @@
 package com.callmangement.ui.inventory;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,13 +13,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -29,18 +25,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.adapter.DialogAddStockListAdapter;
-import com.callmangement.adapter.DialogChallanForDispatchAdapter;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.custom.SpinnerAdapter;
 import com.callmangement.databinding.ActivityAddStockBinding;
 import com.callmangement.model.inventrory.ModelAddStock;
 import com.callmangement.model.inventrory.ModelPartsList;
 import com.callmangement.report_pdf.AddStockPdfActivity;
-import com.callmangement.report_pdf.DispatchChallanPDFActivity;
 import com.callmangement.utils.Constants;
 import com.callmangement.utils.PrefManager;
 
@@ -108,7 +102,7 @@ public class AddStockActivity extends CustomActivity implements View.OnClickList
 
     private void setUpPartsListAdapter(){
         list.clear();
-        list.add(new ModelAddStock("", "","", Constants.modelProductLists));
+        list.add(new ModelAddStock("", "","", (List<ModelPartsList>) Constants.modelProductLists));
         setUpPartsList();
     }
 
@@ -224,7 +218,7 @@ public class AddStockActivity extends CustomActivity implements View.OnClickList
                 RequestBody jsonArrBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), String.valueOf(jsonArray));
                 APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
                 showProgress();
-                Call<ResponseBody> call = service.updatePartsStock("0", prefManager.getUSER_Id(), "1", "", jsonArrBody);
+                Call<ResponseBody> call = service.updatePartsStock("0", prefManager.getUseR_Id(), "1", "", jsonArrBody);
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -241,8 +235,8 @@ public class AddStockActivity extends CustomActivity implements View.OnClickList
 //                                            makeToast(getResources().getString(R.string.stock_added_successfully));
                                             Constants.modelAddStock = list;
                                             startActivity(new Intent(mContext, AddStockPdfActivity.class)
-                                                    .putExtra("name", prefManager.getUSER_NAME())
-                                                    .putExtra("email", prefManager.getUSER_EMAIL()));
+                                                    .putExtra("name", prefManager.getUseR_NAME())
+                                                    .putExtra("email", prefManager.getUseR_EMAIL()));
                                             finish();
                                         } else makeToast(message);
                                     }
@@ -279,7 +273,7 @@ public class AddStockActivity extends CustomActivity implements View.OnClickList
                     list.get(i).getSpinnerItemList().get(spinnerPosition).setVisibleItemFlag(true);
                     list.get(i).setFlag(true);
                 }
-                list.add(new ModelAddStock("", "", "", Constants.modelProductLists));
+                list.add(new ModelAddStock("", "", "", (List<ModelPartsList>) Constants.modelProductLists));
                 setUpPartsList();
             } else
                 makeToast(getResources().getString(R.string.please_select_item_or_quantity));

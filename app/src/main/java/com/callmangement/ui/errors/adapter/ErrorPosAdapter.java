@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +17,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.databinding.ItemManagerPosErrorActivityBinding;
 
-import com.callmangement.ui.errors.activity.AddnewErrorPosSE;
 import com.callmangement.ui.errors.activity.ErrorPosActivity;
 import com.callmangement.ui.errors.activity.ErrorPosUpdateActivity;
 import com.callmangement.ui.errors.activity.ErrorposDetail;
@@ -125,7 +123,7 @@ public class ErrorPosAdapter extends RecyclerView.Adapter<ErrorPosAdapter.ViewHo
             }
 
 
-            // districtId = prefManager.getUSER_DistrictId();
+            // districtId = prefManager.getUseR_DistrictId();
         }
 
 
@@ -256,7 +254,7 @@ public class ErrorPosAdapter extends RecyclerView.Adapter<ErrorPosAdapter.ViewHo
                                             if (response.code() == 200) {
                                                 if (response.body() != null) {
 
-                                                    if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                                    if (response.body().getStatus().equals("200")) {
                                                         UpdateErrorStatusRoot updateErrorStatusRoot = response.body();
                                                   //      Log.d("getErrorTypesRoot..","getErrorTypesRoot.."+updateErrorStatusRoot);
 

@@ -6,7 +6,7 @@ bool IS_TEST_MODE_ON = true;  //staging
 
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_BaseUrl(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_BaseUrl(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "https://rajepds.com/";
@@ -19,7 +19,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_BaseUrl(
 
 //Login
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_Login(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_Login(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "ehr/LogIn";
@@ -30,7 +30,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_Login(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_LoginQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_LoginQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "emailId,password,deviceId";
@@ -39,7 +39,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_LoginQueryParams(
 
 //Logout
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_Logout(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_Logout(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "rest/logOutApp";
@@ -50,7 +50,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_Logout(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_LogoutQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_LogoutQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "userId,emailId";
@@ -59,7 +59,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_LogoutQueryParams(
 
 //CheckVersion
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_CheckVersion(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_CheckVersion(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "ehr/getEhrAppVersion";
@@ -70,7 +70,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_CheckVersion(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_CheckVersionQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_CheckVersionQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "version_code";
@@ -79,7 +79,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_CheckVersionQueryParams(
 
 //DistictList
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_DistictList(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_DistictList(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "rest/apiGetDistictList";
@@ -91,7 +91,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_DistictList(
 
 //TehsilListByDistict
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_TehsilListByDistict(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_TehsilListByDistict(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "rest/apiGetTehsilByDistict";
@@ -102,7 +102,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_TehsilListByDistict(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_TehsilListByDistictQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_TehsilListByDistictQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "districtId";
@@ -111,7 +111,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_TehsilListByDistictQueryPa
 
 //SEUserListByDistict
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_SEUserListByDistict(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_SEUserListByDistict(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "stock/getSEUserList";
@@ -122,7 +122,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_SEUserListByDistict(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_SEUserListByDistictQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_SEUserListByDistictQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "districtId";
@@ -131,7 +131,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_SEUserListByDistictQueryPa
 
 //GetCampList
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetCampList(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_GetCampList(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "camp/getCampList";
@@ -143,7 +143,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetCampList(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetCampListQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_GetCampListQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserID,DistrictID,TehsilID,TrainingNo,StartedDate,EndDate,TStatusId";
@@ -152,7 +152,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetCampListQueryParams(
 
 //CreateCamp
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_CreateCamp(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_CreateCamp(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "camp/save";
@@ -163,7 +163,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_CreateCamp(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_CreateCampQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_CreateCampQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserID,DistrictID,TehsilID,Description,StartedDate,EndDate,Address";
@@ -172,7 +172,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_CreateCampQueryParams(
 
 //OrganiseACamp
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_OrganiseACamp(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_OrganiseACamp(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "camp/updateCampStatus";
@@ -183,7 +183,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_OrganiseACamp(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-xJava_com_callmangement_EHR_ehrActivities_BaseActivity_OrganiseACampQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_OrganiseACampQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserID,TrainingId,TrainingNo,TStatusId";
@@ -192,7 +192,7 @@ xJava_com_callmangement_EHR_ehrActivities_BaseActivity_OrganiseACampQueryParams(
 
 //GetDealersByBlock
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetDealersByBlock(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_GetDealersByBlock(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "camp/getDealersByBlock";
@@ -203,7 +203,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetDealersByBlock(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetDealersByBlockQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_GetDealersByBlockQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserID,DistrictID,TehsilID,BlockId";
@@ -212,7 +212,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetDealersByBlockQueryPara
 
 //UploadDocumentOfDailyWorkReport
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_UploadDocumentOfDailyWorkReport(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_UploadDocumentOfDailyWorkReport(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "camp/uploadDocument";
@@ -223,7 +223,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_UploadDocumentOfDailyWorkR
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_UploadDocumentOfDailyWorkReportQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_UploadDocumentOfDailyWorkReportQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserID,TrainingId,TrainingNo,CampDocuments";
@@ -232,7 +232,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_UploadDocumentOfDailyWorkR
 
 //GetCampDocList
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetCampDocList(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_GetCampDocList(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "camp/getCampDocList";
@@ -243,7 +243,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetCampDocList(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetCampDocListQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_GetCampDocListQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserID,TrainingId";
@@ -254,7 +254,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetCampDocListQueryParams(
 extern "C" JNIEXPORT jstring JNICALL
 
 
-_DeleteACamp(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_DeleteACamp(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "camp/deleteCamp";
@@ -265,7 +265,7 @@ _DeleteACamp(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_DeleteACampQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_DeleteACampQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserID,TrainingId,TrainingNo";
@@ -275,7 +275,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_DeleteACampQueryParams(
 
 //CreateSurveyForm
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_CreateSurveyForm(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_CreateSurveyForm(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "survey/save";
@@ -286,7 +286,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_CreateSurveyForm(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_CreateSurveyFormQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_CreateSurveyFormQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserID,Bill_ChallanNo,Address,PointOfContact,BillRemark,MobileNumber,InstallationDateStr,TypeOfCallId,ItemDetail,PurchaseOrderDtl,InstalledMachineSpecification,Accessesory,InstallationDone,Customer_Remark,CustomerName,EngineerName";
@@ -295,7 +295,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_CreateSurveyFormQueryParam
 
 //EditSurveyForm
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_EditSurveyForm(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_EditSurveyForm(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "survey/update";
@@ -306,7 +306,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_EditSurveyForm(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_EditSurveyFormQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_EditSurveyFormQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserID,ServeyFormId,TicketNo,Bill_ChallanNo,Address,PointOfContact,BillRemark,MobileNumber,InstallationDateStr,TypeOfCallId,ItemDetail,PurchaseOrderDtl,InstalledMachineSpecification,Accessesory,InstallationDone,Customer_Remark,CustomerName,EngineerName";
@@ -315,7 +315,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_EditSurveyFormQueryParams(
 
 //GetSurveyFormList
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetSurveyFormList(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_GetSurveyFormList(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "survey/surveyFormList";
@@ -326,7 +326,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetSurveyFormList(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetSurveyFormListQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_GetSurveyFormListQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserID,ServeyFormId,TicketNo,StartDate,EndDate,StatusId";
@@ -335,7 +335,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetSurveyFormListQueryPara
 
 //DeleteASurveyForm
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_DeleteASurveyForm(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_DeleteASurveyForm(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "survey/deleteSurveyForm";
@@ -346,7 +346,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_DeleteASurveyForm(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_DeleteASurveyFormQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_DeleteASurveyFormQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserID,ServeyFormId,TicketNo";
@@ -355,7 +355,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_DeleteASurveyFormQueryPara
 
 //UploadDocumentOfSurveyFormReport
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_UploadDocumentOfSurveyFormReport(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_UploadDocumentOfSurveyFormReport(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "survey/uploadSurveyForm";
@@ -366,7 +366,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_UploadDocumentOfSurveyForm
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_UploadDocumentOfSurveyFormReportQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_UploadDocumentOfSurveyFormReportQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserID,ServeyFormId,TicketNo,CampDocuments";
@@ -375,7 +375,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_UploadDocumentOfSurveyForm
 
 //GetSurveyFormDocList
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetSurveyFormDocList(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_GetSurveyFormDocList(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "survey/serveyFormDocList";
@@ -386,7 +386,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetSurveyFormDocList(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetSurveyFormDocListQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_GetSurveyFormDocListQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserID,ServeyFormId";
@@ -395,7 +395,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetSurveyFormDocListQueryP
 
 //GetSurveyFormList
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetAttendanceList(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_GetAttendanceList(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "attendance/attendanceList";
@@ -406,7 +406,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetAttendanceList(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetAttendanceListQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_GetAttendanceListQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserId,DistrictId,StartDate,EndDate,IsPagination,PageNo,PageSize";
@@ -415,7 +415,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_GetAttendanceListQueryPara
 
 //MArkAttendance
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_callmangement_EHR_ehrActivities_BaseActivity_MArkAttendance(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_MArkAttendance(
         JNIEnv* env,
         jobject /* this */) {
     std::string hello = "attendance/save";
@@ -427,7 +427,7 @@ Java_com_callmangement_EHR_ehrActivities_BaseActivity_MArkAttendance(
 
 
 extern "C" JNIEXPORT jstring JNICALL
-xJava_com_callmangement_EHR_ehrActivities_BaseActivity_MArkAttendanceQueryParams(
+Java_com_callmangement_ehr_ehrActivities_BaseActivity_MArkAttendanceQueryParams(
         JNIEnv* env,
         jobject) {
     std::string hello = "UserId,Latitude,Longitude,Address,image";

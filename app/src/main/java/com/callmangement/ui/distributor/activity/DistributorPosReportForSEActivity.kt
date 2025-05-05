@@ -12,8 +12,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.custom.CustomActivity
 import com.callmangement.databinding.ActivityDistributorPosReportForSeactivityBinding
@@ -30,7 +30,6 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import java.util.Objects
 
 class DistributorPosReportForSEActivity : CustomActivity(), View.OnClickListener {
     private var binding: ActivityDistributorPosReportForSeactivityBinding? = null
@@ -292,14 +291,14 @@ class DistributorPosReportForSEActivity : CustomActivity(), View.OnClickListener
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
         Log.d("checkdate", fromDate + toDate)
         Log.d("userid", prefManager!!.useR_Id)
-        Log.d("disid", prefManager!!.useR_DistrictId)
+        Log.d("disid", prefManager!!.useR_DistrictId!!)
         if (Constants.isNetworkAvailable(mContext)) {
             showProgress()
             val service = RetrofitInstance.getRetrofitInstance().create(
                 APIService::class.java
             )
             val call = service.getPosDistributionListSEAPI(
-                prefManager!!.useR_DistrictId,
+                prefManager!!.useR_DistrictId!!,
                 prefManager!!.useR_Id,
                 "0",
                 fpscodee,

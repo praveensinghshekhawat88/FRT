@@ -4,19 +4,15 @@ import static java.lang.String.valueOf;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Vibrator;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -26,11 +22,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.impl.model.Preference;
 
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityDeliverylistBinding;
@@ -41,22 +36,7 @@ import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrictList_
 import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrict_w;
 import com.callmangement.utils.Constants;
 import com.callmangement.utils.PrefManager;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.RichTextString;
-import org.apache.poi.ss.usermodel.Row;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,7 +45,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -135,7 +114,7 @@ public class InstallationPendingList extends CustomActivity {
     private void setUpData() {
 
 
-        if (prefManager.getUSER_TYPE_ID().equals("1") && prefManager.getUSER_TYPE().equalsIgnoreCase("Admin")) {
+        if (prefManager.getUseR_TYPE_ID().equals("1") && prefManager.getUseR_TYPE().equalsIgnoreCase("Admin")) {
             binding.rlDistrict.setVisibility(View.VISIBLE);
             binding. seDistrict.setVisibility(View.GONE);
             binding.spacer.setVisibility(View.VISIBLE);
@@ -144,7 +123,7 @@ public class InstallationPendingList extends CustomActivity {
             editor.remove("districtId_key");
             editor.apply();
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("2") && prefManager.getUSER_TYPE().equalsIgnoreCase("Manager")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("2") && prefManager.getUseR_TYPE().equalsIgnoreCase("Manager")) {
             binding.rlDistrict.setVisibility(View.VISIBLE);
             binding.spacer.setVisibility(View.VISIBLE);
             binding. seDistrict.setVisibility(View.GONE);
@@ -155,7 +134,7 @@ public class InstallationPendingList extends CustomActivity {
             editor.remove("districtId_key");
             editor.apply();
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("4") && prefManager.getUseR_TYPE().equalsIgnoreCase("ServiceEngineer")) {
             binding.rlDistrict.setVisibility(View.GONE);
             binding.spacer.setVisibility(View.VISIBLE);
             binding.seDistrict.setVisibility(View.VISIBLE);
@@ -175,10 +154,10 @@ public class InstallationPendingList extends CustomActivity {
 
         }
 
-        String USER_NAME = prefManager.getUSER_NAME();
-        String USER_EMAIL = prefManager.getUSER_EMAIL();
-        String USER_Mobile = prefManager.getUSER_Mobile();
-        String USER_DISTRICT = prefManager.getUSER_District();
+        String USER_NAME = prefManager.getUseR_NAME();
+        String USER_EMAIL = prefManager.getUseR_EMAIL();
+        String USER_Mobile = prefManager.getUseR_Mobile();
+        String USER_DISTRICT = prefManager.getUseR_District();
         Log.d("USER_NAME"," "+USER_NAME);
         //  getIrisWeighInstallation();
         // districtId = getIntent().getStringExtra("districtId");
@@ -231,7 +210,7 @@ public class InstallationPendingList extends CustomActivity {
 
 
 
-        // Log.d("useriduserid",""+prefManager.getUSER_TYPE_ID());
+        // Log.d("useriduserid",""+prefManager.getUseR_TYPE_ID());
 
 
         // binding.textDestrict.setText(USER_DISTRICT);
@@ -467,7 +446,7 @@ public class InstallationPendingList extends CustomActivity {
             //  showProgress(getResources().getString(R.string.please_wait));
 
 
-            String USER_Id = prefManager.getUSER_Id();
+            String USER_Id = prefManager.getUseR_Id();
             Log.d("USER_ID", " "+USER_Id);
             Log.d("myDistrictId"," "+ districtId);
             Log.d("myfromDate", " "+fromDate);
@@ -490,7 +469,7 @@ public class InstallationPendingList extends CustomActivity {
                                 binding.txtNoRecord.setVisibility(View.GONE);
 
 
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     binding.actionBar.buttonPDF.setVisibility(View.VISIBLE);
                                    // binding.buttonexcel.setVisibility(View.VISIBLE);
 
@@ -507,7 +486,7 @@ public class InstallationPendingList extends CustomActivity {
                                     mRecyclerView.setLayoutManager(new LinearLayoutManager(InstallationPendingList.this));
                                     mRecyclerView.addItemDecoration(new DividerItemDecoration(InstallationPendingList.this, DividerItemDecoration.VERTICAL));
                                     mRecyclerView.setVisibility(View.VISIBLE);
-                                    DeliveredWgtInsAdapter deliveredWgtInsAdapter = new DeliveredWgtInsAdapter(weighInsDataArrayList, mContext,mActivity,prefManager.getUSER_TYPE_ID());
+                                    DeliveredWgtInsAdapter deliveredWgtInsAdapter = new DeliveredWgtInsAdapter(weighInsDataArrayList, mContext,mActivity,prefManager.getUseR_TYPE_ID());
                                     mRecyclerView.setAdapter(deliveredWgtInsAdapter);
 
 
@@ -619,7 +598,7 @@ public class InstallationPendingList extends CustomActivity {
             hideKeyboard(mActivity);
             hideProgress();
             //   Utils.showCustomProgressDialogCommonForAll(mActivity, getResources().getString(R.string.please_wait));
-            String USER_Id = prefManager.getUSER_Id();
+            String USER_Id = prefManager.getUseR_Id();
             APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
             Call<ModelDistrict_w> call = apiInterface.apiGetDistictList_w();
 
@@ -633,7 +612,7 @@ public class InstallationPendingList extends CustomActivity {
 
                             Log.d("mydataresponse",""+response.code());
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     district_List = response.body().getDistrict_List();
                                     if (district_List != null && district_List.size() > 0) {
                                         Collections.reverse(district_List);

@@ -1,7 +1,5 @@
 package com.callmangement.ui.errors.activity;
 
-import static android.R.layout.simple_spinner_item;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,17 +9,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.MultipartRequester;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.MultipartRequester;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityErrorrPosUpdateBinding;
@@ -30,12 +26,8 @@ import com.callmangement.imagepicker.model.Image;
 import com.callmangement.imagepicker.ui.imagepicker.ImagePicker;
 import com.callmangement.support.ImageUtilsForRotate;
 import com.callmangement.support.OnSingleClickListener;
-import com.callmangement.ui.errors.model.GetErrorTypesRoot;
-import com.callmangement.ui.errors.model.GetErrortypesDatum;
 import com.callmangement.ui.errors.model.GetPosDeviceErrorDatum;
-import com.callmangement.ui.errors.model.SaveErroeReqRoot;
 import com.callmangement.ui.errors.model.UpdateErroeReqRoot;
-import com.callmangement.ui.home.MainActivity;
 import com.callmangement.utils.CompressImage;
 import com.callmangement.utils.Constants;
 import com.callmangement.utils.PrefManager;
@@ -168,9 +160,9 @@ public class ErrorPosUpdateActivity extends CustomActivity implements View.OnCli
 
 
 
-        if (prefManager.getUSER_TYPE_ID().equals("1") && prefManager.getUSER_TYPE().equalsIgnoreCase("Admin")) {
+        if (prefManager.getUseR_TYPE_ID().equals("1") && prefManager.getUseR_TYPE().equalsIgnoreCase("Admin")) {
             binding.buttonUploadError.setVisibility(View.GONE);
-        } else if (prefManager.getUSER_TYPE_ID().equals("2") && prefManager.getUSER_TYPE().equalsIgnoreCase("Manager")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("2") && prefManager.getUseR_TYPE().equalsIgnoreCase("Manager")) {
             binding.buttonUploadError.setVisibility(View.GONE);
         } else {
 
@@ -251,7 +243,7 @@ public class ErrorPosUpdateActivity extends CustomActivity implements View.OnCli
             Call<UpdateErroeReqRoot> call = service.UpdateErroeReqApi(
                     MultipartRequester.fromString(ErrorId),
 
-                    MultipartRequester.fromString((prefManager.getUSER_Id())),
+                    MultipartRequester.fromString((prefManager.getUseR_Id())),
                     MultipartRequester.fromString(FPS_CODE),
                     MultipartRequester.fromString(Input_Device_Code),
                     MultipartRequester.fromString(inputMobileno),
@@ -261,7 +253,7 @@ public class ErrorPosUpdateActivity extends CustomActivity implements View.OnCli
                     MultipartRequester.fromString(ErrorStatusIdd),
                     MultipartRequester.fromString(Input_Remark),
                     campDocumentsParts);
-           // Log.d("errorsaveresponse","response-----"+ErrorId+" "+ErrorStatusIdd+"  " +ErrorTypeId+" "+prefManager.getUSER_Id()+"  "+FPS_CODE+" "+Input_Device_Code+" "+Input_Remark+" " +campDocumentsParts);
+           // Log.d("errorsaveresponse","response-----"+ErrorId+" "+ErrorStatusIdd+"  " +ErrorTypeId+" "+prefManager.getUseR_Id()+"  "+FPS_CODE+" "+Input_Device_Code+" "+Input_Remark+" " +campDocumentsParts);
             call.enqueue(new Callback<UpdateErroeReqRoot>() {
                 @Override
                 public void onResponse(@NonNull Call<UpdateErroeReqRoot> call, @NonNull Response<UpdateErroeReqRoot> response) {
@@ -270,7 +262,7 @@ public class ErrorPosUpdateActivity extends CustomActivity implements View.OnCli
                         if (response.code() == 200 && response.body() != null ) {
                          //   Toast.makeText(ErrorPosUpdateActivity.this, "susesss", Toast.LENGTH_SHORT).show();
 
-                            // if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                            // if (response.body().getStatus().equals("200")) {
                             if (Objects.requireNonNull(response.body()!=null)) {
 
                                 UpdateErroeReqRoot getErrorTypesRoot = response.body();
@@ -415,7 +407,7 @@ public class ErrorPosUpdateActivity extends CustomActivity implements View.OnCli
                 if (imageStoragePath.contains("file:/")) {
                     imageStoragePath = imageStoragePath.replace("file:/", "");
                 }
-                imageStoragePath = CompressImage.compress(imageStoragePath, this);
+                imageStoragePath = CompressImage.Companion.compress(imageStoragePath, this);
                 File imgFile = new File(imageStoragePath);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -440,7 +432,7 @@ public class ErrorPosUpdateActivity extends CustomActivity implements View.OnCli
                 if (imageStoragePath.contains("file:/")) {
                     imageStoragePath = imageStoragePath.replace("file:/", "");
                 }
-                imageStoragePath = CompressImage.compress(imageStoragePath, this);
+                imageStoragePath = CompressImage.Companion.compress(imageStoragePath, this);
                 File imgFile = new File(imageStoragePath);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 try {
@@ -463,7 +455,7 @@ public class ErrorPosUpdateActivity extends CustomActivity implements View.OnCli
                 if (imageStoragePath.contains("file:/")) {
                     imageStoragePath = imageStoragePath.replace("file:/", "");
                 }
-                imageStoragePath = CompressImage.compress(imageStoragePath, this);
+                imageStoragePath = CompressImage.Companion.compress(imageStoragePath, this);
                 File imgFile = new File(imageStoragePath);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 try {
@@ -491,7 +483,7 @@ public class ErrorPosUpdateActivity extends CustomActivity implements View.OnCli
         if (Constants.isNetworkAvailable(mContext)) {
             showProgress();
             APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<ResponseBody> call = service.completeExpenses(prefManager.getUSER_Id(), String.valueOf(model.getErrorId()));
+            Call<ResponseBody> call = service.completeExpenses(prefManager.getUseR_Id(), String.valueOf(model.getErrorId()));
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {

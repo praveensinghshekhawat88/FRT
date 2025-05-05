@@ -19,7 +19,7 @@ import android.text.TextUtils;
 import android.util.Patterns;
 import androidx.core.app.NotificationCompat;
 
-import com.callmangement.Network.AppConfig;
+import com.callmangement.network.AppConfig;
 import com.callmangement.R;
 import java.io.IOException;
 import java.io.InputStream;

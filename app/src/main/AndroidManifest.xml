@@ -660,27 +660,14 @@
             android:value="@string/default_notification_channel_id" />
 
         <activity
-            android:name=".EHR.ehrActivities.SplashActivity"
+            android:name=".ehr.ehrActivities.SplashActivity"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".EHR.ehrActivities.MainActivity"
+            android:name=".ehr.ehrActivities.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -693,7 +680,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.CampsListingActivity"
+            android:name=".ehr.ehrActivities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -706,7 +693,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.CreateNewCampActivity"
+            android:name=".ehr.ehrActivities.CampsListingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -719,7 +706,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.SurveyFormPdfActivity"
+            android:name=".ehr.ehrActivities.CreateNewCampActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -732,7 +719,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.CampDailyWorkReportPdfActivity"
+            android:name=".ehr.ehrActivities.SurveyFormPdfActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -745,7 +732,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.SurveyFormsListingActivity"
+            android:name=".ehr.ehrActivities.CampDailyWorkReportPdfActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -758,7 +745,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.FillNewSurveyFormActivity"
+            android:name=".ehr.ehrActivities.SurveyFormsListingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -771,7 +758,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.UploadCampDailyReportActivity"
+            android:name=".ehr.ehrActivities.FillNewSurveyFormActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -784,7 +771,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.ViewCampDetailsActivity"
+            android:name=".ehr.ehrActivities.UploadCampDailyReportActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -797,7 +784,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.ZoomInZoomOutActivity"
+            android:name=".ehr.ehrActivities.ViewCampDetailsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -810,7 +797,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.EditSurveyFormActivity"
+            android:name=".ehr.ehrActivities.ZoomInZoomOutActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -823,7 +810,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.UploadSurveyFormReportActivity"
+            android:name=".ehr.ehrActivities.EditSurveyFormActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -836,7 +823,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.ViewSurveyFormDetailsActivity"
+            android:name=".ehr.ehrActivities.UploadSurveyFormReportActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -849,7 +836,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.AttendanceListingActivity"
+            android:name=".ehr.ehrActivities.ViewSurveyFormDetailsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -862,7 +849,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.ehrActivities.MarkAttendanceActivity"
+            android:name=".ehr.ehrActivities.AttendanceListingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -875,19 +862,32 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EHR.imagepicker.ui.imagepicker.ImagePickerActivity"
+            android:name=".ehr.ehrActivities.MarkAttendanceActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ehr.imagepicker.ui.imagepicker.ImagePickerActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/imagepicker_ImagePickerTheme"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".EHR.ehrActivities.Excelfortable" />
-        <activity android:name=".EHR.ehrActivities.ExcelforCamp" />
-        <activity android:name=".EHR.ehrActivities.PDFViewActivity" />
+        <activity android:name=".ehr.ehrActivities.Excelfortable" />
+        <activity android:name=".ehr.ehrActivities.ExcelforCamp" />
+        <activity android:name=".ehr.ehrActivities.PDFViewActivity" />
         <activity
-            android:name=".EHR.imagepicker.ui.camera.CameraActivty"
+            android:name=".ehr.imagepicker.ui.camera.CameraActivty"
             android:screenOrientation="unspecified"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".EHR.ehrActivities.AttendanceViewDetail" />
+        <activity android:name=".ehr.ehrActivities.AttendanceViewDetail" />
         <activity
             android:name=".ui.complaint.ChallanUploadComplaintPendingListActivity"
             android:exported="true"
@@ -906,11 +906,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".EHR.ehrActivities.FeedbackFormActivity" />
-        <activity android:name=".EHR.ehrActivities.FeedbackFormListActivity" />
-        <activity android:name=".EHR.ehrActivities.FeedBackListDetail" />
-        <activity android:name=".EHR.ehrActivities.FeedbackReportActivity" />
-        <activity android:name=".EHR.ehrActivities.FeedBackReportDetail" />
+        <activity android:name=".ehr.ehrActivities.FeedbackFormActivity" />
+        <activity android:name=".ehr.ehrActivities.FeedbackFormListActivity" />
+        <activity android:name=".ehr.ehrActivities.FeedBackListDetail" />
+        <activity android:name=".ehr.ehrActivities.FeedbackReportActivity" />
+        <activity android:name=".ehr.ehrActivities.FeedBackReportDetail" />
         <activity android:name=".ui.iris_derivery_installation.IrisReplaceListActivity" />
         <activity android:name=".ui.iris_derivery_installation.IrisReplacedDetailActivity" />
 

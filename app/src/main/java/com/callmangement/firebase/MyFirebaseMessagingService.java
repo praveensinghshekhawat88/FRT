@@ -1,33 +1,22 @@
 package com.callmangement.firebase;
 
-import static com.callmangement.utils.MyDialog.alertD;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.database.DbController;
 import com.callmangement.utils.DateTimeUtils;
-import com.callmangement.utils.MyDialog;
 import com.callmangement.utils.PrefManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
@@ -44,7 +33,6 @@ import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 import okhttp3.RequestBody;
@@ -150,7 +138,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void saveLocation(String address, double latitude, double longitude) {
       //  Log.e("location", "latitude - " + latitude + ", longitude - " + longitude + ", address - " + address);
-        new DbController(getApplicationContext()).insertLocation(prefManager.getUSER_Id(), prefManager.getUSER_DistrictId(), String.valueOf(latitude), String.valueOf(longitude), address, DateTimeUtils.getCurrentDataTime());
+        new DbController(getApplicationContext()).insertLocation(prefManager.getUseR_Id(), prefManager.getUseR_DistrictId(), String.valueOf(latitude), String.valueOf(longitude), address, DateTimeUtils.getCurrentDataTime());
         try {
             getLocationDataFromLocalDB();
         } catch (JSONException e) {
@@ -203,7 +191,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void insertLocationDataInServer(String locationJsonArray) {
         RequestBody jsonArrBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), String.valueOf(locationJsonArray));
         APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-        Call<ResponseBody> call = service.saveSELocations(prefManager.getUSER_Id(), prefManager.getUSER_DistrictId(), prefManager.getDEVICE_ID(), jsonArrBody);
+        Call<ResponseBody> call = service.saveSELocations(prefManager.getUseR_Id(), prefManager.getUseR_DistrictId(), prefManager.getDevicE_ID(), jsonArrBody);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {

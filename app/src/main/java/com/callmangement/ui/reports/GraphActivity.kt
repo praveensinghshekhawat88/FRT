@@ -10,8 +10,8 @@ import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.custom.CustomActivity
 import com.callmangement.databinding.ActivityGraphBinding
@@ -37,7 +37,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Collections
 import java.util.Locale
-import java.util.Objects
 
 class GraphActivity : CustomActivity() {
     private var binding: ActivityGraphBinding? = null
@@ -66,14 +65,14 @@ class GraphActivity : CustomActivity() {
                 ignoreCase = true
             )
         ) { // for service engineer
-            districtId = prefManager!!.useR_DistrictId
+            districtId = prefManager!!.useR_DistrictId!!
             binding!!.rlDistrict.visibility = View.GONE
         } else if (prefManager!!.useR_TYPE_ID.equals(
                 "6",
                 ignoreCase = true
             ) && prefManager!!.useR_TYPE.equals("DSO", ignoreCase = true)
         ) { // for dso
-            districtId = prefManager!!.useR_DistrictId
+            districtId = prefManager!!.useR_DistrictId!!
             binding!!.rlDistrict.visibility = View.GONE
         } else {
             districtList()

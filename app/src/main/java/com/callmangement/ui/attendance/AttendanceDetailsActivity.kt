@@ -59,14 +59,14 @@ class AttendanceDetailsActivity : CustomActivity() {
         attendanceViewModel = ViewModelProviders.of(this).get(
             AttendanceViewModel::class.java
         )
-        districtNameEng = prefManager!!.useR_District
+        districtNameEng = prefManager!!.useR_District!!
 
         if (prefManager!!.useR_TYPE_ID == "4" && prefManager!!.useR_TYPE.equals(
                 "ServiceEngineer",
                 ignoreCase = true
             )
         ) { // for service engineer
-            districtId = prefManager!!.useR_DistrictId
+            districtId = prefManager!!.useR_DistrictId!!
             userId = prefManager!!.useR_Id
             binding!!.rlDistrict.visibility = View.GONE
         } else if (prefManager!!.useR_TYPE_ID.equals(
@@ -74,7 +74,7 @@ class AttendanceDetailsActivity : CustomActivity() {
                 ignoreCase = true
             ) && prefManager!!.useR_TYPE.equals("DSO", ignoreCase = true)
         ) { // for dso
-            districtId = prefManager!!.useR_DistrictId
+            districtId = prefManager!!.useR_DistrictId!!
             userId = prefManager!!.useR_Id
             binding!!.rlDistrict.visibility = View.GONE
         } else {

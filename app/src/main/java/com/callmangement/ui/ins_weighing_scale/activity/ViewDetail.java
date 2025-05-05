@@ -8,13 +8,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,13 +20,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.MultipartRequester;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.MultipartRequester;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityDeliverylistDetailsIrisBinding;
-import com.callmangement.firebase.FirebaseUtils;
 import com.callmangement.imagepicker.model.Config;
 import com.callmangement.imagepicker.model.Image;
 import com.callmangement.imagepicker.ui.imagepicker.ImagePicker;
@@ -41,10 +38,8 @@ import com.callmangement.support.OnSingleClickListener;
 import com.callmangement.ui.ins_weighing_scale.adapter.ViewImagesListingAdapterIris;
 import com.callmangement.ui.ins_weighing_scale.model.DeliveredWeightInstal.WeighInsData;
 import com.callmangement.ui.ins_weighing_scale.model.SaveInstall.SaveRoot;
-import com.callmangement.ui.login.LoginActivity;
 import com.callmangement.utils.CompressImage;
 import com.callmangement.utils.Constants;
-import com.callmangement.utils.EqualSpacingItemDecoration;
 import com.callmangement.utils.PrefManager;
 
 import java.io.File;
@@ -171,7 +166,7 @@ public class ViewDetail extends CustomActivity implements View.OnClickListener {
             hideKeyboard(mActivity);
             showProgress();
 
-            String USER_Id = preference.getUSER_Id();
+            String USER_Id = preference.getUseR_Id();
             String deliveryid = String.valueOf(model.getDeliveryId());
             String iris_inputserialno = String.valueOf(binding.inputWsSerialno.getText());
             String inputserialRemark = String.valueOf(binding.inputWsReamrk.getText());
@@ -228,7 +223,7 @@ public class ViewDetail extends CustomActivity implements View.OnClickListener {
                         if (response.code() == 200) {
                             if (response.body() != null) {
                                 Log.d("ResponseCode", "" + response.code());
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     SaveRoot saveRoot = response.body();
                                     makeToast(String.valueOf(response.body().getResponse().getMessage()));
                                     binding.inputWsReamrk.setText("");
@@ -279,7 +274,7 @@ public class ViewDetail extends CustomActivity implements View.OnClickListener {
         PrefManager prefManager = new PrefManager(mContext);
         showProgress(getResources().getString(R.string.please_wait));
         APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-        Call<ModelLogout> call = service.verifyDelivery(prefManager.getUSER_Id(),String.valueOf(model.deliveryId),model.fpscode,model.weighingScaleSerialNo);
+        Call<ModelLogout> call = service.verifyDelivery(prefManager.getUseR_Id(),String.valueOf(model.deliveryId),model.fpscode,model.weighingScaleSerialNo);
         call.enqueue(new Callback<ModelLogout>() {
             @Override
             public void onResponse(@NonNull Call<ModelLogout> call, @NonNull Response<ModelLogout> response) {
@@ -327,7 +322,7 @@ public class ViewDetail extends CustomActivity implements View.OnClickListener {
         binding.inputstatus.setText(model.getLast_TicketStatus());
         binding.inputFpsCode.setText(model.getFpscode());
 
-        if (preference.getUSER_TYPE_ID().equals("1") || preference.getUSER_TYPE_ID().equals("2")) {
+        if (preference.getUseR_TYPE_ID().equals("1") || preference.getUseR_TYPE_ID().equals("2")) {
             binding.inputWsSerialno.setEnabled(true);
             binding.updateImageAria.setVisibility(View.VISIBLE);
         }else {
@@ -447,11 +442,11 @@ public class ViewDetail extends CustomActivity implements View.OnClickListener {
 
 
     private void GetErrorImages() {
-        Log.d("USER_ID>>>>>>>>", preference.getUSER_Id());
+        Log.d("USER_ID>>>>>>>>", preference.getUseR_Id());
         if (Constants.isNetworkAvailable(mActivity)) {
             hideProgress();
             APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            String USER_Id = preference.getUSER_Id();
+            String USER_Id = preference.getUseR_Id();
             String fpscode = model.getFpscode();
             String disid = String.valueOf(model.getDistrictId());
             String modelTicketNo = model.getTicketNo();
@@ -474,7 +469,7 @@ public class ViewDetail extends CustomActivity implements View.OnClickListener {
                             if (response.code() == 200) {
                                 if (response.body() != null) {
 
-                                    if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                    if (response.body().getStatus().equals("200")) {
                                         weighingDelieryRoot getErrorImagesRoot = response.body();
                                         weighingDeliveryData weighingDeliveryData = getErrorImagesRoot.getData();
                                         Log.d("getErrorTypesRoot..", "getErrorTypesRoot.." + getErrorImagesRoot);
@@ -573,7 +568,7 @@ public class ViewDetail extends CustomActivity implements View.OnClickListener {
                 if (partsImageStoragePath1.contains("file:/")) {
                     partsImageStoragePath1 = partsImageStoragePath1.replace("file:/", "");
                 }
-                partsImageStoragePath1 = CompressImage.compress(partsImageStoragePath1, this);
+                partsImageStoragePath1 = CompressImage.Companion.compress(partsImageStoragePath1, this);
                 File imgFile = new File(partsImageStoragePath1);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 try {
@@ -597,7 +592,7 @@ public class ViewDetail extends CustomActivity implements View.OnClickListener {
                 if (partsImageStoragePath2.contains("file:/")) {
                     partsImageStoragePath2 = partsImageStoragePath2.replace("file:/", "");
                 }
-                partsImageStoragePath2 = CompressImage.compress(partsImageStoragePath2, this);
+                partsImageStoragePath2 = CompressImage.Companion.compress(partsImageStoragePath2, this);
                 File imgFile = new File(partsImageStoragePath2);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -621,7 +616,7 @@ public class ViewDetail extends CustomActivity implements View.OnClickListener {
                 if (partsImageStoragePath3.contains("file:/")) {
                     partsImageStoragePath3 = partsImageStoragePath3.replace("file:/", "");
                 }
-                partsImageStoragePath3 = CompressImage.compress(partsImageStoragePath3, this);
+                partsImageStoragePath3 = CompressImage.Companion.compress(partsImageStoragePath3, this);
                 File imgFile = new File(partsImageStoragePath3);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 

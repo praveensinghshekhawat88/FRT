@@ -17,12 +17,11 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.custom.CustomActivity
 import com.callmangement.databinding.ActivityBiometricDeliveryDashboardBinding
-import com.callmangement.ui.biometric_delivery.BiometricDeliveryActivity
 import com.callmangement.ui.biometric_delivery.model.BiometricDashboardResponse
 import com.callmangement.ui.home.MainActivity
 import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrictList_w
@@ -573,7 +572,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
     private fun getInstallationCntApi(districtId: String?, fromDate: String, toDate: String) {
         //Progress Bar while connection establishes
 
-        if (Constants.isNetworkAvailable(mActivity)) {
+        if (Constants.isNetworkAvailable(mActivity!!)) {
             hideKeyboard(mActivity)
             //  Utils.showCustomProgressDialogCommonForAll(mActivity, getResources().getString(R.string.please_wait));
             showProgress()
@@ -655,7 +654,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
     }
 
     private fun districtList() {
-        if (Constants.isNetworkAvailable(mActivity)) {
+        if (Constants.isNetworkAvailable(mActivity!!)) {
             hideKeyboard(mActivity)
             //   Utils.showCustomProgressDialogCommonForAll(mActivity, getResources().getString(R.string.please_wait));
             val USER_Id = prefManager!!.useR_Id

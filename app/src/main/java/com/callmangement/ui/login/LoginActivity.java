@@ -9,26 +9,21 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.hardware.usb.UsbDevice;
-import android.hardware.usb.UsbManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityLoginBinding;
@@ -49,7 +44,6 @@ import com.callmangement.support.permissions.Permissions;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
 import okhttp3.ResponseBody;
@@ -88,7 +82,7 @@ public class LoginActivity extends CustomActivity implements View.OnClickListene
             if (task.isSuccessful()) {
                 if (task.getResult() != null) {
                     String deviceToken = task.getResult();
-                    prefManager.setFIREBASE_DEVICE_TOKEN(deviceToken);
+                    prefManager.setFirebasE_DEVICE_TOKEN(deviceToken);
                     @SuppressLint("HardwareIds")
                     String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
                     updateDTokenOnServer(android_id, deviceToken);
@@ -99,7 +93,7 @@ public class LoginActivity extends CustomActivity implements View.OnClickListene
 
         @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
         //  Log.d("deviceiddeviceid", " " + android_id);
-        prefManager.setDEVICE_ID(android_id);
+        prefManager.setDevicE_ID(android_id);
         checkPermission();
         setUpOnClickListener();
     }
@@ -119,14 +113,14 @@ public class LoginActivity extends CustomActivity implements View.OnClickListene
                     ModelLoginData data = modelLogin.getUser_details();
                     prefManager.setUserLoginStatus("true");
                     prefManager.setUser_Id(data.getUserId());
-                    prefManager.setUSER_NAME(data.getUserName());
-                    prefManager.setUSER_EMAIL(data.getEmailId());
-                    prefManager.setUSER_Mobile(data.getMobileNo());
-                    prefManager.setUSER_DistrictId(data.getDistrictId());
-                    prefManager.setUSER_District(data.getDistrict());
-                    prefManager.setUSER_TYPE_ID(data.getUserTypeId());
-                    prefManager.setUSER_TYPE(data.getUserTypeName());
-                    prefManager.setUSER_PASSWORD(password);
+                    prefManager.setUseR_NAME(data.getUserName());
+                    prefManager.setUseR_EMAIL(data.getEmailId());
+                    prefManager.setUseR_Mobile(data.getMobileNo());
+                    prefManager.setUseR_DistrictId(data.getDistrictId());
+                    prefManager.setUseR_District(data.getDistrict());
+                    prefManager.setUseR_TYPE_ID(data.getUserTypeId());
+                    prefManager.setUseR_TYPE(data.getUserTypeName());
+                    prefManager.setUseR_PASSWORD(password);
                     //     Log.d("loginid", " " + data.getUserId());
 
                     if (data.getUserTypeId().equals("4") && data.getUserTypeName().equalsIgnoreCase("ServiceEngineer")) {
@@ -145,7 +139,7 @@ public class LoginActivity extends CustomActivity implements View.OnClickListene
 
     private void getCheckedAttendanceStatus() {
         APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-        Call<ModelAttendance> call = service.getCheckedAttendance(prefManager.getUSER_Id(), DateTimeUtils.getCurrentDate());
+        Call<ModelAttendance> call = service.getCheckedAttendance(prefManager.getUseR_Id(), DateTimeUtils.getCurrentDate());
         call.enqueue(new Callback<ModelAttendance>() {
             @Override
             public void onResponse(@NonNull Call<ModelAttendance> call, @NonNull Response<ModelAttendance> response) {
@@ -302,7 +296,7 @@ public class LoginActivity extends CustomActivity implements View.OnClickListene
         } else if (password.isEmpty()) {
             makeToast(getResources().getString(R.string.please_enter_password));
         } else {
-            doLogin(email, password, prefManager.getDEVICE_ID(), prefManager.getFIREBASE_DEVICE_TOKEN());
+            doLogin(email, password, prefManager.getDevicE_ID(), prefManager.getFirebasE_DEVICE_TOKEN());
             //     Log.d("deviceiddeviceid", " " + prefManager.getDEVICE_ID());
         }
     }

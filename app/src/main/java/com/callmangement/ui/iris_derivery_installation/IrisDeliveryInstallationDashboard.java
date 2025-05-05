@@ -15,29 +15,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityIrisDeliveryInstallationBinding;
 import com.callmangement.ui.closed_guard_delivery.CloseGuardDeliveryListActivity;
-import com.callmangement.ui.closed_guard_delivery.ClosedGuardDeliveryActivity;
-import com.callmangement.ui.closed_guard_delivery.model.ClosedGuardDeliveryListResponse;
 import com.callmangement.ui.home.MainActivity;
-import com.callmangement.ui.ins_weighing_scale.activity.InstalledReplaceListActivity;
-import com.callmangement.ui.ins_weighing_scale.activity.WeighingScaleDashboard;
 import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrictList_w;
 import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrict_w;
 import com.callmangement.ui.iris_derivery_installation.Model.IrisDashboardResponse;
@@ -105,7 +96,7 @@ public class IrisDeliveryInstallationDashboard extends CustomActivity {
     }
 
     private void setUpData() {
-        if (prefManager.getUSER_TYPE_ID().equals("1") && prefManager.getUSER_TYPE().equalsIgnoreCase("Admin")) {
+        if (prefManager.getUseR_TYPE_ID().equals("1") && prefManager.getUseR_TYPE().equalsIgnoreCase("Admin")) {
             binding.rlDistrict.setVisibility(View.VISIBLE);
             binding.seDistrict.setVisibility(View.GONE);
             binding.spacer.setVisibility(View.VISIBLE);
@@ -115,7 +106,7 @@ public class IrisDeliveryInstallationDashboard extends CustomActivity {
             SharedPreferences.Editor editor = sp.edit();
             editor.remove("districtId_key");
             editor.apply();
-        } else if (prefManager.getUSER_TYPE_ID().equals("2") && prefManager.getUSER_TYPE().equalsIgnoreCase("Manager")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("2") && prefManager.getUseR_TYPE().equalsIgnoreCase("Manager")) {
             binding.rlDistrict.setVisibility(View.VISIBLE);
             binding.spacer.setVisibility(View.VISIBLE);
             binding.seDistrict.setVisibility(View.GONE);
@@ -125,7 +116,7 @@ public class IrisDeliveryInstallationDashboard extends CustomActivity {
             SharedPreferences.Editor editor = sp.edit();
             editor.remove("districtId_key");
             editor.apply();
-        } else if (prefManager.getUSER_TYPE_ID().equals("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("4") && prefManager.getUseR_TYPE().equalsIgnoreCase("ServiceEngineer")) {
             binding.rlDistrict.setVisibility(View.GONE);
             binding.spacer.setVisibility(View.VISIBLE);
             binding.seDistrict.setVisibility(View.VISIBLE);
@@ -146,10 +137,10 @@ public class IrisDeliveryInstallationDashboard extends CustomActivity {
             }
         }
 
-        String USER_NAME = prefManager.getUSER_NAME();
-        String USER_EMAIL = prefManager.getUSER_EMAIL();
-        String USER_Mobile = prefManager.getUSER_Mobile();
-        String USER_DISTRICT = prefManager.getUSER_District();
+        String USER_NAME = prefManager.getUseR_NAME();
+        String USER_EMAIL = prefManager.getUseR_EMAIL();
+        String USER_Mobile = prefManager.getUseR_Mobile();
+        String USER_DISTRICT = prefManager.getUseR_District();
         Log.d("USER_NAME", " " + USER_NAME);
         Log.d("USER_Email", " " + USER_EMAIL);
         Log.d("USER_Dis", " " + USER_DISTRICT);
@@ -179,7 +170,7 @@ public class IrisDeliveryInstallationDashboard extends CustomActivity {
             }
         });
 
-        // Log.d("useriduserid",""+prefManager.getUSER_TYPE_ID());
+        // Log.d("useriduserid",""+prefManager.getUseR_TYPE_ID());
         // binding.textDestrict.setText(USER_DISTRICT);
         // getInstallationCntApi();
         setUpDateRangeSpinner();
@@ -255,11 +246,11 @@ public class IrisDeliveryInstallationDashboard extends CustomActivity {
         });
 
 
-        if (prefManager.getUSER_TYPE_ID().equals("1")) {
+        if (prefManager.getUseR_TYPE_ID().equals("1")) {
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("2")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("2")) {
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("4")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("4")) {
 
             binding.cvInstallationPending.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -538,13 +529,13 @@ public class IrisDeliveryInstallationDashboard extends CustomActivity {
             hideKeyboard(mActivity);
             //  Utils.showCustomProgressDialogCommonForAll(mActivity, getResources().getString(R.string.please_wait));
             showProgress();
-            String USER_Id = prefManager.getUSER_Id();
+            String USER_Id = prefManager.getUseR_Id();
             Log.d("USER_ID"," "+ USER_Id);
             Log.d("districtId", " "+districtId);
             APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
             Call<IrisDashboardResponse> call = service.getIrisDashboardData(USER_Id, districtId, "0", "0", fromDate, toDate, "0");
 
-            //   APIInterface apiInterface = APIClient.GetRetrofitClientWithoutHeaders(mActivity,Utils.Baseurl).create(APIInterface.class);
+            //   APIInterface apiInterface = APIClient.getRetrofitClientWithoutHeaders(mActivity!!!!,Utils.Baseurl).create(APIInterface.class);
             //   Call<CountRoot> call = apiInterface.appWeightCountApi(USER_Id,"" ,districtId,"", "0",fromDate,toDate);
 
             call.enqueue(new Callback<IrisDashboardResponse>() {
@@ -555,7 +546,7 @@ public class IrisDeliveryInstallationDashboard extends CustomActivity {
                     if (response.isSuccessful()) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     IrisDashboardResponse countRoot = response.body();
                                     ArrayList<IrisDashboardResponse.Data> countDatum = countRoot.getData();
                                     // makeToast(String.valueOf(response.body().getMessage()));
@@ -613,8 +604,8 @@ public class IrisDeliveryInstallationDashboard extends CustomActivity {
         if (Constants.isNetworkAvailable(mActivity)) {
             hideKeyboard(mActivity);
             //   Utils.showCustomProgressDialogCommonForAll(mActivity, getResources().getString(R.string.please_wait));
-            String USER_Id = prefManager.getUSER_Id();
-            //  APIInterface apiInterface = APIClient.GetRetrofitClientWithoutHeaders(mActivity,Utils.Baseurl).create(APIInterface.class);
+            String USER_Id = prefManager.getUseR_Id();
+            //  APIInterface apiInterface = APIClient.getRetrofitClientWithoutHeaders(mActivity!!!!,Utils.Baseurl).create(APIInterface.class);
             //  Call<ModelDistrict_w> call = apiInterface.apiGetDistictList();
 
             APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
@@ -628,7 +619,7 @@ public class IrisDeliveryInstallationDashboard extends CustomActivity {
                         if (response.code() == 200) {
 
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     district_List = response.body().getDistrict_List();
                                     if (district_List != null && district_List.size() > 0) {
                                         Collections.reverse(district_List);

@@ -11,8 +11,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import androidx.lifecycle.ViewModelProviders
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.custom.CustomActivity
 import com.callmangement.databinding.ActivityResetDeviceBinding
@@ -28,7 +28,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.Collections
-import java.util.Objects
 
 class ResetDeviceActivity : CustomActivity(), View.OnClickListener {
     var binding: ActivityResetDeviceBinding? = null

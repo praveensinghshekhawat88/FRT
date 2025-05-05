@@ -44,9 +44,9 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.MultipartRequester;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.MultipartRequester;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityIrisReplacedDetailBinding;
@@ -57,7 +57,6 @@ import com.callmangement.support.FetchAddressIntentServices;
 import com.callmangement.support.ImageUtilsForRotate;
 import com.callmangement.support.OnSingleClickListener;
 import com.callmangement.support.signatureview.SignatureView;
-import com.callmangement.ui.ins_weighing_scale.model.district.ModelDistrictList_w;
 import com.callmangement.ui.iris_derivery_installation.Model.CheckIrisSerialNoResponse;
 import com.callmangement.ui.iris_derivery_installation.Model.IrisDeliveryListResponse;
 import com.callmangement.ui.iris_derivery_installation.Model.ReplacementTypesResponse;
@@ -78,7 +77,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -651,7 +649,7 @@ public class IrisReplacedDetailActivity extends CustomActivity {
                 if (partsImageStoragePath1.contains("file:/")) {
                     partsImageStoragePath1 = partsImageStoragePath1.replace("file:/", "");
                 }
-                partsImageStoragePath1 = CompressImage.compress(partsImageStoragePath1, this);
+                partsImageStoragePath1 = CompressImage.Companion.compress(partsImageStoragePath1, this);
                 File imgFile = new File(partsImageStoragePath1);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -676,7 +674,7 @@ public class IrisReplacedDetailActivity extends CustomActivity {
                 if (partsImageStoragePath2.contains("file:/")) {
                     partsImageStoragePath2 = partsImageStoragePath2.replace("file:/", "");
                 }
-                partsImageStoragePath2 = CompressImage.compress(partsImageStoragePath2, this);
+                partsImageStoragePath2 = CompressImage.Companion.compress(partsImageStoragePath2, this);
                 File imgFile = new File(partsImageStoragePath2);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -701,7 +699,7 @@ public class IrisReplacedDetailActivity extends CustomActivity {
                 if (partsImageStoragePath3.contains("file:/")) {
                     partsImageStoragePath3 = partsImageStoragePath3.replace("file:/", "");
                 }
-                partsImageStoragePath3 = CompressImage.compress(partsImageStoragePath3, this);
+                partsImageStoragePath3 = CompressImage.Companion.compress(partsImageStoragePath3, this);
                 File imgFile = new File(partsImageStoragePath3);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -727,7 +725,7 @@ public class IrisReplacedDetailActivity extends CustomActivity {
         if (Constants.isNetworkAvailable(mActivity)) {
             hideKeyboard(mActivity);
             showProgress(getResources().getString(R.string.please_wait));
-            String USER_Id = preference.getUSER_Id();
+            String USER_Id = preference.getUseR_Id();
             //   Log.d("USER_ID"," "+ USER_Id);
             mydatetime = String.valueOf(dateAndTimeEditText.getText());
             String replaceTypeId = replacementTypesList.get(binding.spnReplacementType.getSelectedItemPosition() - 1).getReplaceTypeId();
@@ -834,7 +832,7 @@ public class IrisReplacedDetailActivity extends CustomActivity {
                     if (response.isSuccessful()) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     makeToast(String.valueOf(response.body().getResponse().getMessage()));
                                     Intent intent = new Intent(mActivity, IrisDeliveryInstallationDashboard.class);
                                     startActivity(intent);
@@ -980,7 +978,7 @@ public class IrisReplacedDetailActivity extends CustomActivity {
         if (Constants.isNetworkAvailable(mActivity)) {
             hideKeyboard(mActivity);
             showProgress(getResources().getString(R.string.please_wait));
-            String USER_Id = preference.getUSER_Id();
+            String USER_Id = preference.getUseR_Id();
             //    Log.d("USER_ID", USER_Id);
             APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
             Call<CheckIrisSerialNoResponse> call = apiInterface.checkIrisSerialNo(USER_Id, "3", irisScannerSerialNo);
@@ -991,7 +989,7 @@ public class IrisReplacedDetailActivity extends CustomActivity {
                     if (response.isSuccessful()) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     //    alertDialog.dismiss();
                                     CheckIrisSerialNoResponse checkIrisSerialNoResponse = response.body();
                                     if (checkIrisSerialNoResponse.getResponse() != null &&
@@ -1056,7 +1054,7 @@ public class IrisReplacedDetailActivity extends CustomActivity {
                     if (response.isSuccessful()) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     //    alertDialog.dismiss();
                                     ReplacementTypesResponse replacementTypesResponse = response.body();
                                     if (replacementTypesResponse.getReplacementTypes_List() != null &&
