@@ -14,6 +14,7 @@ import android.view.Window;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -426,15 +427,6 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
     }
 
     @Override
-    public void showFetchCompleted(List<Image> images, List<Folder> folders) {
-        if (config.isFolderMode()) {
-            setFolderAdapter(folders);
-        } else {
-            setImageAdapter(images, config.getImageTitle());
-        }
-    }
-
-    @Override
     public void showError(Throwable throwable) {
         String message = getString(R.string.imagepicker_error_unknown);
         if (throwable != null && throwable instanceof NullPointerException) {
@@ -456,7 +448,16 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
     }
 
     @Override
-    public void finishPickImages(List<Image> images) {
+    public void showFetchCompleted(@Nullable List<? extends Image> images, @Nullable List<? extends Folder> folders) {
+        if (config.isFolderMode()) {
+            setFolderAdapter((List<Folder>) folders);
+        } else {
+            setImageAdapter((List<Image>) images, config.getImageTitle());
+        }
+    }
+
+    @Override
+    public void finishPickImages(@Nullable List<? extends Image> images) {
         Intent data = new Intent();
         data.putParcelableArrayListExtra(Config.EXTRA_IMAGES, (ArrayList<? extends Parcelable>) images);
         setResult(RESULT_OK, data);

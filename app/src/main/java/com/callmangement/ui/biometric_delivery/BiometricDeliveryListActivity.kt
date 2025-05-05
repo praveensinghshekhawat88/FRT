@@ -18,8 +18,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.custom.CustomActivity
 import com.callmangement.databinding.ActivityBiometricDeliveryListBinding
@@ -411,7 +411,7 @@ class BiometricDeliveryListActivity : CustomActivity() {
     }
 
     private fun getSensorDistributionList(districtId: String?, fromDate: String?, toDate: String?) {
-        if (Constants.isNetworkAvailable(mActivity)) {
+        if (Constants.isNetworkAvailable(mActivity!!)) {
             hideKeyboard(mActivity)
             showProgress()
 
@@ -543,7 +543,7 @@ class BiometricDeliveryListActivity : CustomActivity() {
     }
 
     private fun districtList() {
-        if (Constants.isNetworkAvailable(mActivity)) {
+        if (Constants.isNetworkAvailable(mActivity!!)) {
             hideKeyboard(mActivity)
             hideProgress()
             val USER_Id = prefManager!!.useR_Id

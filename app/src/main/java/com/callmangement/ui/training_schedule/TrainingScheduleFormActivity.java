@@ -520,7 +520,7 @@ public class TrainingScheduleFormActivity extends CustomActivity implements View
                 if (imageStoragePath1.contains("file:/")) {
                     imageStoragePath1 = imageStoragePath1.replace("file:/", "");
                 }
-                imageStoragePath1 = CompressImage.compress(imageStoragePath1, this);
+                imageStoragePath1 = CompressImage.Companion.compress(imageStoragePath1, this);
                 Bitmap bitmap = BitmapFactory.decodeFile(imageStoragePath1);
 
                 try {
@@ -540,7 +540,7 @@ public class TrainingScheduleFormActivity extends CustomActivity implements View
                 if (imageStoragePath2.contains("file:/")) {
                     imageStoragePath2 = imageStoragePath2.replace("file:/", "");
                 }
-                imageStoragePath2 = CompressImage.compress(imageStoragePath2, this);
+                imageStoragePath2 = CompressImage.Companion.compress(imageStoragePath2, this);
                 Bitmap bitmap = BitmapFactory.decodeFile(imageStoragePath2);
                 try {
                     binding.photo2.setImageBitmap(ImageUtilsForRotate.ensurePortrait(imageStoragePath2));
@@ -559,7 +559,7 @@ public class TrainingScheduleFormActivity extends CustomActivity implements View
                 if (imageStoragePath3.contains("file:/")) {
                     imageStoragePath3 = imageStoragePath3.replace("file:/", "");
                 }
-                imageStoragePath3 = CompressImage.compress(imageStoragePath3, this);
+                imageStoragePath3 = CompressImage.Companion.compress(imageStoragePath3, this);
                 Bitmap bitmap = BitmapFactory.decodeFile(imageStoragePath3);
 
                 try {
@@ -579,7 +579,7 @@ public class TrainingScheduleFormActivity extends CustomActivity implements View
                 if (imageStoragePath4.contains("file:/")) {
                     imageStoragePath4 = imageStoragePath4.replace("file:/", "");
                 }
-                imageStoragePath4 = CompressImage.compress(imageStoragePath4, this);
+                imageStoragePath4 = CompressImage.Companion.compress(imageStoragePath4, this);
                 Bitmap bitmap = BitmapFactory.decodeFile(imageStoragePath4);
 
                 try {
@@ -599,7 +599,7 @@ public class TrainingScheduleFormActivity extends CustomActivity implements View
                 if (imageStoragePath5.contains("file:/")) {
                     imageStoragePath5 = imageStoragePath5.replace("file:/", "");
                 }
-                imageStoragePath5 = CompressImage.compress(imageStoragePath5, this);
+                imageStoragePath5 = CompressImage.Companion.compress(imageStoragePath5, this);
                 Bitmap bitmap = BitmapFactory.decodeFile(imageStoragePath5);
 
                 try {
@@ -619,7 +619,7 @@ public class TrainingScheduleFormActivity extends CustomActivity implements View
                 if (imageStoragePathPhysicalForm.contains("file:/")) {
                     imageStoragePathPhysicalForm = imageStoragePathPhysicalForm.replace("file:/", "");
                 }
-                imageStoragePathPhysicalForm = CompressImage.compress(imageStoragePathPhysicalForm, this);
+                imageStoragePathPhysicalForm = CompressImage.Companion.compress(imageStoragePathPhysicalForm, this);
                 binding.inputImagePhysicalForm.setText(image.getPath());
                 try {
                     ImageUtilsForRotate.ensurePortrait(imageStoragePathPhysicalForm);

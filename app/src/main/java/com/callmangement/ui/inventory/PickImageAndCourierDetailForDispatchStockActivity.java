@@ -2,7 +2,6 @@ package com.callmangement.ui.inventory;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,11 +21,10 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.MultipartRequester;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.MultipartRequester;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.adapter.DialogChallanForDispatchAdapter;
 import com.callmangement.custom.CustomActivity;
@@ -36,7 +34,6 @@ import com.callmangement.imagepicker.model.Image;
 import com.callmangement.imagepicker.ui.imagepicker.ImagePicker;
 import com.callmangement.model.inventrory.ModelPartsList;
 import com.callmangement.model.inventrory.ModelSavePartsDispatchDetails;
-import com.callmangement.model.tehsil.ModelTehsilList;
 import com.callmangement.report_pdf.ChallanPDFActivity;
 import com.callmangement.support.ImageUtilsForRotate;
 import com.callmangement.utils.CompressImage;
@@ -369,7 +366,7 @@ public class PickImageAndCourierDetailForDispatchStockActivity extends CustomAct
                 if (challanImageStoragePath.contains("file:/")) {
                     challanImageStoragePath = challanImageStoragePath.replace("file:/", "");
                 }
-                challanImageStoragePath = CompressImage.compress(challanImageStoragePath, this);
+                challanImageStoragePath = CompressImage.Companion.compress(challanImageStoragePath, this);
                 File imgFile = new  File(challanImageStoragePath);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 try {
@@ -389,7 +386,7 @@ public class PickImageAndCourierDetailForDispatchStockActivity extends CustomAct
                 if (partsImageStoragePath1.contains("file:/")) {
                     partsImageStoragePath1 = partsImageStoragePath1.replace("file:/", "");
                 }
-                partsImageStoragePath1 = CompressImage.compress(partsImageStoragePath1, this);
+                partsImageStoragePath1 = CompressImage.Companion.compress(partsImageStoragePath1, this);
                 File imgFile = new  File(partsImageStoragePath1);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -410,7 +407,7 @@ public class PickImageAndCourierDetailForDispatchStockActivity extends CustomAct
                 if (partsImageStoragePath2.contains("file:/")) {
                     partsImageStoragePath2 = partsImageStoragePath2.replace("file:/", "");
                 }
-                partsImageStoragePath2 = CompressImage.compress(partsImageStoragePath2, this);
+                partsImageStoragePath2 = CompressImage.Companion.compress(partsImageStoragePath2, this);
                 File imgFile = new  File(partsImageStoragePath2);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -484,8 +481,8 @@ public class PickImageAndCourierDetailForDispatchStockActivity extends CustomAct
             Button buttonDispatch = dialog.findViewById(R.id.buttonDispatch);
 
 //            invoice_id.setText(invoiceId);
-            dispatchFrom.setText(prefManager.getUSER_NAME());
-            textDispatcherEmail.setText(prefManager.getUSER_EMAIL());
+            dispatchFrom.setText(prefManager.getUseR_NAME());
+            textDispatcherEmail.setText(prefManager.getUseR_EMAIL());
             dispatchTo.setText(districtNameEng);
             username.setText(seUserName);
 
@@ -571,7 +568,7 @@ public class PickImageAndCourierDetailForDispatchStockActivity extends CustomAct
         APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
         Call<ModelSavePartsDispatchDetails> call = service.savePartsDispatchDetails(
                 MultipartRequester.fromString(invoiceId),
-                MultipartRequester.fromString(prefManager.getUSER_Id()),
+                MultipartRequester.fromString(prefManager.getUseR_Id()),
                 MultipartRequester.fromString(seUserId),
                 MultipartRequester.fromString(districtId),
                 MultipartRequester.fromString(""),
@@ -612,14 +609,14 @@ public class PickImageAndCourierDetailForDispatchStockActivity extends CustomAct
     private void submitDispatchParts(List<ModelPartsList> partsList, String invoiceId, String courierName, String courierTrackingNo) {
         if (Constants.isNetworkAvailable(mContext)) {
             isLoading();
-            inventoryViewModel.submitDispatchParts(prefManager.getUSER_Id(), invoiceId, "").observe(this, modelSavePartsDispatchDetails -> {
+            inventoryViewModel.submitDispatchParts(prefManager.getUseR_Id(), invoiceId, "").observe(this, modelSavePartsDispatchDetails -> {
                 isLoading();
                 if (modelSavePartsDispatchDetails.getStatus().equals("200")) {
                     Constants.modelPartsList = partsList;
                     startActivity(new Intent(mContext, ChallanPDFActivity.class)
                             .putExtra("invoiceId", invoiceId)
-                            .putExtra("dispatchFrom", prefManager.getUSER_NAME())
-                            .putExtra("email", prefManager.getUSER_EMAIL())
+                            .putExtra("dispatchFrom", prefManager.getUseR_NAME())
+                            .putExtra("email", prefManager.getUseR_EMAIL())
                             .putExtra("dispatchTo", districtNameEng)
                             .putExtra("username", seUserName)
                             .putExtra("datetime", modelSavePartsDispatchDetails.getModelPartsDispatchInvoiceList().getDispatchDateStr())

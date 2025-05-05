@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityUpdateTrainingScheduleBinding;
@@ -219,7 +219,7 @@ public class UpdateTrainingScheduleActivity extends CustomActivity implements Vi
             makeToast(getResources().getString(R.string.please_input_training_description));
         }else {
             isLoading();
-            viewModel.updateTraining(prefManager.getUSER_Id(), districtId, tehsilId, model.getTrainingId(), startDateTime, endDateTime, model.getTrainingNo(), Constants.convertStringToUTF8(address), Constants.convertStringToUTF8(description), Constants.convertStringToUTF8(title)).observe(this, modelCreateTrainingSchedule -> {
+            viewModel.updateTraining(prefManager.getUseR_Id(), districtId, tehsilId, model.getTrainingId(), startDateTime, endDateTime, model.getTrainingNo(), Constants.convertStringToUTF8(address), Constants.convertStringToUTF8(description), Constants.convertStringToUTF8(title)).observe(this, modelCreateTrainingSchedule -> {
                 isLoading();
                 binding.inputTitle.setCursorVisible(false);
                 binding.inputPlace.setCursorVisible(false);

@@ -38,9 +38,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.callmangement.Network.APIService
-import com.callmangement.Network.MultipartRequester
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.MultipartRequester
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.custom.CustomActivity
 import com.callmangement.databinding.ActivityClosedGuardDeliveryBinding
@@ -63,15 +63,12 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 import okhttp3.MultipartBody.Part.Companion.createFormData
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Part
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -80,7 +77,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import java.util.Objects
 
 class ClosedGuardDeliveryActivity : CustomActivity() {
     val REQUEST_PICK_IMAGE_ONE: Int = 1111
@@ -145,7 +141,7 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
     private fun init() {
         mActivity = this
         mContext = this
-        preference = PrefManager(mActivity)
+        preference = PrefManager(mActivity!!)
         resultReceiver = AddressResultReceiver(Handler())
         //    resultReceiver = new ClosedGuardDeliveryActivity.AddressResultReceiver(new Handler());
         binding!!.actionBarND.ivBack.visibility = View.VISIBLE
@@ -669,7 +665,7 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
 
     private fun GetCustomerDetailsByFPS() {
         Fps_code = txt_fpscode!!.text.toString().trim { it <= ' ' }
-        if (Constants.isNetworkAvailable(mActivity)) {
+        if (Constants.isNetworkAvailable(mActivity!!)) {
             hideKeyboard(mActivity)
             showProgress(resources.getString(R.string.please_wait))
             val USER_Id = preference!!.useR_Id
@@ -929,7 +925,7 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
         mobile_no: String?,
         arrayHavingAllFilePath: ArrayList<String>
     ) {
-        if (Constants.isNetworkAvailable(mActivity)) {
+        if (Constants.isNetworkAvailable(mActivity!!)) {
             hideKeyboard(mActivity)
             showProgress(resources.getString(R.string.please_wait))
             val USER_Id = preference!!.useR_Id
@@ -1175,7 +1171,7 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
 
 
     private fun checkIrisSerialNo(irisScannerSerialNo: String?) {
-        if (Constants.isNetworkAvailable(mActivity)) {
+        if (Constants.isNetworkAvailable(mActivity!!)) {
             hideKeyboard(mActivity)
             showProgress(resources.getString(R.string.please_wait))
             val USER_Id = preference!!.useR_Id

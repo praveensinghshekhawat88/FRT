@@ -92,7 +92,7 @@ public class RequestStockActivity extends CustomActivity implements View.OnClick
 
     private void setUpPartsListAdapter(){
         list.clear();
-        list.add(new ModelRequestStock("", "","", Constants.modelProductLists));
+        list.add(new ModelRequestStock("", "","", (List<ModelPartsList>) Constants.modelProductLists));
         setUpPartsList();
     }
 
@@ -215,7 +215,7 @@ public class RequestStockActivity extends CustomActivity implements View.OnClick
                 list.get(i).getSpinnerItemList().get(spinnerPosition).setVisibleItemFlag(true);
                 list.get(i).setFlag(true);
             }
-            list.add(new ModelRequestStock("", "","", Constants.modelProductLists));
+            list.add(new ModelRequestStock("", "","", (List<ModelPartsList>) Constants.modelProductLists));
             setUpPartsList();
         } else Toast.makeText(mContext, getResources().getString(R.string.please_select_item_or_quantity), Toast.LENGTH_SHORT).show();
     }

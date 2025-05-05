@@ -1,0 +1,52 @@
+package com.callmangement.ehr.models
+
+import java.io.Serializable
+
+class AttendanceDetailsInfo(
+    var comDateRange: Any,
+    var isVerify_In: Boolean,
+    var isVerify_Out: Boolean,
+    var currentPage: Int,
+    var totalPages: Int,
+    var totalItems: Int,
+    @JvmField var id: Int,
+    var isStatus: Boolean,
+    @JvmField var username: String,
+    var isPagination: Boolean,
+    var pageNo: Any,
+    var pageSize: Any,
+    @JvmField var dayName: String,
+    var email: String,
+    @JvmField var attendanceStatusId: Int,
+    var isActive: Boolean,
+    @JvmField var attendanceStatus: String,
+    var addressLocPin_Out: String,
+    var addressLocPin_In: String,
+    @JvmField var remark: String,
+    @JvmField var userId: Int,
+    var userTypeId: Any,
+    var employeeName: Any,
+    var mobileNumber: Any,
+    var createdOn: String,
+    var updatedOn: String,
+    @JvmField var address_Out: String,
+    var latitude_Out: String,
+    var longitude_Out: String,
+    var dateFrom: Any,
+    @JvmField var districtName: String,
+    var dateTo: Any,
+    @JvmField var punchOutTime: String,
+    @JvmField var punchInTime: String,
+    var latitude_In: String,
+    var mesg: Any,
+    @JvmField var address_In: String,
+    var punchOutDate: String,
+    @JvmField var outImagePath: String,
+    @JvmField var inImagePath: String,
+    var longitude_In: String,
+    var userType: String,
+    @JvmField var punchInDate: String,
+    @JvmField var districtId: Int
+) :
+    Serializable
+

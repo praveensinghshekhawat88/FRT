@@ -5,47 +5,33 @@ import static android.R.layout.simple_spinner_item;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.MenuItemCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
-import com.callmangement.adapter.SLAReportsDetailsActivityAdapter;
-import com.callmangement.adapter.TotalComplaintListActivityAdapter;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityErrorPosdistBinding;
 import com.callmangement.model.district.ModelDistrictList;
 import com.callmangement.model.expense.ModelExpenseStatus;
 import com.callmangement.ui.complaint.ComplaintViewModel;
-import com.callmangement.ui.complaint.TotalComplaintListActivity;
-import com.callmangement.ui.distributor.model.PosDistributionDetail;
 import com.callmangement.ui.errors.adapter.ErrorPosAdapter;
 import com.callmangement.ui.errors.model.GetErrorTypesRoot;
 import com.callmangement.ui.errors.model.GetErrortypesDatum;
 import com.callmangement.ui.errors.model.GetPosDeviceErrorDatum;
 import com.callmangement.ui.errors.model.GetPosDeviceErrorsRoot;
 import com.callmangement.ui.home.MainActivity;
-import com.callmangement.ui.reports.SLAReportsDetailsActivity;
 import com.callmangement.utils.Constants;
 import com.callmangement.utils.EqualSpacingItemDecoration;
 import com.callmangement.utils.PrefManager;
@@ -107,21 +93,21 @@ public class ErrorPosActivity extends CustomActivity implements View.OnClickList
 
 
 
-        if (prefManager.getUSER_TYPE_ID().equals("1") && prefManager.getUSER_TYPE().equalsIgnoreCase("Admin")) {
+        if (prefManager.getUseR_TYPE_ID().equals("1") && prefManager.getUseR_TYPE().equalsIgnoreCase("Admin")) {
             binding.actionBar.textToolbarTitle.setText(getResources().getString(R.string.pos_distribution_errors));
             binding.tvAdd.setVisibility(View.GONE);
 
 
 
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("2") && prefManager.getUSER_TYPE().equalsIgnoreCase("Manager")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("2") && prefManager.getUseR_TYPE().equalsIgnoreCase("Manager")) {
             binding.actionBar.textToolbarTitle.setText(getResources().getString(R.string.pos_distribution_errors));
             binding.tvAdd.setVisibility(View.GONE);
 
 
 
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("4") && prefManager.getUseR_TYPE().equalsIgnoreCase("ServiceEngineer")) {
             binding.actionBar.textToolbarTitle.setText(getResources().getString(R.string.pos_distribution_errors));
             binding.tvAdd.setVisibility(View.VISIBLE);
            // Log.d("thfghfh"," "+districtIdd);
@@ -152,7 +138,7 @@ public class ErrorPosActivity extends CustomActivity implements View.OnClickList
 
 
 
-   //     adapter = new ErrorPosAdapter(mContext, getPosDeviceErrorDatumArrayList,prefManager.getUSER_TYPE_ID());
+   //     adapter = new ErrorPosAdapter(mContext, getPosDeviceErrorDatumArrayList,prefManager.getUseR_TYPE_ID());
    //     adapter.notifyDataSetChanged();
     //    binding.rvExpenses.setHasFixedSize(true);
     //    binding.rvExpenses.setLayoutManager(new LinearLayoutManager(ErrorPosActivity.this, LinearLayoutManager.VERTICAL, false));
@@ -168,7 +154,7 @@ public class ErrorPosActivity extends CustomActivity implements View.OnClickList
         if (Constants.isNetworkAvailable(mContext)){
             showProgress();
             APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<GetErrorTypesRoot> call = service.GetErrorTypes(prefManager.getUSER_Id(), "0");
+            Call<GetErrorTypesRoot> call = service.GetErrorTypes(prefManager.getUseR_Id(), "0");
             call.enqueue(new Callback<GetErrorTypesRoot>() {
                 @Override
                 public void onResponse(@NonNull Call<GetErrorTypesRoot> call, @NonNull Response<GetErrorTypesRoot> response) {
@@ -176,7 +162,7 @@ public class ErrorPosActivity extends CustomActivity implements View.OnClickList
                     if (response.isSuccessful()){
                         if (response.code() == 200){
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     GetErrorTypesRoot getErrorTypesRoot = response.body();
                                  //   Log.d("getErrorTypesRoot..","getErrorTypesRoot.."+getErrorTypesRoot);
                                     GetErrortypesDatum  selecttype = new GetErrortypesDatum("---SelectErrorType----",0);
@@ -429,7 +415,7 @@ public class ErrorPosActivity extends CustomActivity implements View.OnClickList
 
     private void setupfilter() {
 
-        adapter = new ErrorPosAdapter(mContext, getPosDeviceErrorDatumArrayList,prefManager.getUSER_TYPE_ID());
+        adapter = new ErrorPosAdapter(mContext, getPosDeviceErrorDatumArrayList,prefManager.getUseR_TYPE_ID());
         adapter.notifyDataSetChanged();
         binding.rvExpenses.setHasFixedSize(true);
         binding.rvExpenses.setLayoutManager(new LinearLayoutManager(ErrorPosActivity.this, LinearLayoutManager.VERTICAL, false));
@@ -468,7 +454,7 @@ public class ErrorPosActivity extends CustomActivity implements View.OnClickList
 
 
     private void setUpLayout(){
-        if (prefManager.getUSER_TYPE_ID().equals("1") && prefManager.getUSER_TYPE().equalsIgnoreCase("Admin")) {
+        if (prefManager.getUseR_TYPE_ID().equals("1") && prefManager.getUseR_TYPE().equalsIgnoreCase("Admin")) {
             binding.rlDistrict.setVisibility(View.VISIBLE);
             binding. seDistrict.setVisibility(View.GONE);
             binding.spacer.setVisibility(View.VISIBLE);
@@ -478,7 +464,7 @@ public class ErrorPosActivity extends CustomActivity implements View.OnClickList
             editor.remove("districtId_key");
             editor.apply();
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("2") && prefManager.getUSER_TYPE().equalsIgnoreCase("Manager")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("2") && prefManager.getUseR_TYPE().equalsIgnoreCase("Manager")) {
             binding.rlDistrict.setVisibility(View.VISIBLE);
             binding.spacer.setVisibility(View.VISIBLE);
             binding. seDistrict.setVisibility(View.GONE);
@@ -489,7 +475,7 @@ public class ErrorPosActivity extends CustomActivity implements View.OnClickList
             editor.remove("districtId_key");
             editor.apply();
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("4") && prefManager.getUseR_TYPE().equalsIgnoreCase("ServiceEngineer")) {
             binding.rlDistrict.setVisibility(View.GONE);
             binding.spacer.setVisibility(View.VISIBLE);
             binding. seDistrict.setVisibility(View.VISIBLE);
@@ -512,7 +498,7 @@ public class ErrorPosActivity extends CustomActivity implements View.OnClickList
 
 
 
-            // districtId = prefManager.getUSER_DistrictId();
+            // districtId = prefManager.getUseR_DistrictId();
         }
 
     Calendar calendar = Calendar.getInstance();
@@ -522,7 +508,7 @@ public class ErrorPosActivity extends CustomActivity implements View.OnClickList
         fromDate = todayDate;
         toDate = todayDate;
        getPosError(expenseStatusId,districtId,fromDate,toDate,fpscodee);
-        Log.d("useriduserid", prefManager.getUSER_TYPE_ID());
+        Log.d("useriduserid", prefManager.getUseR_TYPE_ID());
 
 
 
@@ -666,7 +652,7 @@ public class ErrorPosActivity extends CustomActivity implements View.OnClickList
         if (Constants.isNetworkAvailable(mContext)) {
             showProgress();
             APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<GetPosDeviceErrorsRoot> call = service.GetPOSDeviceErrors("",prefManager.getUSER_Id(),fpscodee,districtId,"",expenseStatusId,fromDate, toDate,ErrorTypeId);
+            Call<GetPosDeviceErrorsRoot> call = service.GetPOSDeviceErrors("",prefManager.getUseR_Id(),fpscodee,districtId,"",expenseStatusId,fromDate, toDate,ErrorTypeId);
             call.enqueue(new Callback<GetPosDeviceErrorsRoot>() {
                 @SuppressLint("SetTextI18n")
                 @Override
@@ -677,7 +663,7 @@ public class ErrorPosActivity extends CustomActivity implements View.OnClickList
                             if (response.code() == 200) {
                                 if (response.body() != null) {
 
-                                    if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                    if (response.body().getStatus().equals("200")) {
                                         GetPosDeviceErrorsRoot getPosDeviceErrorsRoot = response.body();
                                         Log.d("getErrorTypesRoot..","getErrorTypesRoot.."+getPosDeviceErrorsRoot);
                                      getPosDeviceErrorDatumArrayList=
@@ -749,7 +735,7 @@ public class ErrorPosActivity extends CustomActivity implements View.OnClickList
 
     private void setUpAdapter(ArrayList<GetPosDeviceErrorDatum> getPosDeviceErrorDatumArrayList) {
         binding.rvExpenses.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        binding.rvExpenses.setAdapter(new ErrorPosAdapter(mContext, getPosDeviceErrorDatumArrayList,prefManager.getUSER_TYPE_ID()));
+        binding.rvExpenses.setAdapter(new ErrorPosAdapter(mContext, getPosDeviceErrorDatumArrayList,prefManager.getUseR_TYPE_ID()));
     }
 
     @Override

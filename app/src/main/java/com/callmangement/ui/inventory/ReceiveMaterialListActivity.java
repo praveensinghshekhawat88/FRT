@@ -1,9 +1,6 @@
 package com.callmangement.ui.inventory;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
@@ -15,27 +12,20 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.adapter.ReceiveMaterialListActivityAdapter;
-import com.callmangement.adapter.SLAReportsActivityAdapter;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityReceiveMaterialListBinding;
 import com.callmangement.model.inventrory.ModelDispatchInvoice;
-import com.callmangement.model.inventrory.ModelInventoryResponse;
 import com.callmangement.model.inventrory.ModelPartsDispatchInvoiceList;
-import com.callmangement.model.inventrory.ModelReceiveMaterialList;
-import com.callmangement.model.inventrory.ModelReceiveMaterialListData;
-import com.callmangement.ui.reports.SLAReportsActivity;
 import com.callmangement.utils.Constants;
-import com.callmangement.utils.EqualSpacingItemDecoration;
 import com.callmangement.utils.PrefManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -267,7 +257,7 @@ public class ReceiveMaterialListActivity extends CustomActivity implements View.
         if (Constants.isNetworkAvailable(mActivity)){
             showProgress();
             APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<ModelDispatchInvoice> call = service.getPartsReciverInvoices("0", prefManager.getUSER_Id(),"0", date1, date2);
+            Call<ModelDispatchInvoice> call = service.getPartsReciverInvoices("0", prefManager.getUseR_Id(),"0", date1, date2);
             call.enqueue(new Callback<ModelDispatchInvoice>() {
                 @Override
                 public void onResponse(@NonNull Call<ModelDispatchInvoice> call, @NonNull Response<ModelDispatchInvoice> response) {

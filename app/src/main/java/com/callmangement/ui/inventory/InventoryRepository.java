@@ -6,18 +6,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
-import com.callmangement.model.inventrory.ModelAvailableStockParts;
-import com.callmangement.model.inventrory.ModelAvailableStockPartsList;
 import com.callmangement.model.inventrory.ModelDispatchInvoice;
 import com.callmangement.model.inventrory.ModelDisputeParts;
-import com.callmangement.model.inventrory.ModelInventoryResponse;
 import com.callmangement.model.inventrory.ModelParts;
 import com.callmangement.model.inventrory.ModelSEUsers;
 import com.callmangement.model.inventrory.ModelSavePartsDispatchDetails;
-import com.callmangement.model.inventrory.ModelUpdatePartsStock;
 
 import java.util.Objects;
 

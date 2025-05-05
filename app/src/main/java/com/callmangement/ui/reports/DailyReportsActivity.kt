@@ -68,20 +68,20 @@ class DailyReportsActivity : CustomActivity() {
         viewModel = ViewModelProviders.of(this).get(
             ComplaintViewModel::class.java
         )
-        districtNameEng = prefManager!!.useR_District
+        districtNameEng = prefManager!!.useR_District!!
         if (prefManager!!.useR_TYPE_ID == "4" && prefManager!!.useR_TYPE.equals(
                 "ServiceEngineer",
                 ignoreCase = true
             )
         ) { // for service engineer
-            districtId = prefManager!!.useR_DistrictId
+            districtId = prefManager!!.useR_DistrictId!!
             binding!!.rlDistrict.visibility = View.GONE
         } else if (prefManager!!.useR_TYPE_ID.equals(
                 "6",
                 ignoreCase = true
             ) && prefManager!!.useR_TYPE.equals("DSO", ignoreCase = true)
         ) { // for dso
-            districtId = prefManager!!.useR_DistrictId
+            districtId = prefManager!!.useR_DistrictId!!
             binding!!.rlDistrict.visibility = View.GONE
         } else {
             districtList()

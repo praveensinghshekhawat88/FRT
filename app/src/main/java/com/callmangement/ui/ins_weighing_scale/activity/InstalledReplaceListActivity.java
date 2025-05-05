@@ -23,8 +23,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityInstalledReplaceListBinding;
@@ -97,7 +97,7 @@ public class InstalledReplaceListActivity extends CustomActivity {
     }
 
     private void setUpData() {
-        if (prefManager.getUSER_TYPE_ID().equals("1") && prefManager.getUSER_TYPE().equalsIgnoreCase("Admin")) {
+        if (prefManager.getUseR_TYPE_ID().equals("1") && prefManager.getUseR_TYPE().equalsIgnoreCase("Admin")) {
             binding.rlDistrict.setVisibility(View.VISIBLE);
             binding.seDistrict.setVisibility(View.GONE);
             binding.spacer.setVisibility(View.VISIBLE);
@@ -105,7 +105,7 @@ public class InstalledReplaceListActivity extends CustomActivity {
             SharedPreferences.Editor editor = sp.edit();
             editor.remove("districtId_key");
             editor.apply();
-        } else if (prefManager.getUSER_TYPE_ID().equals("2") && prefManager.getUSER_TYPE().equalsIgnoreCase("Manager")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("2") && prefManager.getUseR_TYPE().equalsIgnoreCase("Manager")) {
             binding.rlDistrict.setVisibility(View.VISIBLE);
             binding.spacer.setVisibility(View.VISIBLE);
             binding.seDistrict.setVisibility(View.GONE);
@@ -113,7 +113,7 @@ public class InstalledReplaceListActivity extends CustomActivity {
             SharedPreferences.Editor editor = sp.edit();
             editor.remove("districtId_key");
             editor.apply();
-        } else if (prefManager.getUSER_TYPE_ID().equals("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("4") && prefManager.getUseR_TYPE().equalsIgnoreCase("ServiceEngineer")) {
             binding.rlDistrict.setVisibility(View.GONE);
             binding.spacer.setVisibility(View.VISIBLE);
             binding.seDistrict.setVisibility(View.VISIBLE);
@@ -132,10 +132,10 @@ public class InstalledReplaceListActivity extends CustomActivity {
             }
 
         }
-        String USER_NAME = prefManager.getUSER_NAME();
-        String USER_EMAIL = prefManager.getUSER_EMAIL();
-        String USER_Mobile = prefManager.getUSER_Mobile();
-        String USER_DISTRICT = prefManager.getUSER_District();
+        String USER_NAME = prefManager.getUseR_NAME();
+        String USER_EMAIL = prefManager.getUseR_EMAIL();
+        String USER_Mobile = prefManager.getUseR_Mobile();
+        String USER_DISTRICT = prefManager.getUseR_District();
         Log.d("USER_NAME", " " + USER_NAME);
         //  getIrisWeighInstallation();
         //  districtId = getIntent().getStringExtra("districtId");
@@ -184,7 +184,7 @@ public class InstalledReplaceListActivity extends CustomActivity {
         }
         Log.d("----ApiValue-----", districtId + " " + fromDate + " " + toDate + " " + fpscodee);
 
-        // Log.d("useriduserid",""+prefManager.getUSER_TYPE_ID());
+        // Log.d("useriduserid",""+prefManager.getUseR_TYPE_ID());
         // binding.textDestrict.setText(USER_DISTRICT);
         // getInstallationCntApi();
         setUpDateRangeSpinner();
@@ -373,7 +373,7 @@ public class InstalledReplaceListActivity extends CustomActivity {
         if (Constants.isNetworkAvailable(mActivity)) {
             hideKeyboard(mActivity);
             showProgress();
-            String USER_Id = prefManager.getUSER_Id();
+            String USER_Id = prefManager.getUseR_Id();
             Log.d("USER_ID", USER_Id);
 
             APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
@@ -389,7 +389,7 @@ public class InstalledReplaceListActivity extends CustomActivity {
                         if (response.code() == 200) {
                             if (response.body() != null) {
                                 binding.txtNoRecord.setVisibility(View.GONE);
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     InstalledRoot installedRoot = response.body();
                                     String message =
                                             installedRoot.getMessage();
@@ -455,7 +455,7 @@ public class InstalledReplaceListActivity extends CustomActivity {
             hideKeyboard(mActivity);
             hideProgress();
             //   Utils.showCustomProgressDialogCommonForAll(mActivity, getResources().getString(R.string.please_wait));
-            String USER_Id = prefManager.getUSER_Id();
+            String USER_Id = prefManager.getUseR_Id();
             APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
             Call<ModelDistrict_w> call = apiInterface.apiGetDistictList_w();
             call.enqueue(new Callback<ModelDistrict_w>() {
@@ -467,7 +467,7 @@ public class InstalledReplaceListActivity extends CustomActivity {
 
                             Log.d("mydataresponse", "" + response.code());
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     district_List = response.body().getDistrict_List();
                                     if (district_List != null && district_List.size() > 0) {
                                         Collections.reverse(district_List);

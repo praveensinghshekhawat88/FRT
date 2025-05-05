@@ -3,18 +3,13 @@ package com.callmangement.tracking_service;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Handler;
-import android.util.Log;
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+
 import com.callmangement.database.DbController;
-import com.callmangement.model.attendance.ModelAddLocation;
-import com.callmangement.utils.Constants;
 import com.callmangement.utils.DateTimeUtils;
 import com.callmangement.utils.MyDialog;
 import com.callmangement.utils.PrefManager;
@@ -31,22 +26,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
+
 import static android.content.Context.LOCATION_SERVICE;
 import static com.callmangement.utils.Constants.currentLat;
 import static com.callmangement.utils.Constants.currentLong;
 import static com.callmangement.utils.Constants.currentTime;
 import static com.callmangement.utils.MyDialog.alertD;
-
-import androidx.annotation.NonNull;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class GetLocation {
     private LocationRequest mLocationRequest;
@@ -190,7 +175,7 @@ public class GetLocation {
 
     private void saveLocation(String address, double latitude, double longitude) {
         //Log.e("location","latitude - "+latitude +", longitude - "+longitude+", address - "+ address);
-        new DbController(mContext).insertLocation(prefManager.getUSER_Id(),prefManager.getUSER_DistrictId(),String.valueOf(latitude), String.valueOf(longitude), address, DateTimeUtils.getCurrentDataTime());
+        new DbController(mContext).insertLocation(prefManager.getUseR_Id(),prefManager.getUseR_DistrictId(),String.valueOf(latitude), String.valueOf(longitude), address, DateTimeUtils.getCurrentDataTime());
     }
 
 }

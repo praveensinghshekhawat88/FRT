@@ -30,7 +30,7 @@ public class InventoryActivity extends CustomActivity implements View.OnClickLis
     }
 
     private void initView() {
-        if (prefManager.getUSER_TYPE_ID().equals("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")){
+        if (prefManager.getUseR_TYPE_ID().equals("4") && prefManager.getUseR_TYPE().equalsIgnoreCase("ServiceEngineer")){
             binding.buttonCreateNewChallanforDispatch.setVisibility(View.GONE);
             binding.buttonCurrentStockManager.setVisibility(View.GONE);
             binding.buttonSEAvailableStockManager.setVisibility(View.GONE);
@@ -40,7 +40,7 @@ public class InventoryActivity extends CustomActivity implements View.OnClickLis
             binding.buttonAvailableStockForSE.setVisibility(View.VISIBLE);
             binding.buttonReceiveMaterial.setVisibility(View.VISIBLE);
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("5") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceCentre")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("5") && prefManager.getUseR_TYPE().equalsIgnoreCase("ServiceCentre")) {
             binding.buttonCreateNewChallanforDispatch.setVisibility(View.GONE);
             binding.buttonCurrentStockManager.setVisibility(View.GONE);
             binding.buttonSEAvailableStockManager.setVisibility(View.GONE);

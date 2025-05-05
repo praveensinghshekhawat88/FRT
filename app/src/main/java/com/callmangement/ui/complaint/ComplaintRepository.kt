@@ -7,9 +7,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.MutableLiveData
-import com.callmangement.Network.APIService
-import com.callmangement.Network.MultipartRequester
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.MultipartRequester
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.model.complaints.ModelChallanUploadComplaint
 import com.callmangement.model.complaints.ModelComplaint
@@ -20,7 +20,6 @@ import com.callmangement.model.reports.ModelSLAReport
 import com.callmangement.model.reports.ModelSLAReportDetails
 import com.callmangement.model.tehsil.ModelTehsil
 import com.callmangement.utils.PrefManager
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.MultipartBody.Part.Companion.createFormData
@@ -30,7 +29,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
-import java.util.Objects
 
 class ComplaintRepository(private val mContext: Context) {
     private val prefManager = PrefManager(mContext)

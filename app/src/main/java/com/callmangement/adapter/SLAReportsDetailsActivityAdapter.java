@@ -88,7 +88,7 @@ public class SLAReportsDetailsActivityAdapter extends RecyclerView.Adapter<SLARe
             holder.binding.textComplaintResolveDate.setVisibility(View.GONE);
         }
 
-        if (prefManager.getUSER_TYPE_ID().equalsIgnoreCase("6") && prefManager.getUSER_TYPE().equalsIgnoreCase("DSO")){
+        if (prefManager.getUseR_TYPE_ID().equalsIgnoreCase("6") && prefManager.getUseR_TYPE().equalsIgnoreCase("DSO")){
             holder.binding.textResoleDays.setVisibility(View.GONE);
         } else {
             holder.binding.textResoleDays.setVisibility(View.VISIBLE);

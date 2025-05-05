@@ -3,7 +3,6 @@ package com.callmangement.ui.ins_weighing_scale.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,28 +10,21 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 
 import com.callmangement.databinding.ActivityInstalledListdetailedBinding;
 import com.callmangement.imagepicker.ui.imagepicker.ImagePicker;
-import com.callmangement.model.WeighingDeliveryDetail.weighingDelieryRoot;
-import com.callmangement.model.WeighingDeliveryDetail.weighingDeliveryData;
-import com.callmangement.model.WeighingDeliveryDetail.weighingDeliveryImagesDetail;
 import com.callmangement.ui.ins_weighing_scale.adapter.ViewImageInstalledAdapterIris;
-import com.callmangement.ui.ins_weighing_scale.adapter.ViewImagesListingAdapterIris;
-import com.callmangement.ui.ins_weighing_scale.model.DeliveredWeightInstal.WeighInsData;
 import com.callmangement.ui.ins_weighing_scale.model.Installed.InstalledDatum;
 import com.callmangement.ui.ins_weighing_scale.model.InstalledDetailed.InstalledDetailedData;
 import com.callmangement.ui.ins_weighing_scale.model.InstalledDetailed.InstalledDetailedRoot;
@@ -212,12 +204,12 @@ public class InstalledDetail extends CustomActivity implements View.OnClickListe
         if (Constants.isNetworkAvailable(mActivity)) {
             hideProgress();
             APIService apiInterface = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            String USER_Id = preference.getUSER_Id();
+            String USER_Id = preference.getUseR_Id();
             String fpscode = model.getFpscode();
             String disid = String.valueOf(model.getDistrictId());
             String modelTicketNo = model.getTicketNo();
             String deliveryid = String.valueOf(model.getDeliveryId());
-            Log.d("USER_ID", preference.getUSER_Id());
+            Log.d("USER_ID", preference.getUseR_Id());
             Log.d("fpscode", fpscode);
             Log.d("disid", disid);
             Log.d("modelTicketNo", modelTicketNo);
@@ -233,7 +225,7 @@ public class InstalledDetail extends CustomActivity implements View.OnClickListe
                         try {
                             if (response.code() == 200) {
                                 if (response.body() != null) {
-                                    if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                    if (response.body().getStatus().equals("200")) {
                                         InstalledDetailedRoot getErrorImagesRoot = response.body();
                                         InstalledDetailedData weighingDeliveryData = getErrorImagesRoot.getData();
                                         Log.d("getErrorTypesRoot..", "getErrorTypesRoot.." + getErrorImagesRoot);

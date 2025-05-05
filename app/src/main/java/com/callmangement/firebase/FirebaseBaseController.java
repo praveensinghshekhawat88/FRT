@@ -12,10 +12,8 @@ import android.net.Uri;
 
 import androidx.core.app.NotificationCompat;
 
-import com.callmangement.Network.AppConfig;
+import com.callmangement.network.AppConfig;
 import com.callmangement.R;
-import com.callmangement.utils.PrefManager;
-import com.google.android.gms.location.LocationRequest;
 
 /**
  * Created and updated by Kelly George on 7/12/2018.

@@ -1,7 +1,6 @@
 package com.callmangement.ui.home;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -10,16 +9,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings.Secure;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.AppConfig;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.AppConfig;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivitySplashBinding;
@@ -71,14 +69,14 @@ public class SplashActivity extends CustomActivity implements View.OnClickListen
             if (task.isSuccessful()) {
                 if (task.getResult() != null) {
                     String deviceToken = task.getResult();
-                    prefManager.setFIREBASE_DEVICE_TOKEN(deviceToken);
+                    prefManager.setFirebasE_DEVICE_TOKEN(deviceToken);
                     @SuppressLint("HardwareIds") String android_id = Secure.getString(mContext.getContentResolver(), Secure.ANDROID_ID);
                     updateDTokenOnServer(android_id, deviceToken);
                 }
             }
         });
         @SuppressLint("HardwareIds") String android_id = Secure.getString(mContext.getContentResolver(), Secure.ANDROID_ID);
-        prefManager.setDEVICE_ID(android_id);
+        prefManager.setDevicE_ID(android_id);
         binding.textAppVersion.setText(getResources().getString(R.string.app_version) + " " + AppConfig.VERSION_NAME);
 
        // Log.e("device_token", prefManager.getFIREBASE_DEVICE_TOKEN());
@@ -130,9 +128,9 @@ public class SplashActivity extends CustomActivity implements View.OnClickListen
                             if (AppConfig.VERSION_CODE >= model.getVersion_Code()) {
                                 new Handler().postDelayed(() -> {
                                     if (prefManager.getUserLoginStatus().equals("true")) {
-                                        if (prefManager.getUSER_TYPE_ID().equals("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) {
+                                        if (prefManager.getUseR_TYPE_ID().equals("4") && prefManager.getUseR_TYPE().equalsIgnoreCase("ServiceEngineer")) {
                                             getCheckedAttendanceStatus();
-                                        } else if (prefManager.getUSER_TYPE_ID().equals("8") && prefManager.getUSER_TYPE().equalsIgnoreCase("Distributor")) {
+                                        } else if (prefManager.getUseR_TYPE_ID().equals("8") && prefManager.getUseR_TYPE().equalsIgnoreCase("Distributor")) {
                                             startActivity(DistributorMainActivity.class);
                                         } else {
                                             startActivity(MainActivity.class);
@@ -151,9 +149,9 @@ public class SplashActivity extends CustomActivity implements View.OnClickListen
                                                 prefManager.setUserLoginStatus("false");
                                                 prefManager.clear();
                                                 FirebaseUtils.unregisterTopic("all");
-                                                prefManager.setUSER_PunchIn(IsSE_PunchIN);
+                                                prefManager.setUseR_PunchIn(IsSE_PunchIN);
                                                 prefManager.setUser_Id("0");
-                                                prefManager.setUSER_DistrictId("0");
+                                                prefManager.setUseR_DistrictId("0");
                                                 final String appPackageName = getPackageName();
                                                 try {
                                                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
@@ -208,7 +206,7 @@ public class SplashActivity extends CustomActivity implements View.OnClickListen
 
     private void getCheckedAttendanceStatus() {
         APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-        Call<ModelAttendance> call = service.getCheckedAttendance(prefManager.getUSER_Id(), DateTimeUtils.getCurrentDate());
+        Call<ModelAttendance> call = service.getCheckedAttendance(prefManager.getUseR_Id(), DateTimeUtils.getCurrentDate());
         call.enqueue(new Callback<ModelAttendance>() {
             @Override
             public void onResponse(@NonNull Call<ModelAttendance> call, @NonNull Response<ModelAttendance> response) {

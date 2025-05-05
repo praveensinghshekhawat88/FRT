@@ -212,7 +212,7 @@ public class RegisterIssueActivity extends CustomActivity implements View.OnClic
                 if (issueImagePath.contains("file:/")) {
                     issueImagePath = issueImagePath.replace("file:/", "");
                 }
-                issueImagePath = CompressImage.compress(issueImagePath, this);
+                issueImagePath = CompressImage.Companion.compress(issueImagePath, this);
                 File imgFile = new  File(issueImagePath);
                 binding.textImagePath.setText(imgFile.getName());
 

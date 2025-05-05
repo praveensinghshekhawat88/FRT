@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -18,8 +17,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityErrorrPosDetailsBinding;
@@ -218,7 +217,7 @@ public class ErrorposDetail extends CustomActivity implements View.OnClickListen
                 if (imageStoragePath.contains("file:/")) {
                     imageStoragePath = imageStoragePath.replace("file:/", "");
                 }
-                imageStoragePath = CompressImage.compress(imageStoragePath, this);
+                imageStoragePath = CompressImage.Companion.compress(imageStoragePath, this);
                 File imgFile = new File(imageStoragePath);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 //  binding.ivChallanImage.setImageBitmap(myBitmap);
@@ -237,7 +236,7 @@ public class ErrorposDetail extends CustomActivity implements View.OnClickListen
                 if (imageStoragePath.contains("file:/")) {
                     imageStoragePath = imageStoragePath.replace("file:/", "");
                 }
-                imageStoragePath = CompressImage.compress(imageStoragePath, this);
+                imageStoragePath = CompressImage.Companion.compress(imageStoragePath, this);
                 File imgFile = new File(imageStoragePath);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 try {
@@ -255,7 +254,7 @@ public class ErrorposDetail extends CustomActivity implements View.OnClickListen
                 if (imageStoragePath.contains("file:/")) {
                     imageStoragePath = imageStoragePath.replace("file:/", "");
                 }
-                imageStoragePath = CompressImage.compress(imageStoragePath, this);
+                imageStoragePath = CompressImage.Companion.compress(imageStoragePath, this);
                 File imgFile = new File(imageStoragePath);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 //   binding.ivPartsImage2.setImageBitmap(myBitmap);
@@ -278,7 +277,7 @@ public class ErrorposDetail extends CustomActivity implements View.OnClickListen
             String errorid = String.valueOf(model.getErrorId());
             String errorRegNo = String.valueOf(model.errorRegNo);
 
-            Call<GetErrorImagesRoot> call = service.GetErrorImages(errorid, prefManager.getUSER_Id(), errorRegNo);
+            Call<GetErrorImagesRoot> call = service.GetErrorImages(errorid, prefManager.getUseR_Id(), errorRegNo);
             call.enqueue(new Callback<GetErrorImagesRoot>() {
                 @SuppressLint("SetTextI18n")
                 @Override
@@ -289,7 +288,7 @@ public class ErrorposDetail extends CustomActivity implements View.OnClickListen
                             if (response.code() == 200) {
                                 if (response.body() != null) {
 
-                                    if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                    if (response.body().getStatus().equals("200")) {
                                         GetErrorImagesRoot getErrorImagesRoot = response.body();
                                         //   Log.d("getErrorTypesRoot..","getErrorTypesRoot.."+getErrorImagesRoot);
 
@@ -376,7 +375,7 @@ public class ErrorposDetail extends CustomActivity implements View.OnClickListen
 
             String errorid = String.valueOf(model.getErrorId());
             String errorRegNo = String.valueOf(model.errorRegNo);
-            Call<GetRemarkRoot> call = service.GetErrorRemarks(errorid, prefManager.getUSER_Id(), errorRegNo);
+            Call<GetRemarkRoot> call = service.GetErrorRemarks(errorid, prefManager.getUseR_Id(), errorRegNo);
             call.enqueue(new Callback<GetRemarkRoot>() {
                 @SuppressLint("SetTextI18n")
                 @Override
@@ -387,7 +386,7 @@ public class ErrorposDetail extends CustomActivity implements View.OnClickListen
                             if (response.code() == 200) {
                                 if (response.body() != null) {
 
-                                    if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                    if (response.body().getStatus().equals("200")) {
                                         GetRemarkRoot getErrorImagesRoot = response.body();
                                         //  Log.d("getErrorTypesRoot..","getErrorTypesRoot.."+getErrorImagesRoot);
 

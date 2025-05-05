@@ -20,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -30,8 +29,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityMainBinding;
@@ -138,8 +137,8 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
         binding.actionBar.textToolbarTitle.setText(getResources().getString(R.string.app_name));
         viewModel = ViewModelProviders.of(this).get(ComplaintViewModel.class);
         prefManager = new PrefManager(mContext);
-        binding.textUsername.setText(prefManager.getUSER_NAME());
-        binding.textEmail.setText(prefManager.getUSER_EMAIL());
+        binding.textUsername.setText(prefManager.getUseR_NAME());
+        binding.textEmail.setText(prefManager.getUseR_EMAIL());
         districtNameEng = "--" + getResources().getString(R.string.district) + "--";
         initView();
 
@@ -169,7 +168,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
 
 
 
-        if (prefManager.getUSER_TYPE_ID().equals("1") || prefManager.getUSER_TYPE_ID().equals("2")) {
+        if (prefManager.getUseR_TYPE_ID().equals("1") || prefManager.getUseR_TYPE_ID().equals("2")) {
             binding. spinner.setSelection(3);
             int selectedItemPosition =binding. spinner.getSelectedItemPosition();
             if (selectedItemPosition==3)
@@ -222,7 +221,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
             binding.actionBar.ivHindiToEng.setVisibility(View.GONE);
         }
 
-        if (prefManager.getUSER_TYPE_ID().equals("1") && prefManager.getUSER_TYPE().equalsIgnoreCase("Admin")) {
+        if (prefManager.getUseR_TYPE_ID().equals("1") && prefManager.getUseR_TYPE().equalsIgnoreCase("Admin")) {
             binding.buttonInventorySE.setVisibility(View.GONE);
             binding.buttonPosDistributionReportForSE.setVisibility(View.GONE);
             binding.llTrainingScheduleSE.setVisibility(View.GONE);
@@ -240,7 +239,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
           //  binding.rstSpace.setVisibility(View.GONE);
          //  binding.posSpace.setVisibility(View.GONE);
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("2") && prefManager.getUSER_TYPE().equalsIgnoreCase("Manager")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("2") && prefManager.getUseR_TYPE().equalsIgnoreCase("Manager")) {
             binding.buttonInventorySE.setVisibility(View.GONE);
             binding.buttonPosDistributionReportForSE.setVisibility(View.GONE);
             binding.llTrainingScheduleSE.setVisibility(View.GONE);
@@ -259,7 +258,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
         //  binding.posSpace.setVisibility(View.GONE);
 
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("4") && prefManager.getUseR_TYPE().equalsIgnoreCase("ServiceEngineer")) {
             binding.buttonInventorySE.setVisibility(View.VISIBLE);
             binding.rstSpace.setVisibility(View.GONE);
             binding.buttonPosDistributionReportForSE.setVisibility(View.VISIBLE);
@@ -279,7 +278,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
             binding.hlpSpace.setVisibility(View.GONE);
 
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("5") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceCentre")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("5") && prefManager.getUseR_TYPE().equalsIgnoreCase("ServiceCentre")) {
             binding.buttonInventorySE.setVisibility(View.VISIBLE);
             binding.rstSpace.setVisibility(View.GONE);
 
@@ -300,7 +299,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
 
 
 
-        } else if (prefManager.getUSER_TYPE_ID().equalsIgnoreCase("6") && prefManager.getUSER_TYPE().equalsIgnoreCase("DSO")) {
+        } else if (prefManager.getUseR_TYPE_ID().equalsIgnoreCase("6") && prefManager.getUseR_TYPE().equalsIgnoreCase("DSO")) {
             binding.buttonInventorySE.setVisibility(View.GONE);
             binding.buttonPosDistributionReportForSE.setVisibility(View.GONE);
             binding.llTrainingScheduleSE.setVisibility(View.GONE);
@@ -322,22 +321,22 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
 
         }
 
-        if (prefManager.getUSER_TYPE_ID().equals("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) {
+        if (prefManager.getUseR_TYPE_ID().equals("4") && prefManager.getUseR_TYPE().equalsIgnoreCase("ServiceEngineer")) {
             binding.rlDistrict.setVisibility(View.GONE);
             binding.spacer.setVisibility(View.GONE);
             binding.textDestrict.setVisibility(View.VISIBLE);
-            binding.textDestrict.setText(getResources().getString(R.string.district) + " : " + prefManager.getUSER_District());
-            districtId = prefManager.getUSER_DistrictId();
-            tehsilList(prefManager.getUSER_DistrictId());
+            binding.textDestrict.setText(getResources().getString(R.string.district) + " : " + prefManager.getUseR_District());
+            districtId = prefManager.getUseR_DistrictId();
+            tehsilList(prefManager.getUseR_DistrictId());
 
-        } else if (prefManager.getUSER_TYPE_ID().equalsIgnoreCase("6") && prefManager.getUSER_TYPE().equalsIgnoreCase("DSO")) {
+        } else if (prefManager.getUseR_TYPE_ID().equalsIgnoreCase("6") && prefManager.getUseR_TYPE().equalsIgnoreCase("DSO")) {
             binding.rlDistrict.setVisibility(View.GONE);
             binding.spacer.setVisibility(View.GONE);
             binding.textDestrict.setVisibility(View.VISIBLE);
-            binding.textDestrict.setText(getResources().getString(R.string.district) + " : " + prefManager.getUSER_District());
+            binding.textDestrict.setText(getResources().getString(R.string.district) + " : " + prefManager.getUseR_District());
 
-            districtId = prefManager.getUSER_DistrictId();
-            tehsilList(prefManager.getUSER_DistrictId());
+            districtId = prefManager.getUseR_DistrictId();
+            tehsilList(prefManager.getUseR_DistrictId());
 
         } else {
             binding.textDestrict.setVisibility(View.GONE);
@@ -766,7 +765,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
         String fromDate = Objects.requireNonNull(binding.textFromDate.getText()).toString().trim();
         String toDate = Objects.requireNonNull(binding.textToDate.getText()).toString().trim();
         //isLoading();
-        viewModel.getComplaintsCount(String.valueOf(prefManager.getUSER_Id()), districtId, fromDate, toDate).observe(this, modelComplaintsCount -> {
+        viewModel.getComplaintsCount(String.valueOf(prefManager.getUseR_Id()), districtId, fromDate, toDate).observe(this, modelComplaintsCount -> {
             //isLoading();
             if (modelComplaintsCount.getStatus().equals("200")) {
                 ModelComplaintsCountData modelComplaintsCountData = modelComplaintsCount.getComplaints_Count();
@@ -784,7 +783,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
     private void fetchComplaintListBySelect(String districtId, String date) {
         showProgress();
         APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-        Call<ModelComplaintsCount> call = service.getComplaintsCountDateDistrictIdWise(prefManager.getUSER_Id(), districtId, date, date);
+        Call<ModelComplaintsCount> call = service.getComplaintsCountDateDistrictIdWise(prefManager.getUseR_Id(), districtId, date, date);
         call.enqueue(new Callback<ModelComplaintsCount>() {
             @Override
             public void onResponse(@NonNull Call<ModelComplaintsCount> call, @NonNull Response<ModelComplaintsCount> response) {
@@ -820,7 +819,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
     private void fetchComplaintListByCurrentMonthAndPreviousMonth(String districtId, String date1, String date2) {
         showProgress();
         APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-        Call<ModelComplaintsCount> call = service.getComplaintsCountDateDistrictIdWise(prefManager.getUSER_Id(), districtId, date1, date2);
+        Call<ModelComplaintsCount> call = service.getComplaintsCountDateDistrictIdWise(prefManager.getUseR_Id(), districtId, date1, date2);
         call.enqueue(new Callback<ModelComplaintsCount>() {
             @Override
             public void onResponse(@NonNull Call<ModelComplaintsCount> call, @NonNull Response<ModelComplaintsCount> response) {
@@ -858,7 +857,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
         String toDate = Objects.requireNonNull(binding.textToDate.getText()).toString().trim();
         showProgress();
         APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-        Call<ModelComplaintsCount> call = service.getComplaintsCountDateDistrictIdWise(prefManager.getUSER_Id(), districtId, fromDate, toDate);
+        Call<ModelComplaintsCount> call = service.getComplaintsCountDateDistrictIdWise(prefManager.getUseR_Id(), districtId, fromDate, toDate);
         call.enqueue(new Callback<ModelComplaintsCount>() {
             @Override
             public void onResponse(@NonNull Call<ModelComplaintsCount> call, @NonNull Response<ModelComplaintsCount> response) {
@@ -922,7 +921,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
 
     private void checkLoginStatus() {
         APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-        Call<ModelLogin> call = service.login(prefManager.getUSER_EMAIL(), prefManager.getUSER_PASSWORD(), prefManager.getDEVICE_ID(), prefManager.getFIREBASE_DEVICE_TOKEN());
+        Call<ModelLogin> call = service.login(prefManager.getUseR_EMAIL(), prefManager.getUseR_PASSWORD(), prefManager.getDevicE_ID(), prefManager.getFirebasE_DEVICE_TOKEN());
         call.enqueue(new Callback<ModelLogin>() {
             @Override
             public void onResponse(@NonNull Call<ModelLogin> call, @NonNull Response<ModelLogin> response) {
@@ -950,7 +949,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
     private void logout() {
         showProgress(getResources().getString(R.string.logout));
         APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-        Call<ModelLogout> call = service.logOutApp(prefManager.getUSER_Id(), prefManager.getUSER_EMAIL());
+        Call<ModelLogout> call = service.logOutApp(prefManager.getUseR_Id(), prefManager.getUseR_EMAIL());
         call.enqueue(new Callback<ModelLogout>() {
             @Override
             public void onResponse(@NonNull Call<ModelLogout> call, @NonNull Response<ModelLogout> response) {
@@ -961,11 +960,11 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
                         if (Objects.requireNonNull(model).getStatus().equals("200")) {
                             FirebaseUtils.unregisterTopic("all");
                             prefManager.clear();
-                            prefManager.setUSER_PunchIn(IsSE_PunchIN);
+                            prefManager.setUseR_PunchIn(IsSE_PunchIN);
                             prefManager.setUser_Id("0");
-                            prefManager.setUSER_DistrictId("0");
+                            prefManager.setUseR_DistrictId("0");
                             @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-                            prefManager.setDEVICE_ID(android_id);
+                            prefManager.setDevicE_ID(android_id);
                             startActivity(new Intent(mContext, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                             finish();
                         } else {
@@ -1002,7 +1001,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         binding.textFromDate.setText(sdf.format(myCalendarFromDate.getTime()));
         Objects.requireNonNull(binding.textToDate.getText()).clear();
-        prefManager.setFROM_DATE(Objects.requireNonNull(binding.textFromDate.getText()).toString().trim());
+        prefManager.setFroM_DATE(Objects.requireNonNull(binding.textFromDate.getText()).toString().trim());
     }
 
     private void updateLabelToDate() {
@@ -1269,7 +1268,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
         } else if (globalId == R.id.buttonEhr) {
 
 
-            startActivity(com.callmangement.EHR.ehrActivities.MainActivity.class);
+            startActivity(com.callmangement.ehr.ehrActivities.MainActivity.class);
         }
     }
 

@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -24,12 +23,10 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,7 +34,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -46,9 +42,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.MultipartRequester;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.MultipartRequester;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityNewdeliveryBinding;
@@ -66,7 +62,6 @@ import com.callmangement.utils.CompressImage;
 import com.callmangement.support.FetchAddressIntentServices;
 import com.callmangement.utils.Constants;
 import com.callmangement.utils.PrefManager;
-import com.callmangement.support.charting.utils.Utils;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -663,12 +658,12 @@ public class NewDelivery extends CustomActivity {
         if (Constants.isNetworkAvailable(mActivity)) {
             hideKeyboard(mActivity);
             hideProgress();
-            String USER_Id = preference.getUSER_Id();
+            String USER_Id = preference.getUseR_Id();
             Log.d("USER_ID", USER_Id);
             APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
             // Call<DetailByFpsRoot> call = service.apiDetailsByFPS(Fps_code,USER_Id,"0");
             Call<DetailByFpsRoot> call = service.apiDetailsByFPS(Fps_code, USER_Id, "0");
-            //  APIInterface apiInterface = APIClient.GetRetrofitClientWithoutHeaders(mActivity,Utils.Baseurl).create(APIInterface.class);
+            //  APIInterface apiInterface = APIClient.getRetrofitClientWithoutHeaders(mActivity!!!!,Utils.Baseurl).create(APIInterface.class);
             //  Call<DetailByFpsRoot> call = apiInterface.apiDetailsByFPS(Fps_code,USER_Id,"0");
             call.enqueue(new Callback<DetailByFpsRoot>() {
                 @Override
@@ -677,7 +672,7 @@ public class NewDelivery extends CustomActivity {
                     if (response.isSuccessful()) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     alertDialog.dismiss();
                                     DetailByFpsRoot detailByFpsRoot = response.body();
                                     String fps_message = detailByFpsRoot.getMessage();
@@ -777,7 +772,7 @@ public class NewDelivery extends CustomActivity {
                 if (partsImageStoragePath1.contains("file:/")) {
                     partsImageStoragePath1 = partsImageStoragePath1.replace("file:/", "");
                 }
-                partsImageStoragePath1 = CompressImage.compress(partsImageStoragePath1, this);
+                partsImageStoragePath1 = CompressImage.Companion.compress(partsImageStoragePath1, this);
                 File imgFile = new File(partsImageStoragePath1);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -827,7 +822,7 @@ public class NewDelivery extends CustomActivity {
                 if (partsImageStoragePath2.contains("file:/")) {
                     partsImageStoragePath2 = partsImageStoragePath2.replace("file:/", "");
                 }
-                partsImageStoragePath2 = CompressImage.compress(partsImageStoragePath2, this);
+                partsImageStoragePath2 = CompressImage.Companion.compress(partsImageStoragePath2, this);
                 File imgFile = new File(partsImageStoragePath2);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -877,7 +872,7 @@ public class NewDelivery extends CustomActivity {
                 if (partsImageStoragePath3.contains("file:/")) {
                     partsImageStoragePath3 = partsImageStoragePath3.replace("file:/", "");
                 }
-                partsImageStoragePath3 = CompressImage.compress(partsImageStoragePath3, this);
+                partsImageStoragePath3 = CompressImage.Companion.compress(partsImageStoragePath3, this);
                 File imgFile = new File(partsImageStoragePath3);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -925,7 +920,7 @@ public class NewDelivery extends CustomActivity {
                 if (partsImageStoragePath4.contains("file:/")) {
                     partsImageStoragePath4 = partsImageStoragePath4.replace("file:/", "");
                 }
-                partsImageStoragePath4 = CompressImage.compress(partsImageStoragePath4, this);
+                partsImageStoragePath4 = CompressImage.Companion.compress(partsImageStoragePath4, this);
                 File imgFile = new File(partsImageStoragePath4);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -977,12 +972,12 @@ public class NewDelivery extends CustomActivity {
             hideKeyboard(mActivity);
             //  Utils.showCustomProgressDialogCommonForAll(mActivity, getResources().getString(R.string.please_wait));
             showProgress();
-            String USER_Id = preference.getUSER_Id();
+            String USER_Id = preference.getUseR_Id();
             String deliveryid = String.valueOf(mymodel.getDeliveryId());
             String iris_inputserialno = String.valueOf(binding.inputSerialno.getText());
             mydatetime = String.valueOf(dateAndTimeEditText.getText());
             //Log.d("USER_ID", USER_Id);
-            //    APIInterface apiInterface = APIClient.GetRetrofitClientWithoutHeaders(mActivity, Utils.Baseurl).create(APIInterface.class);
+            //    APIInterface apiInterface = APIClient.getRetrofitClientWithoutHeaders(mActivity!!!!, Utils.Baseurl).create(APIInterface.class);
             Log.d("apifullapifullapifull",""+ fullAddress);
             APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
             //  Call<CountRoot> call = service.appWeightCountApi(USER_Id,"" ,districtId,"", "0",fromDate,toDate);
@@ -1106,7 +1101,7 @@ public class NewDelivery extends CustomActivity {
                         if (response.code() == 200) {
                             if (response.body() != null) {
                                 Log.d("ResponseCode", "" + response.code());
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     SaveRoot saveRoot = response.body();
                                     makeToast(String.valueOf(response.body().getResponse().getMessage()));
                                    onBackPressed();

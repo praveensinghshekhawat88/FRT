@@ -13,12 +13,11 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.callmangement.BuildConfig
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.adapter.LastComplaintFPSListActivityAdapter
 import com.callmangement.custom.CustomActivity
@@ -188,7 +187,7 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
     }
 
     private fun tehsilList(districtId: String) {
-        if (Constants.isNetworkAvailable(mActivity)) {
+        if (Constants.isNetworkAvailable(mActivity!!)) {
             showProgress()
             val service = RetrofitInstance.getRetrofitInstance().create(
                 APIService::class.java

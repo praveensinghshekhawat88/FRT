@@ -2,7 +2,6 @@ package com.callmangement.ui.training_schedule;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -12,15 +11,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityCreateTrainingScheduleBinding;
 import com.callmangement.model.district.ModelDistrictList;
 import com.callmangement.model.tehsil.ModelTehsil;
 import com.callmangement.model.tehsil.ModelTehsilList;
-import com.callmangement.model.training_schedule.ModelCreateTrainingSchedule;
 import com.callmangement.utils.Constants;
 import com.callmangement.utils.PrefManager;
 import java.text.SimpleDateFormat;
@@ -200,7 +198,7 @@ public class CreateTrainingScheduleActivity extends CustomActivity implements Vi
             makeToast(getResources().getString(R.string.please_input_training_description));
         }else {
             isLoading();
-            viewModel.saveTraining(prefManager.getUSER_Id(), districtId, tehsilId, startDateTime, endDateTime, Constants.convertStringToUTF8(address), Constants.convertStringToUTF8(description), Constants.convertStringToUTF8(title)).observe(this, modelCreateTrainingSchedule -> {
+            viewModel.saveTraining(prefManager.getUseR_Id(), districtId, tehsilId, startDateTime, endDateTime, Constants.convertStringToUTF8(address), Constants.convertStringToUTF8(description), Constants.convertStringToUTF8(title)).observe(this, modelCreateTrainingSchedule -> {
                 isLoading();
                 if (modelCreateTrainingSchedule.getStatus().equals("200")) {
                     binding.spinnerDistrict.setSelection(0);

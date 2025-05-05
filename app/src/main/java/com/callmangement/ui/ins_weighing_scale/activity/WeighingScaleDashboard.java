@@ -13,7 +13,6 @@ import android.os.Vibrator;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -24,8 +23,8 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityWeighingScaleDashboardBinding;
@@ -101,7 +100,7 @@ public class WeighingScaleDashboard extends CustomActivity {
 
 
     private void setUpData() {
-        if (prefManager.getUSER_TYPE_ID().equals("1") && prefManager.getUSER_TYPE().equalsIgnoreCase("Admin")) {
+        if (prefManager.getUseR_TYPE_ID().equals("1") && prefManager.getUseR_TYPE().equalsIgnoreCase("Admin")) {
             binding.rlDistrict.setVisibility(View.VISIBLE);
             binding.seDistrict.setVisibility(View.GONE);
             binding.spacer.setVisibility(View.VISIBLE);
@@ -111,7 +110,7 @@ public class WeighingScaleDashboard extends CustomActivity {
             editor.remove("districtId_key");
             editor.apply();
 
-        } else if (prefManager.getUSER_TYPE_ID().equals("2") && prefManager.getUSER_TYPE().equalsIgnoreCase("Manager")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("2") && prefManager.getUseR_TYPE().equalsIgnoreCase("Manager")) {
             binding.rlDistrict.setVisibility(View.VISIBLE);
             binding.spacer.setVisibility(View.VISIBLE);
             binding.seDistrict.setVisibility(View.GONE);
@@ -120,7 +119,7 @@ public class WeighingScaleDashboard extends CustomActivity {
             SharedPreferences.Editor editor = sp.edit();
             editor.remove("districtId_key");
             editor.apply();
-        } else if (prefManager.getUSER_TYPE_ID().equals("4") && prefManager.getUSER_TYPE().equalsIgnoreCase("ServiceEngineer")) {
+        } else if (prefManager.getUseR_TYPE_ID().equals("4") && prefManager.getUseR_TYPE().equalsIgnoreCase("ServiceEngineer")) {
             binding.rlDistrict.setVisibility(View.GONE);
             binding.spacer.setVisibility(View.VISIBLE);
             binding.seDistrict.setVisibility(View.VISIBLE);
@@ -139,10 +138,10 @@ public class WeighingScaleDashboard extends CustomActivity {
 
             }
         }
-        String USER_NAME = prefManager.getUSER_NAME();
-        String USER_EMAIL = prefManager.getUSER_EMAIL();
-        String USER_Mobile = prefManager.getUSER_Mobile();
-        String USER_DISTRICT = prefManager.getUSER_District();
+        String USER_NAME = prefManager.getUseR_NAME();
+        String USER_EMAIL = prefManager.getUseR_EMAIL();
+        String USER_Mobile = prefManager.getUseR_Mobile();
+        String USER_DISTRICT = prefManager.getUseR_District();
         Log.d("USER_NAME", " " + USER_NAME);
         Log.d("USER_Email", " " + USER_EMAIL);
         Log.d("USER_Dis", " " + USER_DISTRICT);
@@ -173,7 +172,7 @@ public class WeighingScaleDashboard extends CustomActivity {
         });
 
 
-        // Log.d("useriduserid",""+prefManager.getUSER_TYPE_ID());
+        // Log.d("useriduserid",""+prefManager.getUseR_TYPE_ID());
 
 
         // binding.textDestrict.setText(USER_DISTRICT);
@@ -492,13 +491,13 @@ public class WeighingScaleDashboard extends CustomActivity {
             hideKeyboard(mActivity);
             //  Utils.showCustomProgressDialogCommonForAll(mActivity, getResources().getString(R.string.please_wait));
             showProgress();
-            String USER_Id = prefManager.getUSER_Id();
+            String USER_Id = prefManager.getUseR_Id();
             Log.d("USER_ID"," "+ USER_Id);
             Log.d("districtId", " "+districtId);
             APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
             Call<CountRoot> call = service.appWeightCountApiiris(USER_Id, districtId, "0", "0", fromDate, toDate, "0");
 
-            //   APIInterface apiInterface = APIClient.GetRetrofitClientWithoutHeaders(mActivity,Utils.Baseurl).create(APIInterface.class);
+            //   APIInterface apiInterface = APIClient.getRetrofitClientWithoutHeaders(mActivity!!!!,Utils.Baseurl).create(APIInterface.class);
 
             //   Call<CountRoot> call = apiInterface.appWeightCountApi(USER_Id,"" ,districtId,"", "0",fromDate,toDate);
 
@@ -510,7 +509,7 @@ public class WeighingScaleDashboard extends CustomActivity {
                     if (response.isSuccessful()) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     CountRoot countRoot = response.body();
                                     ArrayList<CountDatum> countDatum =
                                             countRoot.getData();
@@ -572,8 +571,8 @@ public class WeighingScaleDashboard extends CustomActivity {
         if (Constants.isNetworkAvailable(mActivity)) {
             hideKeyboard(mActivity);
             //   Utils.showCustomProgressDialogCommonForAll(mActivity, getResources().getString(R.string.please_wait));
-            String USER_Id = prefManager.getUSER_Id();
-            //  APIInterface apiInterface = APIClient.GetRetrofitClientWithoutHeaders(mActivity,Utils.Baseurl).create(APIInterface.class);
+            String USER_Id = prefManager.getUseR_Id();
+            //  APIInterface apiInterface = APIClient.getRetrofitClientWithoutHeaders(mActivity!!!!,Utils.Baseurl).create(APIInterface.class);
             //  Call<ModelDistrict_w> call = apiInterface.apiGetDistictList();
 
 
@@ -590,7 +589,7 @@ public class WeighingScaleDashboard extends CustomActivity {
 
                             Log.d("mydataresponse", "" + response.code());
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     district_List = response.body().getDistrict_List();
                                     if (district_List != null && district_List.size() > 0) {
                                         Collections.reverse(district_List);

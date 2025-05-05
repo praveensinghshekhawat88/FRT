@@ -17,8 +17,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.custom.CustomActivity
 import com.callmangement.databinding.ActivityClosedGuardDetailBinding
@@ -34,7 +34,6 @@ import com.callmangement.utils.PrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Objects
 
 class ClosedGuardDetailActivity : CustomActivity(), View.OnClickListener {
     private var binding: ActivityClosedGuardDetailBinding? = null
@@ -249,7 +248,7 @@ class ClosedGuardDetailActivity : CustomActivity(), View.OnClickListener {
     }
 
     private fun GetErrorImages() {
-        if (Constants.isNetworkAvailable(mActivity)) {
+        if (Constants.isNetworkAvailable(mActivity!!)) {
             hideProgress()
             val apiInterface = RetrofitInstance.getRetrofitInstance().create(
                 APIService::class.java

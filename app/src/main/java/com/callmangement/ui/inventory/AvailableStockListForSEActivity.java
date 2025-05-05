@@ -77,7 +77,7 @@ public class AvailableStockListForSEActivity extends CustomActivity implements V
     private void getAvailableStockList(){
         if (Constants.isNetworkAvailable(mContext)) {
             isLoading();
-            viewModel.getAvailableStockListForSE(prefManager.getUSER_Id(),"0").observe(this, modelParts -> {
+            viewModel.getAvailableStockListForSE(prefManager.getUseR_Id(),"0").observe(this, modelParts -> {
                 isLoading();
                 if (modelParts.getStatus().equals("200")){
                     modelPartsList = modelParts.getParts();

@@ -65,13 +65,13 @@ class SLAReportsActivity : CustomActivity() {
                 ignoreCase = true
             )
         ) {
-            districtId = prefManager!!.useR_DistrictId
+            districtId = prefManager!!.useR_DistrictId!!
         } else if (prefManager!!.useR_TYPE_ID.equals(
                 "6",
                 ignoreCase = true
             ) && prefManager!!.useR_TYPE.equals("DSO", ignoreCase = true)
         ) {
-            districtId = prefManager!!.useR_DistrictId
+            districtId = prefManager!!.useR_DistrictId!!
         }
 
         fetchSLAReportList(fromDate, toDate, day, districtId)
@@ -136,13 +136,13 @@ class SLAReportsActivity : CustomActivity() {
                         ignoreCase = true
                     )
                 ) {
-                    districtId = prefManager!!.useR_DistrictId
+                    districtId = prefManager!!.useR_DistrictId!!
                 } else if (prefManager!!.useR_TYPE_ID.equals(
                         "6",
                         ignoreCase = true
                     ) && prefManager!!.useR_TYPE.equals("DSO", ignoreCase = true)
                 ) {
-                    districtId = prefManager!!.useR_DistrictId
+                    districtId = prefManager!!.useR_DistrictId!!
                 }
                 fetchSLAReportDayWise(fromDate, toDate, day, districtId)
             }

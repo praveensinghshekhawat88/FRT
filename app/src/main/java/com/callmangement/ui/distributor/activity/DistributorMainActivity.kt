@@ -19,8 +19,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityCompat
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.custom.CustomActivity
 import com.callmangement.databinding.ActivityDistributorMainBinding
@@ -30,14 +30,12 @@ import com.callmangement.model.logout.ModelLogout
 import com.callmangement.support.permissions.PermissionHandler
 import com.callmangement.support.permissions.Permissions
 import com.callmangement.tracking_service.GpsUtils
-import com.callmangement.ui.distributor.activity.DistributedPosListActivity
 import com.callmangement.ui.login.LoginActivity
 import com.callmangement.utils.PrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.Locale
-import java.util.Objects
 
 class DistributorMainActivity : CustomActivity(), View.OnClickListener {
     private var binding: ActivityDistributorMainBinding? = null
@@ -75,15 +73,15 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
     }
 
     private fun layoutShowAndHide() {
-        if (prefManager!!.useR_Change_Language != "") {
-            if (prefManager!!.useR_Change_Language == "en") {
+        if (prefManager!!.USER_Change_Language != "") {
+            if (prefManager!!.USER_Change_Language == "en") {
                 binding!!.actionBar.ivEngToHindi.visibility = View.VISIBLE
                 binding!!.actionBar.ivHindiToEng.visibility = View.GONE
-                prefManager!!.useR_Change_Language = "en"
+                prefManager!!.USER_Change_Language = "en"
             } else {
                 binding!!.actionBar.ivEngToHindi.visibility = View.GONE
                 binding!!.actionBar.ivHindiToEng.visibility = View.VISIBLE
-                prefManager!!.useR_Change_Language = "hi"
+                prefManager!!.USER_Change_Language = "hi"
             }
         } else {
             binding!!.actionBar.ivEngToHindi.visibility = View.VISIBLE
@@ -234,7 +232,7 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
                     dialog.cancel()
                     binding!!.actionBar.ivEngToHindi.visibility = View.VISIBLE
                     binding!!.actionBar.ivHindiToEng.visibility = View.GONE
-                    prefManager!!.useR_Change_Language = "hi"
+                    prefManager!!.USER_Change_Language = "hi"
                     setLocaleUpdate("hi")
                 }
                 .setNegativeButton(
@@ -253,7 +251,7 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
                     dialog.cancel()
                     binding!!.actionBar.ivEngToHindi.visibility = View.GONE
                     binding!!.actionBar.ivHindiToEng.visibility = View.VISIBLE
-                    prefManager!!.useR_Change_Language = "en"
+                    prefManager!!.USER_Change_Language = "en"
                     setLocaleUpdate("en")
                 }
                 .setNegativeButton(
@@ -409,7 +407,7 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
     }
 
     fun setLocaleUpdate(lang: String) {
-        prefManager!!.useR_Change_Language = lang
+        prefManager!!.USER_Change_Language = lang
         myLocale = Locale(lang)
         val res = resources
         val dm = res.displayMetrics
@@ -437,7 +435,7 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
     }
 
     override fun onStart() {
-        val locale = prefManager!!.useR_Change_Language
+        val locale = prefManager!!.USER_Change_Language
         if (locale != "") {
             if (locale == "hi") {
                 setLocale("hi")
@@ -445,7 +443,7 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
                 setLocale("en")
             }
         } else {
-            prefManager!!.useR_Change_Language = "en"
+            prefManager!!.USER_Change_Language = "en"
         }
         super.onStart()
     }

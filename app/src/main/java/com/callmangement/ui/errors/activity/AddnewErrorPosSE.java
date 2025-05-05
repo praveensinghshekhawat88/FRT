@@ -18,9 +18,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.MultipartRequester;
-import com.callmangement.Network.RetrofitInstance;
+import com.callmangement.network.APIService;
+import com.callmangement.network.MultipartRequester;
+import com.callmangement.network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.custom.CustomActivity;
 import com.callmangement.databinding.ActivityAddnewErrorPosSeBinding;
@@ -152,7 +152,7 @@ public class AddnewErrorPosSE extends CustomActivity implements View.OnClickList
         if (Constants.isNetworkAvailable(mContext)){
             showProgress();
             APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<GetErrorTypesRoot> call = service.GetErrorTypes(prefManager.getUSER_Id(), "0");
+            Call<GetErrorTypesRoot> call = service.GetErrorTypes(prefManager.getUseR_Id(), "0");
             call.enqueue(new Callback<GetErrorTypesRoot>() {
                 @Override
                 public void onResponse(@NonNull Call<GetErrorTypesRoot> call, @NonNull Response<GetErrorTypesRoot> response) {
@@ -160,7 +160,7 @@ public class AddnewErrorPosSE extends CustomActivity implements View.OnClickList
                     if (response.isSuccessful()){
                         if (response.code() == 200){
                             if (response.body() != null) {
-                                if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                                if (response.body().getStatus().equals("200")) {
                                     GetErrorTypesRoot getErrorTypesRoot = response.body();
                               //      Log.d("getErrorTypesRoot..","getErrorTypesRoot.."+getErrorTypesRoot);
 
@@ -592,7 +592,7 @@ public class AddnewErrorPosSE extends CustomActivity implements View.OnClickList
                 if (imageStoragePath.contains("file:/")) {
                     imageStoragePath = imageStoragePath.replace("file:/", "");
                 }
-                imageStoragePath = CompressImage .compress(imageStoragePath, this);
+                imageStoragePath = CompressImage.Companion.compress(imageStoragePath, this);
                 File imgFile = new File(imageStoragePath);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -616,7 +616,7 @@ public class AddnewErrorPosSE extends CustomActivity implements View.OnClickList
                 if (imageStoragePath.contains("file:/")) {
                     imageStoragePath = imageStoragePath.replace("file:/", "");
                 }
-                imageStoragePath = CompressImage.compress(imageStoragePath, this);
+                imageStoragePath = CompressImage.Companion.compress(imageStoragePath, this);
                 File imgFile = new File(imageStoragePath);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -639,7 +639,7 @@ public class AddnewErrorPosSE extends CustomActivity implements View.OnClickList
                 if (imageStoragePath.contains("file:/")) {
                     imageStoragePath = imageStoragePath.replace("file:/", "");
                 }
-                imageStoragePath = CompressImage.compress(imageStoragePath, this);
+                imageStoragePath = CompressImage.Companion.compress(imageStoragePath, this);
                 File imgFile = new File(imageStoragePath);
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 try {
@@ -665,7 +665,7 @@ public class AddnewErrorPosSE extends CustomActivity implements View.OnClickList
         if (Constants.isNetworkAvailable(mContext)) {
             showProgress();
             APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-            Call<ResponseBody> call = service.getPosDistributionListSEAPI(prefManager.getUSER_DistrictId(), prefManager.getUSER_Id(), "0","","",fromDate,toDate);
+            Call<ResponseBody> call = service.getPosDistributionListSEAPI(prefManager.getUseR_DistrictId(), prefManager.getUseR_Id(), "0","","",fromDate,toDate);
             call.enqueue(new Callback<ResponseBody>() {
                 @SuppressLint("SetTextI18n")
                 @Override
@@ -757,7 +757,7 @@ public class AddnewErrorPosSE extends CustomActivity implements View.OnClickList
             String  ErrorStatusId ="1";
 
             Call<SaveErroeReqRoot> call = service.saveErroeReqApi(
-                    MultipartRequester.fromString((prefManager.getUSER_Id())),
+                    MultipartRequester.fromString((prefManager.getUseR_Id())),
                     MultipartRequester.fromString(FPS_CODE),
                     MultipartRequester.fromString(Input_Device_Code),
                     MultipartRequester.fromString(Mobile_No),
@@ -768,7 +768,7 @@ public class AddnewErrorPosSE extends CustomActivity implements View.OnClickList
                     MultipartRequester.fromString(Input_Remark),
                     campDocumentsParts);
 
-            Log.d("errorsaveresponse","response-----"+prefManager.getUSER_Id()+"  "+FPS_CODE+" "+Input_Device_Code+" "+Input_Remark+" " +campDocumentsParts);
+            Log.d("errorsaveresponse","response-----"+prefManager.getUseR_Id()+"  "+FPS_CODE+" "+Input_Device_Code+" "+Input_Remark+" " +campDocumentsParts);
             call.enqueue(new Callback<SaveErroeReqRoot>() {
                 @Override
                 public void onResponse(@NonNull Call<SaveErroeReqRoot> call, @NonNull Response<SaveErroeReqRoot> response) {
@@ -777,7 +777,7 @@ public class AddnewErrorPosSE extends CustomActivity implements View.OnClickList
                     if (response.isSuccessful()) {
                         if (response.code() == 200 && response.body() != null ) {
 
-                               // if (Objects.requireNonNull(response.body()).getStatus().equals("200")) {
+                               // if (response.body().getStatus().equals("200")) {
                                 if (Objects.requireNonNull(response.body()!=null)) {
 
                                     SaveErroeReqRoot getErrorTypesRoot = response.body();

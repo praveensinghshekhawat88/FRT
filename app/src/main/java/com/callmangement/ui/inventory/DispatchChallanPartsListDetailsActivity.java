@@ -1,25 +1,13 @@
 package com.callmangement.ui.inventory;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.callmangement.Network.APIService;
-import com.callmangement.Network.RetrofitInstance;
 import com.callmangement.R;
 import com.callmangement.adapter.DispatchChallanPartsListDetailsActivityAdapter;
 import com.callmangement.custom.CustomActivity;
@@ -31,20 +19,8 @@ import com.callmangement.ui.home.ZoomInZoomOutActivity;
 import com.callmangement.utils.Constants;
 import com.callmangement.utils.PrefManager;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DispatchChallanPartsListDetailsActivity extends CustomActivity implements View.OnClickListener {
     ActivityDispatchChallanPartsListDetailsBinding binding;
@@ -172,7 +148,7 @@ public class DispatchChallanPartsListDetailsActivity extends CustomActivity impl
         modelDisputePartsList.clear();
         if (Constants.isNetworkAvailable(mContext)) {
             isLoading();
-            inventoryViewModel.getDisputePartsList(prefManager.getUSER_Id(), model.getInvoiceId()).observe(this, modelDisputeParts -> {
+            inventoryViewModel.getDisputePartsList(prefManager.getUseR_Id(), model.getInvoiceId()).observe(this, modelDisputeParts -> {
                 isLoading();
                 if (modelDisputeParts.getStatus().equals("200")) {
                     modelDisputePartsList = modelDisputeParts.getPartsDispueStockDetails();
@@ -209,7 +185,7 @@ public class DispatchChallanPartsListDetailsActivity extends CustomActivity impl
                 RequestBody jsonArrBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), String.valueOf(jsonArray));
                 APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
                 showProgress();
-                Call<ResponseBody> call = service.updatePartsStock(model.getInvoiceId(), prefManager.getUSER_Id(), "2", disputeRemark, jsonArrBody);
+                Call<ResponseBody> call = service.updatePartsStock(model.getInvoiceId(), prefManager.getUseR_Id(), "2", disputeRemark, jsonArrBody);
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -256,14 +232,14 @@ public class DispatchChallanPartsListDetailsActivity extends CustomActivity impl
    /* private void submitDispatchParts(){
         if (Constants.isNetworkAvailable(mContext)) {
             isLoading();
-            inventoryViewModel.submitDispatchParts(prefManager.getUSER_Id(), model.getInvoiceId(), model.getDispatcherRemarks()).observe(this, modelInventoryResponse -> {
+            inventoryViewModel.submitDispatchParts(prefManager.getUseR_Id(), model.getInvoiceId(), model.getDispatcherRemarks()).observe(this, modelInventoryResponse -> {
                 isLoading();
                 if (modelInventoryResponse.getStatus().equals("200")) {
                     Constants.modelPartsDispatchInvoiceList = list;
                     startActivity(new Intent(mContext, DispatchChallanPDFActivity.class)
                             .putExtra("invoiceId", model.getInvoiceId())
-                            .putExtra("dispatchFrom", prefManager.getUSER_NAME())
-                            .putExtra("email", prefManager.getUSER_EMAIL())
+                            .putExtra("dispatchFrom", prefManager.getUseR_NAME())
+                            .putExtra("email", prefManager.getUseR_EMAIL())
                             .putExtra("dispatchTo", model.getDistrictNameEng())
                             .putExtra("username", model.getReciverName()));
                     finish();
@@ -305,7 +281,7 @@ public class DispatchChallanPartsListDetailsActivity extends CustomActivity impl
             }*//* else {
                 RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), String.valueOf(jsonArray));
                 APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
-                Call<ResponseBody> call = service.savePartsDispatchDetails(invoiceId, prefManager.getUSER_Id(), model.getDispatchTo(), model.getDistrictId(), "", inputRemark,"8", body);
+                Call<ResponseBody> call = service.savePartsDispatchDetails(invoiceId, prefManager.getUseR_Id(), model.getDispatchTo(), model.getDistrictId(), "", inputRemark,"8", body);
                 showProgress();
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
@@ -314,7 +290,7 @@ public class DispatchChallanPartsListDetailsActivity extends CustomActivity impl
                         if (response.isSuccessful()) {
                             if (response.code() == 200) {
                                 try {
-                                    JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
+                                    JSONObject jsonObject = new JSONObject(response.body().string());
                                     String status = jsonObject.getString("status");
                                     String message = jsonObject.getString("message");
                                     String invoiceId = jsonObject.getJSONObject("partsDispatchDetails").getString("invoiceId");
@@ -362,7 +338,7 @@ public class DispatchChallanPartsListDetailsActivity extends CustomActivity impl
             Button buttonDispatch = dialog.findViewById(R.id.buttonDispatch);
 
             invoice_id.setText(invoiceId);
-            dispatchFrom.setText(prefManager.getUSER_NAME());
+            dispatchFrom.setText(prefManager.getUseR_NAME());
             dispatchTo.setText(model.getDistrictNameEng());
             username.setText(model.getReceiverRemark());
 
@@ -412,14 +388,14 @@ public class DispatchChallanPartsListDetailsActivity extends CustomActivity impl
     private void submitDispatchParts(List<ModelDisputePartsList> disputePartsList, String inputRemark, String invoiceId) {
         if (Constants.isNetworkAvailable(mContext)) {
             isLoading();
-            inventoryViewModel.submitDispatchParts(prefManager.getUSER_Id(), invoiceId, inputRemark).observe(this, modelInventoryResponse -> {
+            inventoryViewModel.submitDispatchParts(prefManager.getUseR_Id(), invoiceId, inputRemark).observe(this, modelInventoryResponse -> {
                 isLoading();
                 if (modelInventoryResponse.getStatus().equals("200")) {
                     Constants.modelDisputePartsList = disputePartsList;
                     startActivity(new Intent(mContext, ChallanPDFActivity.class)
                             .putExtra("invoiceId", invoiceId)
-                            .putExtra("dispatchFrom", prefManager.getUSER_NAME())
-                            .putExtra("email", prefManager.getUSER_EMAIL())
+                            .putExtra("dispatchFrom", prefManager.getUseR_NAME())
+                            .putExtra("email", prefManager.getUseR_EMAIL())
                             .putExtra("dispatchTo", model.getDistrictNameEng())
                             .putExtra("username", model.getReciverName())
                             .putExtra(Constants.fromWhere, "DispatchChallanPartsListDetailsActivity"));
@@ -448,8 +424,8 @@ public class DispatchChallanPartsListDetailsActivity extends CustomActivity impl
             Constants.modelPartsDispatchInvoiceList = list;
             startActivity(new Intent(mContext, DispatchChallanPDFActivity.class)
                     .putExtra("invoiceId", model.getInvoiceId())
-                    .putExtra("dispatchFrom", prefManager.getUSER_NAME())
-                    .putExtra("email", prefManager.getUSER_EMAIL())
+                    .putExtra("dispatchFrom", prefManager.getUseR_NAME())
+                    .putExtra("email", prefManager.getUseR_EMAIL())
                     .putExtra("dispatchTo", model.getDistrictNameEng())
                     .putExtra("username", model.getReciverName())
                     .putExtra("datetime", model.getDispatchDateStr())

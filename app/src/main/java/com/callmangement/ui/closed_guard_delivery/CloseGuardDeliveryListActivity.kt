@@ -23,8 +23,8 @@ import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.callmangement.BuildConfig
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.custom.CustomActivity
 import com.callmangement.databinding.ActivityCloseGuardDeliveryListBinding
@@ -511,7 +511,7 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
         districtId: String?, fromDate: String?, toDate: String?, fpscodee: String?,
         serialno: String?
     ) {
-        if (Constants.isNetworkAvailable(mActivity)) {
+        if (Constants.isNetworkAvailable(mActivity!!)) {
             hideKeyboard(mActivity)
             showProgress()
             val USER_Id = prefManager!!.useR_Id
@@ -706,7 +706,7 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
     }
 
     private fun districtList() {
-        if (Constants.isNetworkAvailable(mActivity)) {
+        if (Constants.isNetworkAvailable(mActivity!!)) {
             hideKeyboard(mActivity)
             //    hideProgress();
             //   Utils.showCustomProgressDialogCommonForAll(mActivity, getResources().getString(R.string.please_wait));

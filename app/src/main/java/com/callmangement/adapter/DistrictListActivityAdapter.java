@@ -47,7 +47,6 @@ public class DistrictListActivityAdapter extends RecyclerView.Adapter<DistrictLi
                 holder.binding.textDistrictName.setText(model.getDistrictNameEng());
             else holder.binding.textDistrictName.setText(model.getDistrictNameHi());
         }
-
 //        holder.binding.crdItem.setOnClickListener(view -> {
 //            context.startActivity(new Intent(context, ServiceEngineerListActivity.class));
 //        });

@@ -3,8 +3,8 @@ package com.callmangement.ui.attendance
 import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.model.attendance.ModelAddLocationData
 import com.callmangement.model.attendance.ModelAddLocationList
@@ -13,7 +13,6 @@ import com.callmangement.utils.PrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Objects
 
 class AttendanceRepository(private val mContext: Context) {
     private val prefManager = PrefManager(mContext)

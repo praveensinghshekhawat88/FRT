@@ -18,8 +18,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
-import com.callmangement.Network.APIService
-import com.callmangement.Network.RetrofitInstance
+import com.callmangement.network.APIService
+import com.callmangement.network.RetrofitInstance
 import com.callmangement.R
 import com.callmangement.custom.CustomActivity
 import com.callmangement.databinding.ActivityAttendanceBinding
@@ -44,7 +44,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import java.util.Objects
 
 class AttendanceActivity : CustomActivity() {
     private var binding: ActivityAttendanceBinding? = null
@@ -262,7 +261,7 @@ class AttendanceActivity : CustomActivity() {
                 val latitudeStr = latitude.toString() + ""
                 val longitudeStr = longitude.toString() + ""
                 val address = completeAddressStr
-                val punch_in_date = DateTimeUtils.getCurrentDate()
+                val punch_in_date = DateTimeUtils.currentDate
                 val punch_in_time = punchTime
                 val latitude_out = ""
                 val longitude_out = ""
