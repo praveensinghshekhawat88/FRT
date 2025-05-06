@@ -19,13 +19,13 @@ import com.callmangement.model.complaints.ModelComplaint
 import com.callmangement.model.complaints.ModelComplaintList
 import com.callmangement.model.district.ModelDistrict
 import com.callmangement.model.district.ModelDistrictList
-import com.callmangement.support.charting.components.Legend
-import com.callmangement.support.charting.components.XAxis
-import com.callmangement.support.charting.data.BarData
-import com.callmangement.support.charting.data.BarDataSet
-import com.callmangement.support.charting.data.BarEntry
-import com.callmangement.support.charting.formatter.IndexAxisValueFormatter
-import com.callmangement.support.charting.interfaces.datasets.IBarDataSet
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.callmangement.ui.complaint.ComplaintViewModel
 import com.callmangement.utils.DateTimeUtils
 import com.callmangement.utils.PrefManager
@@ -49,6 +49,7 @@ class GraphActivity : CustomActivity() {
     private var checkDistrict = 0
     private var districtNameEng = ""
     private var district_List: MutableList<ModelDistrictList?>? = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_graph)

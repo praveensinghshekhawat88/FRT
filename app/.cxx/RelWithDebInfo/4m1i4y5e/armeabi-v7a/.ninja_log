@@ -1,0 +1,21 @@
+# ninja log v5
+1	627	768142912	CMakeFiles/e_hr.dir/native-lib.cpp.o	78653b737ee57d9e
+629	880	768142912	G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/build/intermediates/cxx/RelWithDebInfo/4m1i4y5e/obj/armeabi-v7a/libe_hr.so	fb6bc55eb3c372f1
+0	7	0	clean	d9e6f7ac77c20f4c
+0	8	0	clean	d9e6f7ac77c20f4c
+1	436	768144008	CMakeFiles/e_hr.dir/native-lib.cpp.o	78653b737ee57d9e
+436	516	768144008	G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/build/intermediates/cxx/RelWithDebInfo/4m1i4y5e/obj/armeabi-v7a/libe_hr.so	fb6bc55eb3c372f1
+0	10	0	clean	d9e6f7ac77c20f4c
+1	9	0	clean	d9e6f7ac77c20f4c
+2	546	768148523	CMakeFiles/e_hr.dir/native-lib.cpp.o	78653b737ee57d9e
+546	638	768148523	G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/build/intermediates/cxx/RelWithDebInfo/4m1i4y5e/obj/armeabi-v7a/libe_hr.so	fb6bc55eb3c372f1
+0	7	0	clean	d9e6f7ac77c20f4c
+0	7	0	clean	d9e6f7ac77c20f4c
+0	13	0	clean	d9e6f7ac77c20f4c
+0	8	0	clean	d9e6f7ac77c20f4c
+1	463	768208052	CMakeFiles/e_hr.dir/native-lib.cpp.o	78653b737ee57d9e
+464	546	768208052	G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/build/intermediates/cxx/RelWithDebInfo/4m1i4y5e/obj/armeabi-v7a/libe_hr.so	fb6bc55eb3c372f1
+0	8	0	clean	d9e6f7ac77c20f4c
+0	6	0	clean	d9e6f7ac77c20f4c
+2	444	768208523	CMakeFiles/e_hr.dir/native-lib.cpp.o	78653b737ee57d9e
+444	527	768208523	G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/build/intermediates/cxx/RelWithDebInfo/4m1i4y5e/obj/armeabi-v7a/libe_hr.so	fb6bc55eb3c372f1

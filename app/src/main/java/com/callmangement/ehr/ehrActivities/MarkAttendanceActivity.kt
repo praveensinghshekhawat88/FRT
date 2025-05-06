@@ -229,7 +229,7 @@ class MarkAttendanceActivity : BaseActivity() {
                 try {
                     binding!!.imgSelfie.setImageBitmap(
                         ImageUtilsForRotate.ensurePortrait(
-                            challanImageStoragePath
+                            challanImageStoragePath!!
                         )
                     )
                 } catch (e: NullPointerException) {
