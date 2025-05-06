@@ -1,0 +1,1 @@
+G:\Praveen\CallManagementFRTAndroid_Praveen_Personal\FRT\app\src\main\cpp\CMakeLists.txt

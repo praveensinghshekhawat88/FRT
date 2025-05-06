@@ -1,0 +1,59 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.6.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "RelWithDebInfo",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "e_hr",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "e_hr::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-e_hr-RelWithDebInfo-e0fdd9bf8d2f2068b8ef.json",
+					"name" : "e_hr",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/.cxx/RelWithDebInfo/4m1i4y5e/armeabi-v7a",
+		"source" : "G:/Praveen/CallManagementFRTAndroid_Praveen_Personal/FRT/app/src/main/cpp"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 1
+	}
+}

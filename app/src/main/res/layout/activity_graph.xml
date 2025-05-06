@@ -77,7 +77,7 @@
                             android:text="@string/complaints"
                             android:textColor="@color/black" />
 
-                        <com.callmangement.support.charting.charts.BarChart
+                        <com.github.mikephil.charting.charts.BarChart
                             android:id="@+id/barGraphTotalComplaints"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -170,7 +170,7 @@
                             android:text="@string/complaint_resolve"
                             android:textColor="@color/black" />
 
-                        <com.callmangement.support.charting.charts.BarChart
+                        <com.github.mikephil.charting.charts.BarChart
                             android:id="@+id/barGraphResolvedComplaints"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

@@ -211,9 +211,11 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
     }
 
     private fun turnOnGps() {
-        GpsUtils(mContext).turnGPSOn { isGPSEnable: Boolean ->
-            isGPS = isGPSEnable
-        }
+        GpsUtils(mContext).turnGPSOn(object : GpsUtils.onGpsListener {
+            override fun gpsStatus(isGPSEnable: Boolean) {
+                val isGPS = isGPSEnable
+            }
+        })
     }
 
     private val gpsStatus: Boolean

@@ -186,7 +186,7 @@ class MonthlyReportsActivity : CustomActivity() {
                     allPagesLoaded = false
                     fetchData()
                 }
-                .setNegativeButton { obj: AlertDialog -> obj.dismiss() }
+                .setNegativeButton { obj: AlertDialog? -> obj!!.dismiss() }
                 .show()
         }
 

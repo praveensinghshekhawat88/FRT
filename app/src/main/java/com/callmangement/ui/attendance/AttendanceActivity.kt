@@ -196,9 +196,11 @@ class AttendanceActivity : CustomActivity() {
     }
 
     private fun turnOnGps() {
-        GpsUtils(mContext).turnGPSOn { isGPSEnable: Boolean ->
-            val isGPS = isGPSEnable
-        }
+        GpsUtils(mContext).turnGPSOn(object : GpsUtils.onGpsListener {
+            override fun gpsStatus(isGPSEnable: Boolean) {
+                val isGPS = isGPSEnable
+            }
+        })
     }
 
     private fun getGPSStatus(): Boolean {

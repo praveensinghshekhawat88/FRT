@@ -67,15 +67,15 @@ import com.callmangement.ui.reset_device.ResetDeviceActivity;
 import com.callmangement.ui.training_schedule.TrainingScheduleListActivity;
 import com.callmangement.ui.training_schedule.TrainingScheduleListForSEActivity;
 import com.callmangement.utils.PrefManager;
-import com.callmangement.support.charting.animation.Easing;
-import com.callmangement.support.charting.data.Entry;
-import com.callmangement.support.charting.data.PieData;
-import com.callmangement.support.charting.data.PieDataSet;
-import com.callmangement.support.charting.data.PieEntry;
-import com.callmangement.support.charting.formatter.PercentFormatter;
-import com.callmangement.support.charting.highlight.Highlight;
-import com.callmangement.support.charting.listener.OnChartValueSelectedListener;
-import com.callmangement.support.charting.utils.MPPointF;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.callmangement.support.permissions.PermissionHandler;
 import com.callmangement.support.permissions.Permissions;
 
@@ -762,8 +762,8 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
     }
 
     private void fetchComplaintList(String districtId) {
-        String fromDate = Objects.requireNonNull(binding.textFromDate.getText()).toString().trim();
-        String toDate = Objects.requireNonNull(binding.textToDate.getText()).toString().trim();
+        String fromDate = binding.textFromDate.getText().toString().trim();
+        String toDate = binding.textToDate.getText().toString().trim();
         //isLoading();
         viewModel.getComplaintsCount(String.valueOf(prefManager.getUseR_Id()), districtId, fromDate, toDate).observe(this, modelComplaintsCount -> {
             //isLoading();
@@ -791,7 +791,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
                 if (response.isSuccessful()) {
                     ModelComplaintsCount model = response.body();
 
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (model.getStatus().equals("200")) {
                         ModelComplaintsCountData modelComplaintsCountData = model.getComplaints_Count();
                         pieChart(modelComplaintsCountData);
                         binding.textCountTotal.setText(String.valueOf(modelComplaintsCountData.getTotal()));
@@ -826,7 +826,7 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
                 hideProgress();
                 if (response.isSuccessful()) {
                     ModelComplaintsCount model = response.body();
-                    if (Objects.requireNonNull(model).getStatus().equals("200")) {
+                    if (model.getStatus().equals("200")) {
                         ModelComplaintsCountData modelComplaintsCountData = model.getComplaints_Count();
                         pieChart(modelComplaintsCountData);
                         binding.textCountTotal.setText(String.valueOf(modelComplaintsCountData.getTotal()));
@@ -853,8 +853,8 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
     }
 
     private void fetchComplaintListByDateRange(String districtId) {
-        String fromDate = Objects.requireNonNull(binding.textFromDate.getText()).toString().trim();
-        String toDate = Objects.requireNonNull(binding.textToDate.getText()).toString().trim();
+        String fromDate = binding.textFromDate.getText().toString().trim();
+        String toDate = binding.textToDate.getText().toString().trim();
         showProgress();
         APIService service = RetrofitInstance.getRetrofitInstance().create(APIService.class);
         Call<ModelComplaintsCount> call = service.getComplaintsCountDateDistrictIdWise(prefManager.getUseR_Id(), districtId, fromDate, toDate);
@@ -1086,21 +1086,16 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
         // String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
         //        , Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.CAMERA};
             //    Log.d("checkggg", "b");
-
-
         } else {
             permissions =
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
                             Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-
           //  Log.d("checkggg", "0");
         }
-
 
         String rationale = "Please provide location permission so that you can ...";
         Permissions.Options options = new Permissions.Options()
@@ -1148,7 +1143,6 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
                             onValueSelectPieWithPermission();
                     }
                 }
-
             }
 
             @Override
@@ -1250,24 +1244,17 @@ public class MainActivity extends CustomActivity implements OnChartValueSelected
             //  startActivity(ErrorPosActivity.class);
             startActivity(new Intent(mContext, ErrorPosActivity.class)
                     .putExtra("districtId", districtId));
-
         } else if (globalId == R.id.ll_installation_weiging_scale) {
-
             startActivity(WeighingScaleDashboard.class);
         } else if (globalId == R.id.lltIrisDeliveryInstallation) {
-
             startActivity(IrisDeliveryInstallationDashboard.class);
         }else if (globalId == R.id.lltClosedGuardDelivery) {
-
             startActivity(ClosedGuardDeliveryActivity.class);
         }else if (globalId == R.id.lltBiometricDeliveryDashboard) {
             startActivity(new Intent(mContext, BiometricDeliveryDashboardActivity.class)
                     .putExtra("districtId", districtId));
-
           ////  startActivity(BiometricDeliveryDashboardActivity.class);
         } else if (globalId == R.id.buttonEhr) {
-
-
             startActivity(com.callmangement.ehr.ehrActivities.MainActivity.class);
         }
     }
