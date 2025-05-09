@@ -208,7 +208,7 @@ class FeedBackReportDetail : FragmentActivity(), View.OnClickListener,
             onBackPressed()
         } //else if (id == R.id.your_button){
 
-        // startActivity(new Intent(mContext, ZoomInZoomOutActivity.class).putExtra("image", Constants.API_BASE_URL+""+model.getFilePath()));
+        // startActivity(new Intent(mContext!!, ZoomInZoomOutActivity.class).putExtra("image", Constants.API_BASE_URL+""+model.getFilePath()));
         // }
     }
 

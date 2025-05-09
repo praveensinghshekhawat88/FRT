@@ -608,7 +608,7 @@ public class ErrorPosActivity extends CustomActivity implements View.OnClickList
                     Collections.reverse(district_List);
                     ModelDistrictList l = new ModelDistrictList();
                     l.setDistrictId(String.valueOf(-1));
-                    l.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
+                    l.districtNameEng = "--" + getResources().getString(R.string.district) + "--";
                     district_List.add(l);
                     Collections.reverse(district_List);
                     ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, district_List);

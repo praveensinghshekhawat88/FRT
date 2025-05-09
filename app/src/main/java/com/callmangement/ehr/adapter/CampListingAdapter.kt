@@ -43,7 +43,7 @@ class CampListingAdapter(
         holder: MyViewHolder, @SuppressLint("RecyclerView") position: Int
     ) {
         val campDetailsInfo = campDetailsInfoList!![position]
-        holder.txtStatus.setTextColor(mContext.resources.getColor(R.color.teal_200))
+        holder.txtStatus.setTextColor(mContext!!.resources.getColor(R.color.teal_200))
         if (campDetailsInfo.tstatusId != null && campDetailsInfo.tstatusId.equals(
                 "1", ignoreCase = true
             )
@@ -72,7 +72,7 @@ class CampListingAdapter(
                 Constants.CAMP_STATUS_ID_COMPLETED, ignoreCase = true
             )
         ) {
-            holder.txtStatus.setTextColor(mContext.resources.getColor(R.color.colorGreen))
+            holder.txtStatus.setTextColor(mContext!!.resources.getColor(R.color.colorGreen))
         }
         if (campDetailsInfo.districtNameEng != null) holder.district.text =
             campDetailsInfo.districtNameEng
@@ -93,7 +93,7 @@ class CampListingAdapter(
                 Constants.CAMP_STATUS_ID_INITIATED, ignoreCase = true
             )
         ) {
-            val preference = PrefManager(mContext)
+            val preference = PrefManager(mContext!!)
             val USER_TYPE = preference.useR_TYPE
             val USER_TYPE_ID = preference.useR_TYPE_ID
             if (USER_TYPE_ID == "4" && USER_TYPE.equals("ServiceEngineer", ignoreCase = true)) {
@@ -107,7 +107,7 @@ class CampListingAdapter(
                 Constants.CAMP_STATUS_ID_ORGANISED, ignoreCase = true
             )
         ) {
-            val preference = PrefManager(mContext)
+            val preference = PrefManager(mContext!!)
             val USER_TYPE = preference.useR_TYPE
             val USER_TYPE_ID = preference.useR_TYPE_ID
             if (USER_TYPE_ID == "4" && USER_TYPE.equals("ServiceEngineer", ignoreCase = true)) {

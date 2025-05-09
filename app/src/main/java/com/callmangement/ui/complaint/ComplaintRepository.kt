@@ -31,7 +31,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 class ComplaintRepository(private val mContext: Context) {
-    private val prefManager = PrefManager(mContext)
+    private val prefManager = PrefManager(mContext!!)
     @JvmField
     val isLoading: MutableLiveData<Boolean> = MutableLiveData()
     private val mutableLiveData = MutableLiveData<ModelComplaint?>()
@@ -66,13 +66,13 @@ class ComplaintRepository(private val mContext: Context) {
                     if (model!!.status == "200") {
                         mutableLiveData.setValue(model)
                     } else {
-                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext!!, model.message, Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     isLoading.setValue(false)
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -81,8 +81,8 @@ class ComplaintRepository(private val mContext: Context) {
             override fun onFailure(call: Call<ModelComplaint?>, t: Throwable) {
                 isLoading.value = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -232,13 +232,13 @@ class ComplaintRepository(private val mContext: Context) {
 //                        }
                     } else {
                         modelComplaintMutableLiveData.value = model
-                        Toast.makeText(mContext, model!!.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext!!, model!!.message, Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     isLoading.setValue(false)
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -247,8 +247,8 @@ class ComplaintRepository(private val mContext: Context) {
             override fun onFailure(call: Call<ModelComplaint?>, t: Throwable) {
                 isLoading.value = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
                 Log.d("error----", "is" + t.message)
@@ -301,13 +301,13 @@ class ComplaintRepository(private val mContext: Context) {
                         val modelComplaintList1 = model.complaint_List
                         modelComplaintMutableLiveData.setValue(model)
                     } else {
-                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext!!, model.message, Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     isLoading.setValue(false)
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -316,8 +316,8 @@ class ComplaintRepository(private val mContext: Context) {
             override fun onFailure(call: Call<ModelComplaint?>, t: Throwable) {
                 isLoading.value = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
                 Log.d("error----", "is" + t.message)
@@ -362,13 +362,13 @@ class ComplaintRepository(private val mContext: Context) {
                     if (model!!.status == "200") {
                         modelChallanUploadComplaintMutableLiveData.setValue(model)
                     } else {
-                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext!!, model.message, Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     isLoading.setValue(false)
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -377,8 +377,8 @@ class ComplaintRepository(private val mContext: Context) {
             override fun onFailure(call: Call<ModelChallanUploadComplaint?>, t: Throwable) {
                 isLoading.value = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
                 Log.d("error----", "is" + t.message)
@@ -415,13 +415,13 @@ class ComplaintRepository(private val mContext: Context) {
                         val modelComplaintList = model.complaint_List
                         modelChallanUploadComplaintMutableLiveData.setValue(model)
                     } else {
-                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext!!, model.message, Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     isLoading.setValue(false)
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -430,8 +430,8 @@ class ComplaintRepository(private val mContext: Context) {
             override fun onFailure(call: Call<ModelChallanUploadComplaint?>, t: Throwable) {
                 isLoading.value = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
                 Log.d("error----", "is" + t.message)
@@ -464,13 +464,13 @@ class ComplaintRepository(private val mContext: Context) {
                     if (model!!.status == "200") {
                         mutableSLAReportData.setValue(model)
                     } else {
-                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext!!, model.message, Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     isLoading.setValue(false)
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -479,8 +479,8 @@ class ComplaintRepository(private val mContext: Context) {
             override fun onFailure(call: Call<ModelSLAReport?>, t: Throwable) {
                 isLoading.value = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -513,13 +513,13 @@ class ComplaintRepository(private val mContext: Context) {
                     if (model!!.status == "200") {
                         mutableSLAReportDetailsData.setValue(model)
                     } else {
-                        Toast.makeText(mContext, model.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext!!, model.message, Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     isLoading.setValue(false)
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -528,8 +528,8 @@ class ComplaintRepository(private val mContext: Context) {
             override fun onFailure(call: Call<ModelSLAReportDetails?>, t: Throwable) {
                 isLoading.value = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -564,7 +564,7 @@ class ComplaintRepository(private val mContext: Context) {
         if (DSO_LETTER_TYPE == "IMAGE") {
             dso_body = MultipartRequester.fromFile("DamageApprovalLetter", damageApprovalLetter)
         } else if (DSO_LETTER_TYPE == "PDF") {
-            val file = getFileFromUri(mContext, Uri.parse(damageApprovalLetter))
+            val file = getFileFromUri(mContext!!, Uri.parse(damageApprovalLetter))
             val requestFile = RequestBody.create(
                 "multipart/form-data".toMediaTypeOrNull(),
                 file!!
@@ -605,13 +605,13 @@ class ComplaintRepository(private val mContext: Context) {
                         modelResolveComplaintMutableLiveData.setValue(model)
                     } else {
                         modelResolveComplaintMutableLiveData.setValue(model)
-                        //    Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(mContext!!, model.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     isLoading.setValue(false)
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -620,8 +620,8 @@ class ComplaintRepository(private val mContext: Context) {
             override fun onFailure(call: Call<ModelResolveComplaint?>, t: Throwable) {
                 isLoading.setValue(false)
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -662,13 +662,13 @@ class ComplaintRepository(private val mContext: Context) {
                     } else {
                         modelResolveComplaintMutableLiveData.setValue(model)
 
-                        //    Toast.makeText(mContext, model.getMessage(), Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(mContext!!, model.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     isLoading.setValue(false)
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -677,8 +677,8 @@ class ComplaintRepository(private val mContext: Context) {
             override fun onFailure(call: Call<ModelResolveComplaint?>, t: Throwable) {
                 isLoading.value = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -803,13 +803,13 @@ class ComplaintRepository(private val mContext: Context) {
 //                            modelTehsilMutableLiveData.setValue(modelTehsil);
 //                        }
                     } else {
-                        Toast.makeText(mContext, modelTehsil!!.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext!!, modelTehsil!!.message, Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     isLoading.setValue(false)
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -818,8 +818,8 @@ class ComplaintRepository(private val mContext: Context) {
             override fun onFailure(call: Call<ModelTehsil?>, t: Throwable) {
                 isLoading.value = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -844,13 +844,13 @@ class ComplaintRepository(private val mContext: Context) {
                     if (modelTehsil!!.status == "200") {
                         modelDistrictMutableLiveData.setValue(modelTehsil)
                     } else {
-                        Toast.makeText(mContext, modelTehsil!!.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext!!, modelTehsil!!.message, Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     isLoading.setValue(false)
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -859,8 +859,8 @@ class ComplaintRepository(private val mContext: Context) {
             override fun onFailure(call: Call<ModelDistrict?>, t: Throwable) {
                 isLoading.value = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -891,13 +891,13 @@ class ComplaintRepository(private val mContext: Context) {
                     if (model!!.status == "200") {
                         modelComplaintsCountMutableLiveData.setValue(model)
                     } else {
-                        Toast.makeText(mContext, model!!.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext!!, model!!.message, Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     isLoading.setValue(false)
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -906,8 +906,8 @@ class ComplaintRepository(private val mContext: Context) {
             override fun onFailure(call: Call<ModelComplaintsCount?>, t: Throwable) {
                 isLoading.value = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
             }

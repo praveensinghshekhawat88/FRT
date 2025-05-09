@@ -36,8 +36,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ClosedGuardDetailActivity : CustomActivity(), View.OnClickListener {
-    private var binding: ActivityClosedGuardDetailBinding? = null
 
+    
+    private var binding: ActivityClosedGuardDetailBinding? = null
     //private ModelExpensesList model;
     private var model: ClosedGuardDeliveryListResponse.Datum? = null
     var preference: PrefManager? = null
@@ -53,7 +54,6 @@ class ClosedGuardDetailActivity : CustomActivity(), View.OnClickListener {
     private var adapter: ViewImageInstalledDetailsAdapterIris? = null
     private var adapterSec: ViewImageInstalledDetailsAdapterIris? = null
     var mActivity: Activity? = null
-    var mContext: Context? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +69,7 @@ class ClosedGuardDetailActivity : CustomActivity(), View.OnClickListener {
     private fun initView() {
         mActivity = this
         mContext = this
-        preference = PrefManager(mContext)
+        preference = PrefManager(mContext!!)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.textToolbarTitle.text =
             resources.getString(R.string.closed_guard_detail)
@@ -119,12 +119,12 @@ class ClosedGuardDetailActivity : CustomActivity(), View.OnClickListener {
         binding!!.intputIrisModel.text = model!!.deviceModelName
         binding!!.inputaddress.text = model!!.closeGuardDeliveryAddress
 
-        Glide.with(mContext)
+        Glide.with(mContext!!)
             .load(model!!.cgphotoPath)
             .placeholder(R.drawable.image_not_fount)
             .into(binding!!.imgDealer)
 
-        Glide.with(mContext)
+        Glide.with(mContext!!)
             .load(model!!.cgsignaturePath)
             .placeholder(R.drawable.image_not_fount)
             .into(binding!!.imgSign)
@@ -132,7 +132,7 @@ class ClosedGuardDetailActivity : CustomActivity(), View.OnClickListener {
         binding!!.imgDealer.setOnClickListener {
             startActivity(
                 Intent(
-                    mContext,
+                    mContext!!,
                     ZoomInZoomOutActivity::class.java
                 ).putExtra("image", model!!.cgphotoPath)
             )
@@ -141,7 +141,7 @@ class ClosedGuardDetailActivity : CustomActivity(), View.OnClickListener {
         binding!!.imgSign.setOnClickListener {
             startActivity(
                 Intent(
-                    mContext,
+                    mContext!!,
                     ZoomInZoomOutActivity::class.java
                 ).putExtra("image", model!!.cgsignaturePath)
             )
@@ -170,7 +170,7 @@ class ClosedGuardDetailActivity : CustomActivity(), View.OnClickListener {
             binding.buttonComplete.setVisibility(View.GONE);
         }*/
         /*
-        Glide.with(mContext)
+        Glide.with(mContext!!)
                 .load(Constants.API_BASE_URL+""+model.getFilePath())
                 .placeholder(R.drawable.image_not_fount)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -421,11 +421,11 @@ class ClosedGuardDetailActivity : CustomActivity(), View.OnClickListener {
             onBackPressed()
         } // else if (id == R.id.ivChallanImage){
 
-        //    startActivity(new Intent(mContext, ZoomInZoomOutActivity.class).putExtra("image", Constants.API_BASE_URL+""+model.getFilePath()));
+        //    startActivity(new Intent(mContext!!, ZoomInZoomOutActivity.class).putExtra("image", Constants.API_BASE_URL+""+model.getFilePath()));
         //    }
     }
 
-    override fun makeToast(string: String) {
+    override fun makeToast(string: String?) {
         if (TextUtils.isEmpty(string)) return
         Toast.makeText(mActivity, string, Toast.LENGTH_SHORT).show()
     }

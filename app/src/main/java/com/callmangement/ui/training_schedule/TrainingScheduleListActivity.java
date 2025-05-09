@@ -133,7 +133,7 @@ public class TrainingScheduleListActivity extends CustomActivity implements View
                     Collections.reverse(district_List);
                     ModelDistrictList l = new ModelDistrictList();
                     l.setDistrictId(String.valueOf(-1));
-                    l.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
+                    l.districtNameEng = "--" + getResources().getString(R.string.district) + "--";
                     district_List.add(l);
                     Collections.reverse(district_List);
                     ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, district_List);
@@ -161,7 +161,7 @@ public class TrainingScheduleListActivity extends CustomActivity implements View
                                 Collections.reverse(tehsil_list);
                                 ModelTehsilList l = new ModelTehsilList();
                                 l.setTehsilId(String.valueOf(-1));
-                                l.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+                                l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
                                 tehsil_list.add(l);
                                 Collections.reverse(tehsil_list);
                                 ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, tehsil_list);
@@ -219,7 +219,7 @@ public class TrainingScheduleListActivity extends CustomActivity implements View
             Collections.reverse(tehsil_list);
             ModelTehsilList l = new ModelTehsilList();
             l.setTehsilId(String.valueOf(-1));
-            l.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+            l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
             tehsil_list.add(l);
             Collections.reverse(tehsil_list);
             ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, tehsil_list);
@@ -230,14 +230,14 @@ public class TrainingScheduleListActivity extends CustomActivity implements View
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     if(++checkDistrict > 1) {
-                        districtNameEng = district_List.get(i).getDistrictNameEng();
+                        districtNameEng = district_List.get(i).districtNameEng;
                         districtId = district_List.get(i).getDistrictId();
                         if (districtNameEng.equalsIgnoreCase("--"+getResources().getString(R.string.district)+"--")) {
                             tehsil_list.clear();
                             Collections.reverse(tehsil_list);
                             ModelTehsilList list = new ModelTehsilList();
                             list.setTehsilId(String.valueOf(-1));
-                            list.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+                            list.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
                             tehsil_list.add(list);
                             Collections.reverse(tehsil_list);
                             ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, tehsil_list);
@@ -259,7 +259,7 @@ public class TrainingScheduleListActivity extends CustomActivity implements View
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     if(++checkTehsil > 1) {
-                        tehsilNameEng = tehsil_list.get(i).getTehsilNameEng();
+                        tehsilNameEng = tehsil_list.get(i).tehsilNameEng;
                         tehsilId = tehsil_list.get(i).getTehsilId();
                     }
                 }

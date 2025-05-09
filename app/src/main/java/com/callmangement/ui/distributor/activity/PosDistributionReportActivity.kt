@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
@@ -52,6 +53,8 @@ import java.util.Date
 import java.util.Locale
 
 class PosDistributionReportActivity : CustomActivity(), View.OnClickListener {
+
+    
     private var binding: ActivityPosDistributionReportBinding? = null
     private var prefManager: PrefManager? = null
     private var viewModel: ComplaintViewModel? = null
@@ -83,7 +86,9 @@ class PosDistributionReportActivity : CustomActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        prefManager = PrefManager(mContext)
+
+        mContext = this
+        prefManager = PrefManager(mContext!!)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -252,7 +257,7 @@ class PosDistributionReportActivity : CustomActivity(), View.OnClickListener {
                     l: Long
                 ) {
                     if (++checkDistrict > 1) {
-                        districtId = district_List!![i]!!.districtId
+                        districtId = district_List!![i]!!.districtId!!
                         getReportList(districtId, fromDate, toDate, fpscodee, ticketNumber)
                     }
                 }
@@ -363,7 +368,7 @@ class PosDistributionReportActivity : CustomActivity(), View.OnClickListener {
                     district_List!!.add(l)
                     Collections.reverse(district_List)
                     val dataAdapter = ArrayAdapter(
-                        mContext, android.R.layout.simple_spinner_item,
+                        mContext!!, android.R.layout.simple_spinner_item,
                         district_List!!
                     )
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -380,7 +385,7 @@ class PosDistributionReportActivity : CustomActivity(), View.OnClickListener {
         fpscodee: String?,
         ticketNumber: String?
     ) {
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             showProgress()
             val service = RetrofitInstance.getRetrofitInstance().create(
                 APIService::class.java
@@ -480,8 +485,8 @@ class PosDistributionReportActivity : CustomActivity(), View.OnClickListener {
             binding!!.recyclerView.visibility = View.VISIBLE
             binding!!.tvNoDataFound.visibility = View.GONE
             binding!!.recyclerView.layoutManager =
-                LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
-            binding!!.recyclerView.adapter = PosDistributionReportActivityAdapter(mContext, list)
+                LinearLayoutManager(mContext!!, LinearLayoutManager.VERTICAL, false)
+            binding!!.recyclerView.adapter = PosDistributionReportActivityAdapter(mContext!!, list)
             binding!!.textTotalCount.text = "" + list.size
         } else {
             binding!!.recyclerView.visibility = View.GONE
@@ -491,7 +496,7 @@ class PosDistributionReportActivity : CustomActivity(), View.OnClickListener {
     }
 
     fun uploadImage(fpsCode: String?, tranId: String?, districtId: String?, flagType: String?) {
-        val intent = Intent(mContext, UploadPhotoActivity::class.java)
+        val intent = Intent(mContext!!, UploadPhotoActivity::class.java)
         intent.putExtra("fps_code", fpsCode)
         intent.putExtra("tran_id", tranId)
         intent.putExtra("district_id", districtId)
@@ -502,7 +507,7 @@ class PosDistributionReportActivity : CustomActivity(), View.OnClickListener {
     fun posDistributionFormView(model: PosDistributionDetail?) {
         startActivity(
             Intent(
-                mContext,
+                mContext!!,
                 PosDistributionFormViewActivity::class.java
             ).putExtra("param", model)
         )
@@ -527,7 +532,7 @@ class PosDistributionReportActivity : CustomActivity(), View.OnClickListener {
                     updateLabelFromDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateFromDate,
+                mContext!!, dateFromDate,
                 myCalendarFromDate[Calendar.YEAR],
                 myCalendarFromDate[Calendar.MONTH],
                 myCalendarFromDate[Calendar.DAY_OF_MONTH]
@@ -544,7 +549,7 @@ class PosDistributionReportActivity : CustomActivity(), View.OnClickListener {
                     updateLabelToDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateToDate,
+                mContext!!, dateToDate,
                 myCalendarToDate[Calendar.YEAR],
                 myCalendarToDate[Calendar.MONTH],
                 myCalendarToDate[Calendar.DAY_OF_MONTH]
@@ -553,14 +558,14 @@ class PosDistributionReportActivity : CustomActivity(), View.OnClickListener {
             datePickerDialog.show()
         } else if (id == R.id.buttonPDF) {
             if (Constants.posDistributionDetailsList != null && Constants.posDistributionDetailsList!!.size > 0) {
-                startActivity(Intent(mContext, DistributedStatusReportPdfActivity::class.java))
+                startActivity(Intent(mContext!!, DistributedStatusReportPdfActivity::class.java))
                 finish()
             }
         } else if (id == R.id.buttonEXCEL) {
             if (Constants.posDistributionDetailsList != null && Constants.posDistributionDetailsList!!.size > 0) {
                 ExcelformTable()
             } else {
-                Toast.makeText(mContext, "No Data Found", Toast.LENGTH_SHORT).show()
+                Toast.makeText(mContext!!, "No Data Found", Toast.LENGTH_SHORT).show()
             }
         }
     }

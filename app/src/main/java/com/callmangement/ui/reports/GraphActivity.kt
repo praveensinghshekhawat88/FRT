@@ -1,5 +1,6 @@
 package com.callmangement.ui.reports
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -39,6 +40,8 @@ import java.util.Collections
 import java.util.Locale
 
 class GraphActivity : CustomActivity() {
+
+    
     private var binding: ActivityGraphBinding? = null
     private var prefManager: PrefManager? = null
     private var viewModel: ComplaintViewModel? = null
@@ -53,6 +56,9 @@ class GraphActivity : CustomActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_graph)
+
+        mContext = this
+
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -60,7 +66,7 @@ class GraphActivity : CustomActivity() {
         viewModel = ViewModelProviders.of(this).get(
             ComplaintViewModel::class.java
         )
-        prefManager = PrefManager(mContext)
+        prefManager = PrefManager(mContext!!)
         if (prefManager!!.useR_TYPE_ID == "4" && prefManager!!.useR_TYPE.equals(
                 "ServiceEngineer",
                 ignoreCase = true
@@ -93,8 +99,8 @@ class GraphActivity : CustomActivity() {
                     l: Long
                 ) {
                     if (++checkDistrict > 1) {
-                        districtNameEng = district_List!![i]!!.districtNameEng
-                        districtId = district_List!![i]!!.districtId
+                        districtNameEng = district_List!![i]!!.districtNameEng!!
+                        districtId = district_List!![i]!!.districtId!!
                         if (districtNameEng.equals(
                                 "--" + resources.getString(R.string.district) + "--",
                                 ignoreCase = true
@@ -352,7 +358,7 @@ class GraphActivity : CustomActivity() {
 
                     val dataAdapter =
                         ArrayAdapter(
-                            mContext, android.R.layout.simple_spinner_item,
+                            mContext!!, android.R.layout.simple_spinner_item,
                             district_List!!
                         )
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

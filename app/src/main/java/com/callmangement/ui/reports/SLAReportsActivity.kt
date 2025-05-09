@@ -1,6 +1,7 @@
 package com.callmangement.ui.reports
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -32,6 +33,8 @@ import java.util.Locale
 import java.util.Objects
 
 class SLAReportsActivity : CustomActivity() {
+
+    
     private var binding: ActivitySlaReportsBinding? = null
     private var sla_reports_infoArrayList: MutableList<SLA_Reports_Info>? = ArrayList()
     private var prefManager: PrefManager? = null
@@ -44,7 +47,9 @@ class SLAReportsActivity : CustomActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sla_reports)
-        prefManager = PrefManager(mContext)
+
+        mContext = this
+        prefManager = PrefManager(mContext!!)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -95,7 +100,7 @@ class SLAReportsActivity : CustomActivity() {
         binding!!.actionBar.buttonPDF.setOnClickListener { view: View? ->
             if (sla_reports_infoArrayList != null && sla_reports_infoArrayList!!.size > 0) {
                 startActivity(
-                    Intent(mContext, SLAReportPdfActivity::class.java)
+                    Intent(mContext!!, SLAReportPdfActivity::class.java)
                         .putExtra("param", sla_reports_infoArrayList as Serializable?)
                         .putExtra("ResolveInDays", adapter!!.days)
                         .putExtra("title", "SLA SUMMARY REPORT")
@@ -105,7 +110,7 @@ class SLAReportsActivity : CustomActivity() {
                 )
             } else {
                 Toast.makeText(
-                    mContext,
+                    mContext!!,
                     resources.getString(R.string.no_record_found_to_export_pdf),
                     Toast.LENGTH_SHORT
                 ).show()
@@ -120,7 +125,7 @@ class SLAReportsActivity : CustomActivity() {
         }
 
         if (daysList.size > 0) {
-            val dataAdapter = ArrayAdapter(mContext, R.layout.spinner_item, daysList)
+            val dataAdapter = ArrayAdapter(mContext!!, R.layout.spinner_item, daysList)
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding!!.spinnerDays.adapter = dataAdapter
         }

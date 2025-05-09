@@ -1,6 +1,7 @@
 package com.callmangement.ui.complaint
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
@@ -42,7 +43,9 @@ import java.util.Collections
 import java.util.Locale
 
 class ComplaintPendingListActivity : CustomActivity() {
+
     private var binding: ActivityComplaintPendingListBinding? = null
+    
     private val REQUEST_CODE = 1
     private var adapter: ComplaintPendingListActivityAdapter? = null
     private var prefManager: PrefManager? = null
@@ -80,6 +83,9 @@ class ComplaintPendingListActivity : CustomActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_complaint_pending_list)
+
+        mContext = this
+
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -93,7 +99,7 @@ class ComplaintPendingListActivity : CustomActivity() {
         filterType = intent.getStringExtra("filter_type")
         tehsil_List_main = intent.getSerializableExtra("tehsil_list") as List<ModelTehsilList?>?
         districtList = intent.getSerializableExtra("district_list") as List<ModelDistrictList>?
-        prefManager = PrefManager(mContext)
+        prefManager = PrefManager(mContext!!)
         binding!!.textNoComplaint.visibility = View.GONE
         tehsilNameEng = "--" + resources.getString(R.string.tehsil) + "--"
         districtNameEng = "--" + resources.getString(R.string.district) + "--"
@@ -122,7 +128,7 @@ class ComplaintPendingListActivity : CustomActivity() {
                 tehsilList.add(l)
                 Collections.reverse(tehsilList)
 
-                val dataAdapter = ArrayAdapter(mContext, R.layout.spinner_item, tehsilList)
+                val dataAdapter = ArrayAdapter(mContext!!, R.layout.spinner_item, tehsilList)
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding!!.spinnerTehsil.adapter = dataAdapter
             }
@@ -141,7 +147,7 @@ class ComplaintPendingListActivity : CustomActivity() {
                 tehsilList.add(l)
                 Collections.reverse(tehsilList)
 
-                val dataAdapter = ArrayAdapter(mContext, R.layout.spinner_item, tehsilList)
+                val dataAdapter = ArrayAdapter(mContext!!, R.layout.spinner_item, tehsilList)
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding!!.spinnerTehsil.adapter = dataAdapter
             }
@@ -155,7 +161,7 @@ class ComplaintPendingListActivity : CustomActivity() {
             updateTehsilByDistrictId(districtId!!)
             if (districtList != null && districtList!!.size > 0) {
                 val dataAdapter = ArrayAdapter(
-                    mContext, R.layout.spinner_item,
+                    mContext!!, R.layout.spinner_item,
                     districtList!!
                 )
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -179,7 +185,7 @@ class ComplaintPendingListActivity : CustomActivity() {
             updateTehsilByDistrictId(districtId!!)
             if (districtList != null && districtList!!.size > 0) {
                 val dataAdapter = ArrayAdapter(
-                    mContext, R.layout.spinner_item,
+                    mContext!!, R.layout.spinner_item,
                     districtList!!
                 )
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -203,7 +209,7 @@ class ComplaintPendingListActivity : CustomActivity() {
             updateTehsilByDistrictId(districtId!!)
             if (districtList != null && districtList!!.size > 0) {
                 val dataAdapter = ArrayAdapter(
-                    mContext, R.layout.spinner_item,
+                    mContext!!, R.layout.spinner_item,
                     districtList!!
                 )
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -271,7 +277,7 @@ class ComplaintPendingListActivity : CustomActivity() {
                     l: Long
                 ) {
                     if (++checkTehsil > 1) {
-                        tehsilNameEng = tehsilList[i]!!.tehsilNameEng
+                        tehsilNameEng = tehsilList[i]!!.tehsilNameEng!!
                         setDataIntoAdapterByTehsil(tehsilNameEng)
                     }
                 }
@@ -290,7 +296,7 @@ class ComplaintPendingListActivity : CustomActivity() {
                 ) {
                     checkTehsil = 0
                     if (++checkDistrict > 1) {
-                        districtNameEng = districtList!![i].districtNameEng
+                        districtNameEng = districtList!![i].districtNameEng!!
                         districtId = districtList!![i].districtId
                         // updateTehsilByDistrict(districtNameEng);
                     }
@@ -473,7 +479,7 @@ class ComplaintPendingListActivity : CustomActivity() {
             tehsilList.add(l)
             Collections.reverse(tehsilList)
 
-            val dataAdapter = ArrayAdapter(mContext, R.layout.spinner_item, tehsilList)
+            val dataAdapter = ArrayAdapter(mContext!!, R.layout.spinner_item, tehsilList)
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding!!.spinnerTehsil.adapter = dataAdapter
         }
@@ -505,7 +511,7 @@ class ComplaintPendingListActivity : CustomActivity() {
             tehsilList.add(l)
             Collections.reverse(tehsilList)
 
-            val dataAdapter = ArrayAdapter(mContext, R.layout.spinner_item, tehsilList)
+            val dataAdapter = ArrayAdapter(mContext!!, R.layout.spinner_item, tehsilList)
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding!!.spinnerTehsil.adapter = dataAdapter
         }
@@ -771,14 +777,13 @@ class ComplaintPendingListActivity : CustomActivity() {
         binding!!.textFromDate.setOnClickListener {
             val dateFromDate =
                 OnDateSetListener { view1: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
-                    myCalendarFromDate[Calendar.YEAR] =
-                        year
+                    myCalendarFromDate[Calendar.YEAR] = year
                     myCalendarFromDate[Calendar.MONTH] = monthOfYear
                     myCalendarFromDate[Calendar.DAY_OF_MONTH] = dayOfMonth
                     updateLabelFromDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateFromDate,
+                mContext!!, dateFromDate,
                 myCalendarFromDate[Calendar.YEAR],
                 myCalendarFromDate[Calendar.MONTH],
                 myCalendarFromDate[Calendar.DAY_OF_MONTH]
@@ -800,7 +805,7 @@ class ComplaintPendingListActivity : CustomActivity() {
                     updateLabelToDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateToDate,
+                mContext!!, dateToDate,
                 myCalendarToDate[Calendar.YEAR],
                 myCalendarToDate[Calendar.MONTH],
                 myCalendarToDate[Calendar.DAY_OF_MONTH]
@@ -866,7 +871,7 @@ class ComplaintPendingListActivity : CustomActivity() {
                         setDataIntoAdapter(modelComplaintList)
                         isLoading = false
                         Toast.makeText(
-                            mContext,
+                            mContext!!,
                             if (model != null) model.message else "No data",
                             Toast.LENGTH_SHORT
                         ).show()
@@ -875,8 +880,8 @@ class ComplaintPendingListActivity : CustomActivity() {
                     hideProgress()
                     isLoading = false
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -886,8 +891,8 @@ class ComplaintPendingListActivity : CustomActivity() {
                 hideProgress()
                 isLoading = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
                 Log.d("error----", "is" + t.message)

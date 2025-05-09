@@ -1,6 +1,7 @@
 package com.callmangement.ui.attendance
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -17,6 +18,8 @@ import com.callmangement.utils.EqualSpacingItemDecoration
 import com.callmangement.utils.PrefManager
 
 class LocationListActivity : CustomActivity() {
+
+    
     var binding: ActivityLocationListBinding? = null
     private var adapter: LocationListActivityAdapter? = null
     private var model: ModelAttendanceData? = null
@@ -28,7 +31,8 @@ class LocationListActivity : CustomActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_location_list)
-        prefManager = PrefManager(mContext)
+        mContext = this
+        prefManager = PrefManager(mContext!!)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -55,10 +59,10 @@ class LocationListActivity : CustomActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initView() {
-        adapter = LocationListActivityAdapter(mContext, model)
+        adapter = LocationListActivityAdapter(mContext!!, model)
         adapter!!.notifyDataSetChanged()
         binding!!.rvLocation.layoutManager =
-            LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(mContext!!, LinearLayoutManager.VERTICAL, false)
         binding!!.rvLocation.addItemDecoration(
             EqualSpacingItemDecoration(
                 30,

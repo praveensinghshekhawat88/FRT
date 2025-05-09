@@ -32,7 +32,7 @@ import kotlin.math.sqrt
 
 class GetLocation @SuppressLint("MissingPermission") constructor(private val mContext: Context) {
     private var mLocationRequest: LocationRequest? = null
-    private val prefManager = PrefManager(mContext)
+    private val prefManager = PrefManager(mContext!!)
 
     fun build() {
         createLocationRequest()
@@ -54,12 +54,12 @@ class GetLocation @SuppressLint("MissingPermission") constructor(private val mCo
     }
 
     fun initializeTimerTask(builder: LocationSettingsRequest.Builder) {
-        val result = LocationServices.getSettingsClient(Objects.requireNonNull(mContext))
+        val result = LocationServices.getSettingsClient(Objects.requireNonNull(mContext!!))
             .checkLocationSettings(builder.build())
         result.addOnCompleteListener { task: Task<LocationSettingsResponse?>? ->
             try {
                 val locationManager =
-                    mContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                    mContext!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     location
                 } else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
@@ -67,9 +67,9 @@ class GetLocation @SuppressLint("MissingPermission") constructor(private val mCo
                 } else {
                     val runnable = Runnable {
                         if (MyDialog.alertD == null || !MyDialog.alertD!!.isShowing) {
-                            val intent = Intent(mContext, MyDialog::class.java)
+                            val intent = Intent(mContext!!, MyDialog::class.java)
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            mContext.startActivity(intent)
+                            mContext!!.startActivity(intent)
                         }
                     }
                     val handler = Handler()
@@ -86,7 +86,7 @@ class GetLocation @SuppressLint("MissingPermission") constructor(private val mCo
         get() {
             val mFusedLocationClient =
                 LocationServices.getFusedLocationProviderClient(
-                    Objects.requireNonNull(mContext)
+                    Objects.requireNonNull(mContext!!)
                 )
             val location =
                 mFusedLocationClient.lastLocation
@@ -173,7 +173,7 @@ class GetLocation @SuppressLint("MissingPermission") constructor(private val mCo
 
     private fun updateCityAndPincode(latitude: Double, longitude: Double) {
         try {
-            val gcd = Geocoder(mContext, Locale.getDefault())
+            val gcd = Geocoder(mContext!!, Locale.getDefault())
             val addresses = gcd.getFromLocation(latitude, longitude, 1)
             if (addresses!!.size > 0) {
                 val add1 = "" + addresses[0].getAddressLine(0)
@@ -188,7 +188,7 @@ class GetLocation @SuppressLint("MissingPermission") constructor(private val mCo
 
     private fun saveLocation(address: String, latitude: Double, longitude: Double) {
         //Log.e("location","latitude - "+latitude +", longitude - "+longitude+", address - "+ address);
-        DbController(mContext).insertLocation(
+        DbController(mContext!!).insertLocation(
             prefManager.useR_Id,
             prefManager.useR_DistrictId,
             latitude.toString(),

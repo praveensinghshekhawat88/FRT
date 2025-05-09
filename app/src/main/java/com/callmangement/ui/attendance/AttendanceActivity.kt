@@ -46,7 +46,9 @@ import java.util.Date
 import java.util.Locale
 
 class AttendanceActivity : CustomActivity() {
+
     private var binding: ActivityAttendanceBinding? = null
+    
     private var AddDate = ""
     private var AddTime = ""
     private var punchTime = ""
@@ -63,6 +65,8 @@ class AttendanceActivity : CustomActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_attendance)
+
+        mContext = this
         binding!!.actionBar.ivBack.visibility = View.GONE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -124,11 +128,11 @@ class AttendanceActivity : CustomActivity() {
         val options = Permissions.Options()
             .setRationaleDialogTitle("Info")
             .setSettingsDialogTitle("Warning")
-        Permissions.check(mContext, permissions, rationale, options, object : PermissionHandler() {
+        Permissions.check(mContext!!, permissions, rationale, options, object : PermissionHandler() {
             override fun onGranted() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     val backgroundLocationPermissionApproved = ActivityCompat.checkSelfPermission(
-                        mContext,
+                        mContext!!,
                         Manifest.permission.ACCESS_BACKGROUND_LOCATION
                     )
                     if (backgroundLocationPermissionApproved != 0) Handler(Looper.getMainLooper()).postDelayed(
@@ -140,7 +144,7 @@ class AttendanceActivity : CustomActivity() {
                     }
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     val backgroundLocationPermissionApproved = ActivityCompat.checkSelfPermission(
-                        mContext,
+                        mContext!!,
                         Manifest.permission.ACCESS_BACKGROUND_LOCATION
                     )
                     if (backgroundLocationPermissionApproved != 0) Handler(Looper.getMainLooper()).postDelayed(
@@ -157,13 +161,13 @@ class AttendanceActivity : CustomActivity() {
             }
 
             override fun onDenied(context: Context, deniedPermissions: ArrayList<String>) {
-                Toast.makeText(mContext, "Permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(mContext!!, "Permission denied", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun collectLocationPermissionDataDialog() {
-        val builder = AlertDialog.Builder(mContext)
+        val builder = AlertDialog.Builder(mContext!!)
         builder.setMessage(resources.getString(R.string.collect_location_permission_alert))
             .setCancelable(false)
             .setPositiveButton(
@@ -183,20 +187,20 @@ class AttendanceActivity : CustomActivity() {
         val options = Permissions.Options()
             .setRationaleDialogTitle("Info")
             .setSettingsDialogTitle("Warning")
-        Permissions.check(mContext, permissions, rationale, options, object : PermissionHandler() {
+        Permissions.check(mContext!!, permissions, rationale, options, object : PermissionHandler() {
             override fun onGranted() {
                 if (!getGPSStatus()) turnOnGps()
                 else buildLocation()
             }
 
             override fun onDenied(context: Context, deniedPermissions: ArrayList<String>) {
-                Toast.makeText(mContext, "Permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(mContext!!, "Permission denied", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun turnOnGps() {
-        GpsUtils(mContext).turnGPSOn(object : GpsUtils.onGpsListener {
+        GpsUtils(mContext!!).turnGPSOn(object : GpsUtils.onGpsListener {
             override fun gpsStatus(isGPSEnable: Boolean) {
                 val isGPS = isGPSEnable
             }
@@ -258,7 +262,7 @@ class AttendanceActivity : CustomActivity() {
 
     private fun markAttendance() {
         if (latitude != 0.0 && longitude != 0.0) {
-            if (Constants.isNetworkAvailable(mContext)) {
+            if (Constants.isNetworkAvailable(mContext!!)) {
                 val user_id = prefManager!!.useR_Id
                 val latitudeStr = latitude.toString() + ""
                 val longitudeStr = longitude.toString() + ""
@@ -338,7 +342,7 @@ class AttendanceActivity : CustomActivity() {
                     if (model!!.status == "200") {
                         makeToast(resources.getString(R.string.your_attendance_marked_successfully))
 
-                        startActivity(Intent(mContext, MainActivity::class.java))
+                        startActivity(Intent(mContext!!, MainActivity::class.java))
                         finish()
                     } else {
                         makeToast(resources.getString(R.string.your_attendance_not_mark))

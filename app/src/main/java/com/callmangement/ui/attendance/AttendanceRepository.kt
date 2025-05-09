@@ -15,7 +15,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class AttendanceRepository(private val mContext: Context) {
-    private val prefManager = PrefManager(mContext)
+    private val prefManager = PrefManager(mContext!!)
     @JvmField
     val isLoading: MutableLiveData<Boolean> = MutableLiveData()
     private val mutableLiveData = MutableLiveData<ModelAttendanceList?>()
@@ -43,13 +43,13 @@ class AttendanceRepository(private val mContext: Context) {
                     if (model!!.status == "200") {
                         mutableLiveData.setValue(model)
                     } else {
-                        Toast.makeText(mContext, model!!.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext!!, model!!.message, Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     isLoading.setValue(false)
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -58,8 +58,8 @@ class AttendanceRepository(private val mContext: Context) {
             override fun onFailure(call: Call<ModelAttendanceList?>, t: Throwable) {
                 isLoading.value = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -96,13 +96,13 @@ class AttendanceRepository(private val mContext: Context) {
                         model.location_list = list
                         modelAddLocationListMutableLiveData.setValue(model)
                     } else {
-                        Toast.makeText(mContext, model!!.massage, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext!!, model!!.massage, Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     isLoading.value = false
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -111,8 +111,8 @@ class AttendanceRepository(private val mContext: Context) {
             override fun onFailure(call: Call<ModelAddLocationList?>, t: Throwable) {
                 isLoading.value = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
             }

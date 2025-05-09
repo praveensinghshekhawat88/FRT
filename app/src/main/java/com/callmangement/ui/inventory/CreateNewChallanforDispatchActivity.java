@@ -124,7 +124,7 @@ public class CreateNewChallanforDispatchActivity extends CustomActivity implemen
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (++checkDistrict > 1) {
-                    districtNameEng = district_List.get(i).getDistrictNameEng();
+                    districtNameEng = district_List.get(i).districtNameEng;
                     districtId = district_List.get(i).getDistrictId();
                     if (!districtNameEng.equalsIgnoreCase("--" + getResources().getString(R.string.district) + "--")) {
                         getSEUsersList();
@@ -167,7 +167,7 @@ public class CreateNewChallanforDispatchActivity extends CustomActivity implemen
                         Collections.reverse(district_List);
                         ModelDistrictList l = new ModelDistrictList();
                         l.setDistrictId(String.valueOf(-1));
-                        l.setDistrictNameEng("--" + getResources().getString(R.string.district) + "--");
+                        l.districtNameEng = "--" + getResources().getString(R.string.district) + "--";
                         district_List.add(l);
                         Collections.reverse(district_List);
                         ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, district_List);

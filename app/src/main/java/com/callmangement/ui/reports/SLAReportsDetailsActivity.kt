@@ -1,6 +1,7 @@
 package com.callmangement.ui.reports
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,6 +21,8 @@ import com.callmangement.utils.PrefManager
 import java.util.Calendar
 
 class SLAReportsDetailsActivity : CustomActivity() {
+
+    
     var binding: ActivitySlaReportsDetailsBinding? = null
     private var adapter: SLAReportsDetailsActivityAdapter? = null
     private var prefManager: PrefManager? = null
@@ -33,7 +36,9 @@ class SLAReportsDetailsActivity : CustomActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sla_reports_details)
-        prefManager = PrefManager(mContext)
+
+        mContext = this
+        prefManager = PrefManager(mContext!!)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE

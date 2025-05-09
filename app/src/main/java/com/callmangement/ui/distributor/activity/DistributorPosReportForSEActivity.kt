@@ -3,6 +3,7 @@ package com.callmangement.ui.distributor.activity
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -32,6 +33,8 @@ import java.util.Calendar
 import java.util.Locale
 
 class DistributorPosReportForSEActivity : CustomActivity(), View.OnClickListener {
+
+    
     private var binding: ActivityDistributorPosReportForSeactivityBinding? = null
     private var prefManager: PrefManager? = null
     private val myCalendarFromDate: Calendar = Calendar.getInstance()
@@ -54,7 +57,8 @@ class DistributorPosReportForSEActivity : CustomActivity(), View.OnClickListener
     }
 
     private fun initView() {
-        prefManager = PrefManager(mContext)
+        mContext = this
+        prefManager = PrefManager(mContext!!)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -292,7 +296,7 @@ class DistributorPosReportForSEActivity : CustomActivity(), View.OnClickListener
         Log.d("checkdate", fromDate + toDate)
         Log.d("userid", prefManager!!.useR_Id)
         Log.d("disid", prefManager!!.useR_DistrictId!!)
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             showProgress()
             val service = RetrofitInstance.getRetrofitInstance().create(
                 APIService::class.java
@@ -388,9 +392,9 @@ class DistributorPosReportForSEActivity : CustomActivity(), View.OnClickListener
             binding!!.recyclerView.visibility = View.VISIBLE
             binding!!.tvNoDataFound.visibility = View.GONE
             binding!!.recyclerView.layoutManager =
-                LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(mContext!!, LinearLayoutManager.VERTICAL, false)
             binding!!.recyclerView.adapter =
-                DistributorPosReportForSEActivityAdapter(mContext, list)
+                DistributorPosReportForSEActivityAdapter(mContext!!, list)
             binding!!.textTotalCount.text = "" + list.size
         } else {
             binding!!.recyclerView.visibility = View.GONE
@@ -400,7 +404,7 @@ class DistributorPosReportForSEActivity : CustomActivity(), View.OnClickListener
     }
 
     fun uploadImage(fpsCode: String?, tranId: String?, districtId: String?, flagType: String?) {
-        val intent = Intent(mContext, UploadPhotoActivity::class.java)
+        val intent = Intent(mContext!!, UploadPhotoActivity::class.java)
         intent.putExtra("fps_code", fpsCode)
         intent.putExtra("tran_id", tranId)
         intent.putExtra("district_id", districtId)
@@ -442,7 +446,7 @@ class DistributorPosReportForSEActivity : CustomActivity(), View.OnClickListener
                     updateLabelFromDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateFromDate,
+                mContext!!, dateFromDate,
                 myCalendarFromDate[Calendar.YEAR],
                 myCalendarFromDate[Calendar.MONTH],
                 myCalendarFromDate[Calendar.DAY_OF_MONTH]
@@ -459,7 +463,7 @@ class DistributorPosReportForSEActivity : CustomActivity(), View.OnClickListener
                     updateLabelToDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateToDate,
+                mContext!!, dateToDate,
                 myCalendarToDate[Calendar.YEAR],
                 myCalendarToDate[Calendar.MONTH],
                 myCalendarToDate[Calendar.DAY_OF_MONTH]

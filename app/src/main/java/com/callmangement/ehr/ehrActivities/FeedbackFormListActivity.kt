@@ -267,7 +267,7 @@ class FeedbackFormListActivity : BaseActivity() {
         binding!!.actionBar.ivBack.setOnClickListener {
             clearSharePreference()
             val i = Intent(
-                mContext,
+                mContext!!,
                 MainActivity::class.java
             )
             startActivity(i)
@@ -556,10 +556,10 @@ class FeedbackFormListActivity : BaseActivity() {
                                         "Size...." + feedbackbyDCListDatumArrayList!!.size
                                     )
                                     mRecyclerView!!.layoutManager =
-                                        LinearLayoutManager(mContext)
+                                        LinearLayoutManager(mContext!!)
                                     mRecyclerView!!.addItemDecoration(
                                         DividerItemDecoration(
-                                            mContext,
+                                            mContext!!,
                                             DividerItemDecoration.VERTICAL
                                         )
                                     )
@@ -1041,7 +1041,7 @@ class FeedbackFormListActivity : BaseActivity() {
                 }
             }
             Toast.makeText(
-                mContext,
+                mContext!!,
                 "Excel Sheet Download ",
                 Toast.LENGTH_SHORT
             ).show()
@@ -1082,7 +1082,7 @@ class FeedbackFormListActivity : BaseActivity() {
             startActivity(openIntent)
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(
-                mContext,
+                mContext!!,
                 "No app found to open Excel files.",
                 Toast.LENGTH_SHORT
             ).show()
@@ -1133,7 +1133,7 @@ class FeedbackFormListActivity : BaseActivity() {
         //  super.onBackPressed();
         clearSharePreference()
 
-        val i = Intent(mContext, MainActivity::class.java)
+        val i = Intent(mContext!!, MainActivity::class.java)
         startActivity(i)
     }
 

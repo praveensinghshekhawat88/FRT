@@ -2,6 +2,7 @@ package com.callmangement.ui.reset_device
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -30,6 +31,7 @@ import retrofit2.Response
 import java.util.Collections
 
 class ResetDeviceActivity : CustomActivity(), View.OnClickListener {
+
     var binding: ActivityResetDeviceBinding? = null
     private var prefManager: PrefManager? = null
     private var viewModel: ComplaintViewModel? = null
@@ -50,12 +52,14 @@ class ResetDeviceActivity : CustomActivity(), View.OnClickListener {
     }
 
     private fun initView() {
+
+        mContext = this
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
         binding!!.actionBar.buttonPDF.visibility = View.GONE
         binding!!.actionBar.textToolbarTitle.text = resources.getString(R.string.reset_device)
-        prefManager = PrefManager(mContext)
+        prefManager = PrefManager(mContext!!)
         viewModel = ViewModelProviders.of(this).get(
             ComplaintViewModel::class.java
         )
@@ -81,8 +85,8 @@ class ResetDeviceActivity : CustomActivity(), View.OnClickListener {
                     l: Long
                 ) {
                     if (++checkDistrict > 1) {
-                        districtNameEng = district_List!![i]!!.districtNameEng
-                        districtId = district_List!![i]!!.districtId
+                        districtNameEng = district_List!![i]!!.districtNameEng!!
+                        districtId = district_List!![i]!!.districtId!!
                         if (!districtNameEng.equals(
                                 "--" + resources.getString(R.string.district) + "--",
                                 ignoreCase = true
@@ -143,7 +147,7 @@ class ResetDeviceActivity : CustomActivity(), View.OnClickListener {
 
                     val dataAdapter =
                         ArrayAdapter(
-                            mContext, android.R.layout.simple_spinner_item,
+                            mContext!!, android.R.layout.simple_spinner_item,
                             district_List!!
                         )
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -162,7 +166,7 @@ class ResetDeviceActivity : CustomActivity(), View.OnClickListener {
         Collections.reverse(modelSEUsersList)
 
         val dataAdapter =
-            ArrayAdapter(mContext, android.R.layout.simple_spinner_item, modelSEUsersList!!)
+            ArrayAdapter(mContext!!, android.R.layout.simple_spinner_item, modelSEUsersList!!)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding!!.spinnerServiceEngineer.adapter = dataAdapter
     }
@@ -190,7 +194,7 @@ class ResetDeviceActivity : CustomActivity(), View.OnClickListener {
                                 modelSEUsersList!!.reverse()
 
                                 val dataAdapter = ArrayAdapter(
-                                    mContext, android.R.layout.simple_spinner_item,
+                                    mContext!!, android.R.layout.simple_spinner_item,
                                     modelSEUsersList!!
                                 )
                                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -211,7 +215,7 @@ class ResetDeviceActivity : CustomActivity(), View.OnClickListener {
         }
 
     private fun resetDevice() {
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             val service = RetrofitInstance.getRetrofitInstance().create(
                 APIService::class.java
             )
@@ -250,7 +254,7 @@ class ResetDeviceActivity : CustomActivity(), View.OnClickListener {
     @SuppressLint("SetTextI18n")
     private fun alertDialogResetDevice() {
         try {
-            val dialog = Dialog(mContext)
+            val dialog = Dialog(mContext!!)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setContentView(R.layout.dialog_reset_device_confirmation)
             dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -274,7 +278,7 @@ class ResetDeviceActivity : CustomActivity(), View.OnClickListener {
     @SuppressLint("SetTextI18n")
     private fun dialogResetDeviceSuccess() {
         try {
-            val dialog = Dialog(mContext)
+            val dialog = Dialog(mContext!!)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setContentView(R.layout.dialog_reset_device_message)
             dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

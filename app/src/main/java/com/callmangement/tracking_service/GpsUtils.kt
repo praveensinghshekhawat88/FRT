@@ -68,7 +68,7 @@ class GpsUtils(private val context: Context) {
         }
     }
 
-    interface onGpsListener {
+    fun interface onGpsListener {
         fun gpsStatus(isGPSEnable: Boolean)
     }
 }

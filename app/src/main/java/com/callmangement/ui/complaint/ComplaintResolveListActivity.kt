@@ -41,7 +41,9 @@ import java.util.Collections
 import java.util.Locale
 
 class ComplaintResolveListActivity : CustomActivity() {
+
     private var binding: ActivityAssignedToMeBinding? = null
+    
     private var adapter: ComplaintResolveListActivityAdapter? = null
     private var prefManager: PrefManager? = null
     private val tehsilList: MutableList<ModelTehsilList?> = ArrayList()
@@ -74,6 +76,7 @@ class ComplaintResolveListActivity : CustomActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_assigned_to_me)
+        mContext = this
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -88,7 +91,7 @@ class ComplaintResolveListActivity : CustomActivity() {
         filterType = intent.getStringExtra("filter_type")
         tehsil_List_main = intent.getSerializableExtra("tehsil_list") as List<ModelTehsilList?>?
         districtList = intent.getSerializableExtra("district_list") as List<ModelDistrictList>?
-        prefManager = PrefManager(mContext)
+        prefManager = PrefManager(mContext!!)
         tehsilNameEng = "--" + resources.getString(R.string.tehsil) + "--"
         districtNameEng = "--" + resources.getString(R.string.district) + "--"
 
@@ -116,7 +119,7 @@ class ComplaintResolveListActivity : CustomActivity() {
                 l.tehsilNameEng = "--" + resources.getString(R.string.tehsil) + "--"
                 tehsilList.add(l)
                 Collections.reverse(tehsilList)
-                val dataAdapter = ArrayAdapter(mContext, R.layout.spinner_item, tehsilList)
+                val dataAdapter = ArrayAdapter(mContext!!, R.layout.spinner_item, tehsilList)
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding!!.spinnerTehsil.adapter = dataAdapter
             }
@@ -135,7 +138,7 @@ class ComplaintResolveListActivity : CustomActivity() {
                 tehsilList.add(l)
                 Collections.reverse(tehsilList)
 
-                val dataAdapter = ArrayAdapter(mContext, R.layout.spinner_item, tehsilList)
+                val dataAdapter = ArrayAdapter(mContext!!, R.layout.spinner_item, tehsilList)
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding!!.spinnerTehsil.adapter = dataAdapter
             }
@@ -151,7 +154,7 @@ class ComplaintResolveListActivity : CustomActivity() {
 
             if (districtList != null && districtList!!.size > 0) {
                 val dataAdapter = ArrayAdapter(
-                    mContext, R.layout.spinner_item,
+                    mContext!!, R.layout.spinner_item,
                     districtList!!
                 )
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -177,7 +180,7 @@ class ComplaintResolveListActivity : CustomActivity() {
 
             if (districtList != null && districtList!!.size > 0) {
                 val dataAdapter = ArrayAdapter(
-                    mContext, R.layout.spinner_item,
+                    mContext!!, R.layout.spinner_item,
                     districtList!!
                 )
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -201,7 +204,7 @@ class ComplaintResolveListActivity : CustomActivity() {
             updateTehsilByDistrictId(districtId!!)
             if (districtList != null && districtList!!.size > 0) {
                 val dataAdapter = ArrayAdapter(
-                    mContext, R.layout.spinner_item,
+                    mContext!!, R.layout.spinner_item,
                     districtList!!
                 )
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -262,7 +265,7 @@ class ComplaintResolveListActivity : CustomActivity() {
                     l: Long
                 ) {
                     if (++checkTehsil > 1) {
-                        tehsilNameEng = tehsilList[i]!!.tehsilNameEng
+                        tehsilNameEng = tehsilList[i]!!.tehsilNameEng!!
                         setDataIntoAdapterByTehsil(tehsilNameEng)
                     }
                 }
@@ -281,7 +284,7 @@ class ComplaintResolveListActivity : CustomActivity() {
                 ) {
                     checkTehsil = 0
                     if (++checkDistrict > 1) {
-                        districtNameEng = districtList!![i].districtNameEng
+                        districtNameEng = districtList!![i].districtNameEng!!
                         districtId = districtList!![i].districtId
                         //  setDataIntoAdapterByDistrict(districtNameEng);
                         // updateTehsilByDistrict(districtNameEng);
@@ -469,7 +472,7 @@ class ComplaintResolveListActivity : CustomActivity() {
             tehsilList.add(l)
             Collections.reverse(tehsilList)
 
-            val dataAdapter = ArrayAdapter(mContext, R.layout.spinner_item, tehsilList)
+            val dataAdapter = ArrayAdapter(mContext!!, R.layout.spinner_item, tehsilList)
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding!!.spinnerTehsil.adapter = dataAdapter
         }
@@ -500,7 +503,7 @@ class ComplaintResolveListActivity : CustomActivity() {
             tehsilList.add(l)
             Collections.reverse(tehsilList)
 
-            val dataAdapter = ArrayAdapter(mContext, R.layout.spinner_item, tehsilList)
+            val dataAdapter = ArrayAdapter(mContext!!, R.layout.spinner_item, tehsilList)
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding!!.spinnerTehsil.adapter = dataAdapter
         }
@@ -767,7 +770,7 @@ class ComplaintResolveListActivity : CustomActivity() {
                     updateLabelFromDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateFromDate,
+                mContext!!, dateFromDate,
                 myCalendarFromDate[Calendar.YEAR],
                 myCalendarFromDate[Calendar.MONTH],
                 myCalendarFromDate[Calendar.DAY_OF_MONTH]
@@ -789,7 +792,7 @@ class ComplaintResolveListActivity : CustomActivity() {
                     updateLabelToDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateToDate,
+                mContext!!, dateToDate,
                 myCalendarToDate[Calendar.YEAR],
                 myCalendarToDate[Calendar.MONTH],
                 myCalendarToDate[Calendar.DAY_OF_MONTH]
@@ -855,7 +858,7 @@ class ComplaintResolveListActivity : CustomActivity() {
                         setDataIntoAdapter(modelComplaintList)
                         isLoading = false
                         Toast.makeText(
-                            mContext,
+                            mContext!!,
                             if (model != null) model.message else "No data",
                             Toast.LENGTH_SHORT
                         ).show()
@@ -864,8 +867,8 @@ class ComplaintResolveListActivity : CustomActivity() {
                     hideProgress()
                     isLoading = false
                     Toast.makeText(
-                        mContext,
-                        mContext.resources.getString(R.string.error),
+                        mContext!!,
+                        mContext!!.resources.getString(R.string.error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -875,8 +878,8 @@ class ComplaintResolveListActivity : CustomActivity() {
                 hideProgress()
                 isLoading = false
                 Toast.makeText(
-                    mContext,
-                    mContext.resources.getString(R.string.error_message),
+                    mContext!!,
+                    mContext!!.resources.getString(R.string.error_message),
                     Toast.LENGTH_SHORT
                 ).show()
                 Log.d("error----", "is" + t.message)

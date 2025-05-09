@@ -70,7 +70,7 @@ class SurveyFormListingAdapter(
     ) {
         val surveyFormDetailsInfo = surveyFormDetailsInfoList!![position]
 
-        holder.txtStatus.setTextColor(mContext.resources.getColor(R.color.teal_200))
+        holder.txtStatus.setTextColor(mContext!!.resources.getColor(R.color.teal_200))
 
         if (surveyFormDetailsInfo.statusId != null && surveyFormDetailsInfo.statusId.equals(
                 "1",
@@ -95,7 +95,7 @@ class SurveyFormListingAdapter(
                 Constants.SURVEY_STATUS_ID_COMPLETED, ignoreCase = true
             )
         ) {
-            holder.txtStatus.setTextColor(mContext.resources.getColor(R.color.colorGreen))
+            holder.txtStatus.setTextColor(mContext!!.resources.getColor(R.color.colorGreen))
         }
 
         if (surveyFormDetailsInfo.customerName != null) holder.customer_name.text =

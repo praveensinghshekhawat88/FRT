@@ -44,8 +44,8 @@ public class DistrictListActivityAdapter extends RecyclerView.Adapter<DistrictLi
         ModelDistrictList model = district_List.get(position);
         if (!prefManager.getUSER_Change_Language().equals("")) {
             if (prefManager.getUSER_Change_Language().equals("en"))
-                holder.binding.textDistrictName.setText(model.getDistrictNameEng());
-            else holder.binding.textDistrictName.setText(model.getDistrictNameHi());
+                holder.binding.textDistrictName.setText(model.districtNameEng);
+            else holder.binding.textDistrictName.setText(model.districtNameHi);
         }
 //        holder.binding.crdItem.setOnClickListener(view -> {
 //            context.startActivity(new Intent(context, ServiceEngineerListActivity.class));

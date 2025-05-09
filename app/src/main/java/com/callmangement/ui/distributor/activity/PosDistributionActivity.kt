@@ -1,5 +1,6 @@
 package com.callmangement.ui.distributor.activity
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.callmangement.R
@@ -9,6 +10,8 @@ import com.callmangement.ui.distributor.activity.DistributedPosListActivity
 import com.callmangement.utils.PrefManager
 
 class PosDistributionActivity : CustomActivity(), View.OnClickListener {
+
+    
     private var binding: ActivityPosDistributionBinding? = null
     private var prefManager: PrefManager? = null
 
@@ -22,7 +25,9 @@ class PosDistributionActivity : CustomActivity(), View.OnClickListener {
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
         binding!!.actionBar.textToolbarTitle.text = resources.getString(R.string.pos_distribution)
-        prefManager = PrefManager(mContext)
+
+        mContext = this
+        prefManager = PrefManager(mContext!!)
         initView()
     }
 
