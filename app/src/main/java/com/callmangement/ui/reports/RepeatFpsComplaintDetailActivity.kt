@@ -1,5 +1,6 @@
 package com.callmangement.ui.reports
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -12,6 +13,8 @@ import com.callmangement.ui.home.ZoomInZoomOutActivity
 import com.callmangement.utils.Constants
 
 class RepeatFpsComplaintDetailActivity : CustomActivity(), View.OnClickListener {
+
+    
     private var binding: ActivityRepeatFpsComplaintDetailBinding? = null
     private var model: ModelRepeatFpsComplaintsList? = null
 
@@ -25,6 +28,8 @@ class RepeatFpsComplaintDetailActivity : CustomActivity(), View.OnClickListener 
     }
 
     private fun initView() {
+
+        mContext = this
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -42,7 +47,7 @@ class RepeatFpsComplaintDetailActivity : CustomActivity(), View.OnClickListener 
                 model!!.isPhysicalDamage != null && model!!.isPhysicalDamage
             if (!model!!.imagePath.isEmpty()) {
                 binding!!.seImage.visibility = View.VISIBLE
-                Glide.with(mContext)
+                Glide.with(mContext!!)
                     .load(Constants.API_BASE_URL + model!!.imagePath)
                     .placeholder(R.drawable.image_not_fount)
                     .into(binding!!.seImage)
@@ -60,7 +65,7 @@ class RepeatFpsComplaintDetailActivity : CustomActivity(), View.OnClickListener 
         val id = view.id
         if (id == R.id.se_image) {
             startActivity(
-                Intent(mContext, ZoomInZoomOutActivity::class.java).putExtra(
+                Intent(mContext!!, ZoomInZoomOutActivity::class.java).putExtra(
                     "image",
                     model!!.imagePath
                 )

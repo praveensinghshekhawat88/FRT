@@ -2,11 +2,13 @@ package com.callmangement.ui.complaint
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -70,6 +72,9 @@ import java.util.Locale
 import java.util.Objects
 
 class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
+
+    
+    private lateinit var mActivity: Activity
     val REQUEST_PICK_IMAGES_CUSTOM_AAD_COMPLAINT: Int = 1113
     val REQUEST_PICK_IMAGES_DSO_LETTER: Int = 1114
     private val myCalendarResolvedDate: Calendar = Calendar.getInstance()
@@ -106,7 +111,9 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
         binding!!.actionBar.buttonPDF.visibility = View.GONE
         binding!!.actionBar.textToolbarTitle.text = resources.getString(R.string.call_detail_)
-        prefManager = PrefManager(mContext)
+        mContext = this
+        mActivity = this
+        prefManager = PrefManager(mContext!!)
         model = intent.getSerializableExtra("param") as ModelComplaintList?
         param = intent.getStringExtra("param2")
         binding!!.setData(model)
@@ -223,7 +230,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                             )
                         ) {
                             binding!!.seImage.visibility = View.VISIBLE
-                            Glide.with(mContext)
+                            Glide.with(mContext!!)
                                 .load(model!!.imagePath)
                                 .placeholder(R.drawable.image_not_fount)
                                 .into(binding!!.seImage)
@@ -371,7 +378,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     )
                 ) {
                     binding!!.seImage.visibility = View.VISIBLE
-                    Glide.with(mContext)
+                    Glide.with(mContext!!)
                         .load(model!!.imagePath)
                         .placeholder(R.drawable.image_not_fount)
                         .into(binding!!.seImage)
@@ -455,7 +462,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     )
                 ) {
                     binding!!.seImage.visibility = View.VISIBLE
-                    Glide.with(mContext)
+                    Glide.with(mContext!!)
                         .load(model!!.imagePath)
                         .placeholder(R.drawable.image_not_fount)
                         .into(binding!!.seImage)
@@ -545,7 +552,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     )
                 ) {
                     binding!!.seImage.visibility = View.VISIBLE
-                    Glide.with(mContext)
+                    Glide.with(mContext!!)
                         .load(model!!.imagePath)
                         .placeholder(R.drawable.image_not_fount)
                         .into(binding!!.seImage)
@@ -629,7 +636,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     )
                 ) {
                     binding!!.seImage.visibility = View.VISIBLE
-                    Glide.with(mContext)
+                    Glide.with(mContext!!)
                         .load(model!!.imagePath)
                         .placeholder(R.drawable.image_not_fount)
                         .into(binding!!.seImage)
@@ -713,7 +720,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     )
                 ) {
                     binding!!.seImage.visibility = View.VISIBLE
-                    Glide.with(mContext)
+                    Glide.with(mContext!!)
                         .load(model!!.imagePath)
                         .placeholder(R.drawable.image_not_fount)
                         .into(binding!!.seImage)
@@ -804,7 +811,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     )
                 ) {
                     binding!!.seImage.visibility = View.VISIBLE
-                    Glide.with(mContext)
+                    Glide.with(mContext!!)
                         .load(model!!.imagePath)
                         .placeholder(R.drawable.image_not_fount)
                         .into(binding!!.seImage)
@@ -888,7 +895,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     )
                 ) {
                     binding!!.seImage.visibility = View.VISIBLE
-                    Glide.with(mContext)
+                    Glide.with(mContext!!)
                         .load(model!!.imagePath)
                         .placeholder(R.drawable.image_not_fount)
                         .into(binding!!.seImage)
@@ -972,7 +979,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     )
                 ) {
                     binding!!.seImage.visibility = View.VISIBLE
-                    Glide.with(mContext)
+                    Glide.with(mContext!!)
                         .load(model!!.imagePath)
                         .placeholder(R.drawable.image_not_fount)
                         .into(binding!!.seImage)
@@ -1063,7 +1070,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     )
                 ) {
                     binding!!.seImage.visibility = View.VISIBLE
-                    Glide.with(mContext)
+                    Glide.with(mContext!!)
                         .load(model!!.imagePath)
                         .placeholder(R.drawable.image_not_fount)
                         .into(binding!!.seImage)
@@ -1147,7 +1154,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     )
                 ) {
                     binding!!.seImage.visibility = View.VISIBLE
-                    Glide.with(mContext)
+                    Glide.with(mContext!!)
                         .load(model!!.imagePath)
                         .placeholder(R.drawable.image_not_fount)
                         .into(binding!!.seImage)
@@ -1231,7 +1238,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     )
                 ) {
                     binding!!.seImage.visibility = View.VISIBLE
-                    Glide.with(mContext)
+                    Glide.with(mContext!!)
                         .load(model!!.imagePath)
                         .placeholder(R.drawable.image_not_fount)
                         .into(binding!!.seImage)
@@ -1321,7 +1328,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     )
                 ) {
                     binding!!.seImage.visibility = View.VISIBLE
-                    Glide.with(mContext)
+                    Glide.with(mContext!!)
                         .load(model!!.imagePath)
                         .placeholder(R.drawable.image_not_fount)
                         .into(binding!!.seImage)
@@ -1405,7 +1412,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     )
                 ) {
                     binding!!.seImage.visibility = View.VISIBLE
-                    Glide.with(mContext)
+                    Glide.with(mContext!!)
                         .load(model!!.imagePath)
                         .placeholder(R.drawable.image_not_fount)
                         .into(binding!!.seImage)
@@ -1489,7 +1496,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     )
                 ) {
                     binding!!.seImage.visibility = View.VISIBLE
-                    Glide.with(mContext)
+                    Glide.with(mContext!!)
                         .load(model!!.imagePath)
                         .placeholder(R.drawable.image_not_fount)
                         .into(binding!!.seImage)
@@ -1646,7 +1653,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
             }, 2000)
             makeToast(resources.getString(R.string.please_upload_dso_letter))
         } else {
-            val builder = AlertDialog.Builder(mContext)
+            val builder = AlertDialog.Builder(mContext!!)
             builder.setMessage(resources.getString(R.string.are_you_sure_you_want_to_send_to_service_center_this_complaint))
                 .setCancelable(false)
                 .setPositiveButton(resources.getString(R.string.ok)) { dialog: DialogInterface, id: Int ->
@@ -1910,21 +1917,21 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 resources.getString(R.string.imagepicker_str_choose_from_gallery),
                 resources.getString(R.string.imagepicker_str_cancel)
             )
-            val title = TextView(mContext)
+            val title = TextView(mContext!!)
             title.text = resources.getString(R.string.imagepicker_str_select_challan_image)
             title.setBackgroundColor(resources.getColor(R.color.colorActionBar))
             title.setPadding(15, 25, 15, 25)
             title.gravity = Gravity.CENTER
             title.setTextColor(Color.WHITE)
             title.textSize = 22f
-            val builder = AlertDialog.Builder(mContext)
+            val builder = AlertDialog.Builder(mContext!!)
             builder.setCustomTitle(title)
             // builder.setTitle("Add Photo!");
             builder.setItems(
                 items
             ) { dialog: DialogInterface, item: Int ->
                 if (items[item] == resources.getString(R.string.imagepicker_str_take_photo)) {
-                    ImagePicker.with(mContext)
+                    ImagePicker.with(mActivity)
                         .setToolbarColor("#212121")
                         .setStatusBarColor("#000000")
                         .setToolbarTextColor("#FFFFFF")
@@ -1943,7 +1950,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                         .setSelectedImages(ArrayList())
                         .start(REQUEST_PICK_IMAGES_CUSTOM_AAD_COMPLAINT)
                 } else if (items[item] == resources.getString(R.string.imagepicker_str_choose_from_gallery)) {
-                    ImagePicker.with(mContext)
+                    ImagePicker.with(mActivity)
                         .setToolbarColor("#212121")
                         .setStatusBarColor("#000000")
                         .setToolbarTextColor("#FFFFFF")
@@ -2062,7 +2069,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
         }
 
     private fun acceptComplaint() {
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             showProgress()
             val service = RetrofitInstance.getRetrofitInstance().create(
                 APIService::class.java
@@ -2171,7 +2178,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
         val id = view.id
         if (id == R.id.inputResolvedDate) {
             val datePickerDialog = DatePickerDialog(
-                mContext, dateResolved,
+                mContext!!, dateResolved,
                 myCalendarResolvedDate[Calendar.YEAR],
                 myCalendarResolvedDate[Calendar.MONTH],
                 myCalendarResolvedDate[Calendar.DAY_OF_MONTH]
@@ -2186,7 +2193,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
             datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
             datePickerDialog.show()
         } else if (id == R.id.inputReplacePart) {
-            if (Constants.isNetworkAvailable(mContext)) {
+            if (Constants.isNetworkAvailable(mContext!!)) {
                 selectMultiCheckboxForReplacePart()
             } else {
                 makeToast(resources.getString(R.string.no_internet_connection))
@@ -2209,7 +2216,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
             onClickResolveComplaint()
         } else if (id == R.id.se_image) {
             startActivity(
-                Intent(mContext, ZoomInZoomOutActivity::class.java).putExtra(
+                Intent(mContext!!, ZoomInZoomOutActivity::class.java).putExtra(
                     "image",
                     model!!.imagePath
                 )
@@ -2263,21 +2270,21 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 resources.getString(R.string.choose_pdf),
                 resources.getString(R.string.imagepicker_str_cancel)
             )
-            val title = TextView(mContext)
+            val title = TextView(mContext!!)
             title.text = resources.getString(R.string.imagepicker_str_select_challan_image)
             title.setBackgroundColor(resources.getColor(R.color.colorActionBar))
             title.setPadding(15, 25, 15, 25)
             title.gravity = Gravity.CENTER
             title.setTextColor(Color.WHITE)
             title.textSize = 22f
-            val builder = AlertDialog.Builder(mContext)
+            val builder = AlertDialog.Builder(mContext!!)
             builder.setCustomTitle(title)
             // builder.setTitle("Add Photo!");
             builder.setItems(
                 items
             ) { dialog: DialogInterface, item: Int ->
                 if (items[item] == resources.getString(R.string.imagepicker_str_take_photo)) {
-                    ImagePicker.with(mContext)
+                    ImagePicker.with(mActivity)
                         .setToolbarColor("#212121")
                         .setStatusBarColor("#000000")
                         .setToolbarTextColor("#FFFFFF")
@@ -2296,7 +2303,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                         .setSelectedImages(ArrayList())
                         .start(REQUEST_PICK_IMAGES_DSO_LETTER)
                 } else if (items[item] == resources.getString(R.string.imagepicker_str_choose_from_gallery)) {
-                    ImagePicker.with(mContext)
+                    ImagePicker.with(mActivity)
                         .setToolbarColor("#212121")
                         .setStatusBarColor("#000000")
                         .setToolbarTextColor("#FFFFFF")

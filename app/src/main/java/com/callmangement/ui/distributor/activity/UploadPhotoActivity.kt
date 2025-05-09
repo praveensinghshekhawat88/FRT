@@ -2,6 +2,8 @@ package com.callmangement.ui.distributor.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -44,6 +46,9 @@ import java.io.File
 import java.io.IOException
 
 class UploadPhotoActivity : CustomActivity(), View.OnClickListener {
+
+    
+    private lateinit var mActivity: Activity
     private var binding: ActivityUploadPhotoBinding? = null
     private var permissionGranted = false
     private var uploadImageFile: File? = null
@@ -64,11 +69,14 @@ class UploadPhotoActivity : CustomActivity(), View.OnClickListener {
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
         binding!!.actionBar.buttonPDF.visibility = View.GONE
         binding!!.actionBar.textToolbarTitle.text = resources.getString(R.string.upload_photo)
-        prefManager = PrefManager(mContext)
         init()
     }
 
     private fun init() {
+
+        mContext = this
+        mActivity = this
+        prefManager = PrefManager(mContext!!)
         setUpClickListener()
         checkPermission()
         intentData
@@ -150,21 +158,21 @@ class UploadPhotoActivity : CustomActivity(), View.OnClickListener {
                 resources.getString(R.string.imagepicker_str_choose_from_gallery),
                 resources.getString(R.string.imagepicker_str_cancel)
             )
-            val title = TextView(mContext)
+            val title = TextView(mContext!!)
             title.text = resources.getString(R.string.capture_photo)
             title.setBackgroundColor(resources.getColor(R.color.colorActionBar))
             title.setPadding(15, 25, 15, 25)
             title.gravity = Gravity.CENTER
             title.setTextColor(Color.WHITE)
             title.textSize = 22f
-            val builder = AlertDialog.Builder(mContext)
+            val builder = AlertDialog.Builder(mContext!!)
             builder.setCustomTitle(title)
             builder.setCancelable(false)
             builder.setItems(
                 items
             ) { dialog: DialogInterface, item: Int ->
                 if (items[item] == resources.getString(R.string.imagepicker_str_take_photo)) {
-                    ImagePicker.with(mContext)
+                    ImagePicker.with(mActivity)
                         .setToolbarColor("#212121")
                         .setStatusBarColor("#000000")
                         .setToolbarTextColor("#FFFFFF")
@@ -183,7 +191,7 @@ class UploadPhotoActivity : CustomActivity(), View.OnClickListener {
                         .setSelectedImages(ArrayList())
                         .start(REQUEST_PICK_PHOTO)
                 } else if (items[item] == resources.getString(R.string.imagepicker_str_choose_from_gallery)) {
-                    ImagePicker.with(mContext)
+                    ImagePicker.with(mActivity)
                         .setToolbarColor("#212121")
                         .setStatusBarColor("#000000")
                         .setToolbarTextColor("#FFFFFF")
@@ -274,7 +282,7 @@ class UploadPhotoActivity : CustomActivity(), View.OnClickListener {
     private fun upload() {
         if (uploadImageFile == null) makeToast("Please select photo")
         else {
-            if (Constants.isNetworkAvailable(mContext)) {
+            if (Constants.isNetworkAvailable(mContext!!)) {
                 showProgress()
                 val service = RetrofitInstance.getRetrofitInstance().create(
                     APIService::class.java

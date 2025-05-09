@@ -2,6 +2,7 @@ package com.callmangement.ui.reports
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -35,6 +36,8 @@ import java.util.StringTokenizer
 
 
 class DailyReportsActivity : CustomActivity() {
+
+    
     private var binding: ActivityDailyReportsBinding? = null
     private var prefManager: PrefManager? = null
     private var viewModel: ComplaintViewModel? = null
@@ -57,7 +60,9 @@ class DailyReportsActivity : CustomActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_daily_reports)
-        prefManager = PrefManager(mContext)
+
+        mContext = this
+        prefManager = PrefManager(mContext!!)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -118,8 +123,8 @@ class DailyReportsActivity : CustomActivity() {
                     l: Long
                 ) {
                     if (++checkDistrict > 1) {
-                        districtNameEng = district_List!![i]!!.districtNameEng
-                        districtId = district_List!![i]!!.districtId
+                        districtNameEng = district_List!![i]!!.districtNameEng!!
+                        districtId = district_List!![i]!!.districtId!!
                         if (districtNameEng.equals(
                                 "--" + resources.getString(R.string.district) + "--",
                                 ignoreCase = true
@@ -147,7 +152,7 @@ class DailyReportsActivity : CustomActivity() {
 
         binding!!.textToDate.setOnClickListener { view: View? ->
             val datePickerDialog = DatePickerDialog(
-                mContext,
+                mContext!!,
                 dateToDate,
                 myCalendarToDate[Calendar.YEAR],
                 myCalendarToDate[Calendar.MONTH],
@@ -165,7 +170,7 @@ class DailyReportsActivity : CustomActivity() {
                 val list = getResolvedNotResolvedList(modelComplaintLists)
                 val total = list[0].size + list[1].size
                 startActivity(
-                    Intent(mContext, ReportPdfActivity::class.java)
+                    Intent(mContext!!, ReportPdfActivity::class.java)
                         .putExtra("resolved", list[0].size.toString())
                         .putExtra("not_resolved", list[1].size.toString())
                         .putExtra("date", toDate.toString())
@@ -181,7 +186,7 @@ class DailyReportsActivity : CustomActivity() {
                 )
             } else {
                 Toast.makeText(
-                    mContext,
+                    mContext!!,
                     resources.getString(R.string.no_record_found_to_export_pdf),
                     Toast.LENGTH_SHORT
                 ).show()
@@ -194,7 +199,7 @@ class DailyReportsActivity : CustomActivity() {
         /*       if (getResolvedNotResolvedList(modelComplaintLists) != null && getResolvedNotResolvedList(modelComplaintLists).size() > 0) {
                 List<List<ModelComplaintList>> list = getResolvedNotResolvedList(modelComplaintLists);
                 int total = list.get(0).size() + list.get(1).size();
-                startActivity(new Intent(mContext, ReportPdfActivity.class)
+                startActivity(new Intent(mContext!!, ReportPdfActivity.class)
                         .putExtra("resolved",String.valueOf(list.get(0).size()))
                         .putExtra("not_resolved",String.valueOf(list.get(1).size()))
                         .putExtra("date",String.valueOf(toDate))
@@ -205,7 +210,7 @@ class DailyReportsActivity : CustomActivity() {
                         .putExtra("name", prefManager.getUSER_NAME())
                         .putExtra("email", prefManager.getUSER_EMAIL()));
             } else {
-                Toast.makeText(mContext, getResources().getString(R.string.no_record_found_to_export_pdf), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext!!, getResources().getString(R.string.no_record_found_to_export_pdf), Toast.LENGTH_SHORT).show();
             }*/
         /*
 
@@ -217,7 +222,7 @@ class DailyReportsActivity : CustomActivity() {
             }
             else {
 
-                Toast.makeText(mContext, "No record found to export excel", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext!!, "No record found to export excel", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -374,7 +379,7 @@ class DailyReportsActivity : CustomActivity() {
 
                     val dataAdapter =
                         ArrayAdapter(
-                            mContext, android.R.layout.simple_spinner_item,
+                            mContext!!, android.R.layout.simple_spinner_item,
                             district_List!!
                         )
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

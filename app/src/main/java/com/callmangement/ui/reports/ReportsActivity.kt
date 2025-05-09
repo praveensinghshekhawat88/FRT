@@ -1,5 +1,6 @@
 package com.callmangement.ui.reports
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.callmangement.R
@@ -10,6 +11,8 @@ import com.callmangement.ui.reports.MonthlyReportsActivity
 import com.callmangement.utils.PrefManager
 
 class ReportsActivity : CustomActivity(), View.OnClickListener {
+
+    
     private var binding: ActivityReportsBinding? = null
     private var prefManager: PrefManager? = null
 
@@ -17,11 +20,14 @@ class ReportsActivity : CustomActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = ActivityReportsBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
+
+
+        mContext = this
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
         binding!!.actionBar.textToolbarTitle.text = resources.getString(R.string.reports)
-        prefManager = PrefManager(mContext)
+        prefManager = PrefManager(mContext!!)
         initView()
     }
 

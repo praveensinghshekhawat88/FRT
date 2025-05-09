@@ -38,7 +38,10 @@ import retrofit2.Response
 import java.util.Locale
 
 class DistributorMainActivity : CustomActivity(), View.OnClickListener {
+
+
     private var binding: ActivityDistributorMainBinding? = null
+    
     private var prefManager: PrefManager? = null
     private var myLocale: Locale? = null
     private var backgroundLocationPermissionApproved = 0
@@ -55,12 +58,15 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
             layoutInflater
         )
         setContentView(binding!!.root)
+
+        mContext = this
+
         binding!!.actionBar.ivBack.visibility = View.GONE
         binding!!.actionBar.ivThreeDot.visibility = View.VISIBLE
         binding!!.actionBar.layoutLanguage.visibility = View.VISIBLE
         binding!!.actionBar.buttonPDF.visibility = View.GONE
         binding!!.actionBar.textToolbarTitle.text = resources.getString(R.string.app_name)
-        prefManager = PrefManager(mContext)
+        prefManager = PrefManager(mContext!!)
         binding!!.textUsername.text = prefManager!!.useR_NAME
         binding!!.textEmail.text = prefManager!!.useR_EMAIL
         initView()
@@ -117,11 +123,11 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
         val options = Permissions.Options()
             .setRationaleDialogTitle("Info")
             .setSettingsDialogTitle("Warning")
-        Permissions.check(mContext, permissions, rationale, options, object : PermissionHandler() {
+        Permissions.check(mContext!!, permissions, rationale, options, object : PermissionHandler() {
             override fun onGranted() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     backgroundLocationPermissionApproved = ActivityCompat.checkSelfPermission(
-                        mContext,
+                        mContext!!,
                         Manifest.permission.ACCESS_BACKGROUND_LOCATION
                     )
                     if (backgroundLocationPermissionApproved != 0) Handler(Looper.getMainLooper()).postDelayed(
@@ -139,7 +145,7 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
                     }
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     backgroundLocationPermissionApproved = ActivityCompat.checkSelfPermission(
-                        mContext,
+                        mContext!!,
                         Manifest.permission.ACCESS_BACKGROUND_LOCATION
                     )
                     if (backgroundLocationPermissionApproved != 0) Handler(Looper.getMainLooper()).postDelayed(
@@ -168,13 +174,13 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
             }
 
             override fun onDenied(context: Context, deniedPermissions: ArrayList<String>) {
-                Toast.makeText(mContext, "Permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(mContext!!, "Permission denied", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun collectLocationPermissionDataDialog() {
-        val builder = AlertDialog.Builder(mContext)
+        val builder = AlertDialog.Builder(mContext!!)
         builder.setMessage(resources.getString(R.string.collect_location_permission_alert))
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.ok)) { dialog: DialogInterface, id: Int ->
@@ -192,7 +198,7 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
         val options = Permissions.Options()
             .setRationaleDialogTitle("Info")
             .setSettingsDialogTitle("Warning")
-        Permissions.check(mContext, permissions, rationale, options, object : PermissionHandler() {
+        Permissions.check(mContext!!, permissions, rationale, options, object : PermissionHandler() {
             override fun onGranted() {
                 if (!gpsStatus) turnOnGps()
                 else {
@@ -205,13 +211,13 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
             }
 
             override fun onDenied(context: Context, deniedPermissions: ArrayList<String>) {
-                Toast.makeText(mContext, "Permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(mContext!!, "Permission denied", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun turnOnGps() {
-        GpsUtils(mContext).turnGPSOn(object : GpsUtils.onGpsListener {
+        GpsUtils(mContext!!).turnGPSOn(object : GpsUtils.onGpsListener {
             override fun gpsStatus(isGPSEnable: Boolean) {
                 val isGPS = isGPSEnable
             }
@@ -227,7 +233,7 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
 
     private fun setUpClickListener() {
         binding!!.actionBar.ivEngToHindi.setOnClickListener { view: View? ->
-            val builder = AlertDialog.Builder(mContext)
+            val builder = AlertDialog.Builder(mContext!!)
             builder.setMessage(resources.getString(R.string.eng_to_hi_message))
                 .setCancelable(false)
                 .setPositiveButton(resources.getString(R.string.ok)) { dialog: DialogInterface, id: Int ->
@@ -246,7 +252,7 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
         }
 
         binding!!.actionBar.ivHindiToEng.setOnClickListener { view: View? ->
-            val builder = AlertDialog.Builder(mContext)
+            val builder = AlertDialog.Builder(mContext!!)
             builder.setMessage(resources.getString(R.string.hi_to_eng_message))
                 .setCancelable(false)
                 .setPositiveButton(resources.getString(R.string.ok)) { dialog: DialogInterface, id: Int ->
@@ -266,10 +272,10 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
 
         binding!!.actionBar.ivThreeDot.setOnClickListener { view: View? ->
             val popupMenu =
-                PopupMenu(mContext, binding!!.actionBar.ivThreeDot)
+                PopupMenu(mContext!!, binding!!.actionBar.ivThreeDot)
             popupMenu.menuInflater.inflate(R.menu.menu, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { menuItem: MenuItem? ->
-                val builder = AlertDialog.Builder(mContext)
+                val builder = AlertDialog.Builder(mContext!!)
                 builder.setMessage(resources.getString(R.string.do_you_want_to_logout_from_this_app))
                     .setCancelable(false)
                     .setPositiveButton(resources.getString(R.string.logout)) { dialog: DialogInterface, id: Int ->
@@ -346,12 +352,12 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
                             prefManager!!.setUser_Id("0")
                             prefManager!!.useR_DistrictId = "0"
                             @SuppressLint("HardwareIds") val android_id = Settings.Secure.getString(
-                                mContext.contentResolver,
+                                mContext!!.contentResolver,
                                 Settings.Secure.ANDROID_ID
                             )
                             prefManager!!.devicE_ID = android_id
                             startActivity(
-                                Intent(mContext, LoginActivity::class.java).addFlags(
+                                Intent(mContext!!, LoginActivity::class.java).addFlags(
                                     Intent.FLAG_ACTIVITY_NEW_TASK
                                 )
                             )
@@ -421,7 +427,7 @@ class DistributorMainActivity : CustomActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        val builder = AlertDialog.Builder(mContext)
+        val builder = AlertDialog.Builder(mContext!!)
         builder.setMessage(resources.getString(R.string.do_you_want_to_exit_from_this_app))
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.ok)) { dialog: DialogInterface, id: Int ->

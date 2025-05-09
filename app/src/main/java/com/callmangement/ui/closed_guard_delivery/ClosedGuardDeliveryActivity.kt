@@ -79,6 +79,8 @@ import java.util.Date
 import java.util.Locale
 
 class ClosedGuardDeliveryActivity : CustomActivity() {
+
+    
     val REQUEST_PICK_IMAGE_ONE: Int = 1111
     val REQUEST_PICK_IMAGE_TWO: Int = 1112
     val REQUEST_PICK_IMAGE_THREE: Int = 1113
@@ -87,7 +89,6 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
     private val spinnerList: List<String> = ArrayList()
     private val myFormat = "yyyy-MM-dd"
     var mActivity: Activity? = null
-    private val mContext: Context? = null
     var preference: PrefManager? = null
     var txt_fpscode: EditText? = null
     var Fps_code: String? = null
@@ -194,7 +195,7 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
                 if (alertDialog != null && alertDialog!!.isShowing) {
                     // Dismiss the dialog if it's showing
                     alertDialog!!.dismiss()
-                    val i = Intent(mContext, MainActivity::class.java)
+                    val i = Intent(mContext!!, MainActivity::class.java)
                     startActivity(i)
                 } else {
                     onBackPressed()
@@ -413,7 +414,7 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
                     mainBinding.imgSignature.setImageBitmap(bitmap);
                 }*/
                     signatureBitmap = rotateBitmap(
-                        mSignaturePad!!.getSignatureBitmap(),
+                        mSignaturePad!!.getSignatureBitmap()!!,
                         90f
                     ) // Get the signature as a Bitmap
                     encodedSignature = encodeBitmapToBase64(signatureBitmap)
@@ -622,7 +623,7 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
     }
 
     private fun CoustomDialoge() {
-        val alert = AlertDialog.Builder(mContext)
+        val alert = AlertDialog.Builder(mContext!!)
         val mView = layoutInflater.inflate(R.layout.activity_coustomfpsdialoge, null)
         //  mView.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_dialog_bg));
         txt_fpscode = mView.findViewById(R.id.txt_input)
@@ -636,7 +637,7 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
 
         //alertDialog.getWindow().setBackgroundDrawable(new BitmapDrawable(getResources(), blurredBitmap));
         btn_cancel.setOnClickListener {
-            val i = Intent(mContext, MainActivity::class.java)
+            val i = Intent(mContext!!, MainActivity::class.java)
             startActivity(i)
 
             alertDialog!!.dismiss()
@@ -688,7 +689,7 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
 
                                     val detailByFpsRoot = response.body()
                                     val fps_message = detailByFpsRoot!!.getMessage()
-                                    Toast.makeText(mContext, fps_message, Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(mContext!!, fps_message, Toast.LENGTH_SHORT).show()
                                     val detailByFpsData = detailByFpsRoot.data
                                     if (detailByFpsData != null) {
                                         val DistrictName = detailByFpsData.getDistrictName()
@@ -1068,14 +1069,14 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
         if (alertDialog != null && alertDialog!!.isShowing) {
             // Dismiss the dialog if it's showing
             alertDialog!!.dismiss()
-            val i = Intent(mContext, MainActivity::class.java)
+            val i = Intent(mContext!!, MainActivity::class.java)
             startActivity(i)
         } else {
             super.onBackPressed()
         }
     }
 
-    override fun makeToast(string: String) {
+    override fun makeToast(string: String?) {
         if (TextUtils.isEmpty(string)) return
         Toast.makeText(mActivity, string, Toast.LENGTH_SHORT).show()
     }
@@ -1134,7 +1135,7 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
                 //     Log.d("resultDataresultData", fullAddress);
             } else {
                 Toast.makeText(
-                    mContext,
+                    mContext!!,
                     resultData.getString(Constants.RESULT_DATA_KEY),
                     Toast.LENGTH_SHORT
                 ).show()

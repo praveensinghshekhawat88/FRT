@@ -57,11 +57,12 @@ import java.util.Date
 import java.util.Locale
 
 class CloseGuardDeliveryListActivity : CustomActivity() {
+
+    
     private var binding: ActivityCloseGuardDeliveryListBinding? = null
     private val spinnerList: MutableList<String> = ArrayList()
     private var mActivity: Activity? = null
     private var prefManager: PrefManager? = null
-    private val mContext: Context? = null
     private var spinnerDistrict: Spinner? = null
     private var checkDistrict = 0
     private var districtNameEng = ""
@@ -121,7 +122,7 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
     private fun init() {
         mActivity = this
         mContext = this
-        prefManager = PrefManager(mContext)
+        prefManager = PrefManager(mContext!!)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
 
@@ -208,9 +209,9 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
 //                    getCloseGuardDeliveryList(districtId, fromDate, toDate, fpscodee, serialno);
 //            }
 //        });
-        binding!!.rvDelivered.layoutManager = LinearLayoutManager(mContext)
+        binding!!.rvDelivered.layoutManager = LinearLayoutManager(mContext!!)
         closedGuardDeliveryListAdapter =
-            ClosedGuardDeliveryListAdapter(irisInsDataArrayListBlock, mContext)
+            ClosedGuardDeliveryListAdapter(irisInsDataArrayListBlock, mContext!!)
         binding!!.rvDelivered.adapter = closedGuardDeliveryListAdapter
 
         binding!!.rvDelivered.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -265,7 +266,7 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
             if (irisInsDataArrayList != null && irisInsDataArrayList!!.size > 0) {
                 ExcelformTable()
             } else {
-                Toast.makeText(mContext, "No Data Found", Toast.LENGTH_SHORT).show()
+                Toast.makeText(mContext!!, "No Data Found", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -462,7 +463,7 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
                     updateLabelFromDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateFromDate,
+                mContext!!, dateFromDate,
                 myCalendarFromDate[Calendar.YEAR],
                 myCalendarFromDate[Calendar.MONTH],
                 myCalendarFromDate[Calendar.DAY_OF_MONTH]
@@ -483,7 +484,7 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
                     updateLabelToDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateToDate,
+                mContext!!, dateToDate,
                 myCalendarToDate[Calendar.YEAR],
                 myCalendarToDate[Calendar.MONTH],
                 myCalendarToDate[Calendar.DAY_OF_MONTH]
@@ -578,9 +579,9 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
                                         "Page Number: " + closedGuardDeliveryListResponse!!.currentPage
 
 
-                                    //                                    binding.rvDelivered.setLayoutManager(new LinearLayoutManager(mContext));
-//                                    //            mRecyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
-//                                    closedGuardDeliveryListAdapter = new ClosedGuardDeliveryListAdapter(irisInsDataArrayListBlock, mContext);
+                                    //                                    binding.rvDelivered.setLayoutManager(new LinearLayoutManager(mContext!!));
+//                                    //            mRecyclerView.addItemDecoration(new DividerItemDecoration(mContext!!, DividerItemDecoration.VERTICAL));
+//                                    closedGuardDeliveryListAdapter = new ClosedGuardDeliveryListAdapter(irisInsDataArrayListBlock, mContext!!);
 //                                    binding.rvDelivered.setAdapter(closedGuardDeliveryListAdapter);
 
 
@@ -819,7 +820,7 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
         clearSharePreference()
     }
 
-    override fun makeToast(string: String) {
+    override fun makeToast(string: String?) {
         if (TextUtils.isEmpty(string)) return
         Toast.makeText(mActivity, string, Toast.LENGTH_SHORT).show()
     }
@@ -978,7 +979,7 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
                     e.printStackTrace()
                 }
             }
-            Toast.makeText(mContext, "Excel Sheet Download ", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mContext!!, "Excel Sheet Download ", Toast.LENGTH_SHORT).show()
         }
 
 
@@ -1002,7 +1003,7 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
         }*/
         try {
             val fileUri = FileProvider.getUriForFile(
-                mContext,
+                mContext!!,
                 BuildConfig.APPLICATION_ID + ".provider",  // Replace with your app's provider authority
                 filePathh
             )
@@ -1012,7 +1013,7 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
             openIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             startActivity(openIntent)
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(mContext, "No app found to open Excel files.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mContext!!, "No app found to open Excel files.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -1065,7 +1066,7 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
                                 Collections.reverse(modelSEUsersList)
 
                                 val dataAdapter = ArrayAdapter(
-                                    mContext, android.R.layout.simple_spinner_item,
+                                    mContext!!, android.R.layout.simple_spinner_item,
                                     modelSEUsersList!!
                                 )
                                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -1094,7 +1095,7 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
         Collections.reverse(modelSEUsersList)
 
         val dataAdapter =
-            ArrayAdapter(mContext, android.R.layout.simple_spinner_item, modelSEUsersList!!)
+            ArrayAdapter(mContext!!, android.R.layout.simple_spinner_item, modelSEUsersList!!)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding!!.spinnerServiceEngineer.adapter = dataAdapter
     }

@@ -89,6 +89,8 @@ import java.util.Date
 import java.util.Locale
 
 class BiometricDeliveryActivity : CustomActivity() {
+
+    
     val REQUEST_PICK_IMAGE_ONE: Int = 1111
     val REQUEST_PICK_IMAGE_TWO: Int = 1112
     val REQUEST_PICK_IMAGE_THREE: Int = 1113
@@ -97,7 +99,6 @@ class BiometricDeliveryActivity : CustomActivity() {
     private val spinnerList: List<String> = ArrayList()
     private val myFormat = "yyyy-MM-dd"
     private var mActivity: Activity? = null
-    private val mContext: Context? = null
     private var preference: PrefManager? = null
     private var txt_fpscode: EditText? = null
     private var Fps_code: String? = null
@@ -152,7 +153,7 @@ class BiometricDeliveryActivity : CustomActivity() {
     private fun init() {
         mActivity = this
         mContext = this
-        preference = PrefManager(mContext)
+        preference = PrefManager(mContext!!)
         resultReceiver = AddressResultReceiver(Handler())
         binding!!.actionBarND.ivBack.visibility = View.VISIBLE
         binding!!.actionBarND.textToolbarTitle.text =
@@ -205,7 +206,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                 if (alertDialog != null && alertDialog!!.isShowing) {
                     // Dismiss the dialog if it's showing
                     alertDialog!!.dismiss()
-                    val i = Intent(mContext, BiometricDeliveryDashboardActivity::class.java)
+                    val i = Intent(mContext!!, BiometricDeliveryDashboardActivity::class.java)
                     startActivity(i)
                 } else {
                     onBackPressed()
@@ -253,13 +254,13 @@ class BiometricDeliveryActivity : CustomActivity() {
                 //  makeToast(getResources().getString(R.string.enter_fps_code));
                 binding!!.inputFpsCode.error = "???"
                 val msg = resources.getString(R.string.enter_fps_code)
-                showAlertDialogWithSingleButton(mContext, msg)
+                showAlertDialogWithSingleButton(mContext!!, msg)
             } else if (Model == null || Model!!.isEmpty() || Model!!.length == 0 || Model == "-Select Model-") {
                 binding!!.ivTvspinner.error = "???"
                 binding!!.ivTvspinner.visibility = View.VISIBLE
                 //      makeToast(getResources().getString(R.string.please_select_model));
                 val msg = resources.getString(R.string.please_select_model)
-                showAlertDialogWithSingleButton(mContext, msg)
+                showAlertDialogWithSingleButton(mContext!!, msg)
             } else if (SerialNo == null || SerialNo!!.isEmpty() || SerialNo!!.length == 0) {
                 // makeToast(getResources().getString(R.string.please_select_serialno));
                 // binding.inputSerialno.requestFocus();
@@ -267,25 +268,25 @@ class BiometricDeliveryActivity : CustomActivity() {
                 //     binding.inputSerialno.setError("???");
 
                 val msg = resources.getString(R.string.please_select_serialno)
-                showAlertDialogWithSingleButton(mContext, msg)
+                showAlertDialogWithSingleButton(mContext!!, msg)
             } else if (Mobile_No == null || Mobile_No!!.isEmpty() || Mobile_No!!.length != 10) {
                 //makeToast(getResources().getString(R.string.enter_your_exact_mobile_no));
                 binding!!.inputMobile.error = "???"
                 val msg = resources.getString(R.string.enter_your_exact_mobile_no)
-                showAlertDialogWithSingleButton(mContext, msg)
+                showAlertDialogWithSingleButton(mContext!!, msg)
             } else if (stringArrayListHavingAllFilePath == null || stringArrayListHavingAllFilePath.size < 3) {
                 //  makeToast(getResources().getString(R.string.please_select_all_img));
 
                 val msg = resources.getString(R.string.please_select_all_img)
 
-                showAlertDialogWithSingleButton(mContext, msg)
+                showAlertDialogWithSingleButton(mContext!!, msg)
 
                 //  binding.inputSerialno.requestFocus();
             } else if (signatureRequestBody == null) {
                 // makeToast(getResources().getString(R.string.please_sign));
                 //  binding.inputSerialno.requestFocus();
                 val msg = resources.getString(R.string.please_sign)
-                showAlertDialogWithSingleButton(mContext, msg)
+                showAlertDialogWithSingleButton(mContext!!, msg)
             } else {
                 checkLocationServices()
             }
@@ -352,7 +353,7 @@ class BiometricDeliveryActivity : CustomActivity() {
             )
             val msg =
                 "???? ????????? ?? ?????? ??? ?? ??? ??| ???? ???? ?????? ??????? ???? ?? ??? ?? ! ????? ???? ?? ?????? ?? ?????? ???? ????? "
-            showAlertDialogWithSingleButton(mContext, msg)
+            showAlertDialogWithSingleButton(mContext!!, msg)
         } else {
             val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
             val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -438,7 +439,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                     mainBinding.imgSignature.setImageBitmap(bitmap);
                 }*/
                     signatureBitmap = rotateBitmap(
-                        mSignaturePad!!.getSignatureBitmap(),
+                        mSignaturePad!!.getSignatureBitmap()!!,
                         90f
                     ) // Get the signature as a Bitmap
                     encodedSignature = encodeBitmapToBase64(signatureBitmap)
@@ -648,7 +649,7 @@ class BiometricDeliveryActivity : CustomActivity() {
     }
 
     private fun CoustomDialoge() {
-        val alert = AlertDialog.Builder(mContext)
+        val alert = AlertDialog.Builder(mContext!!)
         val mView = layoutInflater.inflate(R.layout.activity_coustomfpsdialoge, null)
         //  mView.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_dialog_bg));
         txt_fpscode = mView.findViewById(R.id.txt_input)
@@ -662,7 +663,7 @@ class BiometricDeliveryActivity : CustomActivity() {
 
         //alertDialog.getWindow().setBackgroundDrawable(new BitmapDrawable(getResources(), blurredBitmap));
         btn_cancel.setOnClickListener {
-            val i = Intent(mContext, BiometricDeliveryDashboardActivity::class.java)
+            val i = Intent(mContext!!, BiometricDeliveryDashboardActivity::class.java)
             startActivity(i)
             /*InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
@@ -718,7 +719,7 @@ class BiometricDeliveryActivity : CustomActivity() {
 
                                     val detailByFpsRoot = response.body()
                                     val fps_message = detailByFpsRoot!!.message
-                                    Toast.makeText(mContext, fps_message, Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(mContext!!, fps_message, Toast.LENGTH_SHORT).show()
                                     val detailByFpsData = detailByFpsRoot.data
                                     if (detailByFpsData != null) {
                                         val DistrictName = detailByFpsData.districtName
@@ -768,7 +769,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                                         }
                                     } else {
                                         val msg = response.body()!!.message
-                                        showAlertDialogWithSingleButton(mContext, msg)
+                                        showAlertDialogWithSingleButton(mContext!!, msg)
                                         //  makeToast(String.valueOf(response.body().getMessage()));
                                         // Handle the case when countDatum is empty or null
                                     }
@@ -776,21 +777,21 @@ class BiometricDeliveryActivity : CustomActivity() {
                                     alertDialog!!.show()
                                     //  makeToast(String.valueOf(response.body().getMessage()));
                                     val msg = response.body()!!.message
-                                    showAlertDialogWithSingleButton(mContext, msg)
+                                    showAlertDialogWithSingleButton(mContext!!, msg)
                                     // Handle the case when the response status is not 200 or the response body is null
                                 }
                             } else {
                                 val msg = response.body()!!.message
-                                showAlertDialogWithSingleButton(mContext, msg)
+                                showAlertDialogWithSingleButton(mContext!!, msg)
                                 // makeToast(String.valueOf(response.body().getMessage()));
                             }
                         } else {
                             val msg = "HTTP Error: " + response.code()
-                            showAlertDialogWithSingleButton(mContext, msg)
+                            showAlertDialogWithSingleButton(mContext!!, msg)
                         }
                     } else {
                         val msg = "HTTP Error: " + response.code()
-                        showAlertDialogWithSingleButton(mContext, msg)
+                        showAlertDialogWithSingleButton(mContext!!, msg)
                         // makeToast(getResources().getString(R.string.error));
                     }
                 }
@@ -799,7 +800,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                     hideProgress()
                     // makeToast(getResources().getString(R.string.error));
                     val msg = error.message
-                    showAlertDialogWithSingleButton(mContext, msg)
+                    showAlertDialogWithSingleButton(mContext!!, msg)
                     call.cancel()
                 }
             })
@@ -1090,14 +1091,14 @@ class BiometricDeliveryActivity : CustomActivity() {
 //                                    Intent intent = new Intent(mActivity, BiometricDeliveryDashboardActivity.class);
 //                                    startActivity(intent);
 
-                                    val builder = AlertDialog.Builder(mContext)
+                                    val builder = AlertDialog.Builder(mContext!!)
                                     builder.setMessage(response.body()!!.response!!.message.toString())
                                         .setCancelable(false)
                                         .setPositiveButton(
                                             resources.getString(R.string.ok)
                                         ) { dialog: DialogInterface?, id: Int ->
                                             val intent = Intent(
-                                                mContext,
+                                                mContext!!,
                                                 BiometricDeliveryDashboardActivity::class.java
                                             )
                                             startActivity(intent)
@@ -1108,20 +1109,20 @@ class BiometricDeliveryActivity : CustomActivity() {
                                 } else {
                                     // makeToast(String.valueOf(response.body().getResponse().getMessage()));
                                     val msg = response.body()!!.response!!.message
-                                    showAlertDialogWithSingleButton(mContext, msg)
+                                    showAlertDialogWithSingleButton(mContext!!, msg)
                                 }
                             } else {
                                 val msg = response.body()!!.response!!.message
-                                showAlertDialogWithSingleButton(mContext, msg)
+                                showAlertDialogWithSingleButton(mContext!!, msg)
                                 // makeToast(getResources().getString(R.string.error));
                             }
                         } else {
                             val msg = "HTTP Error: " + response.code()
-                            showAlertDialogWithSingleButton(mContext, msg)
+                            showAlertDialogWithSingleButton(mContext!!, msg)
                         }
                     } else {
                         val msg = "HTTP Error: " + response.code()
-                        showAlertDialogWithSingleButton(mContext, msg)
+                        showAlertDialogWithSingleButton(mContext!!, msg)
                     }
                 }
 
@@ -1130,7 +1131,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                     error: Throwable
                 ) {
                     hideProgress()
-                    showAlertDialogWithSingleButton(mContext, error.message)
+                    showAlertDialogWithSingleButton(mContext!!, error.message)
                     //   makeToast(getResources().getString(R.string.error));
                     call.cancel()
                 }
@@ -1138,7 +1139,7 @@ class BiometricDeliveryActivity : CustomActivity() {
         } else {
             // makeToast(getResources().getString(R.string.no_internet_connection));
             showAlertDialogWithSingleButton(
-                mContext,
+                mContext!!,
                 resources.getString(R.string.no_internet_connection)
             )
         }
@@ -1148,16 +1149,16 @@ class BiometricDeliveryActivity : CustomActivity() {
         if (alertDialog != null && alertDialog!!.isShowing) {
             // Dismiss the dialog if it's showing
             alertDialog!!.dismiss()
-            val i = Intent(mContext, BiometricDeliveryDashboardActivity::class.java)
+            val i = Intent(mContext!!, BiometricDeliveryDashboardActivity::class.java)
             startActivity(i)
         } else {
             super.onBackPressed()
         }
     }
 
-    override fun makeToast(string: String) {
+    override fun makeToast(string: String?) {
         if (TextUtils.isEmpty(string)) return
-        Toast.makeText(mContext, string, Toast.LENGTH_SHORT).show()
+        Toast.makeText(mContext!!, string, Toast.LENGTH_SHORT).show()
     }
 
     fun showDateTimePicker(view: View?) {
@@ -1214,7 +1215,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                 //     Log.d("resultDataresultData", fullAddress);
             } else {
                 Toast.makeText(
-                    mContext,
+                    mContext!!,
                     resultData.getString(Constants.RESULT_DATA_KEY),
                     Toast.LENGTH_SHORT
                 ).show()
@@ -1249,7 +1250,7 @@ class BiometricDeliveryActivity : CustomActivity() {
 
 
     private fun checkIrisSerialNo(irisScannerSerialNo: String?) {
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             hideKeyboard(mActivity)
             showProgress(resources.getString(R.string.please_wait))
             val USER_Id = preference!!.useR_Id
@@ -1276,7 +1277,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                                         binding!!.inputSerialno.text = irisScannerSerialNo
                                     } else {
                                         val msg = response.body()!!.message
-                                        showAlertDialogWithSingleButton(mContext, msg)
+                                        showAlertDialogWithSingleButton(mContext!!, msg)
                                         //  makeToast(String.valueOf(response.body().getMessage()));
                                         // Handle the case when countDatum is empty or null
                                     }
@@ -1284,21 +1285,21 @@ class BiometricDeliveryActivity : CustomActivity() {
                                     //     alertDialog.show();
                                     //  makeToast(String.valueOf(response.body().getMessage()));
                                     val msg = response.body()!!.message
-                                    showAlertDialogWithSingleButton(mContext, msg)
+                                    showAlertDialogWithSingleButton(mContext!!, msg)
                                     // Handle the case when the response status is not 200 or the response body is null
                                 }
                             } else {
                                 val msg = response.body()!!.message
-                                showAlertDialogWithSingleButton(mContext, msg)
+                                showAlertDialogWithSingleButton(mContext!!, msg)
                                 // makeToast(String.valueOf(response.body().getMessage()));
                             }
                         } else {
                             val msg = "HTTP Error: " + response.code()
-                            showAlertDialogWithSingleButton(mContext, msg)
+                            showAlertDialogWithSingleButton(mContext!!, msg)
                         }
                     } else {
                         val msg = "HTTP Error: " + response.code()
-                        showAlertDialogWithSingleButton(mContext, msg)
+                        showAlertDialogWithSingleButton(mContext!!, msg)
                         // makeToast(getResources().getString(R.string.error));
                     }
                 }
@@ -1307,7 +1308,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                     hideProgress()
                     // makeToast(getResources().getString(R.string.error));
                     val msg = error.message
-                    showAlertDialogWithSingleButton(mContext, msg)
+                    showAlertDialogWithSingleButton(mContext!!, msg)
                     call.cancel()
                 }
             })
@@ -1319,7 +1320,7 @@ class BiometricDeliveryActivity : CustomActivity() {
     private fun getL0DeviceCodeByFPS() {
         Fps_code = txt_fpscode!!.text.toString().trim { it <= ' ' }
 
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             hideKeyboard(mActivity)
             showProgress(resources.getString(R.string.please_wait))
             val USER_Id = preference!!.useR_Id
@@ -1345,7 +1346,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                                     ) {
                                         //   binding.inputSerialno.setText(irisScannerSerialNo);
 
-                                        //        showAlertDialogWithSingleButton(mContext, deviceCodeByFPSResponse.getData().getInfoMsgHi()
+                                        //        showAlertDialogWithSingleButton(mContext!!, deviceCodeByFPSResponse.getData().getInfoMsgHi()
                                         //            +"\n\n"+ deviceCodeByFPSResponse.getData().getInfoDescMsgHi());
 
 
@@ -1375,7 +1376,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                                                 resources.getDrawable(R.drawable.warning)
                                             if (warningIcon != null) {
                                                 val iconSize =
-                                                    (18 * mContext.resources.displayMetrics.density).toInt() // 18dp size
+                                                    (18 * mContext!!.resources.displayMetrics.density).toInt() // 18dp size
                                                 warningIcon.setBounds(
                                                     0,
                                                     0,
@@ -1432,7 +1433,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                                             ) // Text size
 
-                                            //                                            new androidx.appcompat.app.AlertDialog.Builder(mContext)
+                                            //                                            new androidx.appcompat.app.AlertDialog.Builder(mContext!!)
                                             //                                                    .setTitle(getResources().getString(R.string.app_name))
                                             //                                                    .setCancelable(false)
                                             //                                                    //         .setMessage(deviceCodeByFPSResponse.getData().getInfoMsgHi()
@@ -1443,7 +1444,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                                             //                                                    }).setNegativeButton(back, (dialog, which) -> {
                                             //
                                             //                                                    }).show();
-                                            val dialog = AlertDialog.Builder(mContext)
+                                            val dialog = AlertDialog.Builder(mContext!!)
                                                 .setTitle(resources.getString(R.string.app_name))
                                                 .setCancelable(false)
                                                 .setMessage(message)
@@ -1462,11 +1463,11 @@ class BiometricDeliveryActivity : CustomActivity() {
                                                 .show()
 
                                             // AlertDialog ke buttons ko customize karna
-                                            //     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(ContextCompat.getColor(mContext, R.color.amber_700));
-                                            //    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackgroundColor(ContextCompat.getColor(mContext, R.color.amber_700));
+                                            //     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(ContextCompat.getColor(mContext!!, R.color.amber_700));
+                                            //    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackgroundColor(ContextCompat.getColor(mContext!!, R.color.amber_700));
 
-                                            //                                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackground(ContextCompat.getDrawable(mContext, R.drawable.buttongradient));
-                                            //                                            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackground(ContextCompat.getDrawable(mContext, R.drawable.buttongradient));
+                                            //                                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackground(ContextCompat.getDrawable(mContext!!, R.drawable.buttongradient));
+                                            //                                            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackground(ContextCompat.getDrawable(mContext!!, R.drawable.buttongradient));
                                             //
                                             //// Agar aapko text color bhi change karna hai:
                                             //                                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.WHITE);
@@ -1482,12 +1483,12 @@ class BiometricDeliveryActivity : CustomActivity() {
                                             // **Background Set Karna**
                                             positiveButton.background =
                                                 ContextCompat.getDrawable(
-                                                    mContext,
+                                                    mContext!!,
                                                     R.drawable.buttongradient
                                                 )
                                             negativeButton.background =
                                                 ContextCompat.getDrawable(
-                                                    mContext,
+                                                    mContext!!,
                                                     R.drawable.buttongradient
                                                 )
 
@@ -1520,7 +1521,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                                         }
                                     } else {
                                         val msg = response.body()!!.message
-                                        showAlertDialogWithSingleButton(mContext, msg)
+                                        showAlertDialogWithSingleButton(mContext!!, msg)
                                         //  makeToast(String.valueOf(response.body().getMessage()));
                                         // Handle the case when countDatum is empty or null
                                     }
@@ -1528,21 +1529,21 @@ class BiometricDeliveryActivity : CustomActivity() {
                                     //     alertDialog.show();
                                     //  makeToast(String.valueOf(response.body().getMessage()));
                                     val msg = response.body()!!.message
-                                    showAlertDialogWithSingleButton(mContext, msg)
+                                    showAlertDialogWithSingleButton(mContext!!, msg)
                                     // Handle the case when the response status is not 200 or the response body is null
                                 }
                             } else {
                                 val msg = response.body()!!.message
-                                showAlertDialogWithSingleButton(mContext, msg)
+                                showAlertDialogWithSingleButton(mContext!!, msg)
                                 // makeToast(String.valueOf(response.body().getMessage()));
                             }
                         } else {
                             val msg = "HTTP Error: " + response.code()
-                            showAlertDialogWithSingleButton(mContext, msg)
+                            showAlertDialogWithSingleButton(mContext!!, msg)
                         }
                     } else {
                         val msg = "HTTP Error: " + response.code()
-                        showAlertDialogWithSingleButton(mContext, msg)
+                        showAlertDialogWithSingleButton(mContext!!, msg)
                         // makeToast(getResources().getString(R.string.error));
                     }
                 }
@@ -1551,7 +1552,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                     hideProgress()
                     // makeToast(getResources().getString(R.string.error));
                     val msg = error.message
-                    showAlertDialogWithSingleButton(mContext, msg)
+                    showAlertDialogWithSingleButton(mContext!!, msg)
                     call.cancel()
                 }
             })
@@ -1561,7 +1562,7 @@ class BiometricDeliveryActivity : CustomActivity() {
     }
 
     private fun updateDeviceTypeToChangeFSensor(deviceCode: String) {
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             hideKeyboard(mActivity)
             showProgress(resources.getString(R.string.please_wait))
             val USER_Id = preference!!.useR_Id
@@ -1587,7 +1588,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                                     ) {
                                         //   binding.inputSerialno.setText(irisScannerSerialNo);
 
-                                        //     showAlertDialogWithSingleButton(mContext, updateDeviceTypeToChangeFSensorResp.getData().getInfoMsgHi()
+                                        //     showAlertDialogWithSingleButton(mContext!!, updateDeviceTypeToChangeFSensorResp.getData().getInfoMsgHi()
                                         //             + "\n" + updateDeviceTypeToChangeFSensorResp.getData().getInfoDescMsgHi());
 
 
@@ -1608,7 +1609,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                                                 """.trimIndent()
                                         )
 
-                                        androidx.appcompat.app.AlertDialog.Builder(mContext)
+                                        androidx.appcompat.app.AlertDialog.Builder(mContext!!)
                                             .setTitle(resources.getString(R.string.app_name))
                                             .setCancelable(false) //         .setMessage(deviceCodeByFPSResponse.getData().getInfoMsgHi()
                                             //                 + "\n\n??????? " +getResources().getDrawable(R.drawable.warning)+"\n"+ deviceCodeByFPSResponse.getData().getInfoDescMsgHi())
@@ -1624,7 +1625,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                                         //                }
                                     } else {
                                         val msg = response.body()!!.message
-                                        showAlertDialogWithSingleButton(mContext, msg)
+                                        showAlertDialogWithSingleButton(mContext!!, msg)
                                         //  makeToast(String.valueOf(response.body().getMessage()));
                                         // Handle the case when countDatum is empty or null
                                     }
@@ -1632,21 +1633,21 @@ class BiometricDeliveryActivity : CustomActivity() {
                                     //     alertDialog.show();
                                     //  makeToast(String.valueOf(response.body().getMessage()));
                                     val msg = response.body()!!.message
-                                    showAlertDialogWithSingleButton(mContext, msg)
+                                    showAlertDialogWithSingleButton(mContext!!, msg)
                                     // Handle the case when the response status is not 200 or the response body is null
                                 }
                             } else {
                                 val msg = response.body()!!.message
-                                showAlertDialogWithSingleButton(mContext, msg)
+                                showAlertDialogWithSingleButton(mContext!!, msg)
                                 // makeToast(String.valueOf(response.body().getMessage()));
                             }
                         } else {
                             val msg = "HTTP Error: " + response.code()
-                            showAlertDialogWithSingleButton(mContext, msg)
+                            showAlertDialogWithSingleButton(mContext!!, msg)
                         }
                     } else {
                         val msg = "HTTP Error: " + response.code()
-                        showAlertDialogWithSingleButton(mContext, msg)
+                        showAlertDialogWithSingleButton(mContext!!, msg)
                         // makeToast(getResources().getString(R.string.error));
                     }
                 }
@@ -1658,7 +1659,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                     hideProgress()
                     // makeToast(getResources().getString(R.string.error));
                     val msg = error.message
-                    showAlertDialogWithSingleButton(mContext, msg)
+                    showAlertDialogWithSingleButton(mContext!!, msg)
                     call.cancel()
                 }
             })

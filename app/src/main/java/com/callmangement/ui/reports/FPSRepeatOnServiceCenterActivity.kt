@@ -3,6 +3,7 @@ package com.callmangement.ui.reports
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -36,6 +37,8 @@ import java.util.Locale
 import java.util.Objects
 
 class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener {
+
+    
     private var binding: ActivityFpsrepeatonServiceCenterBinding? = null
     private var viewModel: ComplaintViewModel? = null
     private val myCalendarFromDate: Calendar = Calendar.getInstance()
@@ -61,6 +64,7 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
     }
 
     private fun initView() {
+        mContext = this
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -70,7 +74,7 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
         viewModel = ViewModelProviders.of(this).get(
             ComplaintViewModel::class.java
         )
-        prefManager = PrefManager(mContext)
+        prefManager = PrefManager(mContext!!)
         districtId = prefManager!!.useR_DistrictId!!
         setUpOnClickListener()
         manageLayout()
@@ -239,7 +243,7 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
                     l: Long
                 ) {
                     if (++checkDistrict > 1) {
-                        districtId = district_List!![i]!!.districtId
+                        districtId = district_List!![i]!!.districtId!!
                         fetchData(districtId, fromDate, toDate)
                     }
                 }
@@ -307,7 +311,7 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
                     district_List?.reverse()
                     val dataAdapter =
                         ArrayAdapter(
-                            mContext, android.R.layout.simple_spinner_item,
+                            mContext!!, android.R.layout.simple_spinner_item,
                             district_List!!
                         )
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -318,7 +322,7 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
     }
 
     private fun fetchData(districtId: String, fromDate: String, toDate: String) {
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             showProgress()
             val service = RetrofitInstance.getRetrofitInstance().create(
                 APIService::class.java
@@ -401,8 +405,8 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
             binding!!.rvFpsRepeat.visibility = View.VISIBLE
             binding!!.tvNoDataFound.visibility = View.GONE
             binding!!.rvFpsRepeat.layoutManager =
-                LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
-            binding!!.rvFpsRepeat.adapter = FPSRepeatOnServiceCenterActivityAdapter(mContext, list)
+                LinearLayoutManager(mContext!!, LinearLayoutManager.VERTICAL, false)
+            binding!!.rvFpsRepeat.adapter = FPSRepeatOnServiceCenterActivityAdapter(mContext!!, list)
             binding!!.textTotalCount.text = list.size.toString()
         } else {
             binding!!.rvFpsRepeat.visibility = View.GONE
@@ -413,7 +417,7 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
 
     fun fpsRepeatOnServiceCenterView(model: ModelRepeatFpsComplaintsList?) {
         startActivity(
-            Intent(mContext, FPSRepeatOnServiceCenterDetailActivity::class.java).putExtra(
+            Intent(mContext!!, FPSRepeatOnServiceCenterDetailActivity::class.java).putExtra(
                 "param",
                 model
             )
@@ -434,7 +438,7 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
                     updateLabelFromDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateFromDate,
+                mContext!!, dateFromDate,
                 myCalendarFromDate[Calendar.YEAR],
                 myCalendarFromDate[Calendar.MONTH],
                 myCalendarFromDate[Calendar.DAY_OF_MONTH]
@@ -451,7 +455,7 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
                     updateLabelToDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateToDate,
+                mContext!!, dateToDate,
                 myCalendarToDate[Calendar.YEAR],
                 myCalendarToDate[Calendar.MONTH],
                 myCalendarToDate[Calendar.DAY_OF_MONTH]
@@ -460,7 +464,7 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
             datePickerDialog.show()
         } /*else if (id == R.id.buttonPDF){
             if (Constants.modelRepeatFpsComplaintsList != null && Constants.modelRepeatFpsComplaintsList.size() > 0){
-                startActivity(new Intent(mContext, FPSRepeatOnServiceCenterPDFActivity.class));
+                startActivity(new Intent(mContext!!, FPSRepeatOnServiceCenterPDFActivity.class));
                 finish();
             }
         }*/

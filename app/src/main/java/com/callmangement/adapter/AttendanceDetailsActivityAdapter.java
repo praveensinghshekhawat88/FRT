@@ -61,7 +61,6 @@ public class AttendanceDetailsActivityAdapter extends RecyclerView.Adapter<Atten
 
         }
 
-
         holder.binding.itemList.setOnClickListener(view -> context.startActivity(new Intent(context, LocationListActivity.class).putExtra("param", model)));
     }
 
@@ -88,8 +87,6 @@ public class AttendanceDetailsActivityAdapter extends RecyclerView.Adapter<Atten
         }
     }
 
-
-
     private String formattedFilterDate(String dateStr){
         StringTokenizer tokenizer = new StringTokenizer(dateStr,"-");
         String year = tokenizer.nextToken();
@@ -97,9 +94,6 @@ public class AttendanceDetailsActivityAdapter extends RecyclerView.Adapter<Atten
         String date = tokenizer.nextToken();
         return date+"-"+month+"-"+year;
     }
-
-
-
 
     public static String decodeUtf8Hex(String encoded) {
         if (encoded == null || encoded.isEmpty()) {

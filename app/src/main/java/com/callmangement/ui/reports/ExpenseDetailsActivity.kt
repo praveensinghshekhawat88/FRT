@@ -1,5 +1,6 @@
 package com.callmangement.ui.reports
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -24,6 +25,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ExpenseDetailsActivity : CustomActivity(), View.OnClickListener {
+
+    
     private var binding: ActivityExpenseDetailsBinding? = null
     private var model: ModelExpensesList? = null
     private var prefManager: PrefManager? = null
@@ -36,7 +39,9 @@ class ExpenseDetailsActivity : CustomActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        prefManager = PrefManager(mContext)
+
+        mContext = this
+        prefManager = PrefManager(mContext!!)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -96,7 +101,7 @@ class ExpenseDetailsActivity : CustomActivity(), View.OnClickListener {
             binding!!.buttonComplete.visibility = View.GONE
         }
 
-        Glide.with(mContext)
+        Glide.with(mContext!!)
             .load(Constants.API_BASE_URL + model!!.filePath)
             .placeholder(R.drawable.image_not_fount)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -104,7 +109,7 @@ class ExpenseDetailsActivity : CustomActivity(), View.OnClickListener {
     }
 
     private fun completeExpense() {
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             showProgress()
             val service = RetrofitInstance.getRetrofitInstance().create(
                 APIService::class.java
@@ -125,7 +130,7 @@ class ExpenseDetailsActivity : CustomActivity(), View.OnClickListener {
                                     val status = jsonObject.optString("status")
                                     val message = jsonObject.optString("message")
                                     if (status == "200") {
-                                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(mContext!!, message, Toast.LENGTH_SHORT).show()
                                         onBackPressed()
                                     } else {
                                         makeToast(message)
@@ -154,13 +159,13 @@ class ExpenseDetailsActivity : CustomActivity(), View.OnClickListener {
             onBackPressed()
         } else if (id == R.id.ivChallanImage) {
             startActivity(
-                Intent(mContext, ZoomInZoomOutActivity::class.java).putExtra(
+                Intent(mContext!!, ZoomInZoomOutActivity::class.java).putExtra(
                     "image",
                     Constants.API_BASE_URL + model!!.filePath
                 )
             )
         } else if (id == R.id.buttonComplete) {
-            val builder = AlertDialog.Builder(mContext)
+            val builder = AlertDialog.Builder(mContext!!)
             builder.setMessage(resources.getString(R.string.complete_expense_dialog_msg))
                 .setCancelable(false)
                 .setPositiveButton(resources.getString(R.string.ok)) { dialog: DialogInterface, ids: Int ->

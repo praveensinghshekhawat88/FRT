@@ -2,6 +2,7 @@ package com.callmangement.ui.complaints_fps_wise
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -51,7 +52,10 @@ import java.util.Locale
 import java.util.Objects
 
 class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
+
+
     var binding: ActivityLastComplaintFpslistBinding? = null
+    
     private var prefManager: PrefManager? = null
     private var districtId = "0"
     private var tehsilId = "0"
@@ -77,6 +81,9 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
             layoutInflater
         )
         setContentView(binding!!.root)
+
+        mContext = this
+
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -84,7 +91,7 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
         binding!!.actionBar.textToolbarTitle.text = resources.getString(R.string.last_complain_list)
         vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
         binding!!.actionBar.buttonEXCEL.visibility = View.VISIBLE
-        prefManager = PrefManager(mContext)
+        prefManager = PrefManager(mContext!!)
         viewModel = ViewModelProviders.of(this).get(
             ComplaintViewModel::class.java
         )
@@ -117,8 +124,8 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
                     if (districtList!![i].districtId != "0") {
                         binding!!.rvFpsList.visibility = View.GONE
                         binding!!.textNoRecordFound.visibility = View.VISIBLE
-                        districtNameEng = districtList!![i].districtNameEng
-                        districtId = districtList!![i].districtId
+                        districtNameEng = districtList!![i].districtNameEng!!
+                        districtId = districtList!![i].districtId!!
                         tehsilList(districtId)
                     } else {
                         districtNameEng = ""
@@ -139,8 +146,8 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
                     l: Long
                 ) {
                     if (tehsilList!![i].tehsilId != "0") {
-                        tehsilNameEng = tehsilList!![i].tehsilNameEng
-                        tehsilId = tehsilList!![i].tehsilId
+                        tehsilNameEng = tehsilList!![i].tehsilNameEng!!
+                        tehsilId = tehsilList!![i].tehsilId!!
                         getFPSList()
                     } else {
                         tehsilNameEng = ""
@@ -166,7 +173,7 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
                         "--" + resources.getString(R.string.district) + "--"
                     districtList!!.add(0, modelDistrictList)
                     val dataAdapter = ArrayAdapter(
-                        mContext, android.R.layout.simple_spinner_item,
+                        mContext!!, android.R.layout.simple_spinner_item,
                         districtList!!
                     )
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -178,7 +185,7 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
                         "--" + resources.getString(R.string.tehsil) + "--"
                     tehsilList!!.add(0, modelTehsilList)
                     val dataAdapter1 =
-                        ArrayAdapter(mContext, android.R.layout.simple_spinner_item, tehsilList!!)
+                        ArrayAdapter(mContext!!, android.R.layout.simple_spinner_item, tehsilList!!)
                     dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     binding!!.spinnerTehsil.adapter = dataAdapter1
                 }
@@ -210,7 +217,7 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
                                     "--" + resources.getString(R.string.tehsil) + "--"
                                 tehsilList!!.add(0, modelTehsilList)
                                 val dataAdapter = ArrayAdapter(
-                                    mContext, android.R.layout.simple_spinner_item,
+                                    mContext!!, android.R.layout.simple_spinner_item,
                                     tehsilList!!
                                 )
                                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -258,7 +265,7 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
         }
 
     private fun getFPSList() {
-            if (Constants.isNetworkAvailable(mContext)) {
+            if (Constants.isNetworkAvailable(mContext!!)) {
                 modelFPSDistTehWiseList!!.clear()
 
                 fpsCode = Objects.requireNonNull(binding!!.inputFpsCode.text).toString()
@@ -331,9 +338,9 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
 
     private fun setUpFPSListAdapter(modelFPSDistTehWiseList: List<ModelFPSDistTehWiseList>?) {
         binding!!.rvFpsList.layoutManager =
-            LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(mContext!!, LinearLayoutManager.VERTICAL, false)
         binding!!.rvFpsList.adapter =
-            LastComplaintFPSListActivityAdapter(mContext, modelFPSDistTehWiseList)
+            LastComplaintFPSListActivityAdapter(mContext!!, modelFPSDistTehWiseList)
     }
 
     override fun onClick(view: View) {
@@ -350,7 +357,7 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
             if (modelFPSDistTehWiseList != null && modelFPSDistTehWiseList!!.size > 0) {
                 ExcelformTable()
             } else {
-                Toast.makeText(mContext, "No Data Found", Toast.LENGTH_SHORT).show()
+                Toast.makeText(mContext!!, "No Data Found", Toast.LENGTH_SHORT).show()
             }
         }
     }

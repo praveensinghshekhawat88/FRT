@@ -10,11 +10,21 @@ import com.callmangement.databinding.ItemClosedGuardDeliveryListBinding
 import com.callmangement.ui.closed_guard_delivery.ClosedGuardDetailActivity
 import com.callmangement.ui.closed_guard_delivery.model.ClosedGuardDeliveryListResponse
 
-class ClosedGuardDeliveryListAdapter(
-    private val irisInsDataArrayList: ArrayList<ClosedGuardDeliveryListResponse.Datum?>,
-    var context: Context
-) :
+class ClosedGuardDeliveryListAdapter() :
     RecyclerView.Adapter<ClosedGuardDeliveryListAdapter.MyViewHolder>() {
+
+    private var irisInsDataArrayList: ArrayList<ClosedGuardDeliveryListResponse.Datum?> =
+        ArrayList()
+    lateinit var context: Context
+
+    constructor(
+        irisInsDataArrayList: ArrayList<ClosedGuardDeliveryListResponse.Datum?>,
+        context: Context
+    ) : this() {
+        this.irisInsDataArrayList = irisInsDataArrayList
+        this.context = context
+    }
+
     // data is passed into the constructor
     // inflates the row layout from xml when needed
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -49,10 +59,20 @@ class ClosedGuardDeliveryListAdapter(
         return irisInsDataArrayList.size
     }
 
-    class MyViewHolder(val binding: ItemClosedGuardDeliveryListBinding) :
+    inner class MyViewHolder(val binding: ItemClosedGuardDeliveryListBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         init {
-            binding.root.setOnClickListener { v: View? -> }
+
+            binding.rlItem.setOnClickListener {
+
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val intent = Intent(context, ClosedGuardDetailActivity::class.java)
+                    intent.putExtra("param", irisInsDataArrayList[position])
+                    context.startActivity(intent)
+                }
+
+            }
         }
 
         override fun onClick(v: View) {

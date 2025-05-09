@@ -1,6 +1,7 @@
 package com.callmangement.ui.attendance
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -14,7 +15,9 @@ import com.callmangement.model.district.ModelDistrictList
 import com.callmangement.ui.complaint.ComplaintViewModel
 
 class DistrictListActivity : CustomActivity() {
+
     private var binding: ActivityDistrictListBinding? = null
+    
     private var adapter: DistrictListActivityAdapter? = null
     private var viewModel: ComplaintViewModel? = null
     private var district_List: List<ModelDistrictList> = ArrayList()
@@ -25,16 +28,17 @@ class DistrictListActivity : CustomActivity() {
         viewModel = ViewModelProviders.of(this).get(
             ComplaintViewModel::class.java
         )
+        mContext = this
         initView()
         districtList()
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initView() {
-        adapter = DistrictListActivityAdapter(mContext)
+        adapter = DistrictListActivityAdapter(mContext!!)
         adapter!!.notifyDataSetChanged()
         binding!!.rvDistrictList.layoutManager =
-            LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(mContext!!, LinearLayoutManager.VERTICAL, false)
         binding!!.rvDistrictList.adapter = adapter
     }
 

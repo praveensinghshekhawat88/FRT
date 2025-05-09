@@ -38,6 +38,8 @@ import java.util.Locale
 import java.util.Objects
 
 class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListener {
+
+    
     private var binding: ActivityBiometricDeliveryDashboardBinding? = null
     private val spinnerList: MutableList<String> = ArrayList()
     private val myFormat = "yyyy-MM-dd"
@@ -47,10 +49,8 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
     private val cvCompleteDelivery: CardView? = null
     private val cvAbout: CardView? = null
     private var mActivity: Activity? = null
-    private val mContext: Context? = null
     private var builder: AlertDialog.Builder? = null
     private var prefManager: PrefManager? = null
-
     //   PrefManager preference;
     private var district_List: MutableList<ModelDistrictList_w?>? = ArrayList()
     private var checkDistrict = 0
@@ -76,14 +76,14 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
     private fun init() {
         mActivity = this
         mContext = this
-        prefManager = PrefManager(mContext)
+        prefManager = PrefManager(mContext!!)
         swipeRefreshLayout = findViewById(R.id.refreshLayoutt)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
         binding!!.actionBar.textToolbarTitle.text = "Biometric Delivery Dashboard"
         //preference = PrefManager.getInstance(mActivity);
-        //   prefManager = new PrefManager(mContext);
+        //   prefManager = new PrefManager(mContext!!);
         setUpData()
         setClickListener()
     }
@@ -192,7 +192,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
 //                    vibrator.vibrate(100);
 //                    String selectedDate = String.valueOf(binding.spinner.getSelectedItemPosition());
 //                    String selectedDis = String.valueOf(binding.spinnerDistrict.getSelectedItemPosition());
-//                    Intent i = new Intent(mContext, IrisInstalledListActivity.class);
+//                    Intent i = new Intent(mContext!!, IrisInstalledListActivity.class);
 //                    i.putExtra("key_districtId", districtId);
 //                    i.putExtra("key_fromDate", fromDate);
 //                    i.putExtra("key_toDate", toDate);
@@ -215,7 +215,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
 //                    String selectedDate = String.valueOf(binding.spinner.getSelectedItemPosition());
 //                    String selectedDis = String.valueOf(binding.spinnerDistrict.getSelectedItemPosition());
 //
-//                    Intent i = new Intent(mContext, InstallationPendingListActivity.class);
+//                    Intent i = new Intent(mContext!!, InstallationPendingListActivity.class);
 //                    i.putExtra("key_districtId", districtId);
 //                    i.putExtra("key_districtName", districtNameEng);
 //                    i.putExtra("key_fromDate", fromDate);
@@ -247,7 +247,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
                     val selectedDate = binding!!.spinner.selectedItemPosition.toString()
                     val selectedDis = binding!!.spinnerDistrict.selectedItemPosition.toString()
 
-                    val i = Intent(mContext, BiometricDeliveryActivity::class.java)
+                    val i = Intent(mContext!!, BiometricDeliveryActivity::class.java)
                     i.putExtra("key_districtId", districtId)
                     i.putExtra("key_fromDate", fromDate)
                     i.putExtra("key_toDate", toDate)
@@ -286,7 +286,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
 //
 //                    Log.d("selectedDate", selectedDate);
 //
-//                    Intent i = new Intent(mContext, IrisReplaceListActivity.class);
+//                    Intent i = new Intent(mContext!!, IrisReplaceListActivity.class);
 //                    i.putExtra("key_districtId", districtId);
 //                    i.putExtra("key_fromDate", fromDate);
 //                    i.putExtra("key_toDate", toDate);
@@ -307,7 +307,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
 
                 Log.d("selectedDate", selectedDate)
 
-                val i = Intent(mContext, SensorSummaryActivity::class.java)
+                val i = Intent(mContext!!, SensorSummaryActivity::class.java)
                 i.putExtra("key_districtId", districtId)
                 i.putExtra("key_fromDate", fromDate)
                 i.putExtra("key_toDate", toDate)
@@ -332,7 +332,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
 //
 //                    Log.d("selectedDate", selectedDate);
 //
-//                    Intent i = new Intent(mContext, BiometricDeliveryListActivity.class);
+//                    Intent i = new Intent(mContext!!, BiometricDeliveryListActivity.class);
 //                    i.putExtra("key_districtId", districtId);
 //                    i.putExtra("key_fromDate", fromDate);
 //                    i.putExtra("key_toDate", toDate);
@@ -344,7 +344,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
 //            }
 //        });
         binding!!.actionBar.ivBack.setOnClickListener {
-            val i = Intent(mContext, MainActivity::class.java)
+            val i = Intent(mContext!!, MainActivity::class.java)
             startActivity(i)
         }
 
@@ -511,7 +511,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
                     updateLabelFromDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateFromDate,
+                mContext!!, dateFromDate,
                 myCalendarFromDate[Calendar.YEAR],
                 myCalendarFromDate[Calendar.MONTH],
                 myCalendarFromDate[Calendar.DAY_OF_MONTH]
@@ -532,7 +532,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
                     updateLabelToDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateToDate,
+                mContext!!, dateToDate,
                 myCalendarToDate[Calendar.YEAR],
                 myCalendarToDate[Calendar.MONTH],
                 myCalendarToDate[Calendar.DAY_OF_MONTH]
@@ -633,11 +633,11 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
                             }
                         } else {
                             val msg = "HTTP Error: " + response.code()
-                            Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(mContext!!, msg, Toast.LENGTH_SHORT).show()
                         }
                     } else {
                         val msg = "HTTP Error: " + response.code()
-                        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext!!, msg, Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -753,11 +753,11 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
 
     override fun onBackPressed() {
         super.onBackPressed()
-        val i = Intent(mContext, MainActivity::class.java)
+        val i = Intent(mContext!!, MainActivity::class.java)
         startActivity(i)
     }
 
-    override fun makeToast(string: String) {
+    override fun makeToast(string: String?) {
         if (TextUtils.isEmpty(string)) return
         Toast.makeText(mActivity, string, Toast.LENGTH_SHORT).show()
     }
@@ -779,7 +779,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
                 val selectedDate = binding!!.spinner.selectedItemPosition.toString()
                 val selectedDis = binding!!.spinnerDistrict.selectedItemPosition.toString()
 
-                val i = Intent(mContext, BiometricDeliveryListActivity::class.java)
+                val i = Intent(mContext!!, BiometricDeliveryListActivity::class.java)
                 i.putExtra("key_districtId", districtId)
                 i.putExtra("key_districtName", districtNameEng)
                 i.putExtra("key_fromDate", fromDate)
@@ -799,7 +799,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
                 val selectedDate = binding!!.spinner.selectedItemPosition.toString()
                 val selectedDis = binding!!.spinnerDistrict.selectedItemPosition.toString()
 
-                val i = Intent(mContext, BiometricDeliveryListActivity::class.java)
+                val i = Intent(mContext!!, BiometricDeliveryListActivity::class.java)
                 i.putExtra("key_districtId", districtId)
                 i.putExtra("key_districtName", districtNameEng)
                 i.putExtra("key_fromDate", fromDate)
@@ -819,7 +819,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
                 val selectedDate = binding!!.spinner.selectedItemPosition.toString()
                 val selectedDis = binding!!.spinnerDistrict.selectedItemPosition.toString()
 
-                val i = Intent(mContext, BiometricDeliveryListActivity::class.java)
+                val i = Intent(mContext!!, BiometricDeliveryListActivity::class.java)
                 i.putExtra("key_districtId", districtId)
                 i.putExtra("key_districtName", districtNameEng)
                 i.putExtra("key_fromDate", fromDate)
@@ -839,7 +839,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
                 val selectedDate = binding!!.spinner.selectedItemPosition.toString()
                 val selectedDis = binding!!.spinnerDistrict.selectedItemPosition.toString()
 
-                val i = Intent(mContext, BiometricDeliveryListActivity::class.java)
+                val i = Intent(mContext!!, BiometricDeliveryListActivity::class.java)
                 i.putExtra("key_districtId", districtId)
                 i.putExtra("key_districtName", districtNameEng)
                 i.putExtra("key_fromDate", fromDate)

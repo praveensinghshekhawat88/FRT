@@ -3,6 +3,7 @@ package com.callmangement.ui.attendance
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -28,7 +29,9 @@ import java.util.Locale
 import java.util.Objects
 
 class AttendanceDetailsActivity : CustomActivity() {
+
     var binding: ActivityAttendanceDetailsBinding? = null
+    
     private val myCalendarFromDate: Calendar = Calendar.getInstance()
     private val myCalendarToDate: Calendar = Calendar.getInstance()
     private val myFormat = "yyyy-MM-dd"
@@ -47,7 +50,8 @@ class AttendanceDetailsActivity : CustomActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_attendance_details)
-        prefManager = PrefManager(mContext)
+        mContext = this
+        prefManager = PrefManager(mContext!!)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -88,10 +92,10 @@ class AttendanceDetailsActivity : CustomActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initView() {
-        adapter = AttendanceDetailsActivityAdapter(mContext)
+        adapter = AttendanceDetailsActivityAdapter(mContext!!)
         adapter!!.notifyDataSetChanged()
         binding!!.rvMarkAttendance.layoutManager =
-            LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(mContext!!, LinearLayoutManager.VERTICAL, false)
         binding!!.rvMarkAttendance.addItemDecoration(
             EqualSpacingItemDecoration(
                 30,
@@ -109,8 +113,8 @@ class AttendanceDetailsActivity : CustomActivity() {
                     l: Long
                 ) {
                     if (++checkDistrict > 1) {
-                        districtNameEng = district_List!![i]!!.districtNameEng
-                        districtId = district_List!![i]!!.districtId
+                        districtNameEng = district_List!![i]!!.districtNameEng!!
+                        districtId = district_List!![i]!!.districtId!!
                         if (districtNameEng.equals(
                                 "--" + resources.getString(R.string.district) + "--",
                                 ignoreCase = true
@@ -146,7 +150,7 @@ class AttendanceDetailsActivity : CustomActivity() {
 
         binding!!.textFromDate.setOnClickListener { view: View? ->
             val datePickerDialog = DatePickerDialog(
-                mContext, dateFromDate,
+                mContext!!, dateFromDate,
                 myCalendarFromDate[Calendar.YEAR],
                 myCalendarFromDate[Calendar.MONTH],
                 myCalendarFromDate[Calendar.DAY_OF_MONTH]
@@ -157,7 +161,7 @@ class AttendanceDetailsActivity : CustomActivity() {
 
         binding!!.textToDate.setOnClickListener { view: View? ->
             val datePickerDialog = DatePickerDialog(
-                mContext,
+                mContext!!,
                 dateToDate,
                 myCalendarToDate[Calendar.YEAR],
                 myCalendarToDate[Calendar.MONTH],
@@ -237,7 +241,7 @@ class AttendanceDetailsActivity : CustomActivity() {
                     district_List!!.reverse()
                     val dataAdapter =
                         ArrayAdapter(
-                            mContext, android.R.layout.simple_spinner_item,
+                            mContext!!, android.R.layout.simple_spinner_item,
                             district_List!!
                         )
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

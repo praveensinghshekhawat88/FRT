@@ -41,7 +41,7 @@ class SurveyFormUploadedImagesListingAdapter(
             )
         ) {
             holder.ivChallanImage.visibility = View.VISIBLE
-            Glide.with(mContext).load(imagePath).placeholder(R.drawable.image_not_fount)
+            Glide.with(mContext!!).load(imagePath).placeholder(R.drawable.image_not_fount)
                 .into(holder.ivChallanImage)
         }
 

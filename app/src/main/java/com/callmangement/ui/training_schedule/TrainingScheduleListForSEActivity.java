@@ -145,7 +145,7 @@ public class TrainingScheduleListForSEActivity extends CustomActivity implements
                                 Collections.reverse(tehsil_list);
                                 ModelTehsilList l = new ModelTehsilList();
                                 l.setTehsilId(String.valueOf(-1));
-                                l.setTehsilNameEng("--" + getResources().getString(R.string.tehsil) + "--");
+                                l.tehsilNameEng = "--" + getResources().getString(R.string.tehsil) + "--";
                                 tehsil_list.add(l);
                                 Collections.reverse(tehsil_list);
                                 ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, tehsil_list);
@@ -192,7 +192,7 @@ public class TrainingScheduleListForSEActivity extends CustomActivity implements
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     if(++checkTehsil > 1) {
-                        tehsilNameEng = tehsil_list.get(i).getTehsilNameEng();
+                        tehsilNameEng = tehsil_list.get(i).tehsilNameEng;
                         tehsilId = tehsil_list.get(i).getTehsilId();
                     }
                 }

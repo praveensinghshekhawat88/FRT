@@ -583,7 +583,7 @@ class MarkAttendanceActivity : BaseActivity() {
                         this@MarkAttendanceActivity,
                         Manifest.permission.ACCESS_FINE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                        mContext,
+                        mContext!!,
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
@@ -640,11 +640,11 @@ class MarkAttendanceActivity : BaseActivity() {
         }
 
         fun OnGPS() {
-            val builder = AlertDialog.Builder(mContext)
+            val builder = AlertDialog.Builder(mContext!!)
             builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton(
                 "YES"
             ) { dialog, which ->
-                mContext.startActivity(
+                mContext!!.startActivity(
                     Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 )
             }.setNegativeButton(

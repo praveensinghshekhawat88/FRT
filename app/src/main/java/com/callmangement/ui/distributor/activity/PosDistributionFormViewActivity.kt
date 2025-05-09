@@ -1,6 +1,7 @@
 package com.callmangement.ui.distributor.activity
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -29,7 +30,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
+
+
     private var binding: ActivityPosDistributionFormViewBinding? = null
+    
     private var prefManager: PrefManager? = null
     private var model: PosDistributionDetail? = null
     private val listEquipmentModel: MutableList<ModelEquipmentModel> = ArrayList()
@@ -55,7 +59,9 @@ class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
         viewModel = ViewModelProviders.of(this).get(
             ComplaintViewModel::class.java
         )
-        prefManager = PrefManager(mContext)
+
+        mContext = this
+        prefManager = PrefManager(mContext!!)
         model = intent.getSerializableExtra("param") as PosDistributionDetail?
         initView()
     }
@@ -82,7 +88,7 @@ class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
         model.name = "Mobiocean TPS 900 (Android 10 OS)"
         listEquipmentModel.add(model)
         val dataAdapter =
-            ArrayAdapter(mContext, android.R.layout.simple_spinner_item, listEquipmentModel)
+            ArrayAdapter(mContext!!, android.R.layout.simple_spinner_item, listEquipmentModel)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding!!.spinnerEquipmentModel.adapter = dataAdapter
     }
@@ -97,7 +103,7 @@ class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
         model2.name = "ANALOGICS"
         listOldMachineMake.add(model2)
         val dataAdapter =
-            ArrayAdapter(mContext, android.R.layout.simple_spinner_item, listOldMachineMake)
+            ArrayAdapter(mContext!!, android.R.layout.simple_spinner_item, listOldMachineMake)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding!!.spinnerOldMachineMake.adapter = dataAdapter
     }
@@ -108,13 +114,13 @@ class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
         model1.name = "MOBIOCEAN"
         listNewMachineMake.add(model1)
         val dataAdapter =
-            ArrayAdapter(mContext, android.R.layout.simple_spinner_item, listNewMachineMake)
+            ArrayAdapter(mContext!!, android.R.layout.simple_spinner_item, listNewMachineMake)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding!!.spinnerNewMachineMake.adapter = dataAdapter
     }
 
     private fun districtList() {
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             isLoading
             viewModel!!.district.observe(
                 this
@@ -124,7 +130,7 @@ class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
                     district_List = modelDistrict.district_List
                     if (district_List != null && district_List!!.size > 0) {
                         val dataAdapter = ArrayAdapter(
-                            mContext, android.R.layout.simple_spinner_item,
+                            mContext!!, android.R.layout.simple_spinner_item,
                             district_List!!
                         )
                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -152,7 +158,7 @@ class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
 
     private val posDistributionDetail: Unit
         get() {
-            if (Constants.isNetworkAvailable(mContext)) {
+            if (Constants.isNetworkAvailable(mContext!!)) {
                 showProgress()
                 val service = RetrofitInstance.getRetrofitInstance().create(
                     APIService::class.java
@@ -220,11 +226,11 @@ class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
                                                     Constants.API_BASE_URL + posDistributionDetail.upPhotoPath
                                                 formPhotoPath =
                                                     Constants.API_BASE_URL + posDistributionDetail.upFormPath
-                                                Glide.with(mContext)
+                                                Glide.with(mContext!!)
                                                     .load(Constants.API_BASE_URL + posDistributionDetail.upPhotoPath)
                                                     .placeholder(R.drawable.image_not_fount)
                                                     .into(binding!!.ivPhoto)
-                                                Glide.with(mContext)
+                                                Glide.with(mContext!!)
                                                     .load(Constants.API_BASE_URL + posDistributionDetail.upFormPath)
                                                     .placeholder(R.drawable.image_not_fount)
                                                     .into(binding!!.ivUploadFormPhoto)
@@ -254,7 +260,7 @@ class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
                                                     posDistributionDetail.isCompleteWithSatisfactorily!!
                                                 if (district_List!!.size > 0) {
                                                     for (i in district_List!!.indices) {
-                                                        if (posDistributionDetail.districtId == district_List!![i].districtId.toInt()) {
+                                                        if (posDistributionDetail.districtId == district_List!![i].districtId!!.toInt()) {
                                                             binding!!.spinnerDistrict.setSelection(i)
                                                             binding!!.spinnerDistrict.isEnabled =
                                                                 false
@@ -330,14 +336,14 @@ class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
             onBackPressed()
         } else if (id == R.id.rl_photo) {
             startActivity(
-                Intent(mContext, ZoomInZoomOutActivity::class.java).putExtra(
+                Intent(mContext!!, ZoomInZoomOutActivity::class.java).putExtra(
                     "image",
                     photoPath
                 )
             )
         } else if (id == R.id.rl_upload_form_photo) {
             startActivity(
-                Intent(mContext, ZoomInZoomOutActivity::class.java).putExtra(
+                Intent(mContext!!, ZoomInZoomOutActivity::class.java).putExtra(
                     "image",
                     formPhotoPath
                 )

@@ -2,6 +2,8 @@ package com.callmangement.ui.distributor.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -61,7 +63,11 @@ import java.io.IOException
 import java.nio.charset.StandardCharsets
 
 class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
+
+
     private var binding: ActivityNewPosDistributionFormBinding? = null
+    
+    private lateinit var mActivity: Activity
     private var photoStoragePath = ""
     private var permissionGranted = false
     val REQUEST_PICK_PHOTO: Int = 1113
@@ -95,13 +101,17 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
             layoutInflater
         )
         setContentView(binding!!.root)
+
+        mContext = this
+        mActivity = this
+
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
         binding!!.actionBar.buttonPDF.visibility = View.GONE
         binding!!.actionBar.textToolbarTitle.text =
             resources.getString(R.string.pos_distribution_form)
-        prefManager = PrefManager(mContext)
+        prefManager = PrefManager(mContext!!)
         viewModel = ViewModelProviders.of(this).get(
             ComplaintViewModel::class.java
         )
@@ -198,8 +208,8 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
                     i: Int,
                     l: Long
                 ) {
-                    districtNameEng = district_List!![i].districtNameEng
-                    districtId = district_List!![i].districtId
+                    districtNameEng = district_List!![i].districtNameEng!!
+                    districtId = district_List!![i].districtId!!
                     /*if (!districtId.equals("0") && binding.inputFpsCode.getText()).toString().trim().length() > 0)
                         getOldMachineDetailsByFPSAPI(binding.inputFpsCode.getText().toString());*/
                 }
@@ -311,7 +321,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
         model.name = "Mobiocean TPS 900 (Android 10 OS)"
         listEquipmentModel.add(model)
         val dataAdapter =
-            ArrayAdapter(mContext, android.R.layout.simple_spinner_item, listEquipmentModel)
+            ArrayAdapter(mContext!!, android.R.layout.simple_spinner_item, listEquipmentModel)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding!!.spinnerEquipmentModel.adapter = dataAdapter
         binding!!.spinnerEquipmentModel.setSelection(0)
@@ -327,7 +337,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
         model2.name = "ANALOGICS"
         listOldMachineMake.add(model2)
         val dataAdapter =
-            ArrayAdapter(mContext, android.R.layout.simple_spinner_item, listOldMachineMake)
+            ArrayAdapter(mContext!!, android.R.layout.simple_spinner_item, listOldMachineMake)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding!!.spinnerOldMachineMake.adapter = dataAdapter
         binding!!.spinnerOldMachineMake.setSelection(0)
@@ -339,7 +349,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
         model1.name = "MOBIOCEAN"
         listNewMachineMake.add(model1)
         val dataAdapter =
-            ArrayAdapter(mContext, android.R.layout.simple_spinner_item, listNewMachineMake)
+            ArrayAdapter(mContext!!, android.R.layout.simple_spinner_item, listNewMachineMake)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding!!.spinnerNewMachineMake.adapter = dataAdapter
         binding!!.spinnerNewMachineMake.setSelection(0)
@@ -396,7 +406,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
     }
 
     private fun districtList() {
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             isLoading
             viewModel!!.district.observe(
                 this
@@ -412,7 +422,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
                     district_List.add(l);
                     Collections.reverse(district_List);*/
                         val dataAdapter = ArrayAdapter(
-                            mContext, android.R.layout.simple_spinner_item,
+                            mContext!!, android.R.layout.simple_spinner_item,
                             district_List!!
                         )
                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -444,7 +454,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
                 resources.getString(R.string.imagepicker_str_take_photo),
                 resources.getString(R.string.imagepicker_str_cancel)
             )
-            val title = TextView(mContext)
+            val title = TextView(mContext!!)
             title.text = resources.getString(R.string.capture_photo)
             title.setBackgroundColor(resources.getColor(R.color.colorActionBar))
             title.setPadding(15, 25, 15, 25)
@@ -452,13 +462,13 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
             title.setTextColor(Color.WHITE)
             title.textSize = 22f
 
-            val builder = AlertDialog.Builder(mContext)
+            val builder = AlertDialog.Builder(mContext!!)
             builder.setCustomTitle(title)
             builder.setItems(
                 items
             ) { dialog: DialogInterface, item: Int ->
                 if (items[item] == resources.getString(R.string.imagepicker_str_take_photo)) {
-                    ImagePicker.with(mContext)
+                    ImagePicker.with(mActivity)
                         .setToolbarColor("#212121")
                         .setStatusBarColor("#000000")
                         .setToolbarTextColor("#FFFFFF")
@@ -520,10 +530,10 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
     }
 
     private fun getOldMachineDetailsByFPSAPI(fpsCode: String) {
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             /*if (districtId.equals("0")) {
                 if (!flagGetOldMachineDetail) {
-                    Toast.makeText(mContext, getResources().getString(R.string.please_select_district), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext!!, getResources().getString(R.string.please_select_district), Toast.LENGTH_SHORT).show();
                     flagGetOldMachineDetail = true;
                 }
                 return;
@@ -625,7 +635,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
     }
 
     private fun getNewMachineDetailsByOrdNoAPI(newMachineOrderNo: String) {
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             val service = RetrofitInstance.getRetrofitInstance().create(
                 APIService::class.java
             )
@@ -690,7 +700,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
     }
 
     private fun submit() {
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             val tranDate =
                 binding!!.inputDate.text!!.toString().trim { it <= ' ' }
             val fpsCode =
@@ -733,7 +743,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
             } else if (oldMachineCondition.isEmpty()) {
                 makeToast(resources.getString(R.string.please_select_old_machine_condition))
             } else if (photoStoragePath == "") {
-                val builder = AlertDialog.Builder(mContext)
+                val builder = AlertDialog.Builder(mContext!!)
                 builder.setMessage(resources.getString(R.string.submit_form_confirmation_message_without_image))
                     .setCancelable(false)
                     .setPositiveButton(resources.getString(R.string.yes)) { dialog: DialogInterface, ids: Int ->
@@ -756,7 +766,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
                 alert.setTitle(resources.getString(R.string.alert))
                 alert.show()
             } else {
-                val builder = AlertDialog.Builder(mContext)
+                val builder = AlertDialog.Builder(mContext!!)
                 builder.setMessage(resources.getString(R.string.submit_form_confirmation_message))
                     .setCancelable(false)
                     .setPositiveButton(resources.getString(R.string.yes)) { dialog: DialogInterface, ids: Int ->
@@ -886,7 +896,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
 
     private fun dialogMessage(message: String) {
         if (builder == null) {
-            builder = AlertDialog.Builder(mContext)
+            builder = AlertDialog.Builder(mContext!!)
             builder!!.setMessage(message)
                 .setCancelable(false)
                 .setPositiveButton(resources.getString(R.string.ok)) { dialog: DialogInterface, ids: Int ->

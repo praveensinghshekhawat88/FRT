@@ -2,6 +2,7 @@ package com.callmangement.ui.complaints_fps_wise
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -41,6 +42,8 @@ import java.util.Date
 import java.util.Locale
 
 class ComplaintsListAccordingToFPSActivity : CustomActivity(), View.OnClickListener {
+
+    
     var binding: ActivityComplaintsListByFpsactivityBinding? = null
     private var fpsCode: String? = ""
     private var vibrator: Vibrator? = null
@@ -70,6 +73,9 @@ class ComplaintsListAccordingToFPSActivity : CustomActivity(), View.OnClickListe
     }
 
     private fun initView() {
+
+        mContext = this
+
         setUpOnclickListener()
         clearSharePreference()
 
@@ -89,7 +95,7 @@ class ComplaintsListAccordingToFPSActivity : CustomActivity(), View.OnClickListe
 
     private val complaintsListByFPS: Unit
         get() {
-            if (Constants.isNetworkAvailable(mContext)) {
+            if (Constants.isNetworkAvailable(mContext!!)) {
                 val service = RetrofitInstance.getRetrofitInstance().create(
                     APIService::class.java
                 )
@@ -167,9 +173,9 @@ class ComplaintsListAccordingToFPSActivity : CustomActivity(), View.OnClickListe
 
     private fun setUpComplaintsListAdapter(modelFPSComplaintLists: List<ModelFPSComplaintList>?) {
         binding!!.rvComplaintsListByFps.layoutManager =
-            LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(mContext!!, LinearLayoutManager.VERTICAL, false)
         binding!!.rvComplaintsListByFps.adapter =
-            ComplaintsListAccordingToFPSActivityAdapter(mContext, modelFPSComplaintLists)
+            ComplaintsListAccordingToFPSActivityAdapter(mContext!!, modelFPSComplaintLists)
     }
 
     override fun onClick(view: View) {
@@ -184,7 +190,7 @@ class ComplaintsListAccordingToFPSActivity : CustomActivity(), View.OnClickListe
             if (fPSComplainHistoryReqList != null && fPSComplainHistoryReqList!!.size > 0) {
                 ExcelformTable()
             } else {
-                Toast.makeText(mContext, "No Data Found", Toast.LENGTH_SHORT).show()
+                Toast.makeText(mContext!!, "No Data Found", Toast.LENGTH_SHORT).show()
             }
         }
     }

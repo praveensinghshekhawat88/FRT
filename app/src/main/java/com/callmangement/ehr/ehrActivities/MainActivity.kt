@@ -1,6 +1,7 @@
 package com.callmangement.ehr.ehrActivities
 
 import android.Manifest.permission
+import android.animation.LayoutTransition
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -14,6 +15,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Vibrator
 import android.text.TextUtils
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -153,7 +156,15 @@ class MainActivity : BaseActivity() {
             e.printStackTrace()
         }
 
+        binding!!.layout.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+
         setClickListener()
+    }
+
+    fun expand(view: View) {
+        val visibility = if (binding!!.layout1.visibility == View.GONE) View.VISIBLE else View.GONE
+        TransitionManager.beginDelayedTransition(binding!!.layout, AutoTransition())
+        binding!!.layout1.visibility = visibility
     }
 
     private fun setClickListener() {
@@ -360,9 +371,6 @@ class MainActivity : BaseActivity() {
             }
         }
 
-
-
-
         binding!!.buttonFeedbackform.setOnClickListener {
             val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
             vibrator.vibrate(100)
@@ -396,7 +404,6 @@ class MainActivity : BaseActivity() {
             startActivity(i)
         } // Check if the device supports vibration
 
-
         swipeRefreshLayout!!.setOnRefreshListener {
             swipeRefreshLayout!!.isRefreshing = false
             /* Calendar c = Calendar.getInstance();
@@ -414,7 +421,6 @@ class MainActivity : BaseActivity() {
         if (TextUtils.isEmpty(string)) return
         Toast.makeText(mActivity, string, Toast.LENGTH_SHORT).show()
     }
-
 
     private fun dashboardApi(USER_Id: String?, Month: String, Year: String, SEUserId: String?) {
 //Progress Bar while connection establishes
@@ -463,7 +469,6 @@ class MainActivity : BaseActivity() {
                                     binding!!.textLeave.text = leaveCount
                                     binding!!.textTour.text = tourCount
 
-
                                     Log.d(
                                         "ghmn",
                                         "asmbnmldjfjas$CreatedCampCount  $OrganizedCampCount $AttendanceCount"
@@ -479,11 +484,8 @@ class MainActivity : BaseActivity() {
                                         dialog.dismiss()
                                     }
 
-
                                     val alert = dialog.create()
                                     alert.show()
-
-
                                     //    makeToast(String.valueOf(response.body().getMessage()));
                                 }
                             } else {
@@ -500,10 +502,7 @@ class MainActivity : BaseActivity() {
                 override fun onFailure(call: Call<DashbordRoot?>, error: Throwable) {
                     hideCustomProgressDialogCommonForAll()
                     binding!!.progressBar.visibility = View.GONE
-
-
                     makeToast(resources.getString(R.string.error))
-
                     call.cancel()
                 }
             })
@@ -518,7 +517,6 @@ class MainActivity : BaseActivity() {
         val i = Intent(this@MainActivity, MainActivity::class.java)
         startActivity(i)
     }
-
 
     private fun findUnAskedPermissions(wanted: ArrayList<String>): ArrayList<String> {
         val result = ArrayList<String>()
@@ -590,7 +588,6 @@ class MainActivity : BaseActivity() {
             .show()
     }
 
-
     private fun filterDialog() {
         try {
             spinnerDistrict = findViewById(R.id.spinnerDistrict)
@@ -614,7 +611,6 @@ class MainActivity : BaseActivity() {
             )
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinnerSEUsers!!.setAdapter(dataAdapter)
-
 
             //  spinnerSEUsers.setSelection(1);
             spinnerDistrict!!.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
@@ -678,7 +674,6 @@ class MainActivity : BaseActivity() {
                             binding!!.texthalfday.text = "---"
                             binding!!.textLeave.text = "---"
                             binding!!.textTour.text = "---"
-
 
                             //  spinnerSEUsers.setSelection(1);
 
@@ -897,13 +892,13 @@ class MainActivity : BaseActivity() {
                                     Log.d("disssssssss", response.body().toString())
                                     district_List = response.body()!!.district_List
                                     if (district_List != null && district_List.size > 0) {
-                                        Collections.reverse(district_List)
+                                        district_List.reverse()
                                         val l = ModelDistrictList()
                                         l.districtId = (-1).toString()
                                         l.districtNameEng =
                                             "--" + resources.getString(R.string.district) + "--"
                                         district_List.add(l)
-                                        Collections.reverse(district_List)
+                                        district_List.reverse()
                                         val dataAdapter = ArrayAdapter(
                                             mActivity!!,
                                             android.R.layout.simple_spinner_item,
@@ -961,120 +956,14 @@ class MainActivity : BaseActivity() {
         }
     }
 
-
     private fun setNormalPicker() {
         val calendar = Calendar.getInstance()
         date_selected_year = calendar[Calendar.YEAR]
         date_selected_month = calendar[Calendar.MONTH]
         date_selected_day = calendar[Calendar.DAY_OF_MONTH]
-
         //  setContentView(R.layout.activity_main);
         val today = Calendar.getInstance()
         findViewById<View>(R.id.date_selt).setOnClickListener {
-            /*             MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(MainActivity.this, new MonthPickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(int selectedMonth, int selectedYear) {
-                            Log.d(TAG, "selectedMonth : " + selectedMonth + " selectedYear : " + selectedYear);
-                            //   Toast.makeText(AttendanceDashboard.this, "Date set with month" + selectedMonth + " year " + selectedYear, Toast.LENGTH_SHORT).show();
-                            Month = String.valueOf(selectedMonth + 1);
-                            Log.d("sdsknljf", "gh" + String.valueOf(selectedMonth + 1));
-                            Year = String.valueOf(selectedYear);
-                            Calendar cal = Calendar.getInstance();
-                            SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
-                            int monthnum = Integer.parseInt(Month) - 1;
-                            cal.set(Calendar.MONTH, monthnum);
-                            month_namee = month_date.format(cal.getTime());
-    
-                            Log.e(">>>>>", "" + _selectedyear);
-                            Log.e(">>>>>", "" + Integer.parseInt(presentYear));
-                            Log.e(">>>>>", "" + monthnum);
-                            Log.e(">>>>>", "" + Integer.parseInt(presentMonth));
-                            String ed_monthYear = "--" + month_namee + "  " + Year + "--";
-                            String _maxMonth;
-                            if (_selectedyear<=Integer.parseInt(presentYear) && monthnum<=Integer.parseInt(presentMonth)) {
-                                binding.dateSelt.setText(ed_monthYear);
-    
-                              //  _maxMonth = Year;
-                            } else  {
-    
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-                                dialog.setCancelable(false);
-                               // dialog.setTitle("Dialog on Android");
-                                dialog.setMessage("Month And Year Should Be Less Than Current Month And Year" );
-                                dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                //Action for "Delete".
-                                                dialog.dismiss();
-                                            }
-                                        })
-                                      ;
-    
-                                final AlertDialog alert = dialog.create();
-                                alert.show();
-    
-                            }
-    
-                            binding.dateSelt.setText(ed_monthYear);
-    
-    
-                        }
-                    }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
-    
-    
-                    Calendar c = Calendar.getInstance();
-                    presentYear = String.valueOf(c.get(Calendar.YEAR));
-                    presentMonth = String.valueOf(c.get(Calendar.MONTH));
-    
-                    //   builder.setActivatedMonth(Integer.parseInt(presentMonth))
-                    //.setMinYear(2022)
-                    //         .setActivatedYear(Integer.parseInt(Year))
-                    // .setActivatedMonth(Integer.parseInt(month_namee))
-                    // .setMonthAndYearRange(Calendar.JANUARY,Calendar.MONTH,2015, Integer.parseInt(presentYear))
-                    // builder .setTitle("Select Month")
-                    //  .setMonthRange(Calendar.JANUARY, Integer.parseInt(presentMonth))
-                    //    .setMaxYear(Integer.parseInt(presentYear))
-                    //    .setMinYear(2022)
-                    //       .setMaxMonth(Calendar.DECEMBER);
-    
-    
-                    // .setYearRange(2022, Integer.parseInt(presentYear))
-    
-    
-                    if (_selectedyear==Integer.parseInt(presentYear))
-                    {
-                        builder .setMonthAndYearRange(Calendar.JANUARY, Integer.parseInt(presentMonth), 2022, Integer.parseInt(presentYear));
-    
-                    }
-    
-                    else {
-                        builder .setMonthAndYearRange(Calendar.JANUARY, Calendar.DECEMBER, 2022, Integer.parseInt(presentYear));
-    
-                    }
-    
-                            //.showMonthOnly()
-                            // .showYearOnly()
-                          builder  .setOnMonthChangedListener(new MonthPickerDialog.OnMonthChangedListener() {
-                                @Override
-                                public void onMonthChanged(int selectedMonth) {
-                                    Log.d(TAG, "Selected month : " + selectedMonth);
-    
-    
-                                    // Toast.makeText(MainActivity.this, " Selected month : " + selectedMonth, Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .setOnYearChangedListener(new MonthPickerDialog.OnYearChangedListener() {
-                                @Override
-                                public void onYearChanged(int selectedYear) {
-                                    Log.d(TAG, "Selected year : " + selectedYear);
-    
-    
-                                   _selectedyear = selectedYear;
-                                    // Toast.makeText(MainActivity.this, " Selected year : " + selectedYear, Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .build()
-                            .show();*/
             val minDate = "1609439400000".toLong()
             val c = Calendar.getInstance()
             val maxDate = c.timeInMillis
@@ -1132,7 +1021,7 @@ class MainActivity : BaseActivity() {
                 binding!!.buttonTrainingFilter.performClick()
             }, date_selected_year, date_selected_month, date_selected_day
         ) {
-            override fun onCreate(savedInstanceState: Bundle) {
+            override fun onCreate(savedInstanceState: Bundle?) {
                 super.onCreate(savedInstanceState)
                 datePicker.findViewById<View>(
                     resources.getIdentifier(

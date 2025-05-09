@@ -1,6 +1,7 @@
 package com.callmangement.ui.reports
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -39,6 +40,8 @@ import java.util.Date
 import java.util.Locale
 
 class MonthlyReportsActivity : CustomActivity() {
+
+    
     private var binding: ActivityMonthlyReportsBinding? = null
     private var complaintList: List<ModelComplaintList>? = null
     private var prefManager: PrefManager? = null
@@ -61,7 +64,9 @@ class MonthlyReportsActivity : CustomActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_monthly_reports)
-        prefManager = PrefManager(mContext)
+
+        mContext = this
+        prefManager = PrefManager(mContext!!)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -142,8 +147,8 @@ class MonthlyReportsActivity : CustomActivity() {
                     l: Long
                 ) {
                     if (++checkDistrict > 1) {
-                        districtNameEng = district_List!![i]!!.districtNameEng
-                        districtId = district_List!![i]!!.districtId
+                        districtNameEng = district_List!![i]!!.districtNameEng!!
+                        districtId = district_List!![i]!!.districtId!!
                         if (districtNameEng.equals(
                                 "--" + resources.getString(R.string.district) + "--",
                                 ignoreCase = true
@@ -172,7 +177,7 @@ class MonthlyReportsActivity : CustomActivity() {
             }
 
         binding!!.textSelectYearMonth.setOnClickListener { view: View? ->
-            RackMonthPicker(mContext)
+            RackMonthPicker(mContext!!)
                 .setLocale(Locale.ENGLISH)
                 .setPositiveButton { month1: Int, startDate: Int, endDate: Int, year1: Int, monthLabel: String? ->
                     fromDate =
@@ -193,7 +198,7 @@ class MonthlyReportsActivity : CustomActivity() {
         binding!!.actionBar.buttonPDF.setOnClickListener { view: View? ->
             if (objectList != null && objectList.size > 0) {
                 Constants.listMonthReport = getFormattedList(objectList)
-                val intent = Intent(mContext, ReportPdfActivity::class.java)
+                val intent = Intent(mContext!!, ReportPdfActivity::class.java)
                 intent.putExtra("from_where", "monthly")
                 intent.putExtra("title", "MONTHLY CALL LOGGED SUMMARY")
                 intent.putExtra(
@@ -204,7 +209,7 @@ class MonthlyReportsActivity : CustomActivity() {
                 intent.putExtra("email", prefManager!!.useR_EMAIL)
                 startActivity(intent)
             } else Toast.makeText(
-                mContext,
+                mContext!!,
                 resources.getString(R.string.no_record_found_to_export_pdf),
                 Toast.LENGTH_SHORT
             ).show()
@@ -372,7 +377,7 @@ class MonthlyReportsActivity : CustomActivity() {
 
                     val dataAdapter =
                         ArrayAdapter(
-                            mContext, android.R.layout.simple_spinner_item,
+                            mContext!!, android.R.layout.simple_spinner_item,
                             district_List!!
                         )
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

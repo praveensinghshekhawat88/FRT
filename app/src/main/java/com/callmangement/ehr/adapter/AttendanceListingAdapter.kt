@@ -138,13 +138,13 @@ class AttendanceListingAdapter(
             if (statusAtt.length > 0) {
                 holder.tv_status.text = statusAtt
                 if (statusAtt == "Present") {
-                    holder.tv_status.setTextColor(mContext.resources.getColor(R.color.colorGreen))
+                    holder.tv_status.setTextColor(mContext!!.resources.getColor(R.color.colorGreen))
                 } else if (statusAtt == "Absent") {
-                    holder.tv_status.setTextColor(mContext.resources.getColor(R.color.colorRedDark))
+                    holder.tv_status.setTextColor(mContext!!.resources.getColor(R.color.colorRedDark))
                 } else if (statusAtt == "HalfDay") {
-                    holder.tv_status.setTextColor(mContext.resources.getColor(R.color.imagepicker_colorAccent))
+                    holder.tv_status.setTextColor(mContext!!.resources.getColor(R.color.imagepicker_colorAccent))
                 } else {
-                    holder.tv_status.setTextColor(mContext.resources.getColor(R.color.colorDarkBlue))
+                    holder.tv_status.setTextColor(mContext!!.resources.getColor(R.color.colorDarkBlue))
                 }
             } else {
                 holder.tv_status.text = "-----"
@@ -268,14 +268,14 @@ class AttendanceListingAdapter(
             Log.d("PunchInDate", "--$formattedDate")
 
             // formattedDate is now "2023-08-04"
-            val i = Intent(mContext, AttendanceViewDetail::class.java)
+            val i = Intent(mContext!!, AttendanceViewDetail::class.java)
             i.putExtra("YouruserIdId", userIdId)
             i.putExtra("formattedDate", formattedDate)
             i.putExtra("districtId", districtId)
 
             // i.putExtra("YouruserIdId", userIdId);
-            mContext.startActivity(i)
-            // Toast.makeText(mContext, " "+ attendanceDetailsInfo.getUsername(), Toast.LENGTH_SHORT).show();
+            mContext!!.startActivity(i)
+            // Toast.makeText(mContext!!, " "+ attendanceDetailsInfo.getUsername(), Toast.LENGTH_SHORT).show();
         }
         Log.d("Att_Size", " " + statusDatumList.size)
 
@@ -294,7 +294,7 @@ class AttendanceListingAdapter(
 
 
             val spinnerArrayAdapter =
-                ArrayAdapter(mContext, android.R.layout.simple_spinner_item, arrayList)
+                ArrayAdapter(mContext!!, android.R.layout.simple_spinner_item, arrayList)
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) // The drop down view
             holder.spinnerAttType.adapter = spinnerArrayAdapter
             //  holder.spinnerAttType.setSelection(attendanceDetailsInfo.getAttendanceStatusId() - 1);
@@ -332,7 +332,7 @@ class AttendanceListingAdapter(
 //            holder.txtStatus.setText("DELETED");
 //
 //        if (surveyFormDetailsInfo.getStatusId() != null && surveyFormDetailsInfo.getStatusId().equalsIgnoreCase(Constants.SURVEY_STATUS_ID_COMPLETED)) {
-//            holder.txtStatus.setTextColor(mContext.getResources().getColor(R.color.colorGreen));
+//            holder.txtStatus.setTextColor(mContext!!.getResources().getColor(R.color.colorGreen));
 //        }
 //
 //        if (surveyFormDetailsInfo.getCustomerName() != null)
@@ -430,7 +430,7 @@ class AttendanceListingAdapter(
         val intent = Intent("custom-message")
         //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
         intent.putExtra("quantity", qty)
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent)
+        LocalBroadcastManager.getInstance(mContext!!).sendBroadcast(intent)
 
 
         if (position % 2 == 0) {
@@ -452,13 +452,13 @@ class AttendanceListingAdapter(
 
         //gagandeep
         holder.ll_AttnSub.setOnClickListener {
-            val builder = AlertDialog.Builder(mContext)
+            val builder = AlertDialog.Builder(mContext!!)
             builder.setTitle("")
 
             // Set an EditText view to get user input
 
             // set the custom layout
-            val customLayout = LayoutInflater.from(mContext).inflate(R.layout.alartdialoge, null)
+            val customLayout = LayoutInflater.from(mContext!!).inflate(R.layout.alartdialoge, null)
             builder.setView(customLayout)
             val editText =
                 customLayout.findViewById<EditText>(R.id.inputRemark) // replace 'editTextId' with the actual ID of your EditText
@@ -467,21 +467,21 @@ class AttendanceListingAdapter(
             builder.setPositiveButton(
                 "Ok"
             ) { dialog: DialogInterface?, which: Int ->
-                if (isNetworkAvailable(mContext)) {
+                if (isNetworkAvailable(mContext!!)) {
                     Log.d("useid", "$user_type_id $userIdId")
                     Log.d("StatusId", " $StatusId")
 
                     //  Utils.hideKeyboard(AttendanceListingAdapter.class);
-                    // Utils.showCustomProgressDialogCommonForAll((Activity) mContext, mContext.getResources().getString(R.string.please_wait));
+                    // Utils.showCustomProgressDialogCommonForAll((Activity) mContext!!, mContext!!.getResources().getString(R.string.please_wait));
                     holder.progressBar.visibility = View.VISIBLE
                     val apiInterface = getRetrofitClientWithoutHeaders(
-                        mContext,
+                        mContext!!,
                         BaseActivity.BaseUrl()!!
                     ).create(
                         APIInterface::class.java
                     )
                     Remark = editText.text.toString()
-                    preference = PrefManager(mContext)
+                    preference = PrefManager(mContext!!)
 
                     val USER_Id = preference!!.useR_Id
 
@@ -515,8 +515,8 @@ class AttendanceListingAdapter(
 
                                             val status = getErrorTypesRoot!!.status
                                             if (status == "200") {
-                                                // Intent i =new Intent(mContext, AttendanceListingActivity.class);
-                                                //  mContext.startActivity(i);
+                                                // Intent i =new Intent(mContext!!, AttendanceListingActivity.class);
+                                                //  mContext!!.startActivity(i);
 
                                                 // notifyItemChanged(holder.getAdapterPosition());
 
@@ -569,13 +569,13 @@ class AttendanceListingAdapter(
                                             makeToast(response.body()!!.message.toString())
                                         }
                                     } else {
-                                        makeToast(mContext.resources.getString(R.string.error))
+                                        makeToast(mContext!!.resources.getString(R.string.error))
                                     }
                                 } else {
-                                    makeToast(mContext.resources.getString(R.string.error))
+                                    makeToast(mContext!!.resources.getString(R.string.error))
                                 }
                             } else {
-                                makeToast(mContext.resources.getString(R.string.error))
+                                makeToast(mContext!!.resources.getString(R.string.error))
                             }
                         }
 
@@ -586,13 +586,13 @@ class AttendanceListingAdapter(
                             hideCustomProgressDialogCommonForAll()
                             holder.progressBar.visibility = View.GONE
 
-                            makeToast(mContext.resources.getString(R.string.error))
+                            makeToast(mContext!!.resources.getString(R.string.error))
 
                             call.cancel()
                         }
                     })
                 } else {
-                    makeToast(mContext.resources.getString(R.string.no_internet_connection))
+                    makeToast(mContext!!.resources.getString(R.string.no_internet_connection))
                 }
             }
 
@@ -617,7 +617,7 @@ class AttendanceListingAdapter(
     //
     fun makeToast(string: String?) {
         if (TextUtils.isEmpty(string)) return
-        Toast.makeText(mContext, string, Toast.LENGTH_SHORT).show()
+        Toast.makeText(mContext!!, string, Toast.LENGTH_SHORT).show()
     }
 
     override fun getItemCount(): Int {

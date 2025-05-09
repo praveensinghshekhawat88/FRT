@@ -23,7 +23,7 @@ import java.util.Objects
 
 class EditChallanComplaintListActivity : CustomActivity() {
     private var binding: ActivityEditChallanComplaintListBinding? = null
-    private val mContext: Context? = null
+    
     private val REQUEST_CODE = 1
     private var adapter: ChallanUploadListAdapter? = null
     private var prefManager: PrefManager? = null
@@ -63,7 +63,7 @@ class EditChallanComplaintListActivity : CustomActivity() {
         filterType = intent.getStringExtra("filter_type")
         tehsil_List_main = intent.getSerializableExtra("tehsil_list") as List<ModelTehsilList>?
         districtList = intent.getSerializableExtra("district_list") as List<ModelDistrictList>?
-        prefManager = PrefManager(mContext)
+        prefManager = PrefManager(mContext!!)
         binding!!.textNoComplaint.visibility = View.GONE
         tehsilNameEng = "--" + resources.getString(R.string.tehsil) + "--"
         districtNameEng = "--" + resources.getString(R.string.district) + "--"
@@ -89,7 +89,7 @@ class EditChallanComplaintListActivity : CustomActivity() {
 //                tehsilList.add(l);
 //                Collections.reverse(tehsilList);
 //
-//                ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, tehsilList);
+//                ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext!!, R.layout.spinner_item, tehsilList);
 //                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //                binding.spinnerTehsil.setAdapter(dataAdapter);
 //            }
@@ -106,7 +106,7 @@ class EditChallanComplaintListActivity : CustomActivity() {
 //                tehsilList.add(l);
 //                Collections.reverse(tehsilList);
 //
-//                ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, tehsilList);
+//                ArrayAdapter<ModelTehsilList> dataAdapter = new ArrayAdapter<>(mContext!!, R.layout.spinner_item, tehsilList);
 //                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //                binding.spinnerTehsil.setAdapter(dataAdapter);
 //            }
@@ -117,7 +117,7 @@ class EditChallanComplaintListActivity : CustomActivity() {
 //            binding.rlDistrict.setVisibility(View.VISIBLE);
 //            updateTehsilByDistrictId(districtId);
 //            if (districtList != null && districtList.size() > 0) {
-//                ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, districtList);
+//                ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext!!, R.layout.spinner_item, districtList);
 //                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //                binding.spinnerDistrict.setAdapter(dataAdapter);
 //
@@ -136,7 +136,7 @@ class EditChallanComplaintListActivity : CustomActivity() {
 //            binding.rlDistrict.setVisibility(View.VISIBLE);
 //            updateTehsilByDistrictId(districtId);
 //            if (districtList != null && districtList.size() > 0) {
-//                ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, districtList);
+//                ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext!!, R.layout.spinner_item, districtList);
 //                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //                binding.spinnerDistrict.setAdapter(dataAdapter);
 //
@@ -155,7 +155,7 @@ class EditChallanComplaintListActivity : CustomActivity() {
 //            binding.rlDistrict.setVisibility(View.VISIBLE);
 //            updateTehsilByDistrictId(districtId);
 //            if (districtList != null && districtList.size() > 0) {
-//                ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, districtList);
+//                ArrayAdapter<ModelDistrictList> dataAdapter = new ArrayAdapter<>(mContext!!, R.layout.spinner_item, districtList);
 //                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //                binding.spinnerDistrict.setAdapter(dataAdapter);
 //
@@ -170,11 +170,11 @@ class EditChallanComplaintListActivity : CustomActivity() {
 //        }
 
 
-        adapter = ChallanUploadListAdapter(mContext)
+        adapter = ChallanUploadListAdapter(mContext!!)
         adapter!!.notifyDataSetChanged()
         binding!!.rvComplaintPending.setHasFixedSize(true)
         binding!!.rvComplaintPending.layoutManager =
-            LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(mContext!!, LinearLayoutManager.VERTICAL, false)
         binding!!.rvComplaintPending.adapter = adapter
 
         //        binding.spinnerTehsil.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -470,7 +470,7 @@ class EditChallanComplaintListActivity : CustomActivity() {
             tehsilList.add(l)
             Collections.reverse(tehsilList)
 
-            val dataAdapter = ArrayAdapter(mContext, R.layout.spinner_item, tehsilList)
+            val dataAdapter = ArrayAdapter(mContext!!, R.layout.spinner_item, tehsilList)
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding!!.spinnerTehsil.adapter = dataAdapter
         }
@@ -504,7 +504,7 @@ class EditChallanComplaintListActivity : CustomActivity() {
             tehsilList.add(l)
             Collections.reverse(tehsilList)
 
-            val dataAdapter = ArrayAdapter(mContext, R.layout.spinner_item, tehsilList)
+            val dataAdapter = ArrayAdapter(mContext!!, R.layout.spinner_item, tehsilList)
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding!!.spinnerTehsil.adapter = dataAdapter
         }

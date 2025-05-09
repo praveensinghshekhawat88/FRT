@@ -1,5 +1,6 @@
 package com.callmangement.ui.reports
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.callmangement.R
@@ -8,6 +9,8 @@ import com.callmangement.databinding.ActivityExpenseReportBinding
 import com.callmangement.utils.PrefManager
 
 class ExpenseReportActivity : CustomActivity(), View.OnClickListener {
+
+    
     private var binding: ActivityExpenseReportBinding? = null
     private var prefManager: PrefManager? = null
 
@@ -19,7 +22,8 @@ class ExpenseReportActivity : CustomActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        prefManager = PrefManager(mContext)
+        mContext = this
+        prefManager = PrefManager(mContext!!)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE

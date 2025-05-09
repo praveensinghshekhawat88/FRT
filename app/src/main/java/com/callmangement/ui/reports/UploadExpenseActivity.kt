@@ -2,6 +2,8 @@ package com.callmangement.ui.reports
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -41,6 +43,9 @@ import java.io.IOException
 import java.util.Objects
 
 class UploadExpenseActivity : CustomActivity(), View.OnClickListener {
+
+    
+    private lateinit var mActivity: Activity
     private var binding: ActivityUploadExpenseBinding? = null
     private var prefManager: PrefManager? = null
     private var challanImageStoragePath = ""
@@ -55,7 +60,10 @@ class UploadExpenseActivity : CustomActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        prefManager = PrefManager(mContext)
+
+        mContext = this
+        mActivity = this
+        prefManager = PrefManager(mContext!!)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         binding!!.actionBar.ivThreeDot.visibility = View.GONE
         binding!!.actionBar.layoutLanguage.visibility = View.GONE
@@ -86,7 +94,7 @@ class UploadExpenseActivity : CustomActivity(), View.OnClickListener {
         val expenseAmount =
             Objects.requireNonNull(binding!!.inputTotalExpenseAmount.text).toString()
                 .trim { it <= ' ' }
-        if (Constants.isNetworkAvailable(mContext)) {
+        if (Constants.isNetworkAvailable(mContext!!)) {
             if (remark.isEmpty()) {
                 makeToast(resources.getString(R.string.please_input_remark))
             } else if (expenseAmount.isEmpty()) {
@@ -126,7 +134,7 @@ class UploadExpenseActivity : CustomActivity(), View.OnClickListener {
                                         val status = jsonObject.optString("status")
                                         val message = jsonObject.optString("message")
                                         if (status == "200") {
-                                            Toast.makeText(mContext, message, Toast.LENGTH_SHORT)
+                                            Toast.makeText(mContext!!, message, Toast.LENGTH_SHORT)
                                                 .show()
                                             binding!!.inputRemark.text!!.clear()
                                             binding!!.inputTotalExpenseAmount.text!!.clear()
@@ -215,7 +223,7 @@ class UploadExpenseActivity : CustomActivity(), View.OnClickListener {
                 resources.getString(R.string.imagepicker_str_choose_from_gallery),
                 resources.getString(R.string.imagepicker_str_cancel)
             )
-            val title = TextView(mContext)
+            val title = TextView(mContext!!)
             title.text = resources.getString(R.string.imagepicker_str_select_challan_image)
             title.setBackgroundColor(resources.getColor(R.color.colorActionBar))
             title.setPadding(15, 25, 15, 25)
@@ -223,13 +231,13 @@ class UploadExpenseActivity : CustomActivity(), View.OnClickListener {
             title.setTextColor(Color.WHITE)
             title.textSize = 22f
 
-            val builder = AlertDialog.Builder(mContext)
+            val builder = AlertDialog.Builder(mContext!!)
             builder.setCustomTitle(title)
             builder.setItems(
                 items
             ) { dialog: DialogInterface, item: Int ->
                 if (items[item] == resources.getString(R.string.imagepicker_str_take_photo)) {
-                    ImagePicker.with(mContext)
+                    ImagePicker.with(mActivity)
                         .setToolbarColor("#212121")
                         .setStatusBarColor("#000000")
                         .setToolbarTextColor("#FFFFFF")
@@ -248,7 +256,7 @@ class UploadExpenseActivity : CustomActivity(), View.OnClickListener {
                         .setSelectedImages(ArrayList())
                         .start(REQUEST_PICK_CHALLAN_IMAGES)
                 } else if (items[item] == resources.getString(R.string.imagepicker_str_choose_from_gallery)) {
-                    ImagePicker.with(mContext)
+                    ImagePicker.with(mActivity)
                         .setToolbarColor("#212121")
                         .setStatusBarColor("#000000")
                         .setToolbarTextColor("#FFFFFF")

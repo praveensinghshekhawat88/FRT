@@ -39,11 +39,12 @@ import java.util.Locale
 import java.util.Objects
 
 class BiometricDeliveryListActivity : CustomActivity() {
+
+    
     private var binding: ActivityBiometricDeliveryListBinding? = null
     private val spinnerList: MutableList<String> = ArrayList()
     private var mActivity: Activity? = null
     private var prefManager: PrefManager? = null
-    private val mContext: Context? = null
     private var spinnerDistrict: Spinner? = null
     private var checkDistrict = 0
     private var districtNameEng = ""
@@ -83,7 +84,7 @@ class BiometricDeliveryListActivity : CustomActivity() {
         //   clearSharePreference();
         mActivity = this
         mContext = this
-        prefManager = PrefManager(mContext)
+        prefManager = PrefManager(mContext!!)
         binding!!.actionBar.ivBack.visibility = View.VISIBLE
         //    binding.actionBar.buttonPDF.setVisibility(View.VISIBLE);
         //  binding.actionBar.buttonPDF.setImageDrawable(getDrawable(R.drawable.excel));
@@ -163,10 +164,10 @@ class BiometricDeliveryListActivity : CustomActivity() {
         fromDate = todayDate
         toDate = todayDate
 
-        binding!!.rvDelivered.layoutManager = LinearLayoutManager(mContext)
+        binding!!.rvDelivered.layoutManager = LinearLayoutManager(mContext!!)
         binding!!.rvDelivered.addItemDecoration(
             DividerItemDecoration(
-                mContext,
+                mContext!!,
                 DividerItemDecoration.VERTICAL
             )
         )
@@ -369,7 +370,7 @@ class BiometricDeliveryListActivity : CustomActivity() {
                     updateLabelFromDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateFromDate,
+                mContext!!, dateFromDate,
                 myCalendarFromDate[Calendar.YEAR],
                 myCalendarFromDate[Calendar.MONTH],
                 myCalendarFromDate[Calendar.DAY_OF_MONTH]
@@ -390,7 +391,7 @@ class BiometricDeliveryListActivity : CustomActivity() {
                     updateLabelToDate()
                 }
             val datePickerDialog = DatePickerDialog(
-                mContext, dateToDate,
+                mContext!!, dateToDate,
                 myCalendarToDate[Calendar.YEAR],
                 myCalendarToDate[Calendar.MONTH],
                 myCalendarToDate[Calendar.DAY_OF_MONTH]
@@ -469,8 +470,8 @@ class BiometricDeliveryListActivity : CustomActivity() {
                                         "Size...." + sensorDistributionList.size
                                     )
 
-                                    //                                    binding.rvDelivered.setLayoutManager(new LinearLayoutManager(mContext));
-//                                    binding.rvDelivered.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
+                                    //                                    binding.rvDelivered.setLayoutManager(new LinearLayoutManager(mContext!!));
+//                                    binding.rvDelivered.addItemDecoration(new DividerItemDecoration(mContext!!, DividerItemDecoration.VERTICAL));
 //                                    binding.rvDelivered.setVisibility(View.VISIBLE);
 //                                    SensorDistributionListAdapter sensorDistributionListAdapter = new SensorDistributionListAdapter(sensorDistributionList);
 //                                    binding.rvDelivered.setAdapter(sensorDistributionListAdapter);
@@ -636,7 +637,7 @@ class BiometricDeliveryListActivity : CustomActivity() {
         finish()
     }
 
-    override fun makeToast(string: String) {
+    override fun makeToast(string: String?) {
         if (TextUtils.isEmpty(string)) return
         Toast.makeText(mActivity, string, Toast.LENGTH_SHORT).show()
     }

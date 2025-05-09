@@ -148,7 +148,7 @@ class AttendanceViewDetail : BaseActivity() {
 
 
                                         //   Log.d("tvAddressIn", " " + response.body().getList().get(0).getAddress_In());
-                                        //   Typeface typeface = ResourcesCompat.getFont(mcontext, R.font.roboto_medium);
+                                        //   Typeface typeface = ResourcesCompat.getFont(mContext!!, R.font.roboto_medium);
                                         //   binding.tvAddressIn.setTypeface(typeface);
                                         val address_out = response.body()!!.data[0].address_Out
                                         Log.d("tvAddressout", " $address_out")

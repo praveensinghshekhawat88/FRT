@@ -21,7 +21,7 @@ object Constants {
     // ******************************  CHANGE BASE_URL IN native-lib.cpp FILE ALSO *********************************
     //public static final String API_BASE_URL = "https://rajepds.com/CallManagement/"; // Staging
     const val API_BASE_URL: String = "http://198.38.88.124/CallManagement/"  // Staging
-//    const val API_BASE_URL: String = "https://rajepds.com/" // Production
+///    const val API_BASE_URL: String = "https://rajepds.com/" // Production
 
     // ******************************  CHANGE BASE_URL IN native-lib.cpp FILE ALSO *********************************
     const val SUCCESS_RESULT: Int = 1
@@ -126,7 +126,7 @@ object Constants {
     var irisInsPendingArrayList: ArrayList<IrisInstallationPendingListResp.Datum> = ArrayList()
 
     fun isMyServiceRunning(serviceClass: Class<*>, mContext: Context): Boolean {
-        val manager = mContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val manager = mContext!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Int.MAX_VALUE)) {
             if (serviceClass.name == service.service.className) {
                 return true
