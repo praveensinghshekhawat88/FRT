@@ -218,7 +218,7 @@ open class CustomActivity : AppCompatActivity() {
                     0
                 )
 
-                AlertDialog.Builder(context!!)
+                AlertDialog.Builder(context)
                     .setTitle(context.resources.getString(R.string.app_name))
                     .setCancelable(false)
                     .setMessage(spannableString)
