@@ -189,7 +189,7 @@ class SensorSummaryActivity : CustomActivity() {
         spinnerDistrict!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
                 if (++checkDistrict > 1) {
-                    districtNameEng = district_List!![i]!!.districtNameEng
+                    districtNameEng = district_List!![i]!!.districtNameEng!!
                     dis = district_List!![i]!!.districtNameEng
                     Log.d("dfgfd", " $dis")
                     districtId = district_List!![i]!!.districtId

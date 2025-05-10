@@ -164,7 +164,7 @@ class GraphActivity : CustomActivity() {
                         val sortedList: List<ModelComplaintList> = ArrayList(complaintList)
                         for (model in sortedList) {
                             model.registrationComplainDateTimeStamp =
-                                DateTimeUtils.getTimeStamp(model.complainRegDateStr)
+                                DateTimeUtils.getTimeStamp(model.complainRegDateStr!!)
                         }
                         Collections.sort(
                             sortedList,
@@ -177,7 +177,7 @@ class GraphActivity : CustomActivity() {
 
                             val monthDetailModel = modelMonth.complainRegDateStr
                             val mnt_list =
-                                monthDetailModel.split("-".toRegex()).dropLastWhile { it.isEmpty() }
+                                monthDetailModel!!.split("-".toRegex()).dropLastWhile { it.isEmpty() }
                                     .toTypedArray()
 
                             val date = mnt_list[0]
@@ -268,7 +268,7 @@ class GraphActivity : CustomActivity() {
                         val sortedList: List<ModelComplaintList> = ArrayList(complaintList)
                         for (model in sortedList) {
                             model.registrationComplainDateTimeStamp =
-                                DateTimeUtils.getTimeStamp(model.complainRegDateStr)
+                                DateTimeUtils.getTimeStamp(model.complainRegDateStr!!)
                         }
 
                         Collections.sort(
@@ -286,7 +286,7 @@ class GraphActivity : CustomActivity() {
                             val monthDetailModel = modelMonth.complainRegDateStr
                             Log.d("--monthDetailModel--", " $monthDetailModel")
                             val mnt_list =
-                                monthDetailModel.split("-".toRegex()).dropLastWhile { it.isEmpty() }
+                                monthDetailModel!!.split("-".toRegex()).dropLastWhile { it.isEmpty() }
                                     .toTypedArray()
 
                             val date = mnt_list[0]
@@ -446,7 +446,7 @@ class GraphActivity : CustomActivity() {
             val monthDetailModel = modelMonth.complainRegDateStr
             Log.d("--monthDetailModel--", " $monthDetailModel")
             val mnt_list =
-                monthDetailModel.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                monthDetailModel!!.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
             val date = mnt_list[0]
             val month = mnt_list[1].toInt()
@@ -482,7 +482,7 @@ class GraphActivity : CustomActivity() {
 
             Log.d("--monthDetailModel--", " $monthName")
             val mnt_list =
-                monthName.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                monthName!!.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
             val date = mnt_list[0]
             val month = mnt_list[1].toInt()
@@ -526,7 +526,7 @@ class GraphActivity : CustomActivity() {
 
             Log.d("--monthDetailModel--", " $monthName")
             val mnt_list =
-                monthName.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                monthName!!.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
             val date = mnt_list[0]
             val month = mnt_list[1].toInt()

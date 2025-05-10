@@ -256,7 +256,7 @@ class MonthlyReportsActivity : CustomActivity() {
 
             if (modelComplaint!!.status == "200") {
                 allPagesLoaded =
-                    if (modelComplaint.getCurrentPage() == modelComplaint.getTotalPages()) true
+                    if (modelComplaint.currentPage == modelComplaint.totalPages) true
                     else false
 
                 complaintList = modelComplaint.complaint_List
@@ -308,20 +308,20 @@ class MonthlyReportsActivity : CustomActivity() {
         val formattedObjectList: MutableList<Any> = ArrayList()
         if (objectList.size > 0) {
             val date = (objectList[0] as ModelComplaintList).complainRegDateStr
-            if (objectList.size > 1) formattedObjectList.add(MonthDateModel(date))
+            if (objectList.size > 1) formattedObjectList.add(MonthDateModel(date!!))
             formattedObjectList.add(objectList[0])
             for (i in 1 until objectList.size) {
                 val date1 = (objectList[i] as ModelComplaintList).complainRegDateStr
                 val date2 = (objectList[i - 1] as ModelComplaintList).complainRegDateStr
                 if (date1 != date2) {
-                    formattedObjectList.add(MonthDateModel((objectList[i] as ModelComplaintList).complainRegDateStr))
+                    formattedObjectList.add(MonthDateModel((objectList[i] as ModelComplaintList).complainRegDateStr!!))
                     formattedObjectList.add(objectList[i])
                 } else formattedObjectList.add(objectList[i])
             }
         }
         try {
             if (formattedObjectList.size > 0) {
-                var innerDateWiseList: MutableList<ModelComplaintList?>? = null
+                var innerDateWiseList: MutableList<ModelComplaintList>? = null
                 var date: String? = ""
                 if (formattedObjectList.size > 1) {
                     for (j in formattedObjectList.indices) {
@@ -401,7 +401,7 @@ class MonthlyReportsActivity : CustomActivity() {
 
     inner class CustomComparator : Comparator<Monthly_Reports_Info> {
         override fun compare(o1: Monthly_Reports_Info, o2: Monthly_Reports_Info): Int {
-            return o1.date.compareTo(o2.date)
+            return o1.date!!.compareTo(o2.date!!)
         }
     }
 

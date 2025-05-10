@@ -240,7 +240,7 @@ class SLAReportsActivity : CustomActivity() {
 
     inner class CustomComparator : Comparator<Monthly_Reports_Info> {
         override fun compare(o1: Monthly_Reports_Info, o2: Monthly_Reports_Info): Int {
-            return o1.date.compareTo(o2.date)
+            return o1.date!!.compareTo(o2.date!!)
         }
     }
 

@@ -226,7 +226,7 @@ class BiometricDeliveryListActivity : CustomActivity() {
         spinnerDistrict!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
                 if (++checkDistrict > 1) {
-                    districtNameEng = district_List!![i]!!.districtNameEng
+                    districtNameEng = district_List!![i]!!.districtNameEng!!
                     dis = district_List!![i]!!.districtNameEng
                     Log.d("dfgfd", " $dis")
                     districtId = district_List!![i]!!.districtId
@@ -566,13 +566,13 @@ class BiometricDeliveryListActivity : CustomActivity() {
                                 if (response.body()!!.status == "200") {
                                     district_List = response.body()!!.district_List
                                     if (district_List != null && district_List!!.size > 0) {
-                                        Collections.reverse(district_List)
+                                        district_List!!.reverse()
                                         val l = ModelDistrictList_w()
                                         l.districtId = (-1).toString()
                                         l.districtNameEng =
                                             "--" + resources.getString(R.string.district) + "--"
                                         district_List!!.add(l)
-                                        Collections.reverse(district_List)
+                                        district_List!!.reverse()
                                         val dataAdapter = ArrayAdapter(
                                             mActivity!!, android.R.layout.simple_spinner_item,
                                             district_List!!

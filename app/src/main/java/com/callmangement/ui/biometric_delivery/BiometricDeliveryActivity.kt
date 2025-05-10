@@ -1272,7 +1272,7 @@ class BiometricDeliveryActivity : CustomActivity() {
                                     //    alertDialog.dismiss();
                                     val checkIrisSerialNoResponse = response.body()
                                     if (checkIrisSerialNoResponse!!.response != null &&
-                                        checkIrisSerialNoResponse.response.status
+                                        checkIrisSerialNoResponse.response!!.status
                                     ) {
                                         binding!!.inputSerialno.text = irisScannerSerialNo
                                     } else {

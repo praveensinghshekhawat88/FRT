@@ -389,7 +389,7 @@ class DistributedPosListActivity : CustomActivity(), View.OnClickListener {
                                                     userReportList.clear()
                                                     userReportList.addAll(modelResponse.posDistributionDetailList!!)
                                                     Constants.posDistributionDetailsList =
-                                                        modelResponse.posDistributionDetailList
+                                                        modelResponse.posDistributionDetailList!!
                                                     setAdapter(userReportList)
                                                 } else {
                                                     binding!!.recyclerView.visibility = View.GONE
@@ -593,7 +593,7 @@ class DistributedPosListActivity : CustomActivity(), View.OnClickListener {
         Log.d("mylist", " -------------- " + Constants.posDistributionDetailsList)
         if (Constants.posDistributionDetailsList != null && Constants.posDistributionDetailsList!!.size > 0) {
             for (i in Constants.posDistributionDetailsList!!.indices) {
-                val detailsInfo = Constants.posDistributionDetailsList!![i]
+                val detailsInfo = Constants.posDistributionDetailsList!![i]!!
                 val fps = detailsInfo.fpscode.toString()
                 val ticketNo = detailsInfo.ticketNo.toString()
                 val districtName = detailsInfo.districtName.toString()

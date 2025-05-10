@@ -422,7 +422,7 @@ class ErrorPosActivity : CustomActivity(), View.OnClickListener {
                     l: Long
                 ) {
                     if (++checkExpenseStatus > 1) {
-                        expenseStatusId = modelExpenseStatusList[i].id
+                        expenseStatusId = modelExpenseStatusList[i].id!!
                         Log.d("modelExpensestatuslist", " $expenseStatusId")
                         //     getPosError(expenseStatusId,districtId,fromDate,toDate,fpscodee);
                     }

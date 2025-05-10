@@ -261,7 +261,7 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
                     val filterList: MutableList<ModelRepeatFpsComplaintsList> = ArrayList()
                     if (list.size > 0) {
                         for (model in list) {
-                            if (model.fpscode.contains(charSequence.toString())) filterList.add(
+                            if (model.fpscode!!.contains(charSequence.toString())) filterList.add(
                                 model
                             )
                         }
@@ -352,8 +352,8 @@ class FPSRepeatOnServiceCenterActivity : CustomActivity(), View.OnClickListener 
                                     ) as ModelRepeatFpsComplaints
                                     if (modelResponse != null) {
                                         if (modelResponse.status == "200") {
-                                            if (modelResponse.parts.size > 0) {
-                                                list = modelResponse.parts
+                                            if (modelResponse.parts!!.size > 0) {
+                                                list = modelResponse.parts!!
                                                 //                                                Constants.modelRepeatFpsComplaintsList = list;
                                                 setUpAdapter(list)
                                             } else {

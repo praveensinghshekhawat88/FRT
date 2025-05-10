@@ -274,7 +274,7 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
         spinnerDistrict!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
                 if (++checkDistrict > 1) {
-                    districtNameEng = district_List!![i]!!.districtNameEng
+                    districtNameEng = district_List!![i]!!.districtNameEng!!
                     dis = district_List!![i]!!.districtNameEng
                     Log.d("dfgfd", " $dis")
                     districtId = district_List!![i]!!.districtId
@@ -323,8 +323,8 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
                     l: Long
                 ) {
                     if (++checkSEUsers > 1) {
-                        seUserName = modelSEUsersList!![i]!!.userName
-                        seUserId = modelSEUsersList!![i]!!.userId
+                        seUserName = modelSEUsersList!![i]!!.userName!!
+                        seUserId = modelSEUsersList!![i]!!.userId!!
                         if (seUserName.equals(
                                 "--" + resources.getString(R.string.username) + "--",
                                 ignoreCase = true
@@ -1056,7 +1056,7 @@ class CloseGuardDeliveryListActivity : CustomActivity() {
                     if (response.isSuccessful) {
                         val modelSEUsers = response.body()
                         if (modelSEUsers!!.status == "200") {
-                            modelSEUsersList = modelSEUsers!!.seUsersList
+                            modelSEUsersList = modelSEUsers.sEUsersList
                             if (modelSEUsersList != null && modelSEUsersList!!.size > 0) {
                                 Collections.reverse(modelSEUsersList)
                                 val l = ModelSEUsersList()

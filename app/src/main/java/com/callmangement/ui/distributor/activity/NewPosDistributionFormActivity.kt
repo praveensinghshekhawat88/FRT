@@ -80,7 +80,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
     private var districtId = "0"
     private val tranId = "0"
     private var prefManager: PrefManager? = null
-    private var district_List: List<ModelDistrictList>? = ArrayList()
+    private var district_List: List<ModelDistrictList?>? = ArrayList()
     private val flagGetOldMachineDetail = false
     private var whetherOldMachineProvidedForReplacement = "1"
     private var equipmentModelName = ""
@@ -208,8 +208,8 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
                     i: Int,
                     l: Long
                 ) {
-                    districtNameEng = district_List!![i].districtNameEng!!
-                    districtId = district_List!![i].districtId!!
+                    districtNameEng = district_List!![i]!!.districtNameEng!!
+                    districtId = district_List!![i]!!.districtId!!
                     /*if (!districtId.equals("0") && binding.inputFpsCode.getText()).toString().trim().length() > 0)
                         getOldMachineDetailsByFPSAPI(binding.inputFpsCode.getText().toString());*/
                 }
@@ -226,8 +226,8 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
                     i: Int,
                     l: Long
                 ) {
-                    equipmentModelName = listEquipmentModel[i].name
-                    equipmentModelId = listEquipmentModel[i].id
+                    equipmentModelName = listEquipmentModel[i].name!!
+                    equipmentModelId = listEquipmentModel[i].id!!
                 }
 
                 override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -242,7 +242,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
                     i: Int,
                     l: Long
                 ) {
-                    oldMachineMakeId = listOldMachineMake[i].id
+                    oldMachineMakeId = listOldMachineMake[i].id!!
                 }
 
                 override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -256,7 +256,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
                     i: Int,
                     l: Long
                 ) {
-                    newMachineMakeId = listNewMachineMake[i].id
+                    newMachineMakeId = listNewMachineMake[i].id!!
                 }
 
                 override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -570,25 +570,25 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
                                             binding!!.inputTicketNumber.isEnabled = false
 
                                             oldMachineSrNo =
-                                                modelResponse.oldMachineData.oldMachineSerialNo
+                                                modelResponse.oldMachineData!!.oldMachineSerialNo!!
                                             fingerPrintSrNo =
-                                                modelResponse.oldMachineData.oldMachineBiometricSeriallNo
+                                                modelResponse.oldMachineData!!.oldMachineBiometricSeriallNo!!
 
-                                            binding!!.inputDealerName.setText(modelResponse.oldMachineData.dealerName)
-                                            binding!!.inputMobileNumber.setText(modelResponse.oldMachineData.mobileNo)
-                                            binding!!.inputBlockName.setText(modelResponse.oldMachineData.blockName)
+                                            binding!!.inputDealerName.setText(modelResponse.oldMachineData!!.dealerName)
+                                            binding!!.inputMobileNumber.setText(modelResponse.oldMachineData!!.mobileNo)
+                                            binding!!.inputBlockName.setText(modelResponse.oldMachineData!!.blockName)
                                             binding!!.inputOldMachineSrNo.setText(oldMachineSrNo)
                                             binding!!.inputFingerprintSrNo.setText(fingerPrintSrNo)
-                                            binding!!.inputTicketNumber.setText(modelResponse.oldMachineData.ticketNo)
+                                            binding!!.inputTicketNumber.setText(modelResponse.oldMachineData!!.ticketNo)
 
                                             districtId =
-                                                modelResponse.oldMachineData.districtId.toString()
+                                                modelResponse.oldMachineData!!.districtId.toString()
                                             binding!!.spinnerDistrict.setSelection(
-                                                getSelectedDistrictSpinnerIndex(modelResponse.oldMachineData.districtId.toString())
+                                                getSelectedDistrictSpinnerIndex(modelResponse.oldMachineData!!.districtId.toString())
                                             )
                                         }
                                     } else {
-                                        dialogMessage(modelResponse.message)
+                                        dialogMessage(modelResponse.message!!)
                                         binding!!.inputDealerName.setText("")
                                         binding!!.inputMobileNumber.setText("")
                                         binding!!.inputBlockName.setText("")
@@ -621,7 +621,7 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
         try {
             if (district_List != null && district_List!!.size > 0) {
                 for (i in district_List!!.indices) {
-                    if (districtId == district_List!![i].districtId) {
+                    if (districtId == district_List!![i]!!.districtId) {
                         index = i
                         break
                     }
@@ -668,13 +668,13 @@ class NewPosDistributionFormActivity : CustomActivity(), View.OnClickListener {
                                             binding!!.inputIMEIIMEI2.isEnabled = false
                                             binding!!.inputAccessoriesProvided.isEnabled = false
 
-                                            binding!!.inputNewMachineSrNo.setText(modelResponse.newMachineData.newMachineSerialNo)
-                                            binding!!.inputNewFingerprintSrNo.setText(modelResponse.newMachineData.newMachineBiometricSeriallNo)
-                                            binding!!.inputIMEIIMEI2.setText(modelResponse.newMachineData.newMachineIMEI1 + " - " + modelResponse.newMachineData.newMachineIMEI2)
-                                            binding!!.inputAccessoriesProvided.setText(modelResponse.newMachineData.accessoriesProvided)
+                                            binding!!.inputNewMachineSrNo.setText(modelResponse.newMachineData!!.newMachineSerialNo)
+                                            binding!!.inputNewFingerprintSrNo.setText(modelResponse.newMachineData!!.newMachineBiometricSeriallNo)
+                                            binding!!.inputIMEIIMEI2.setText(modelResponse.newMachineData!!.newMachineIMEI1 + " - " + modelResponse.newMachineData!!.newMachineIMEI2)
+                                            binding!!.inputAccessoriesProvided.setText(modelResponse.newMachineData!!.accessoriesProvided)
                                         }
                                     } else {
-                                        dialogMessage(modelResponse.message)
+                                        dialogMessage(modelResponse.message!!)
                                         binding!!.inputNewMachineSrNo.setText("")
                                         binding!!.inputNewFingerprintSrNo.setText("")
                                         binding!!.inputIMEIIMEI2.setText("")

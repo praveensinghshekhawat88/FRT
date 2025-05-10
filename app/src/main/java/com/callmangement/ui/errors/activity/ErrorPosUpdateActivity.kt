@@ -222,7 +222,6 @@ class ErrorPosUpdateActivity : CustomActivity(), View.OnClickListener {
                 )
             }
 
-
             val ErrorStatusIdd = model!!.errorStatusId.toString()
             val ErrorId = model!!.errorId.toString()
 
@@ -274,7 +273,6 @@ class ErrorPosUpdateActivity : CustomActivity(), View.OnClickListener {
                                 } else {
                                     makeToast(response.body()!!.response.message)
                                 }
-
 
                                 //      Log.d("getErrorTypesRoot..","getErrorTypesRoot.."+getErrorTypesRoot);
 

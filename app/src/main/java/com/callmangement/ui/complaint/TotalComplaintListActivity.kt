@@ -487,7 +487,7 @@ class TotalComplaintListActivity : CustomActivity() {
 
     inner class CustomComparator : Comparator<ModelComplaintList> {
         override fun compare(o1: ModelComplaintList, o2: ModelComplaintList): Int {
-            return o1.complainRegDateStr.compareTo(o2.complainRegDateStr)
+            return o1.complainRegDateStr!!.compareTo(o2.complainRegDateStr!!)
         }
     }
 
@@ -829,9 +829,9 @@ class TotalComplaintListActivity : CustomActivity() {
                 if (response.isSuccessful) {
                     val model = response.body()
                     if (model != null && model.status == "200") {
-                        val totalPage = model.getTotalPages()
-                        val CurrentPage = model.getCurrentPage()
-                        TotalItems = model.getTotalItems()
+                        val totalPage = model.totalPages
+                        val CurrentPage = model.currentPage
+                        TotalItems = model.totalItems
 
                         Log.d("CheckNow--", "$totalPage $CurrentPage $TotalItems")
 

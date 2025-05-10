@@ -283,7 +283,7 @@ class ClosedGuardDetailActivity : CustomActivity(), View.OnClickListener {
                         try {
                             if (response.code() == 200) {
                                 if (response.body() != null) {
-                                    if (response.body()!!.getStatus() == "200"
+                                    if (response.body()!!.status == "200"
                                     ) {
                                         val getErrorImagesRoot = response.body()
                                         val weighingDeliveryData = getErrorImagesRoot!!.data
@@ -292,7 +292,7 @@ class ClosedGuardDetailActivity : CustomActivity(), View.OnClickListener {
                                             "getErrorTypesRoot..$getErrorImagesRoot"
                                         )
                                         val getErrorImagesDatumArrayList =
-                                            weighingDeliveryData.getImagesDetail()
+                                            weighingDeliveryData.imagesDetail
                                         if (getErrorImagesDatumArrayList.size > 0) {
                                             //            binding.tvUploadedimage.setVisibility(View.VISIBLE);
                                             //            binding.rvViewimages.setVisibility(View.VISIBLE);
@@ -355,7 +355,7 @@ class ClosedGuardDetailActivity : CustomActivity(), View.OnClickListener {
         //        getErrorImagesDatumArrayListOne.clear();
 //        getErrorImagesDatumArrayListTwo.clear();
         for (i in getErrorImagesDatumArrayList.indices) {
-            if (getErrorImagesDatumArrayList[i].getPhotoTypeId() <= 5) {
+            if (getErrorImagesDatumArrayList[i].photoTypeId <= 5) {
                 getErrorImagesDatumArrayListOne.add(getErrorImagesDatumArrayList[i])
                 aa = aa + 1
             } else {
@@ -365,13 +365,13 @@ class ClosedGuardDetailActivity : CustomActivity(), View.OnClickListener {
         }
         // adapter = new ViewImagesListingAdapter(mActivity, getErrorImagesDatumArrayList, onItemViewClickListener);
         adapter = ViewImageInstalledDetailsAdapterIris(
-            mActivity,
+            mActivity!!,
             getErrorImagesDatumArrayListOne,
             true,
             aa
         )
         adapterSec = ViewImageInstalledDetailsAdapterIris(
-            mActivity,
+            mActivity!!,
             getErrorImagesDatumArrayListTwo,
             false,
             aass

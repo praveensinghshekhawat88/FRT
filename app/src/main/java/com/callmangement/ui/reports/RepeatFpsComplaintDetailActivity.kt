@@ -44,8 +44,8 @@ class RepeatFpsComplaintDetailActivity : CustomActivity(), View.OnClickListener 
             model = intent.getSerializableExtra("param") as ModelRepeatFpsComplaintsList?
             binding!!.data = model
             binding!!.chkBoxIsPhysicalDamage.isChecked =
-                model!!.isPhysicalDamage != null && model!!.isPhysicalDamage
-            if (!model!!.imagePath.isEmpty()) {
+                model!!.isPhysicalDamage != null && model!!.isPhysicalDamage!!
+            if (!model!!.imagePath!!.isEmpty()) {
                 binding!!.seImage.visibility = View.VISIBLE
                 Glide.with(mContext!!)
                     .load(Constants.API_BASE_URL + model!!.imagePath)

@@ -91,8 +91,8 @@ class FPSRepeatOnServiceCenterDetailActivity : CustomActivity(), View.OnClickLis
                                     ) as ModelRepeatFpsComplaints
                                     if (modelResponse != null) {
                                         if (modelResponse.status == "200") {
-                                            if (modelResponse.parts.size > 0) {
-                                                list = modelResponse.parts
+                                            if (modelResponse.parts!!.size > 0) {
+                                                list = modelResponse.parts!!
                                                 //                                                Constants.modelRepeatFpsComplaintsList = list;
                                                 setUpAdapter(list)
                                             } else {

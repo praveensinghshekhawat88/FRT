@@ -53,7 +53,7 @@ object Constants {
     var fromWhere: String = "fromWhere"
 
     @JvmField
-    var modelProductLists: List<ModelPartsList>? = null
+    var modelProductLists: MutableList<ModelPartsList?>? = null
 
     @JvmField
     var listMonthReport: List<MonthReportModel>? = null
@@ -62,7 +62,7 @@ object Constants {
     var modelPartsList: List<ModelPartsList>? = null
 
     @JvmField
-    var modelPartsDispatchInvoiceList: List<ModelPartsDispatchInvoiceList>? = null
+    var modelPartsDispatchInvoiceList: List<ModelPartsDispatchInvoiceList?> = listOf(null)
 
     @JvmField
     var modelDisputePartsList: List<ModelDisputePartsList>? = null
@@ -71,7 +71,7 @@ object Constants {
     var modelAddStock: List<ModelAddStock>? = null
 
     @JvmField
-    var posDistributionDetailsList: List<PosDistributionDetail>? = null
+    var posDistributionDetailsList: List<PosDistributionDetail?> = emptyList()
 
     @JvmField
     var modelRepeatFpsComplaintsList: List<ModelRepeatFpsComplaintsList>? = null

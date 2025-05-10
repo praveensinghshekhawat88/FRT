@@ -19,7 +19,7 @@ import com.google.gson.reflect.TypeToken
 class DailyReportsDetailsActivity : CustomActivity() {
     private var binding: ActivityDailyReportsDetailsBinding? = null
     private var adapter: DailyReportsDetailsActivityAdapter? = null
-    private var list: List<ModelComplaintList>? = null
+    private var list: MutableList<ModelComplaintList>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

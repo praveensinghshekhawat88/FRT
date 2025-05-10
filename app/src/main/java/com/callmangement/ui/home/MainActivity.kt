@@ -104,7 +104,7 @@ class MainActivity : CustomActivity(), OnChartValueSelectedListener, View.OnClic
     private var districtNameEng: String? = ""
     private var filterType = ""
     private var viewModel: ComplaintViewModel? = null
-    private var Tehsil_List: List<ModelTehsilList> = ArrayList()
+    private var Tehsil_List: List<ModelTehsilList?> = ArrayList()
     private var district_List: MutableList<ModelDistrictList?>? = ArrayList()
     private var entries = ArrayList<PieEntry>()
     val MATERIAL_COLORS: IntArray = intArrayOf(rgb("#f2726f"), rgb("#29c3be"), rgb("#5d62b5"))
@@ -775,22 +775,22 @@ class MainActivity : CustomActivity(), OnChartValueSelectedListener, View.OnClic
         var sumComplaintOnServiceCenter = 0f
 
         if (model.notResolve != null) {
-            sumPendingComp = model.notResolve.toFloat()
+            sumPendingComp = model.notResolve!!.toFloat()
         }
         if (model.resolved != null) {
-            sumResolvedComp = model.resolved.toFloat()
+            sumResolvedComp = model.resolved!!.toFloat()
         }
 
 
         if (model.sendToSECenter != null) {
-            sumComplaintOnServiceCenter = model.sendToSECenter.toFloat()
+            sumComplaintOnServiceCenter = model.sendToSECenter!!.toFloat()
         }
 
         if (model.total != null) {
-            val sumPendingCompPercent = (sumPendingComp * 100) / model.total
-            val sumResolvedCompPercent = (sumResolvedComp * 100) / model.total
+            val sumPendingCompPercent = (sumPendingComp * 100) / model.total!!
+            val sumResolvedCompPercent = (sumResolvedComp * 100) / model.total!!
             val sumComplaintOnServiceCenterCompPercent =
-                (sumComplaintOnServiceCenter * 100) / model.total
+                (sumComplaintOnServiceCenter * 100) / model.total!!
 
             entries.add(PieEntry(sumPendingComp))
             entries.add(PieEntry(sumResolvedComp))

@@ -98,7 +98,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
     //    private String dsoletterImageStoragePath = "";
     private var DSO_LETTER_TYPE = ""
     private var permissionGranted = false
-    private var listParts: List<ModelPartsList> = ArrayList()
+    private var listParts: List<ModelPartsList?> = ArrayList()
     private var replacePartsIds = ""
     private var dateResolved: OnDateSetListener? = null
     private var dialogReplaceParts: Dialog? = null
@@ -188,7 +188,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.seImage.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 Log.d("testedg", "my---" + model!!.physicalDamage)
 
@@ -224,7 +224,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                         binding!!.buttonResolved.visibility = View.GONE
                         binding!!.buttonSliderSendToSE.visibility = View.GONE
 
-                        if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                        if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                                 "null",
                                 ignoreCase = true
                             )
@@ -258,7 +258,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputRemark.setText("")
                 }
 
-                if (model!!.isSentToServiceCentre == "true") {
+                if (model!!.getIsSentToServiceCentre() == "true") {
                     if (model!!.replacedPartsDetail != null && !model!!.replacedPartsDetail.equals(
                             "null",
                             ignoreCase = true
@@ -319,7 +319,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.buttonAcceptComplaint.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 if (model!!.seremark != null && !model!!.seremark.equals(
                         "null",
@@ -372,7 +372,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputChallanNumber.setText("")
                 }
 
-                if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                         "null",
                         ignoreCase = true
                     )
@@ -402,7 +402,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.buttonAcceptComplaint.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 if (model!!.seremark != null && !model!!.seremark.equals(
                         "null",
@@ -456,7 +456,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputChallanNumber.setText("")
                 }
 
-                if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                         "null",
                         ignoreCase = true
                     )
@@ -492,7 +492,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.buttonAcceptComplaint.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 if (model!!.seremark != null && !model!!.seremark.equals(
                         "null",
@@ -546,7 +546,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputChallanNumber.setText("")
                 }
 
-                if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                         "null",
                         ignoreCase = true
                     )
@@ -576,7 +576,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.buttonAcceptComplaint.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 if (model!!.seremark != null && !model!!.seremark.equals(
                         "null",
@@ -630,7 +630,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputChallanNumber.setText("")
                 }
 
-                if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                         "null",
                         ignoreCase = true
                     )
@@ -660,7 +660,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.buttonAcceptComplaint.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 if (model!!.seremark != null && !model!!.seremark.equals(
                         "null",
@@ -714,7 +714,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputChallanNumber.setText("")
                 }
 
-                if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                         "null",
                         ignoreCase = true
                     )
@@ -751,7 +751,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.buttonAcceptComplaint.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 if (model!!.seremark != null && !model!!.seremark.equals(
                         "null",
@@ -805,7 +805,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputChallanNumber.setText("")
                 }
 
-                if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                         "null",
                         ignoreCase = true
                     )
@@ -835,7 +835,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.buttonAcceptComplaint.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 if (model!!.seremark != null && !model!!.seremark.equals(
                         "null",
@@ -889,7 +889,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputChallanNumber.setText("")
                 }
 
-                if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                         "null",
                         ignoreCase = true
                     )
@@ -919,7 +919,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.buttonAcceptComplaint.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 if (model!!.seremark != null && !model!!.seremark.equals(
                         "null",
@@ -973,7 +973,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputChallanNumber.setText("")
                 }
 
-                if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                         "null",
                         ignoreCase = true
                     )
@@ -1010,7 +1010,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.buttonSliderSendToSE.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 if (model!!.seremark != null && !model!!.seremark.equals(
                         "null",
@@ -1064,7 +1064,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputChallanNumber.setText("")
                 }
 
-                if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                         "null",
                         ignoreCase = true
                     )
@@ -1094,7 +1094,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.buttonAcceptComplaint.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 if (model!!.seremark != null && !model!!.seremark.equals(
                         "null",
@@ -1148,7 +1148,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputChallanNumber.setText("")
                 }
 
-                if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                         "null",
                         ignoreCase = true
                     )
@@ -1178,7 +1178,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.buttonAcceptComplaint.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 if (model!!.seremark != null && !model!!.seremark.equals(
                         "null",
@@ -1232,7 +1232,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputChallanNumber.setText("")
                 }
 
-                if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                         "null",
                         ignoreCase = true
                     )
@@ -1268,7 +1268,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.buttonAcceptComplaint.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 if (model!!.seremark != null && !model!!.seremark.equals(
                         "null",
@@ -1322,7 +1322,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputChallanNumber.setText("")
                 }
 
-                if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                         "null",
                         ignoreCase = true
                     )
@@ -1352,7 +1352,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.buttonAcceptComplaint.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 if (model!!.seremark != null && !model!!.seremark.equals(
                         "null",
@@ -1406,7 +1406,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputChallanNumber.setText("")
                 }
 
-                if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                         "null",
                         ignoreCase = true
                     )
@@ -1436,7 +1436,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                 binding!!.buttonAcceptComplaint.visibility = View.GONE
 
                 binding!!.chkBoxIsPhysicalDamage.isChecked =
-                    model!!.physicalDamage != null && model!!.physicalDamage
+                    model!!.physicalDamage != null && model!!.physicalDamage!!
 
                 if (model!!.seremark != null && !model!!.seremark.equals(
                         "null",
@@ -1490,7 +1490,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
                     binding!!.inputChallanNumber.setText("")
                 }
 
-                if (model!!.imagePath != null && !model!!.imagePath.isEmpty() && !model!!.imagePath.equals(
+                if (model!!.imagePath != null && !model!!.imagePath!!.isEmpty() && !model!!.imagePath.equals(
                         "null",
                         ignoreCase = true
                     )
@@ -1537,7 +1537,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
         val sdfSelectedDate = SimpleDateFormat(myFormatSelectedDate, Locale.US)
 
         val separator =
-            model!!.complainRegDateStr.split(" ".toRegex()).dropLastWhile { it.isEmpty() }
+            model!!.complainRegDateStr!!.split(" ".toRegex()).dropLastWhile { it.isEmpty() }
                 .toTypedArray()
         val regDateSep = separator[0]
         val regTimeSep = separator[1]
@@ -2018,7 +2018,7 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
 
             dialogBinding.cancel.setOnClickListener { view: View? ->
                 for (i in listParts.indices) {
-                    listParts[i].isSelectFlag = false
+                    listParts[i]!!.isSelectFlag = false
                 }
                 replacePartsIds = getCommaSeparatedIds(listParts)
                 Log.d("replacePartsIds", replacePartsIds)
@@ -2030,10 +2030,10 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
         }
     }
 
-    private fun getCommaSeparatedIds(selectedIds: List<ModelPartsList>): String {
+    private fun getCommaSeparatedIds(selectedIds: List<ModelPartsList?>): String {
         val partsIds = StringBuilder()
         for (i in selectedIds.indices) {
-            if (selectedIds[i].isSelectFlag) partsIds.append(", ").append(selectedIds[i].itemId)
+            if (selectedIds[i]!!.isSelectFlag) partsIds.append(", ").append(selectedIds[i]!!.itemId)
         }
         return if (partsIds.length > 0) {
             partsIds.substring(1)
@@ -2042,10 +2042,10 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
         }
     }
 
-    private fun getCommaSeparatedName(selectedIds: List<ModelPartsList>): String {
+    private fun getCommaSeparatedName(selectedIds: List<ModelPartsList?>): String {
         val partName = StringBuilder()
         for (i in selectedIds.indices) {
-            if (selectedIds[i].isSelectFlag) partName.append(", ").append(selectedIds[i].itemName)
+            if (selectedIds[i]!!.isSelectFlag) partName.append(", ").append(selectedIds[i]!!.itemName)
         }
         return if (partName.length > 0) {
             partName.substring(1)
@@ -2059,9 +2059,9 @@ class ComplaintDetailActivity : CustomActivity(), View.OnClickListener {
             isInventoryLoading
             inventoryViewModel!!.getAvailableStockListForSE(prefManager!!.useR_Id, "0").observe(
                 this
-            ) { modelParts: ModelParts ->
+            ) { modelParts: ModelParts? ->
                 isInventoryLoading
-                if (modelParts.status == "200") {
+                if (modelParts!!.status == "200") {
                     listParts = modelParts.parts
                     Log.d("fdnf", "  $listParts")
                 }

@@ -89,7 +89,7 @@ class AttendanceRepository(private val mContext: Context) {
                         val data = model!!.location_list
                         val list: MutableList<ModelAddLocationData> = ArrayList()
                         for (i in data.indices) {
-                            if (data[i].location_Date_Time.contains(date)) {
+                            if (data[i].location_Date_Time!!.contains(date)) {
                                 list.add(data[i])
                             }
                         }

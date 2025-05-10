@@ -40,7 +40,7 @@ class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
     private val listOldMachineMake: MutableList<ModelOldMachineMake> = ArrayList()
     private val listNewMachineMake: MutableList<ModelNewMachineMake> = ArrayList()
     private var viewModel: ComplaintViewModel? = null
-    private var district_List: List<ModelDistrictList>? = ArrayList()
+    private var district_List: List<ModelDistrictList?>? = ArrayList()
     private var photoPath = ""
     private var formPhotoPath = ""
 
@@ -260,7 +260,7 @@ class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
                                                     posDistributionDetail.isCompleteWithSatisfactorily!!
                                                 if (district_List!!.size > 0) {
                                                     for (i in district_List!!.indices) {
-                                                        if (posDistributionDetail.districtId == district_List!![i].districtId!!.toInt()) {
+                                                        if (posDistributionDetail.districtId == district_List!![i]!!.districtId!!.toInt()) {
                                                             binding!!.spinnerDistrict.setSelection(i)
                                                             binding!!.spinnerDistrict.isEnabled =
                                                                 false
@@ -270,7 +270,7 @@ class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
 
                                                 if (listEquipmentModel.size > 0) {
                                                     for (i in listEquipmentModel.indices) {
-                                                        if (posDistributionDetail.equipmentModelId == listEquipmentModel[i].id.toInt()) {
+                                                        if (posDistributionDetail.equipmentModelId == listEquipmentModel[i].id!!.toInt()) {
                                                             binding!!.spinnerEquipmentModel.setSelection(
                                                                 i
                                                             )
@@ -282,7 +282,7 @@ class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
 
                                                 if (listOldMachineMake.size > 0) {
                                                     for (i in listOldMachineMake.indices) {
-                                                        if (posDistributionDetail.oldMachineVenderid == listOldMachineMake[i].id.toInt()) {
+                                                        if (posDistributionDetail.oldMachineVenderid == listOldMachineMake[i].id!!.toInt()) {
                                                             binding!!.spinnerOldMachineMake.setSelection(
                                                                 i
                                                             )
@@ -293,7 +293,7 @@ class PosDistributionFormViewActivity : CustomActivity(), View.OnClickListener {
                                                 }
                                                 if (listNewMachineMake.size > 0) {
                                                     for (i in listNewMachineMake.indices) {
-                                                        if (posDistributionDetail.newMachineVenderid == listNewMachineMake[i].id.toInt()) {
+                                                        if (posDistributionDetail.newMachineVenderid == listNewMachineMake[i].id!!.toInt()) {
                                                             binding!!.spinnerNewMachineMake.setSelection(
                                                                 i
                                                             )
