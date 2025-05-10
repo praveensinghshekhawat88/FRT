@@ -316,7 +316,7 @@ class EditChallanComplaintListActivity : CustomActivity() {
         ) { modelComplaint: ModelChallanUploadComplaint? ->
             isLoading
             if (modelComplaint!!.status == "200") {
-                modelComplaintList = modelComplaint.complaint_List
+                modelComplaintList = modelComplaint.complaint_List!!
                 setDataIntoAdapter(modelComplaintList)
             }
         }

@@ -129,7 +129,7 @@
                     android:gravity="center"
                     android:paddingLeft="1sp"
                     android:paddingRight="1sp"
-                    android:text="@{data.getTehsil()}"
+                    android:text="@{data.tehsil}"
                     android:textColor="@color/grayDark"
                     android:textSize="13sp" />
 

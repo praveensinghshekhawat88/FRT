@@ -357,7 +357,7 @@ class BiometricDeliveryDashboardActivity : CustomActivity(), View.OnClickListene
                     l: Long
                 ) {
                     if (++checkDistrict > 1) {
-                        districtNameEng = district_List!![i]!!.districtNameEng
+                        districtNameEng = district_List!![i]!!.districtNameEng!!
                         dis = district_List!![i]!!.districtNameEng
                         Log.d("dfgfd", " $dis")
                         districtId = district_List!![i]!!.districtId

@@ -90,7 +90,7 @@ class ExpenseDetailsActivity : CustomActivity(), View.OnClickListener {
             binding!!.buttonComplete.visibility = View.GONE
         }
 
-        if (model!!.completedOnStr.isEmpty()) {
+        if (model!!.completedOnStr!!.isEmpty()) {
             binding!!.expenseCompletedDateLay.visibility = View.GONE
         } else {
             binding!!.expenseCompletedDateLay.visibility = View.VISIBLE

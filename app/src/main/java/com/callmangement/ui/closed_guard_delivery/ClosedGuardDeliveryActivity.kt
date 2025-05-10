@@ -684,28 +684,28 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
                     if (response.isSuccessful) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (response.body()!!.getStatus() == "200") {
+                                if (response.body()!!.status == "200") {
                                     alertDialog!!.dismiss()
 
                                     val detailByFpsRoot = response.body()
-                                    val fps_message = detailByFpsRoot!!.getMessage()
+                                    val fps_message = detailByFpsRoot!!.message
                                     Toast.makeText(mContext!!, fps_message, Toast.LENGTH_SHORT).show()
                                     val detailByFpsData = detailByFpsRoot.data
                                     if (detailByFpsData != null) {
-                                        val DistrictName = detailByFpsData.getDistrictName()
-                                        val Fpscode = detailByFpsData.getFpscode()
-                                        val DealerName = detailByFpsData.getDealerName()
-                                        val FpsdeviceCode = detailByFpsData.getFpsdeviceCode()
-                                        val DealerMobileNo = detailByFpsData.getDealerMobileNo()
-                                        val Block = detailByFpsData.getBlockName()
+                                        val DistrictName = detailByFpsData.districtName
+                                        val Fpscode = detailByFpsData.fpscode
+                                        val DealerName = detailByFpsData.dealerName
+                                        val FpsdeviceCode = detailByFpsData.fpsdeviceCode
+                                        val DealerMobileNo = detailByFpsData.dealerMobileNo
+                                        val Block = detailByFpsData.blockName
                                         val WeighingScaleModelName =
-                                            detailByFpsData.getWeighingScaleModelName().toString()
+                                            detailByFpsData.weighingScaleModelName.toString()
                                         val WeighingScaleSerialNo =
-                                            detailByFpsData.getWeighingScaleSerialNo().toString()
+                                            detailByFpsData.weighingScaleSerialNo.toString()
                                         val IrisScannerModelName =
-                                            detailByFpsData.getIrisScannerModelName().toString()
+                                            detailByFpsData.irisScannerModelName.toString()
                                         val IrisScannerSerialNo =
-                                            detailByFpsData.getIrisScannerSerialNo().toString()
+                                            detailByFpsData.irisScannerSerialNo.toString()
                                         binding!!.inputDealerName.text = DealerName
                                         binding!!.inputDistrict.text = DistrictName
                                         binding!!.inputFpsCode.text = Fpscode
@@ -742,7 +742,7 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
                                         } else {
                                         }
                                     } else {
-                                        val msg = response.body()!!.getMessage()
+                                        val msg = response.body()!!.message
                                         showAlertDialogWithSingleButton(mActivity, msg)
                                         //  makeToast(String.valueOf(response.body().getMessage()));
                                         // Handle the case when countDatum is empty or null
@@ -750,12 +750,12 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
                                 } else {
                                     alertDialog!!.show()
                                     //  makeToast(String.valueOf(response.body().getMessage()));
-                                    val msg = response.body()!!.getMessage()
+                                    val msg = response.body()!!.message
                                     showAlertDialogWithSingleButton(mActivity, msg)
                                     // Handle the case when the response status is not 200 or the response body is null
                                 }
                             } else {
-                                val msg = response.body()!!.getMessage()
+                                val msg = response.body()!!.message
                                 showAlertDialogWithSingleButton(mActivity, msg)
                                 // makeToast(String.valueOf(response.body().getMessage()));
                             }
@@ -1025,17 +1025,17 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
                     if (response.isSuccessful) {
                         if (response.code() == 200) {
                             if (response.body() != null) {
-                                if (response.body()!!.getStatus() == "200") {
-                                    makeToast(response.body()!!.response.message.toString())
+                                if (response.body()!!.status == "200") {
+                                    makeToast(response.body()!!.response!!.message.toString())
                                     val intent = Intent(mActivity, MainActivity::class.java)
                                     startActivity(intent)
                                 } else {
                                     // makeToast(String.valueOf(response.body().getResponse().getMessage()));
-                                    val msg = response.body()!!.response.message
+                                    val msg = response.body()!!.response!!.message
                                     showAlertDialogWithSingleButton(mActivity, msg)
                                 }
                             } else {
-                                val msg = response.body()!!.response.message
+                                val msg = response.body()!!.response!!.message
                                 showAlertDialogWithSingleButton(mActivity, msg)
                                 // makeToast(getResources().getString(R.string.error));
                             }
@@ -1194,7 +1194,7 @@ class ClosedGuardDeliveryActivity : CustomActivity() {
                                     //    alertDialog.dismiss();
                                     val checkIrisSerialNoResponse = response.body()
                                     if (checkIrisSerialNoResponse!!.response != null &&
-                                        checkIrisSerialNoResponse.response.status
+                                        checkIrisSerialNoResponse.response!!.status
                                     ) {
                                         binding!!.inputSerialno.text = irisScannerSerialNo
                                     } else {

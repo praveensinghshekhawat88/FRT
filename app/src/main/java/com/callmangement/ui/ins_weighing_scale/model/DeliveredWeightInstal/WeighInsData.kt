@@ -1,0 +1,68 @@
+package com.callmangement.ui.ins_weighing_scale.model.DeliveredWeightInstal
+
+import java.io.Serializable
+
+class WeighInsData(
+    var isStatus: Boolean,
+    var message: String,
+    var isDeliverdIRIS: Boolean,
+    var otp: Any,
+    var images: Any,
+    var imagesDetail: Any,
+    @JvmField var dealerMobileNo: String,
+    var irisScannerSerialNo: String,
+    var irisScannerModelId: Any,
+    var winghingScaleDeliveredOn: Any,
+    var isDeliverdWeighingScale: Boolean,
+    @JvmField var weighingScaleModelName: String,
+    var irisScannerModelName: String,
+    @JvmField var weighingScaleSerialNo: String,
+    var irisDeviceType: String,
+    var irisDeviceModel: String,
+    var deliveryRemark: String,
+    var installationBy: Int,
+    @JvmField var winghingScaleDeliveredOnStr: String,
+    var irisDeviceModelId: Int,
+    var last_TicketStatusId: Int,
+    var installationOnStr: String,
+    var weighingScaleDeliveredBy: Int,
+    var irisDeviceTypeId: Int,
+    @JvmField var last_TicketStatus: String,
+    var installationRemark: String,
+    var irisdeliveredOnStr: String,
+    var deliveredByName: Any,
+    var isActive: Boolean,
+    var weighingScaleModelId: Any,
+    var irisdeliveredOn: Any,
+    var installationOn: Any,
+    var last_Remark: String,
+    @JvmField var dealerName: String,
+    @JvmField var ticketNo: String,
+    var remarks: Any,
+    @JvmField var blockName: String,
+    @JvmField var districtId: Int,
+    @JvmField var deviceTypeId: Int,
+    @JvmField var fpscode: String,
+    var userID: Any,
+    var blockId: Any,
+    var fpsdeviceCode: String,
+    @JvmField var districtName: String,
+    var updatedBy: Int,
+    var deviceModelId: Int,
+    var deviceModel: String,
+    var tranDate: Any,
+    var shopAddress: String,
+    var deviceType: String,
+    @JvmField var deliveryId: Int,
+    var tranDateStr: Any,
+    var latitude: String,
+    var longitude: String,
+    var createdOn: Any,
+    var updatedOn: Any,
+    @JvmField var isDeliveryVerify: Boolean
+) :
+    Serializable {
+    fun setisDeliveryVerify(isDeliveryVerify: Boolean) {
+        this.isDeliveryVerify = isDeliveryVerify
+    }
+}

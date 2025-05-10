@@ -20,7 +20,7 @@ class DistrictListActivity : CustomActivity() {
     
     private var adapter: DistrictListActivityAdapter? = null
     private var viewModel: ComplaintViewModel? = null
-    private var district_List: List<ModelDistrictList> = ArrayList()
+    private var district_List: List<ModelDistrictList?>? = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

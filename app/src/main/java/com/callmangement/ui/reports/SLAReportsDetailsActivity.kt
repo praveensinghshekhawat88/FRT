@@ -110,7 +110,7 @@ class SLAReportsDetailsActivity : CustomActivity() {
                         binding!!.rvComplaints.visibility = View.VISIBLE
                         binding!!.textNoComplaint.visibility = View.GONE
                         binding!!.textTotalComplaint.text = "" + complaintList!!.size
-                        adapter!!.setData(complaintList)
+                        adapter!!.setData(complaintList!!)
                     } else {
                         binding!!.rvComplaints.visibility = View.GONE
                         binding!!.bottomLayout.visibility = View.GONE

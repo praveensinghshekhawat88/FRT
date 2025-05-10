@@ -112,8 +112,8 @@ class ResetDeviceActivity : CustomActivity(), View.OnClickListener {
                     l: Long
                 ) {
                     if (++checkSEUsers > 1) {
-                        seUserName = modelSEUsersList!![i]!!.userName
-                        seUserId = modelSEUsersList!![i]!!.userId
+                        seUserName = modelSEUsersList!![i]!!.userName!!
+                        seUserId = modelSEUsersList!![i]!!.userId!!
                         if (seUserName.equals(
                                 "--" + resources.getString(R.string.username) + "--",
                                 ignoreCase = true
@@ -184,7 +184,7 @@ class ResetDeviceActivity : CustomActivity(), View.OnClickListener {
                     if (response.isSuccessful) {
                         val modelSEUsers = response.body()
                         if (modelSEUsers!!.status == "200") {
-                            modelSEUsersList = modelSEUsers.seUsersList
+                            modelSEUsersList = modelSEUsers.sEUsersList
                             if (modelSEUsersList != null && modelSEUsersList!!.size > 0) {
                                 modelSEUsersList!!.reverse()
                                 val l = ModelSEUsersList()

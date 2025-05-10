@@ -339,7 +339,7 @@ class DailyReportsActivity : CustomActivity() {
                     for (model in totalList) {
                         if (model.complainStatusId == "3" && DateTimeUtils.getTimeStamp(
                                 formattedFilterDate()
-                            ) == DateTimeUtils.getTimeStamp(model.sermarkDateStr)
+                            ) == DateTimeUtils.getTimeStamp(model.sermarkDateStr!!)
                         ) resolvedList.add(model)
                         else notResolvedList.add(model)
                     }
@@ -405,7 +405,7 @@ class DailyReportsActivity : CustomActivity() {
     inner class CustomComparator : Comparator<Monthly_Reports_Info> {
         override fun compare(o1: Monthly_Reports_Info, o2: Monthly_Reports_Info): Int {
             if (o1.date != null && o2.date != null) {
-                return o1.date.compareTo(o2.date)
+                return o1.date!!.compareTo(o2.date!!)
             }
 
             return 0

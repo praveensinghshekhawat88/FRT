@@ -60,8 +60,8 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
     private var districtId = "0"
     private var tehsilId = "0"
     private var fpsCode = ""
-    private var tehsilList: MutableList<ModelTehsilList>? = ArrayList()
-    private var districtList: MutableList<ModelDistrictList>? = ArrayList()
+    private var tehsilList: MutableList<ModelTehsilList?> = ArrayList()
+    private var districtList: MutableList<ModelDistrictList?>? = ArrayList()
     private var modelFPSDistTehWiseList: MutableList<ModelFPSDistTehWiseList>? = ArrayList()
     private val checkTehsil = 0
     private val checkDistrict = 0
@@ -121,11 +121,11 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
                     i: Int,
                     l: Long
                 ) {
-                    if (districtList!![i].districtId != "0") {
+                    if (districtList!![i]!!.districtId != "0") {
                         binding!!.rvFpsList.visibility = View.GONE
                         binding!!.textNoRecordFound.visibility = View.VISIBLE
-                        districtNameEng = districtList!![i].districtNameEng!!
-                        districtId = districtList!![i].districtId!!
+                        districtNameEng = districtList!![i]!!.districtNameEng!!
+                        districtId = districtList!![i]!!.districtId!!
                         tehsilList(districtId)
                     } else {
                         districtNameEng = ""
@@ -145,9 +145,9 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
                     i: Int,
                     l: Long
                 ) {
-                    if (tehsilList!![i].tehsilId != "0") {
-                        tehsilNameEng = tehsilList!![i].tehsilNameEng!!
-                        tehsilId = tehsilList!![i].tehsilId!!
+                    if (tehsilList[i]!!.tehsilId != "0") {
+                        tehsilNameEng = tehsilList[i]!!.tehsilNameEng!!
+                        tehsilId = tehsilList!![i]!!.tehsilId!!
                         getFPSList()
                     } else {
                         tehsilNameEng = ""
@@ -210,7 +210,7 @@ class LastComplaintFPSListActivity : CustomActivity(), View.OnClickListener {
                         val model = response.body()
                         if (model!!.status == "200") {
                             tehsilList!!.clear()
-                            tehsilList = model!!.tehsil_List
+                            tehsilList = model.tehsil_List
                             if (tehsilList != null && tehsilList!!.size > 0) {
                                 val modelTehsilList = ModelTehsilList()
                                 modelTehsilList.tehsilNameEng =

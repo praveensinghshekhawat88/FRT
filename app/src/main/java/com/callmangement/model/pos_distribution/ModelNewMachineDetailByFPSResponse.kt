@@ -1,0 +1,18 @@
+package com.callmangement.model.pos_distribution
+
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+
+class ModelNewMachineDetailByFPSResponse {
+    @SerializedName("New_Machine_Data")
+    @Expose
+    var newMachineData: NewMachineData? = null
+
+    @SerializedName("message")
+    @Expose
+    var message: String? = null
+
+    @SerializedName("status")
+    @Expose
+    var status: String? = null
+}

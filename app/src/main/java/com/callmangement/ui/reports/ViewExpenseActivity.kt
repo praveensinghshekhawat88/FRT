@@ -244,7 +244,7 @@ class ViewExpenseActivity : CustomActivity(), View.OnClickListener {
                     l: Long
                 ) {
                     if (++checkExpenseStatus > 1) {
-                        expenseStatusId = modelExpenseStatusList[i].id
+                        expenseStatusId = modelExpenseStatusList[i].id!!
                         getExpenseList(expenseStatusId, districtId, fromDate, toDate)
                     }
                 }
@@ -396,7 +396,7 @@ class ViewExpenseActivity : CustomActivity(), View.OnClickListener {
                                     ) as ModelExpesne
                                     if (modelResponse != null) {
                                         if (modelResponse.status == "200") {
-                                            if (modelResponse.expensesList.size > 0) {
+                                            if (modelResponse.expensesList!!.size > 0) {
                                                 binding!!.rvExpenses.visibility = View.VISIBLE
                                                 binding!!.textNoDataFound.visibility = View.GONE
                                                 val modelExpensesList = modelResponse.expensesList
@@ -445,10 +445,10 @@ class ViewExpenseActivity : CustomActivity(), View.OnClickListener {
         }
     }
 
-    private fun setUpAdapter(modelExpensesList: List<ModelExpensesList>) {
+    private fun setUpAdapter(modelExpensesList: List<ModelExpensesList>?) {
         binding!!.rvExpenses.layoutManager =
             LinearLayoutManager(mContext!!, LinearLayoutManager.VERTICAL, false)
-        binding!!.rvExpenses.adapter = ViewExpenseActivityAdapter(mContext!!, modelExpensesList)
+        binding!!.rvExpenses.adapter = ViewExpenseActivityAdapter(mContext!!, modelExpensesList!!)
     }
 
     override fun onResume() {

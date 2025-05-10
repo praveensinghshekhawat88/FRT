@@ -18,7 +18,6 @@ import com.callmangement.utils.EqualSpacingItemDecoration
 import com.callmangement.utils.PrefManager
 
 class LocationListActivity : CustomActivity() {
-
     
     var binding: ActivityLocationListBinding? = null
     private var adapter: LocationListActivityAdapter? = null
@@ -59,7 +58,7 @@ class LocationListActivity : CustomActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initView() {
-        adapter = LocationListActivityAdapter(mContext!!, model)
+        adapter = LocationListActivityAdapter(mContext!!, model!!)
         adapter!!.notifyDataSetChanged()
         binding!!.rvLocation.layoutManager =
             LinearLayoutManager(mContext!!, LinearLayoutManager.VERTICAL, false)
@@ -79,7 +78,7 @@ class LocationListActivity : CustomActivity() {
         attendanceViewModel!!.getLocationList(
             model!!.user_Id.toString(),
             model!!.district_Id.toString(),
-            model!!.punch_In_Date
+            model!!.punch_In_Date!!
         ).observe(
             this
         ) { modelAddLocationList: ModelAddLocationList? ->
